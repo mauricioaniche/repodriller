@@ -112,19 +112,27 @@ public class GitRepository implements SCM {
 	private String getSourceCode(Repository repo, DiffEntry diff) throws MissingObjectException, IOException,
 			UnsupportedEncodingException {
 		
-		ObjectReader reader = repo.newObjectReader();
-		byte[] bytes = reader.open(diff.getNewId().toObjectId()).getBytes();
-		return new String(bytes, "utf-8");
+		try {
+			ObjectReader reader = repo.newObjectReader();
+			byte[] bytes = reader.open(diff.getNewId().toObjectId()).getBytes();
+			return new String(bytes, "utf-8");
+		} catch (Throwable e) {
+			return "";
+		}
 	}
 
 	private String getDiffText(Repository repo, DiffEntry diff) throws IOException, UnsupportedEncodingException {
-		String diffText;
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		DiffFormatter df2 = new DiffFormatter(out);
-		df2.setRepository(repo);
-		df2.format(diff);
-		diffText = out.toString("UTF-8");
-		return diffText;
+		try {
+			String diffText;
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			DiffFormatter df2 = new DiffFormatter(out);
+			df2.setRepository(repo);
+			df2.format(diff);
+			diffText = out.toString("UTF-8");
+			return diffText;
+		} catch (Throwable e) {
+			return "";
+		}
 	}
 
 }
