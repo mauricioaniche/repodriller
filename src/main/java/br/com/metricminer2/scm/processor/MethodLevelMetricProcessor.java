@@ -2,7 +2,7 @@ package br.com.metricminer2.scm.processor;
 
 import java.util.Map;
 
-import br.com.metricminer2.output.PersistenceMechanism;
+import br.com.metricminer2.persistence.PersistenceMechanism;
 import br.com.metricminer2.scm.Commit;
 import br.com.metricminer2.scm.Modification;
 import br.com.metricminer2.scm.SCMRepository;

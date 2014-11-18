@@ -2,7 +2,7 @@ package br.com.metricminer2.output.csv;
 
 import java.io.PrintStream;
 
-import br.com.metricminer2.output.PersistenceMechanism;
+import br.com.metricminer2.persistence.PersistenceMechanism;
 
 public class CSVWriter implements PersistenceMechanism {
 
