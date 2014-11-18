@@ -11,9 +11,9 @@ import org.apache.log4j.Logger;
 import br.com.metricminer2.output.PersistenceMechanism;
 import br.com.metricminer2.scm.ChangeSet;
 import br.com.metricminer2.scm.Commit;
-import br.com.metricminer2.scm.SCMProcessor;
 import br.com.metricminer2.scm.SCMRepository;
 import br.com.metricminer2.scm.git.GitRepository;
+import br.com.metricminer2.scm.processor.SCMProcessor;
 
 public class SourceCodeRepositorySearch {
 
