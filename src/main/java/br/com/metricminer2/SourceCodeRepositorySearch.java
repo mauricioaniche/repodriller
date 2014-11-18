@@ -67,7 +67,7 @@ public class SourceCodeRepositorySearch {
 		System.out.println();
 		
 		for(SCMProcessor processor : processors.keySet()) {
-			System.out.println("- " + processor.name());
+			System.out.println("- " + processor.name() + "(" + processor.getClass().getName() + ")");
 		}
 		
 		System.out.println();

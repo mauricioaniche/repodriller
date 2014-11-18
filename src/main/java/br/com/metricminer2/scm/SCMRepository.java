@@ -36,4 +36,9 @@ public class SCMRepository {
 		return origin==null?path:origin;
 	}
 	
+	public String getLastDir() {
+		String[] dirs = path.replace("\\", "/").split("/");
+		return dirs[dirs.length-1];
+	}
+	
 }

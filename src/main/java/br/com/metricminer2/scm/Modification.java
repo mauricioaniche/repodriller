@@ -42,6 +42,10 @@ public class Modification {
 		return "Modification [oldPath=" + oldPath + ", newPath=" + newPath + ", type=" + type
 				+ "]";
 	}
+
+	public boolean wasDeleted() {
+		return !type.equals(ModificationType.DELETE);
+	}
 	
 	
 
