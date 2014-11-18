@@ -2,6 +2,7 @@ package br.com.metricminer2;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,25 +13,22 @@ import br.com.metricminer2.persistence.PersistenceMechanism;
 import br.com.metricminer2.scm.ChangeSet;
 import br.com.metricminer2.scm.Commit;
 import br.com.metricminer2.scm.SCMRepository;
-import br.com.metricminer2.scm.git.GitRepository;
 import br.com.metricminer2.scm.processor.SCMProcessor;
 
 public class SourceCodeRepositorySearch {
 
-	private List<String> reposPath;
+	private List<SCMRepository> repos;
 	private Map<SCMProcessor, PersistenceMechanism> processors;
-	private GitRepository git;
 	
 	private static Logger log = Logger.getLogger(SourceCodeRepositorySearch.class);
 	
 	public SourceCodeRepositorySearch() {
-		reposPath = new ArrayList<String>();
+		repos = new ArrayList<SCMRepository>();
 		processors = new HashMap<SCMProcessor, PersistenceMechanism>();
-		git = new GitRepository();
 	}
 
-	public SourceCodeRepositorySearch in(List<String> reposPath) {
-		this.reposPath = reposPath;
+	public SourceCodeRepositorySearch in(SCMRepository... repo) {
+		this.repos.addAll(Arrays.asList(repo));
 		return this;
 	}
 	
@@ -40,14 +38,13 @@ public class SourceCodeRepositorySearch {
 	}
 	
 	public void start() {
-		for(String path : reposPath) {
-			SCMRepository repoInfo = git.info(path);
-			log.info("Git repository in " + path);
+		for(SCMRepository repo : repos) {
+			log.info("Git repository in " + repo.getPath());
 			
-			List<ChangeSet> allCs = git.getChangeSets(repoInfo.getPath());
+			List<ChangeSet> allCs = repo.getScm().getChangeSets();
 			log.info("Total of commits: " + allCs.size());
 			for(ChangeSet cs : allCs) {
-				processEverythingOnChangeSet(repoInfo, cs);
+				processEverythingOnChangeSet(repo, cs);
 			}
 		}
 		
@@ -61,8 +58,8 @@ public class SourceCodeRepositorySearch {
 		}
 	}
 
-	private void processEverythingOnChangeSet(SCMRepository repoInfo, ChangeSet cs) {
-		Commit commit = git.detail(cs.getId(), repoInfo.getPath());
+	private void processEverythingOnChangeSet(SCMRepository repo, ChangeSet cs) {
+		Commit commit = repo.getScm().detail(cs.getId());
 		log.info(
 				"Commit #" + commit.getHash() + 
 				" in " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(commit.getDate().getTime()) +
@@ -75,9 +72,9 @@ public class SourceCodeRepositorySearch {
 
 			try {
 				log.info("-> Processing " + commit.getHash() + " with " + processor.name());
-				processor.process(repoInfo, commit, writer);
+				processor.process(repo, commit, writer);
 			} catch (Exception e) {
-				log.error("error processing #" + commit.getHash() + " in " + repoInfo.getPath() + 
+				log.error("error processing #" + commit.getHash() + " in " + repo.getPath() + 
 						", processor=" + processor.name(), e);
 			}
 		}

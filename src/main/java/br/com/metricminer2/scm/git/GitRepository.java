@@ -37,7 +37,17 @@ import br.com.metricminer2.scm.SCMRepository;
 
 public class GitRepository implements SCM {
 
-	public SCMRepository info(String path) {
+	private String path;
+
+	public GitRepository(String path) {
+		this.path = path;
+	}
+	
+	public static SCMRepository build(String path) {
+		return new GitRepository(path).info();
+	}
+	
+	public SCMRepository info() {
 		RevWalk rw = null;
 		try {
 			Git git = Git.open(new File(path));
@@ -49,7 +59,7 @@ public class GitRepository implements SCM {
 			rw.markStart(root);
 			RevCommit lastCommit = rw.next();
 
-			return new SCMRepository(path, headId.getName(), lastCommit.getName());
+			return new SCMRepository(this, path, headId.getName(), lastCommit.getName());
 		} catch (Exception e) {
 			throw new RuntimeException("error when info " + path, e);
 		} finally {
@@ -59,7 +69,7 @@ public class GitRepository implements SCM {
 	}
 
 	@Override
-	public List<ChangeSet> getChangeSets(String path) {
+	public List<ChangeSet> getChangeSets() {
 		try {
 			Git git = Git.open(new File(path));
 
@@ -80,7 +90,7 @@ public class GitRepository implements SCM {
 	}
 
 	@Override
-	public Commit detail(String id, String path) {
+	public Commit detail(String id) {
 		try {
 			Git git = Git.open(new File(path));
 			Repository repo = git.getRepository();

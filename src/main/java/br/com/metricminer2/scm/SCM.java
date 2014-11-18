@@ -4,8 +4,8 @@ import java.util.List;
 
 public interface SCM {
 
-	List<ChangeSet> getChangeSets(String path);
+	List<ChangeSet> getChangeSets();
 
-	Commit detail(String id, String path);
+	Commit detail(String id);
 
 }

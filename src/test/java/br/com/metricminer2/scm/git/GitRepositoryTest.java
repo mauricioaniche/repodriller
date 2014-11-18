@@ -12,18 +12,18 @@ import br.com.metricminer2.scm.SCMRepository;
 
 public class GitRepositoryTest {
 
-	private String path;
 	private GitRepository git;
+	private String path;
 
 	@Before
 	public void setUp() {
 		path = this.getClass().getResource("/repo-1/").getPath();
-		git = new GitRepository();
+		git = new GitRepository(path);
 	}
 	
 	@Test
 	public void shouldGetAllCommits() {
-		List<ChangeSet> cs = git.getChangeSets(path);
+		List<ChangeSet> cs = git.getChangeSets();
 		
 		Assert.assertEquals(10, cs.size());
 		Assert.assertEquals("f0dd1308bd904a9b108a6a40865166ee962af3d4", cs.get(0).getId());
@@ -33,7 +33,7 @@ public class GitRepositoryTest {
 	@Test
 	public void shouldDetailACommit() {
 		
-		Commit commit = git.detail("866e997a9e44cb4ddd9e00efe49361420aff2559", path);
+		Commit commit = git.detail("866e997a9e44cb4ddd9e00efe49361420aff2559");
 		
 		Assert.assertEquals("Maurício Aniche", commit.getCommitter().getName());
 		Assert.assertEquals("mauricioaniche@gmail.com", commit.getCommitter().getEmail());
@@ -49,7 +49,7 @@ public class GitRepositoryTest {
 	
 	@Test
 	public void shouldGetInfoFromARepo() {
-		SCMRepository repo = git.info(path);
+		SCMRepository repo = git.info();
 		
 		Assert.assertEquals(path, repo.getPath());
 		Assert.assertEquals("866e997a9e44cb4ddd9e00efe49361420aff2559", repo.getLastCommit());
