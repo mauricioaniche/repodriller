@@ -58,8 +58,10 @@ public class GitRepository implements SCM {
 			rw.sort(RevSort.REVERSE);
 			rw.markStart(root);
 			RevCommit lastCommit = rw.next();
+			
+			String origin = git.getRepository().getConfig().getString("remote", "origin", "url");
 
-			return new SCMRepository(this, path, headId.getName(), lastCommit.getName());
+			return new SCMRepository(this, origin, path, headId.getName(), lastCommit.getName());
 		} catch (Exception e) {
 			throw new RuntimeException("error when info " + path, e);
 		} finally {

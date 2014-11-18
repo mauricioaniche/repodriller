@@ -3,6 +3,7 @@ package br.com.metricminer2;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +50,31 @@ public class SourceCodeRepositorySearch {
 		}
 		
 		closeAllPersistence();
+		printScript();
 		
+	}
+
+	private void printScript() {
+		System.out.println("# --------------------------------------------------");
+		System.out.println("MetricMiner2 was executed in the following projects:");
+		System.out.println();
+		for(SCMRepository repo : repos) {
+			System.out.println("- " + repo.getOrigin() + ", from " + repo.getLastCommit() + " to " + repo.getHeadCommit());
+		}
+		
+		System.out.println();
+		System.out.println("The following processors were executed:");
+		System.out.println();
+		
+		for(SCMProcessor processor : processors.keySet()) {
+			System.out.println("- " + processor.name());
+		}
+		
+		System.out.println();
+		System.out.println("This execution happened on " + new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").format(new Date()) + ".");
+		System.out.println();
+		System.out.println("Brought to you by MetricMiner (metricminer.org.br)");
+		System.out.println("# --------------------------------------------------");
 	}
 
 	private void closeAllPersistence() {
