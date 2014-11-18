@@ -77,14 +77,5 @@ public class LackOfCohesion implements ClassLevelCodeMetric {
 		return fileName.toLowerCase().endsWith("java");
 	}
 
-	@Override
-	public double threshold() {
-		return 1.0;
-	}
-
-	@Override
-	public String getPrettyName() {
-		return "cohesion";
-	}
 
 }

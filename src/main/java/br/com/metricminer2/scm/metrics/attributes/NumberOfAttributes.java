@@ -33,14 +33,4 @@ public class NumberOfAttributes implements ClassLevelCodeMetric {
 		return "number-of-attributes";
 	}
 
-	@Override
-	public double threshold() {
-		return 10.0;
-	}
-
-	@Override
-	public String getPrettyName() {
-		return "number of attributes";
-	}
-	
 }

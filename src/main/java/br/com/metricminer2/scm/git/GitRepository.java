@@ -94,9 +94,13 @@ public class GitRepository implements SCM {
 						.getEmailAddress());
 				String msg = jgitCommit.getFullMessage().trim();
 				String hash = jgitCommit.getName().toString();
+				long epoch = jgitCommit.getCommitTime();
 				String parent = (jgitCommit.getParentCount() > 0) ? jgitCommit.getParent(0).getName().toString() : "";
 
-				theCommit = new Commit(hash, committer, msg, parent);
+				GregorianCalendar date = new GregorianCalendar();
+				date.setTime(new Date(epoch * 1000L));
+				
+				theCommit = new Commit(hash, committer, date, msg, parent);
 
 				for (DiffEntry diff : diffsForTheCommit(repo, jgitCommit)) {
 

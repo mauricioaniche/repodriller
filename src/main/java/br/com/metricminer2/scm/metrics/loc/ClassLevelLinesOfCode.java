@@ -40,14 +40,5 @@ public class ClassLevelLinesOfCode implements ClassLevelCodeMetric {
 		return fileName.toLowerCase().endsWith("java");
 	}
 
-	@Override
-	public double threshold() {
-		return 50;
-	}
-
-	@Override
-	public String getPrettyName() {
-		return "lines of code";
-	}
 
 }

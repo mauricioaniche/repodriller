@@ -37,14 +37,5 @@ public class NumberOfMethods implements ClassLevelCodeMetric {
 		return visitor.getMethods();
 	}
 
-	@Override
-	public double threshold() {
-		return 6;
-	}
-
-	@Override
-	public String getPrettyName() {
-		return "number of methods";
-	}
 	
 }

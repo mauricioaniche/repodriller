@@ -41,14 +41,5 @@ public class MethodLevelLinesOfCode implements MethodLevelCodeMetric {
 		return fileName.toLowerCase().endsWith("java");
 	}
 
-	@Override
-	public double threshold() {
-		return THRESHOLD;
-	}
-
-	@Override
-	public String getPrettyName() {
-		return "lines of code";
-	}
 
 }

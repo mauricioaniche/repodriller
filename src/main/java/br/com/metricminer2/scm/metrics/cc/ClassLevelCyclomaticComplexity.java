@@ -34,14 +34,4 @@ public class ClassLevelCyclomaticComplexity implements ClassLevelCodeMetric {
 		return fileName.toLowerCase().endsWith("java");
 	}
 
-	@Override
-	public double threshold() {
-		return 20;
-	}
-
-	@Override
-	public String getPrettyName() {
-		return "complexity";
-	}
-
 }
