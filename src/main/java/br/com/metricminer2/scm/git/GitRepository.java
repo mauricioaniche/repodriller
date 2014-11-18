@@ -38,11 +38,12 @@ import br.com.metricminer2.scm.SCMRepository;
 public class GitRepository implements SCM {
 
 	public SCMRepository info(String path) {
+		RevWalk rw = null;
 		try {
 			Git git = Git.open(new File(path));
 			AnyObjectId headId = git.getRepository().resolve(Constants.HEAD);
 
-			RevWalk rw = new RevWalk(git.getRepository());
+			rw = new RevWalk(git.getRepository());
 			RevCommit root = rw.parseCommit(headId);
 			rw.sort(RevSort.REVERSE);
 			rw.markStart(root);
@@ -51,6 +52,8 @@ public class GitRepository implements SCM {
 			return new SCMRepository(path, headId.getName(), lastCommit.getName());
 		} catch (Exception e) {
 			throw new RuntimeException("error when info " + path, e);
+		} finally {
+			if(rw!=null) rw.release();
 		}
 
 	}
@@ -136,9 +139,12 @@ public class GitRepository implements SCM {
 		if (parent == null) {
 			RevWalk rw = new RevWalk(repo);
 			diffs = df.scan(new EmptyTreeIterator(), new CanonicalTreeParser(null, rw.getObjectReader(), commit.getTree()));
+			rw.release();
 		} else {
 			diffs = df.scan(hash, parent);
 		}
+		
+		df.release();
 		
 		return diffs;
 	}
@@ -156,16 +162,19 @@ public class GitRepository implements SCM {
 	}
 
 	private String getDiffText(Repository repo, DiffEntry diff) throws IOException, UnsupportedEncodingException {
+		DiffFormatter df2= null;
 		try {
 			String diffText;
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			DiffFormatter df2 = new DiffFormatter(out);
+			df2 = new DiffFormatter(out);
 			df2.setRepository(repo);
 			df2.format(diff);
 			diffText = out.toString("UTF-8");
 			return diffText;
 		} catch (Throwable e) {
 			return "";
+		} finally {
+			if(df2!=null) df2.release();
 		}
 	}
 
