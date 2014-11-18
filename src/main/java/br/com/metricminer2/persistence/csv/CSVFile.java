@@ -4,11 +4,11 @@ import java.io.PrintStream;
 
 import br.com.metricminer2.persistence.PersistenceMechanism;
 
-public class CSVWriter implements PersistenceMechanism {
+public class CSVFile implements PersistenceMechanism {
 
 	private PrintStream ps;
 
-	public CSVWriter(String fileName) {
+	public CSVFile(String fileName) {
 		try {
 			ps = new PrintStream(fileName);
 		} catch (Exception e) {

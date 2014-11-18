@@ -1,7 +1,7 @@
 package br.com.metricminer2.examples;
 
 import br.com.metricminer2.SourceCodeRepositorySearch;
-import br.com.metricminer2.persistence.csv.CSVWriter;
+import br.com.metricminer2.persistence.csv.CSVFile;
 import br.com.metricminer2.scm.git.GitRepository;
 import br.com.metricminer2.scm.metrics.cc.MethodLevelCyclomaticComplexity;
 import br.com.metricminer2.scm.metrics.loc.ClassLevelLinesOfCode;
@@ -18,8 +18,8 @@ public class Example3 {
 		
 		new SourceCodeRepositorySearch()
 			.in(GitRepository.build(repoPath))
-			.process(new MethodLevelMetricProcessor(new MethodLevelCyclomaticComplexity()), new CSVWriter(csvPath))
-			.process(new ClassLevelMetricProcessor(new ClassLevelLinesOfCode()), new CSVWriter(locPath))
+			.process(new MethodLevelMetricProcessor(new MethodLevelCyclomaticComplexity()), new CSVFile(csvPath))
+			.process(new ClassLevelMetricProcessor(new ClassLevelLinesOfCode()), new CSVFile(locPath))
 			.start();
 	}
 }
