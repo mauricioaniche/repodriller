@@ -3,7 +3,7 @@ package br.com.metricminer2.examples;
 import java.util.Arrays;
 
 import br.com.metricminer2.SourceCodeRepositorySearch;
-import br.com.metricminer2.output.csv.CSVWriter;
+import br.com.metricminer2.persistence.csv.CSVWriter;
 import br.com.metricminer2.scm.metrics.cc.ClassLevelCyclomaticComplexity;
 import br.com.metricminer2.scm.processor.ClassLevelMetricProcessor;
 

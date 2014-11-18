@@ -1,4 +1,4 @@
-package br.com.metricminer2.output.csv;
+package br.com.metricminer2.persistence.csv;
 
 import java.io.PrintStream;
 
