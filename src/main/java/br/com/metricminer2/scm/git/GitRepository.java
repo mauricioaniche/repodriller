@@ -17,9 +17,15 @@ import org.eclipse.jgit.diff.RawTextComparator;
 import org.eclipse.jgit.errors.AmbiguousObjectException;
 import org.eclipse.jgit.errors.IncorrectObjectTypeException;
 import org.eclipse.jgit.errors.MissingObjectException;
+import org.eclipse.jgit.lib.AnyObjectId;
+import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.revwalk.RevSort;
+import org.eclipse.jgit.revwalk.RevWalk;
+import org.eclipse.jgit.treewalk.CanonicalTreeParser;
+import org.eclipse.jgit.treewalk.EmptyTreeIterator;
 import org.eclipse.jgit.util.io.DisabledOutputStream;
 
 import br.com.metricminer2.scm.ChangeSet;
@@ -27,8 +33,27 @@ import br.com.metricminer2.scm.Commit;
 import br.com.metricminer2.scm.Committer;
 import br.com.metricminer2.scm.ModificationType;
 import br.com.metricminer2.scm.SCM;
+import br.com.metricminer2.scm.SCMRepository;
 
 public class GitRepository implements SCM {
+
+	public SCMRepository info(String path) {
+		try {
+			Git git = Git.open(new File(path));
+			AnyObjectId headId = git.getRepository().resolve(Constants.HEAD);
+
+			RevWalk rw = new RevWalk(git.getRepository());
+			RevCommit root = rw.parseCommit(headId);
+			rw.sort(RevSort.REVERSE);
+			rw.markStart(root);
+			RevCommit lastCommit = rw.next();
+
+			return new SCMRepository(path, headId.getName(), lastCommit.getName());
+		} catch (Exception e) {
+			throw new RuntimeException("error when info " + path, e);
+		}
+
+	}
 
 	@Override
 	public List<ChangeSet> getChangeSets(String path) {
@@ -36,15 +61,15 @@ public class GitRepository implements SCM {
 			Git git = Git.open(new File(path));
 
 			List<ChangeSet> allCs = new ArrayList<ChangeSet>();
-			
-			for(RevCommit r : git.log().all().call()) {
+
+			for (RevCommit r : git.log().all().call()) {
 				String hash = r.getName();
 				GregorianCalendar date = new GregorianCalendar();
 				date.setTime(new Date(r.getCommitTime() * 1000L));
-				
+
 				allCs.add(new ChangeSet(hash, date));
 			}
-			
+
 			return allCs;
 		} catch (Exception e) {
 			throw new RuntimeException("error in getChangeSets for " + path, e);
@@ -56,39 +81,40 @@ public class GitRepository implements SCM {
 		try {
 			Git git = Git.open(new File(path));
 			Repository repo = git.getRepository();
-			
+
 			Iterable<RevCommit> commits = git.log().add(repo.resolve(id)).call();
 			Commit theCommit = null;
-					
-			for(RevCommit jgitCommit : commits) {
-				
-				Committer committer = new Committer(jgitCommit.getAuthorIdent().getName(), jgitCommit.getAuthorIdent().getEmailAddress());
-				String msg = jgitCommit.getFullMessage();
+
+			for (RevCommit jgitCommit : commits) {
+
+				Committer committer = new Committer(jgitCommit.getAuthorIdent().getName(), jgitCommit.getAuthorIdent()
+						.getEmailAddress());
+				String msg = jgitCommit.getFullMessage().trim();
 				String hash = jgitCommit.getName().toString();
-				String parent = (jgitCommit.getParentCount()>0) ? jgitCommit.getParent(0).getName().toString() : "";
-				
+				String parent = (jgitCommit.getParentCount() > 0) ? jgitCommit.getParent(0).getName().toString() : "";
+
 				theCommit = new Commit(hash, committer, msg, parent);
 
-				for(DiffEntry diff : diffsForTheCommit(repo, jgitCommit)) {
-					
+				for (DiffEntry diff : diffsForTheCommit(repo, jgitCommit)) {
+
 					String oldPath = diff.getOldPath();
 					String newPath = diff.getNewPath();
 					ModificationType change = Enum.valueOf(ModificationType.class, diff.getChangeType().toString());
-					
+
 					String diffText = "";
 					String sc = "";
-					if(diff.getChangeType() != ChangeType.DELETE) {
+					if (diff.getChangeType() != ChangeType.DELETE) {
 						diffText = getDiffText(repo, diff);
 						sc = getSourceCode(repo, diff);
 					}
-					
+
 					theCommit.addModification(oldPath, newPath, change, diffText, sc);
-					
+
 				}
-				
+
 				break;
 			}
-			
+
 			return theCommit;
 		} catch (Exception e) {
 			throw new RuntimeException("error detailing " + id + " in " + path, e);
@@ -97,21 +123,29 @@ public class GitRepository implements SCM {
 
 	private List<DiffEntry> diffsForTheCommit(Repository repo, RevCommit commit) throws IOException,
 			AmbiguousObjectException, IncorrectObjectTypeException {
-		
-		String hash = commit.getName().toString();
-		String parent = commit.getParent(0).getName().toString();
-		
+
+		AnyObjectId hash = repo.resolve(commit.getName());
+		AnyObjectId parent = commit.getParentCount() > 0 ? repo.resolve(commit.getParent(0).getName()) : null;
+
 		DiffFormatter df = new DiffFormatter(DisabledOutputStream.INSTANCE);
 		df.setRepository(repo);
 		df.setDiffComparator(RawTextComparator.DEFAULT);
 		df.setDetectRenames(true);
-		List<DiffEntry> diffs = df.scan(repo.resolve(hash), repo.resolve(parent));
+		List<DiffEntry> diffs = null;
+
+		if (parent == null) {
+			RevWalk rw = new RevWalk(repo);
+			diffs = df.scan(new EmptyTreeIterator(), new CanonicalTreeParser(null, rw.getObjectReader(), commit.getTree()));
+		} else {
+			diffs = df.scan(hash, parent);
+		}
+		
 		return diffs;
 	}
 
 	private String getSourceCode(Repository repo, DiffEntry diff) throws MissingObjectException, IOException,
 			UnsupportedEncodingException {
-		
+
 		try {
 			ObjectReader reader = repo.newObjectReader();
 			byte[] bytes = reader.open(diff.getNewId().toObjectId()).getBytes();

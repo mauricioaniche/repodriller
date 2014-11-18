@@ -1,6 +1,7 @@
 package br.com.metricminer2.scm;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -40,6 +41,10 @@ public class Commit {
 		Modification m = new Modification(oldPath, newPath, change, diff, sc);
 		modifications.add(m);
 		
+	}
+	
+	public List<Modification> getModifications() {
+		return Collections.unmodifiableList(modifications);
 	}
 
 	@Override
