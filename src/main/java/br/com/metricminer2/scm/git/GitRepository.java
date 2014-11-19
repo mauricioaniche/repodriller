@@ -2,6 +2,7 @@ package br.com.metricminer2.scm.git;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -45,6 +46,27 @@ public class GitRepository implements SCM {
 	
 	public static SCMRepository build(String path) {
 		return new GitRepository(path).info();
+	}
+	
+	public static SCMRepository[] allIn(String path) {
+		List<SCMRepository> repos = new ArrayList<SCMRepository>();
+		
+		for(String dir : getAllDirsIn(path)) {
+			repos.add(build(dir));
+		}
+		
+		return repos.toArray(new SCMRepository[repos.size()]);
+	}
+
+	private static String[] getAllDirsIn(String path) {
+		File file = new File(path);
+		String[] directories = file.list(new FilenameFilter() {
+			  @Override
+			  public boolean accept(File current, String name) {
+			    return new File(current, name).isDirectory();
+			  }
+			});
+		return directories;
 	}
 	
 	public SCMRepository info() {

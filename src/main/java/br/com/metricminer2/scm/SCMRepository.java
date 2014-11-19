@@ -40,5 +40,13 @@ public class SCMRepository {
 		String[] dirs = path.replace("\\", "/").split("/");
 		return dirs[dirs.length-1];
 	}
+
+	@Override
+	public String toString() {
+		return "SCMRepository [path=" + path + ", headCommit=" + headCommit + ", lastCommit=" + lastCommit + ", scm="
+				+ scm + ", origin=" + origin + "]";
+	}
+	
+	
 	
 }
