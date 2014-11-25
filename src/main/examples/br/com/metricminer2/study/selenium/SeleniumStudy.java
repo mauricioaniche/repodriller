@@ -14,7 +14,7 @@ public class SeleniumStudy implements Study {
 		
 		new SourceCodeRepositoryStudy()
 			.in(
-				GitRepository.allIn(opts.getProjects())
+				GitRepository.allIn(opts.getProjectsPath())
 			)
 			.process(new AddsAndRemoves(), new CSVFile(defaultPath, "/addsremoves.csv"))
 			.process(new CommittedTogether(), new CSVFile(defaultPath, "/committed.csv"))

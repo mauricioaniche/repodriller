@@ -15,7 +15,7 @@ public class Example4 implements Study {
 	@Override
 	public void execute(MMOptions opts) {
 		PersistenceMechanism pm = new PersistenceMechanismBuilder().from(opts);
-		String projectsPath = opts.getProjects();
+		String projectsPath = opts.getProjectsPath();
 		
 		new SourceCodeRepositoryStudy()
 			.in(GitRepository.build(projectsPath))

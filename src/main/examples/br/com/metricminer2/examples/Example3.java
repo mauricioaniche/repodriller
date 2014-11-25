@@ -14,7 +14,7 @@ public class Example3 implements Study {
 
 	@Override
 	public void execute(MMOptions opts) {
-		String repoPath = opts.getProjects();
+		String repoPath = opts.getProjectsPath();
 		String outPath = opts.getCsv(); 
 		
 		new SourceCodeRepositoryStudy()

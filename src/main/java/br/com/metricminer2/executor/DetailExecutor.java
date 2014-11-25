@@ -24,7 +24,7 @@ public class DetailExecutor extends Executor {
 	protected void execute(MMOptions opts) {
 		PersistenceMechanism pm = new PersistenceMechanismBuilder().from(opts);
 		SourceCodeRepositoryDetail detail = new SourceCodeRepositoryDetail(pm);
-		detail.detail(opts.getProjects());
+		detail.detail(opts.getProjectsPath());
 		pm.close();
 	}
 

@@ -9,7 +9,7 @@ public class MMOptions {
 	private String study;
 	
 	@Parameter(names="-projects", description="Path to the projects that will be analyzed")
-	private String projects;
+	private String projectsPath;
 
 	@Parameter(names="-csv", description="Path to the CSV that will be outputed")
 	private String csv;
@@ -25,8 +25,8 @@ public class MMOptions {
 		return study;
 	}
 
-	public String getProjects() {
-		return projects;
+	public String getProjectsPath() {
+		return projectsPath;
 	}
 	
 	public boolean isDetail() {
@@ -43,7 +43,7 @@ public class MMOptions {
 
 	@Override
 	public String toString() {
-		return "MMOptions [study=" + study + ", projects=" + projects + ", csv=" + csv + ", detail=" + detail + "]";
+		return "MMOptions [study=" + study + ", projects=" + projectsPath + ", csv=" + csv + ", detail=" + detail + "]";
 	}
 
 	
