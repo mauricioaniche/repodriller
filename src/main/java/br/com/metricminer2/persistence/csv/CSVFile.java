@@ -16,6 +16,10 @@ public class CSVFile implements PersistenceMechanism {
 		}
 	}
 	
+	public CSVFile(String path, String name) {
+		this(path + name);
+	}
+
 	@Override
 	public void write(Object... line) {
 		

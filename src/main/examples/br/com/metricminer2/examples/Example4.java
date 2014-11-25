@@ -1,23 +1,25 @@
 package br.com.metricminer2.examples;
 
+import br.com.metricminer2.MMOptions;
+import br.com.metricminer2.Study;
 import br.com.metricminer2.persistence.PersistenceMechanism;
-import br.com.metricminer2.persistence.csv.CSVFile;
+import br.com.metricminer2.persistence.PersistenceMechanismBuilder;
 import br.com.metricminer2.scm.Commit;
 import br.com.metricminer2.scm.SCMRepository;
 import br.com.metricminer2.scm.SourceCodeRepositoryStudy;
 import br.com.metricminer2.scm.git.GitRepository;
-import br.com.metricminer2.scm.processor.SCMProcessor;
+import br.com.metricminer2.scm.metrics.MetricProcessor;
 
-public class Example4 {
+public class Example4 implements Study {
 
-
-	public static void main(String[] args) {
-		String repoPath = Example1.class.getResource("/repo-1/").getPath();
-		String out = Example1.class.getResource("/").getPath() + "msgs.csv";
+	@Override
+	public void execute(MMOptions opts) {
+		PersistenceMechanism pm = new PersistenceMechanismBuilder().from(opts);
+		String projectsPath = opts.getProjects();
 		
 		new SourceCodeRepositoryStudy()
-			.in(GitRepository.build(repoPath))
-			.process(new SCMProcessor() {
+			.in(GitRepository.build(projectsPath))
+			.process(new MetricProcessor() {
 				
 				@Override
 				public void process(SCMRepository repo, Commit commit, PersistenceMechanism writer) {
@@ -28,7 +30,8 @@ public class Example4 {
 				public String name() {
 					return "commit messages";
 				}
-			}, new CSVFile(out))
+			}, pm)
 			.start();
+		
 	}
 }

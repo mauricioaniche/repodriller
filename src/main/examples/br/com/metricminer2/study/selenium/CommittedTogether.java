@@ -4,9 +4,9 @@ import br.com.metricminer2.persistence.PersistenceMechanism;
 import br.com.metricminer2.scm.Commit;
 import br.com.metricminer2.scm.Modification;
 import br.com.metricminer2.scm.SCMRepository;
-import br.com.metricminer2.scm.processor.SCMProcessor;
+import br.com.metricminer2.scm.metrics.MetricProcessor;
 
-public class CommittedTogether implements SCMProcessor {
+public class CommittedTogether implements MetricProcessor {
 
 	private boolean isCss(Modification m) {
 		return m.getNewPath().toLowerCase().endsWith(".css") || m.getNewPath().toLowerCase().endsWith(".less");

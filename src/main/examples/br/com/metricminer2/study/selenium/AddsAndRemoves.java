@@ -4,9 +4,9 @@ import br.com.metricminer2.persistence.PersistenceMechanism;
 import br.com.metricminer2.scm.Commit;
 import br.com.metricminer2.scm.Modification;
 import br.com.metricminer2.scm.SCMRepository;
-import br.com.metricminer2.scm.processor.SCMProcessor;
+import br.com.metricminer2.scm.metrics.MetricProcessor;
 
-public class AddsAndRemoves implements SCMProcessor {
+public class AddsAndRemoves implements MetricProcessor {
 
 	@Override
 	public void process(SCMRepository repo, Commit commit, PersistenceMechanism writer) {
