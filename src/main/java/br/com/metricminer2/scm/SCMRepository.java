@@ -4,16 +4,16 @@ public class SCMRepository {
 
 	private String path;
 	private String headCommit;
-	private String lastCommit;
+	private String firstCommit;
 	private SCM scm;
 	private String origin;
 
-	public SCMRepository(SCM scm, String origin, String path, String headCommit, String lastCommit) {
+	public SCMRepository(SCM scm, String origin, String path, String headCommit, String firstCommit) {
 		this.scm = scm;
 		this.origin = origin;
 		this.path = path;
 		this.headCommit = headCommit;
-		this.lastCommit = lastCommit;
+		this.firstCommit = firstCommit;
 	}
 	
 	public String getPath() {
@@ -24,8 +24,8 @@ public class SCMRepository {
 		return headCommit;
 	}
 
-	public String getLastCommit() {
-		return lastCommit;
+	public String getFirstCommit() {
+		return firstCommit;
 	}
 
 	public SCM getScm() {
@@ -43,7 +43,7 @@ public class SCMRepository {
 
 	@Override
 	public String toString() {
-		return "SCMRepository [path=" + path + ", headCommit=" + headCommit + ", lastCommit=" + lastCommit + ", scm="
+		return "SCMRepository [path=" + path + ", headCommit=" + headCommit + ", lastCommit=" + firstCommit + ", scm="
 				+ scm + ", origin=" + origin + "]";
 	}
 	

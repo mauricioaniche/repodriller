@@ -1,7 +1,7 @@
 package br.com.metricminer2.study.selenium;
 
-import br.com.metricminer2.SourceCodeRepositorySearch;
 import br.com.metricminer2.persistence.csv.CSVFile;
+import br.com.metricminer2.scm.SourceCodeRepositoryStudy;
 import br.com.metricminer2.scm.git.GitRepository;
 
 public class SeleniumStudy {
@@ -9,7 +9,7 @@ public class SeleniumStudy {
 	public static void main(String[] args) {
 		String defaultPath = System.getProperty("java.io.tmpdir");
 		
-		new SourceCodeRepositorySearch()
+		new SourceCodeRepositoryStudy()
 			.in(
 				GitRepository.build("/repo1"),
 				GitRepository.build("/repo2"),

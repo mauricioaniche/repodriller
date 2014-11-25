@@ -2,7 +2,6 @@ package br.com.metricminer2.scm.git;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -58,15 +57,19 @@ public class GitRepository implements SCM {
 		return repos.toArray(new SCMRepository[repos.size()]);
 	}
 
-	private static String[] getAllDirsIn(String path) {
-		File file = new File(path);
-		String[] directories = file.list(new FilenameFilter() {
-			  @Override
-			  public boolean accept(File current, String name) {
-			    return new File(current, name).isDirectory();
-			  }
-			});
-		return directories;
+	private static List<String> getAllDirsIn(String path) {
+		File dir = new File(path);
+		String[] files = dir.list();
+		
+		List<String> projects = new ArrayList<String>();
+		for(String file : files) {
+			File possibleDir = new File(dir, file);
+			if(possibleDir.isDirectory()) {
+				projects.add(possibleDir.getAbsolutePath());
+			}
+		}
+
+		return projects;
 	}
 	
 	public SCMRepository info() {
@@ -138,9 +141,17 @@ public class GitRepository implements SCM {
 
 				for (DiffEntry diff : diffsForTheCommit(repo, jgitCommit)) {
 
-					String oldPath = diff.getOldPath();
-					String newPath = diff.getNewPath();
 					ModificationType change = Enum.valueOf(ModificationType.class, diff.getChangeType().toString());
+					String oldPath, newPath;
+					
+					// for some reason, when it is a rename, it switches the new and old path
+					if(ModificationType.RENAME.equals(change)) {
+						newPath = diff.getOldPath();
+						oldPath = diff.getNewPath();
+					} else {
+						oldPath = diff.getOldPath();
+						newPath = diff.getNewPath();
+					}
 
 					String diffText = "";
 					String sc = "";

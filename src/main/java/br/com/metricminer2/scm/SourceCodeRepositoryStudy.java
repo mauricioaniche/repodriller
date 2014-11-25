@@ -1,4 +1,4 @@
-package br.com.metricminer2;
+package br.com.metricminer2.scm;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,29 +11,26 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import br.com.metricminer2.persistence.PersistenceMechanism;
-import br.com.metricminer2.scm.ChangeSet;
-import br.com.metricminer2.scm.Commit;
-import br.com.metricminer2.scm.SCMRepository;
 import br.com.metricminer2.scm.processor.SCMProcessor;
 
-public class SourceCodeRepositorySearch {
+public class SourceCodeRepositoryStudy {
 
 	private List<SCMRepository> repos;
 	private Map<SCMProcessor, PersistenceMechanism> processors;
 	
-	private static Logger log = Logger.getLogger(SourceCodeRepositorySearch.class);
+	private static Logger log = Logger.getLogger(SourceCodeRepositoryStudy.class);
 	
-	public SourceCodeRepositorySearch() {
+	public SourceCodeRepositoryStudy() {
 		repos = new ArrayList<SCMRepository>();
 		processors = new HashMap<SCMProcessor, PersistenceMechanism>();
 	}
 
-	public SourceCodeRepositorySearch in(SCMRepository... repo) {
+	public SourceCodeRepositoryStudy in(SCMRepository... repo) {
 		this.repos.addAll(Arrays.asList(repo));
 		return this;
 	}
 	
-	public SourceCodeRepositorySearch process(SCMProcessor processor, PersistenceMechanism writer) {
+	public SourceCodeRepositoryStudy process(SCMProcessor processor, PersistenceMechanism writer) {
 		processors.put(processor, writer);
 		return this;
 	}
@@ -59,7 +56,7 @@ public class SourceCodeRepositorySearch {
 		System.out.println("MetricMiner2 was executed in the following projects:");
 		System.out.println();
 		for(SCMRepository repo : repos) {
-			System.out.println("- " + repo.getOrigin() + ", from " + repo.getLastCommit() + " to " + repo.getHeadCommit());
+			System.out.println("- " + repo.getOrigin() + ", from " + repo.getFirstCommit() + " to " + repo.getHeadCommit());
 		}
 		
 		System.out.println();

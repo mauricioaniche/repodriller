@@ -47,12 +47,26 @@ public class GitRepositoryTest {
 		
 	}
 	
+
+	@Test
+	public void shouldDetailARename() {
+		
+		Commit commit = git.detail("f0dd1308bd904a9b108a6a40865166ee962af3d4");
+		
+		Assert.assertEquals("Maurício Aniche", commit.getCommitter().getName());
+		Assert.assertEquals("mauricioaniche@gmail.com", commit.getCommitter().getEmail());
+		
+		Assert.assertEquals("Matricula.javax", commit.getModifications().get(0).getNewPath());
+		Assert.assertEquals("Matricula.java", commit.getModifications().get(0).getOldPath());
+		
+	}
+	
 	@Test
 	public void shouldGetInfoFromARepo() {
 		SCMRepository repo = git.info();
 		
 		Assert.assertEquals(path, repo.getPath());
-		Assert.assertEquals("866e997a9e44cb4ddd9e00efe49361420aff2559", repo.getLastCommit());
+		Assert.assertEquals("866e997a9e44cb4ddd9e00efe49361420aff2559", repo.getFirstCommit());
 		Assert.assertEquals("f0dd1308bd904a9b108a6a40865166ee962af3d4", repo.getHeadCommit());
 	}
 }

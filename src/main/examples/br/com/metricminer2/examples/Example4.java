@@ -1,10 +1,10 @@
 package br.com.metricminer2.examples;
 
-import br.com.metricminer2.SourceCodeRepositorySearch;
 import br.com.metricminer2.persistence.PersistenceMechanism;
 import br.com.metricminer2.persistence.csv.CSVFile;
 import br.com.metricminer2.scm.Commit;
 import br.com.metricminer2.scm.SCMRepository;
+import br.com.metricminer2.scm.SourceCodeRepositoryStudy;
 import br.com.metricminer2.scm.git.GitRepository;
 import br.com.metricminer2.scm.processor.SCMProcessor;
 
@@ -15,7 +15,7 @@ public class Example4 {
 		String repoPath = Example1.class.getResource("/repo-1/").getPath();
 		String out = Example1.class.getResource("/").getPath() + "msgs.csv";
 		
-		new SourceCodeRepositorySearch()
+		new SourceCodeRepositoryStudy()
 			.in(GitRepository.build(repoPath))
 			.process(new SCMProcessor() {
 				

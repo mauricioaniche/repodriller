@@ -16,14 +16,12 @@ public class ClassLevelMetricProcessor implements SCMProcessor {
 
 	@Override
 	public void process(SCMRepository repo, Commit commit, PersistenceMechanism writer) {
-		
 		for(Modification change : commit.getModifications()) {
 			if(metric.accepts(change.getNewPath())) {
 				double value = metric.calculate(change.getSourceCode());
 				writer.write(commit.getHash(), change.getNewPath(), value);
 			}
 		}
-
 	}
 
 	@Override
