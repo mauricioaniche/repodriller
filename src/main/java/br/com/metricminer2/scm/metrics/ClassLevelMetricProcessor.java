@@ -1,12 +1,11 @@
-package br.com.metricminer2.scm.processor;
+package br.com.metricminer2.scm.metrics;
 
 import br.com.metricminer2.persistence.PersistenceMechanism;
 import br.com.metricminer2.scm.Commit;
 import br.com.metricminer2.scm.Modification;
 import br.com.metricminer2.scm.SCMRepository;
-import br.com.metricminer2.scm.metrics.ClassLevelCodeMetric;
 
-public class ClassLevelMetricProcessor implements SCMProcessor {
+public class ClassLevelMetricProcessor implements MetricProcessor {
 
 	private ClassLevelCodeMetric metric;
 

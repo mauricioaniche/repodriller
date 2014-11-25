@@ -1,4 +1,4 @@
-package br.com.metricminer2.scm.processor;
+package br.com.metricminer2.scm.metrics;
 
 import java.util.Map;
 
@@ -6,9 +6,8 @@ import br.com.metricminer2.persistence.PersistenceMechanism;
 import br.com.metricminer2.scm.Commit;
 import br.com.metricminer2.scm.Modification;
 import br.com.metricminer2.scm.SCMRepository;
-import br.com.metricminer2.scm.metrics.MethodLevelCodeMetric;
 
-public class MethodLevelMetricProcessor implements SCMProcessor {
+public class MethodLevelMetricProcessor implements MetricProcessor {
 
 	private MethodLevelCodeMetric metric;
 
