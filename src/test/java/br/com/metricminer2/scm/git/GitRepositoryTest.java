@@ -6,8 +6,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import br.com.metricminer2.scm.ChangeSet;
-import br.com.metricminer2.scm.Commit;
+import br.com.metricminer2.domain.ChangeSet;
+import br.com.metricminer2.domain.Commit;
+import br.com.metricminer2.scm.GitRepository;
 import br.com.metricminer2.scm.SCMRepository;
 
 public class GitRepositoryTest {
@@ -33,7 +34,7 @@ public class GitRepositoryTest {
 	@Test
 	public void shouldDetailACommit() {
 		
-		Commit commit = git.detail("866e997a9e44cb4ddd9e00efe49361420aff2559");
+		Commit commit = git.getCommit("866e997a9e44cb4ddd9e00efe49361420aff2559");
 		
 		Assert.assertEquals("Maurício Aniche", commit.getCommitter().getName());
 		Assert.assertEquals("mauricioaniche@gmail.com", commit.getCommitter().getEmail());
@@ -51,7 +52,7 @@ public class GitRepositoryTest {
 	@Test
 	public void shouldDetailARename() {
 		
-		Commit commit = git.detail("f0dd1308bd904a9b108a6a40865166ee962af3d4");
+		Commit commit = git.getCommit("f0dd1308bd904a9b108a6a40865166ee962af3d4");
 		
 		Assert.assertEquals("Maurício Aniche", commit.getCommitter().getName());
 		Assert.assertEquals("mauricioaniche@gmail.com", commit.getCommitter().getEmail());

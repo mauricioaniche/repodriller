@@ -3,7 +3,7 @@ package br.com.metricminer2.study.selenium;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import br.com.metricminer2.scm.Modification;
+import br.com.metricminer2.domain.Modification;
 
 public class Utils {
 

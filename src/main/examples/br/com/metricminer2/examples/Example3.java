@@ -2,13 +2,13 @@ package br.com.metricminer2.examples;
 
 import br.com.metricminer2.MMOptions;
 import br.com.metricminer2.Study;
+import br.com.metricminer2.metric.ClassLevelMetricCalculator;
+import br.com.metricminer2.metric.MethodLevelMetricCalculator;
+import br.com.metricminer2.metric.java8.cc.MethodLevelCyclomaticComplexity;
+import br.com.metricminer2.metric.java8.loc.ClassLevelLinesOfCode;
 import br.com.metricminer2.persistence.csv.CSVFile;
-import br.com.metricminer2.scm.SourceCodeRepositoryStudy;
-import br.com.metricminer2.scm.git.GitRepository;
-import br.com.metricminer2.scm.metrics.ClassLevelMetricProcessor;
-import br.com.metricminer2.scm.metrics.MethodLevelMetricProcessor;
-import br.com.metricminer2.scm.metrics.cc.MethodLevelCyclomaticComplexity;
-import br.com.metricminer2.scm.metrics.loc.ClassLevelLinesOfCode;
+import br.com.metricminer2.scm.GitRepository;
+import br.com.metricminer2.scm.SourceCodeRepositoryNavigator;
 
 public class Example3 implements Study {
 
@@ -17,10 +17,10 @@ public class Example3 implements Study {
 		String repoPath = opts.getProjectsPath();
 		String outPath = opts.getCsv(); 
 		
-		new SourceCodeRepositoryStudy()
+		new SourceCodeRepositoryNavigator()
 			.in(GitRepository.build(repoPath))
-			.process(new MethodLevelMetricProcessor(new MethodLevelCyclomaticComplexity()), new CSVFile(outPath, "cc.csv"))
-			.process(new ClassLevelMetricProcessor(new ClassLevelLinesOfCode()), new CSVFile(outPath, "loc.csv"))
+			.process(new MethodLevelMetricCalculator(new MethodLevelCyclomaticComplexity()), new CSVFile(outPath, "cc.csv"))
+			.process(new ClassLevelMetricCalculator(new ClassLevelLinesOfCode()), new CSVFile(outPath, "loc.csv"))
 			.start();		
 	}
 }

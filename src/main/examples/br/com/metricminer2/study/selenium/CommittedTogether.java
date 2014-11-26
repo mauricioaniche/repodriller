@@ -1,12 +1,12 @@
 package br.com.metricminer2.study.selenium;
 
+import br.com.metricminer2.domain.Commit;
+import br.com.metricminer2.domain.Modification;
+import br.com.metricminer2.metric.MetricCalculator;
 import br.com.metricminer2.persistence.PersistenceMechanism;
-import br.com.metricminer2.scm.Commit;
-import br.com.metricminer2.scm.Modification;
 import br.com.metricminer2.scm.SCMRepository;
-import br.com.metricminer2.scm.metrics.MetricProcessor;
 
-public class CommittedTogether implements MetricProcessor {
+public class CommittedTogether implements MetricCalculator {
 
 	private boolean isCss(Modification m) {
 		return m.getNewPath().toLowerCase().endsWith(".css") || m.getNewPath().toLowerCase().endsWith(".less");

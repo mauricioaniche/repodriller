@@ -3,7 +3,7 @@ package br.com.metricminer2;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import br.com.metricminer2.executor.Executor;
+import br.com.metricminer2.action.Action;
 
 import com.beust.jcommander.JCommander;
 
@@ -38,7 +38,7 @@ public class MetricMiner2 {
 
 	public void start() {
 		try {
-			Executor.all().run(opts);
+			Action.all().run(opts);
 		} catch(Throwable ex) {
 			ex.printStackTrace();
 			jc.usage();
