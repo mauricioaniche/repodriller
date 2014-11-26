@@ -32,7 +32,7 @@ public class Example3 implements Study {
 		String outPath = opts.getCsv(); 
 		
 		new SourceCodeRepositoryNavigator(opts)
-			.scmFromConfig()
+			.projectsFromConfig()
 			.process(new MethodLevelMetricCalculator(new MethodLevelCyclomaticComplexityFactory()), new CSVFile(outPath, "cc.csv"))
 			.process(new ClassLevelMetricCalculator(new NumberOfMethodsFactory()), new CSVFile(outPath, "loc.csv"))
 			.start();		
