@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package br.com.metricminer2.metric;
+package br.com.metricminer2.scm;
 
 import br.com.metricminer2.domain.Commit;
 import br.com.metricminer2.persistence.PersistenceMechanism;
-import br.com.metricminer2.scm.SCMRepository;
 
-public interface MetricCalculator {
+public interface CommitVisitor {
 	void process(SCMRepository repo, Commit commit, PersistenceMechanism writer);
 	String name();
 }

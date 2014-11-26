@@ -19,9 +19,9 @@ package br.com.metricminer2.examples;
 import br.com.metricminer2.MMOptions;
 import br.com.metricminer2.Study;
 import br.com.metricminer2.domain.Commit;
-import br.com.metricminer2.metric.MetricCalculator;
 import br.com.metricminer2.persistence.PersistenceMechanism;
 import br.com.metricminer2.persistence.PersistenceMechanismBuilder;
+import br.com.metricminer2.scm.CommitVisitor;
 import br.com.metricminer2.scm.GitRepository;
 import br.com.metricminer2.scm.SCMRepository;
 import br.com.metricminer2.scm.SourceCodeRepositoryNavigator;
@@ -35,7 +35,7 @@ public class Example4 implements Study {
 		
 		new SourceCodeRepositoryNavigator(opts)
 			.in(GitRepository.build(projectsPath))
-			.process(new MetricCalculator() {
+			.process(new CommitVisitor() {
 				
 				@Override
 				public void process(SCMRepository repo, Commit commit, PersistenceMechanism writer) {

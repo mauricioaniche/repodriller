@@ -18,11 +18,11 @@ package br.com.metricminer2.study.selenium;
 
 import br.com.metricminer2.domain.Commit;
 import br.com.metricminer2.domain.Modification;
-import br.com.metricminer2.metric.MetricCalculator;
 import br.com.metricminer2.persistence.PersistenceMechanism;
+import br.com.metricminer2.scm.CommitVisitor;
 import br.com.metricminer2.scm.SCMRepository;
 
-public class CommittedTogether implements MetricCalculator {
+public class CommittedTogether implements CommitVisitor {
 
 	private boolean isCss(Modification m) {
 		return m.getNewPath().toLowerCase().endsWith(".css") || m.getNewPath().toLowerCase().endsWith(".less");

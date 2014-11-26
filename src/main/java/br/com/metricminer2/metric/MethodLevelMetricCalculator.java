@@ -21,9 +21,10 @@ import java.util.Map;
 import br.com.metricminer2.domain.Commit;
 import br.com.metricminer2.domain.Modification;
 import br.com.metricminer2.persistence.PersistenceMechanism;
+import br.com.metricminer2.scm.CommitVisitor;
 import br.com.metricminer2.scm.SCMRepository;
 
-public class MethodLevelMetricCalculator implements MetricCalculator {
+public class MethodLevelMetricCalculator implements CommitVisitor {
 
 
 	private MethodLevelMetricFactory factory;

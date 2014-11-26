@@ -31,7 +31,6 @@ import org.apache.log4j.Logger;
 import br.com.metricminer2.MMOptions;
 import br.com.metricminer2.domain.ChangeSet;
 import br.com.metricminer2.domain.Commit;
-import br.com.metricminer2.metric.MetricCalculator;
 import br.com.metricminer2.persistence.PersistenceMechanism;
 
 import com.google.common.collect.Lists;
@@ -39,7 +38,7 @@ import com.google.common.collect.Lists;
 public class SourceCodeRepositoryNavigator {
 
 	private List<SCMRepository> repos;
-	private Map<MetricCalculator, PersistenceMechanism> processors;
+	private Map<CommitVisitor, PersistenceMechanism> visitors;
 	
 	private static Logger log = Logger.getLogger(SourceCodeRepositoryNavigator.class);
 	private MMOptions opts;
@@ -47,7 +46,7 @@ public class SourceCodeRepositoryNavigator {
 	public SourceCodeRepositoryNavigator(MMOptions opts) {
 		this.opts = opts;
 		repos = new ArrayList<SCMRepository>();
-		processors = new HashMap<MetricCalculator, PersistenceMechanism>();
+		visitors = new HashMap<CommitVisitor, PersistenceMechanism>();
 	}
 
 	public SourceCodeRepositoryNavigator in(SCMRepository... repo) {
@@ -55,8 +54,8 @@ public class SourceCodeRepositoryNavigator {
 		return this;
 	}
 	
-	public SourceCodeRepositoryNavigator process(MetricCalculator processor, PersistenceMechanism writer) {
-		processors.put(processor, writer);
+	public SourceCodeRepositoryNavigator process(CommitVisitor visitor, PersistenceMechanism writer) {
+		visitors.put(visitor, writer);
 		return this;
 	}
 	
@@ -103,15 +102,15 @@ public class SourceCodeRepositoryNavigator {
 		System.out.println("The following processors were executed:");
 		System.out.println();
 		
-		for(MetricCalculator processor : processors.keySet()) {
-			System.out.println("- " + processor.name() + "(" + processor.getClass().getName() + ")");
+		for(CommitVisitor visitor : visitors.keySet()) {
+			System.out.println("- " + visitor.name() + "(" + visitor.getClass().getName() + ")");
 		}
 		
 		System.out.println();
 	}
 
 	private void closeAllPersistence() {
-		for(PersistenceMechanism persist : processors.values()) {
+		for(PersistenceMechanism persist : visitors.values()) {
 			persist.close();
 		}
 	}
@@ -124,16 +123,16 @@ public class SourceCodeRepositoryNavigator {
 				" from " + commit.getCommitter().getName() + 
 				" with " + commit.getModifications().size() + " modifications");
 
-		for(Map.Entry<MetricCalculator, PersistenceMechanism> entry : processors.entrySet()) {
-			MetricCalculator processor = entry.getKey();
+		for(Map.Entry<CommitVisitor, PersistenceMechanism> entry : visitors.entrySet()) {
+			CommitVisitor visitor = entry.getKey();
 			PersistenceMechanism writer = entry.getValue();
 
 			try {
-				log.info("-> Processing " + commit.getHash() + " with " + processor.name());
-				processor.process(repo, commit, writer);
+				log.info("-> Processing " + commit.getHash() + " with " + visitor.name());
+				visitor.process(repo, commit, writer);
 			} catch (Exception e) {
 				log.error("error processing #" + commit.getHash() + " in " + repo.getPath() + 
-						", processor=" + processor.name(), e);
+						", processor=" + visitor.name(), e);
 			}
 		}
 	}

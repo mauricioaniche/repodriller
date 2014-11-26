@@ -19,9 +19,10 @@ package br.com.metricminer2.metric;
 import br.com.metricminer2.domain.Commit;
 import br.com.metricminer2.domain.Modification;
 import br.com.metricminer2.persistence.PersistenceMechanism;
+import br.com.metricminer2.scm.CommitVisitor;
 import br.com.metricminer2.scm.SCMRepository;
 
-public class ClassLevelMetricCalculator implements MetricCalculator {
+public class ClassLevelMetricCalculator implements CommitVisitor {
 
 	private ClassLevelMetricFactory factory;
 
