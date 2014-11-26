@@ -38,6 +38,9 @@ public class MMOptions {
 	
 	@Parameter(names="-detail", description="Give details from all projects")
 	private boolean detail;
+
+	@Parameter(names={"-h", "-usage"}, description="How to use it")
+	private boolean usage;
 	
 	@Parameter(names="-threads", description="Number of threads to use")
 	private int threads;
@@ -81,5 +84,9 @@ public class MMOptions {
 
 	public String getProjectPath() {
 		return projectPath == null ? "" : projectPath;
+	}
+	
+	public boolean isUsage() {
+		return usage;
 	}
 }

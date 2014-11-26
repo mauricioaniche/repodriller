@@ -37,33 +37,40 @@ public class MetricMiner2 {
 		
 //		args = new String[] {"-scm", "git", "-study", "br.com.metricminer2.examples.Example3", "-project", "/Users/mauricioaniche/workspace/metricminer2", "-csv", "/Users/mauricioaniche/Desktop/", "-threads", "1"};
 		
-		Calendar startDate = Calendar.getInstance();
-		
-		System.out.println("# -------------------------------------------------- #");
-		System.out.println("#                   MetricMiner                      #");
-		System.out.println("#                      v2.0                          #");
-		System.out.println("#             www.metricminer.org.br                 #");
-		System.out.println("# -------------------------------------------------- #");
-		System.out.println("Starting engine: " + new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").format(startDate.getTime()));
-		
 		new MetricMiner2(args).start();
-		
-		Calendar finishDate = Calendar.getInstance();
-		System.out.println();
-		System.out.println("Finished: " + new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").format(finishDate.getTime()));
-		System.out.println("It took " + (finishDate.getTimeInMillis() - startDate.getTimeInMillis())/1000 + " seconds.");
-		System.out.println();
-		System.out.println("Brought to you by MetricMiner (metricminer.org.br)");
-		System.out.println("# -------------------------------------------------- #");
 		
 	}
 
 	public void start() {
-		try {
-			Action.all().run(opts);
-		} catch(Throwable ex) {
-			ex.printStackTrace();
+		if(opts.isUsage()) {
 			jc.usage();
+			System.exit(0);
+		}
+		
+		try {
+			
+			Calendar startDate = Calendar.getInstance();
+			
+			System.out.println("# -------------------------------------------------- #");
+			System.out.println("#                   MetricMiner                      #");
+			System.out.println("#                      v2.0                          #");
+			System.out.println("#             www.metricminer.org.br                 #");
+			System.out.println("# -------------------------------------------------- #");
+			System.out.println("Starting engine: " + new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").format(startDate.getTime()));
+			
+			Action.all().run(opts);
+			
+			Calendar finishDate = Calendar.getInstance();
+			System.out.println();
+			System.out.println("Finished: " + new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").format(finishDate.getTime()));
+			System.out.println("It took " + (finishDate.getTimeInMillis() - startDate.getTimeInMillis())/1000 + " seconds.");
+			System.out.println();
+			System.out.println("Brought to you by MetricMiner (metricminer.org.br)");
+			System.out.println("# -------------------------------------------------- #");
+			
+		} catch(Throwable ex) {
+			jc.usage();
+			ex.printStackTrace();
 		}
 	}
 
