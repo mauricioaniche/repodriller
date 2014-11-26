@@ -48,6 +48,18 @@ public class SourceCodeRepositoryNavigator {
 		repos = new ArrayList<SCMRepository>();
 		visitors = new HashMap<CommitVisitor, PersistenceMechanism>();
 	}
+	
+	public SourceCodeRepositoryNavigator autoConfig() {
+		
+		if(opts.getScm().equals("git")) {
+			if(!opts.getProjectPath().isEmpty()) {
+				in(GitRepository.build(opts.getProjectPath()));
+			} else if(!opts.getProjectsPath().isEmpty()) {
+				in(GitRepository.allIn(opts.getProjectsPath()));
+			}
+		}
+		return this;
+	}
 
 	public SourceCodeRepositoryNavigator in(SCMRepository... repo) {
 		this.repos.addAll(Arrays.asList(repo));
@@ -66,6 +78,7 @@ public class SourceCodeRepositoryNavigator {
 			List<ChangeSet> allCs = repo.getScm().getChangeSets();
 			log.info("Total of commits: " + allCs.size());
 			
+			log.info("Starting " + opts.getThreads() + " threads");
 			ExecutorService exec = Executors.newFixedThreadPool(opts.getThreads());
 			List<List<ChangeSet>> partitions = Lists.partition(allCs, opts.getThreads());
 			for(List<ChangeSet> partition : partitions) {
@@ -103,7 +116,7 @@ public class SourceCodeRepositoryNavigator {
 		System.out.println();
 		
 		for(CommitVisitor visitor : visitors.keySet()) {
-			System.out.println("- " + visitor.name() + "(" + visitor.getClass().getName() + ")");
+			System.out.println("- " + visitor.name() + " (" + visitor.getClass().getName() + ")");
 		}
 		
 		System.out.println();

@@ -17,7 +17,7 @@
 package br.com.metricminer2;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.Calendar;
 
 import br.com.metricminer2.action.Action;
 
@@ -35,17 +35,23 @@ public class MetricMiner2 {
 	
 	public static void main(String[] args) {
 		
+//		args = new String[] {"-scm", "git", "-study", "br.com.metricminer2.examples.Example3", "-project", "/Users/mauricioaniche/workspace/metricminer2", "-csv", "/Users/mauricioaniche/Desktop/", "-threads", "1"};
+		
+		Calendar startDate = Calendar.getInstance();
+		
 		System.out.println("# -------------------------------------------------- #");
 		System.out.println("#                   MetricMiner                      #");
 		System.out.println("#                      v2.0                          #");
 		System.out.println("#             www.metricminer.org.br                 #");
 		System.out.println("# -------------------------------------------------- #");
-		System.out.println("Starting engine: " + new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").format(new Date()));
+		System.out.println("Starting engine: " + new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").format(startDate.getTime()));
 		
 		new MetricMiner2(args).start();
 		
+		Calendar finishDate = Calendar.getInstance();
 		System.out.println();
-		System.out.println("Finished: " + new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").format(new Date()));
+		System.out.println("Finished: " + new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").format(finishDate.getTime()));
+		System.out.println("It took " + (finishDate.getTimeInMillis() - startDate.getTimeInMillis())/1000 + " seconds.");
 		System.out.println();
 		System.out.println("Brought to you by MetricMiner (metricminer.org.br)");
 		System.out.println("# -------------------------------------------------- #");

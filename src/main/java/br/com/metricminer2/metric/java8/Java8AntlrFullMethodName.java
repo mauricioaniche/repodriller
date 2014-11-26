@@ -22,6 +22,7 @@ import java.util.List;
 import br.com.metricminer2.metric.java8.Java8Parser.ConstructorDeclarationContext;
 import br.com.metricminer2.metric.java8.Java8Parser.FormalParameterContext;
 import br.com.metricminer2.metric.java8.Java8Parser.FormalParameterListContext;
+import br.com.metricminer2.metric.java8.Java8Parser.LastFormalParameterContext;
 import br.com.metricminer2.metric.java8.Java8Parser.MethodDeclarationContext;
 
 public class Java8AntlrFullMethodName {
@@ -31,23 +32,36 @@ public class Java8AntlrFullMethodName {
 		if(empty) return name + "/0";
 
 		
-		List<FormalParameterContext> allParams = new ArrayList<FormalParameterContext>();
+		List<String> allParams = new ArrayList<String>();
 		
 		if(parameters.formalParameters()!=null) {
-			allParams.addAll(parameters.formalParameters().formalParameter());
+			
+			for(FormalParameterContext f : parameters.formalParameters().formalParameter()) {
+				if(f!=null) {
+					allParams.add(f.unannType().getText());
+				}
+			}
 		}
-		if(parameters.lastFormalParameter()!=null) allParams.add(parameters.lastFormalParameter().formalParameter());
+		
+		if(parameters.lastFormalParameter()!=null) {
+			LastFormalParameterContext p = parameters.lastFormalParameter();
+			if(p!=null) {
+				String f = p.formalParameter().unannType().getText();
+				if(p.ELLIPSIS()!=null && !p.ELLIPSIS().getText().isEmpty()) f+="...";
+				allParams.add(f);
+			}
+		}
 		
 		String fullName = name + "/" + allParams.size() + typesIn(allParams);
 		
 		return fullName;
 	}
 
-	private static String typesIn(List<FormalParameterContext> parameters) {
+	private static String typesIn(List<String> parameters) {
 		StringBuilder types = new StringBuilder();
 		types.append("[");
-		for(FormalParameterContext p : parameters) {
-			types.append(p.unannType().getText() + ",");
+		for(String p : parameters) {
+			types.append(p + ",");
 		}
 		
 		return types.substring(0, types.length() - 1) + "]";

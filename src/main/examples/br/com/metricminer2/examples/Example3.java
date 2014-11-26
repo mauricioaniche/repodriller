@@ -23,18 +23,16 @@ import br.com.metricminer2.metric.MethodLevelMetricCalculator;
 import br.com.metricminer2.metric.java8.cc.MethodLevelCyclomaticComplexityFactory;
 import br.com.metricminer2.metric.java8.methods.NumberOfMethodsFactory;
 import br.com.metricminer2.persistence.csv.CSVFile;
-import br.com.metricminer2.scm.GitRepository;
 import br.com.metricminer2.scm.SourceCodeRepositoryNavigator;
 
 public class Example3 implements Study {
 
 	@Override
 	public void execute(MMOptions opts) {
-		String repoPath = opts.getProjectsPath();
 		String outPath = opts.getCsv(); 
 		
 		new SourceCodeRepositoryNavigator(opts)
-			.in(GitRepository.build(repoPath))
+			.autoConfig()
 			.process(new MethodLevelMetricCalculator(new MethodLevelCyclomaticComplexityFactory()), new CSVFile(outPath, "cc.csv"))
 			.process(new ClassLevelMetricCalculator(new NumberOfMethodsFactory()), new CSVFile(outPath, "loc.csv"))
 			.start();		

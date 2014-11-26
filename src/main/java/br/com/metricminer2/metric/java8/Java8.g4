@@ -55,7 +55,7 @@ Total lexer+parser time 30844ms.
 grammar Java8;
 
 @header {
-    package com.codesheriff.client.antlr.java8;
+    package br.com.metricminer2.metric.java8;
 }
 
 
@@ -481,7 +481,7 @@ variableModifier
 	;
 
 lastFormalParameter
-	:	variableModifier* unannType annotation* '...' variableDeclaratorId
+	:	variableModifier* unannType annotation* ELLIPSIS variableDeclaratorId
 	|	formalParameter
 	;
 

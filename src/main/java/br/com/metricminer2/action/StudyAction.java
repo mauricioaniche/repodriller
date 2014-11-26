@@ -16,11 +16,15 @@
 
 package br.com.metricminer2.action;
 
+import org.apache.log4j.Logger;
+
 import br.com.metricminer2.MMOptions;
 import br.com.metricminer2.Study;
 
 public class StudyAction extends Action {
 
+	private static Logger log = Logger.getLogger(StudyAction.class);
+	
 	public StudyAction(Action next) {
 		super(next);
 	}
@@ -37,6 +41,8 @@ public class StudyAction extends Action {
 	@Override
 	protected void execute(MMOptions opts) {
 		try {
+			log.info("Initializing study in " + opts.getStudy());
+			
 			Class<?> studyClazz = Class.forName(opts.getStudy());
 			Study study = (Study) studyClazz.newInstance();
 			study.execute(opts);
