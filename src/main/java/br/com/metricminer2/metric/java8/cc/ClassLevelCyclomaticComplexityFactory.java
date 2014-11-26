@@ -14,20 +14,21 @@
  * limitations under the License.
  */
 
-package br.com.metricminer2.metric;
+package br.com.metricminer2.metric.java8.cc;
 
-public class MetricException extends RuntimeException {
+import br.com.metricminer2.metric.ClassLevelMetric;
+import br.com.metricminer2.metric.ClassLevelMetricFactory;
 
-	private static final long serialVersionUID = 1L;
+public class ClassLevelCyclomaticComplexityFactory implements ClassLevelMetricFactory{
 
-	public MetricException(ClassLevelMetric metric,
-			String sourceCode, Throwable t) {
-		super("Metric: " + metric.getClass().getName() + " in source code " + sourceCode, t);
+	@Override
+	public ClassLevelMetric build() {
+		return new ClassLevelCyclomaticComplexity();
 	}
-	
-	public MetricException(MethodLevelMetric metric,
-			String sourceCode, Throwable t) {
-		super("Metric: " + metric.getClass().getName() + " in source code " + sourceCode, t);
+
+	@Override
+	public String getName() {
+		return "class level CC";
 	}
 
 }

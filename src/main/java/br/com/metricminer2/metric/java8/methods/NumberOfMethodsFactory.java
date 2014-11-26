@@ -14,12 +14,21 @@
  * limitations under the License.
  */
 
-package br.com.metricminer2.metric;
+package br.com.metricminer2.metric.java8.methods;
 
-import java.util.Map;
+import br.com.metricminer2.metric.ClassLevelMetric;
+import br.com.metricminer2.metric.ClassLevelMetricFactory;
 
-public interface MethodLevelCodeMetric extends CodeMetric {
+public class NumberOfMethodsFactory implements ClassLevelMetricFactory{
 
-	Map<String, Double> calculate(String sourceCode);
+	@Override
+	public ClassLevelMetric build() {
+		return new NumberOfMethods();
+	}
+
+	@Override
+	public String getName() {
+		return "number of methods";
+	}
 
 }

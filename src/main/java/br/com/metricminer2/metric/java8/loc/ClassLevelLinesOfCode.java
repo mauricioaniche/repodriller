@@ -19,11 +19,11 @@ package br.com.metricminer2.metric.java8.loc;
 import java.io.ByteArrayInputStream;
 import java.util.Map;
 
-import br.com.metricminer2.metric.ClassLevelCodeMetric;
+import br.com.metricminer2.metric.ClassLevelMetric;
 import br.com.metricminer2.metric.MetricException;
 import br.com.metricminer2.metric.java8.Java8AntLRVisitor;
 
-public class ClassLevelLinesOfCode implements ClassLevelCodeMetric {
+public class ClassLevelLinesOfCode implements ClassLevelMetric {
 
 	private LinesOfCodeListener visitor;
 

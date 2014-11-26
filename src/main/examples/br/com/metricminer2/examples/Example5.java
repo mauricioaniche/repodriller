@@ -19,7 +19,7 @@ package br.com.metricminer2.examples;
 import br.com.metricminer2.MMOptions;
 import br.com.metricminer2.Study;
 import br.com.metricminer2.metric.ClassLevelMetricCalculator;
-import br.com.metricminer2.metric.java8.cc.ClassLevelCyclomaticComplexity;
+import br.com.metricminer2.metric.java8.cc.ClassLevelCyclomaticComplexityFactory;
 import br.com.metricminer2.persistence.PersistenceMechanism;
 import br.com.metricminer2.persistence.PersistenceMechanismBuilder;
 import br.com.metricminer2.scm.GitRepository;
@@ -34,7 +34,7 @@ public class Example5 implements Study{
 		
 		new SourceCodeRepositoryNavigator(opts)
 			.in(GitRepository.allIn(repoPath))
-			.process(new ClassLevelMetricCalculator(new ClassLevelCyclomaticComplexity()), pm)
+			.process(new ClassLevelMetricCalculator(new ClassLevelCyclomaticComplexityFactory()), pm)
 			.start();
 		
 	}

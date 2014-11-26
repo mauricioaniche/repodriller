@@ -20,11 +20,11 @@ import java.io.ByteArrayInputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import br.com.metricminer2.metric.MethodLevelCodeMetric;
+import br.com.metricminer2.metric.MethodLevelMetric;
 import br.com.metricminer2.metric.MetricException;
 import br.com.metricminer2.metric.java8.Java8AntLRVisitor;
 
-public class MethodLevelCyclomaticComplexity implements MethodLevelCodeMetric {
+public class MethodLevelCyclomaticComplexity implements MethodLevelMetric {
 
 	public static final double THRESHOLD = 5;
 

@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
+
 package br.com.metricminer2.metric;
 
+public interface ClassLevelMetricFactory {
 
-public interface ClassLevelCodeMetric extends CodeMetric {
-
-	double calculate(String sourceCode);
-
+	ClassLevelMetric build();
+	String getName();
 }

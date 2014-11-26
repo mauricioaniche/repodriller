@@ -14,20 +14,11 @@
  * limitations under the License.
  */
 
+
 package br.com.metricminer2.metric;
 
-public class MetricException extends RuntimeException {
+public interface MethodLevelMetricFactory {
+	MethodLevelMetric build();
 
-	private static final long serialVersionUID = 1L;
-
-	public MetricException(ClassLevelMetric metric,
-			String sourceCode, Throwable t) {
-		super("Metric: " + metric.getClass().getName() + " in source code " + sourceCode, t);
-	}
-	
-	public MetricException(MethodLevelMetric metric,
-			String sourceCode, Throwable t) {
-		super("Metric: " + metric.getClass().getName() + " in source code " + sourceCode, t);
-	}
-
+	String getName();
 }

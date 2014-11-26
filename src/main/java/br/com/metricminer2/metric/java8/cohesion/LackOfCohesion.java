@@ -22,13 +22,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import br.com.metricminer2.metric.ClassLevelCodeMetric;
+import br.com.metricminer2.metric.ClassLevelMetric;
 import br.com.metricminer2.metric.MetricException;
 import br.com.metricminer2.metric.java8.Java8AntLRVisitor;
 import br.com.metricminer2.metric.java8.MethodsAndAttributesListener;
 import br.com.metricminer2.metric.java8.methods.Method;
 
-public class LackOfCohesion implements ClassLevelCodeMetric {
+public class LackOfCohesion implements ClassLevelMetric {
 
 	private MethodsAndAttributesListener firstVisitor;
 	private MethodsPerAttributeListener secondVisitor;

@@ -16,37 +16,19 @@
 
 package br.com.metricminer2.metric.java8.attributes;
 
-import java.io.ByteArrayInputStream;
-
 import br.com.metricminer2.metric.ClassLevelMetric;
-import br.com.metricminer2.metric.java8.Java8AntLRVisitor;
-import br.com.metricminer2.metric.java8.MethodsAndAttributesListener;
+import br.com.metricminer2.metric.ClassLevelMetricFactory;
 
-public class NumberOfAttributes implements ClassLevelMetric {
-
-	private MethodsAndAttributesListener visitor;
+public class NumberOfAttributesFactory implements ClassLevelMetricFactory{
 
 	@Override
-	public double calculate(String sourceCode) {
-		try {
-			
-			visitor = new MethodsAndAttributesListener();
-			new Java8AntLRVisitor().visit(visitor, new ByteArrayInputStream(sourceCode.getBytes()));
-			
-			return visitor.getAttributes().size();
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}		
-	}
-
-	@Override
-	public boolean accepts(String fileName) {
-		return fileName.endsWith(".java");
+	public ClassLevelMetric build() {
+		return new NumberOfAttributes();
 	}
 
 	@Override
 	public String getName() {
-		return "number-of-attributes";
+		return "number of attributes";
 	}
 
 }

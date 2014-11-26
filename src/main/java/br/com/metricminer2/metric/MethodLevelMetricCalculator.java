@@ -25,15 +25,16 @@ import br.com.metricminer2.scm.SCMRepository;
 
 public class MethodLevelMetricCalculator implements MetricCalculator {
 
-	private MethodLevelCodeMetric metric;
 
-	public MethodLevelMetricCalculator(MethodLevelCodeMetric metric) {
-		this.metric = metric;
+	private MethodLevelMetricFactory factory;
+
+	public MethodLevelMetricCalculator(MethodLevelMetricFactory factory) {
+		this.factory = factory;
 	}
 
 	@Override
 	public void process(SCMRepository repo, Commit commit, PersistenceMechanism writer) {
-		
+		MethodLevelMetric metric = factory.build();
 		for(Modification change : commit.getModifications()) {
 			if(metric.accepts(change.getNewPath())) {
 				Map<String, Double> values = metric.calculate(change.getSourceCode());
@@ -49,7 +50,7 @@ public class MethodLevelMetricCalculator implements MetricCalculator {
 
 	@Override
 	public String name() {
-		return "Method Level metric Processor for " + metric.getName();
+		return "Method Level metric Processor for " + factory.getName();
 	}
 
 }

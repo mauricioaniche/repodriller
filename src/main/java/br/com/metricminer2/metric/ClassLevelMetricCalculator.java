@@ -23,14 +23,16 @@ import br.com.metricminer2.scm.SCMRepository;
 
 public class ClassLevelMetricCalculator implements MetricCalculator {
 
-	private ClassLevelCodeMetric metric;
+	private ClassLevelMetricFactory factory;
 
-	public ClassLevelMetricCalculator(ClassLevelCodeMetric metric) {
-		this.metric = metric;
+	public ClassLevelMetricCalculator(ClassLevelMetricFactory factory) {
+		this.factory = factory;
 	}
 
 	@Override
 	public void process(SCMRepository repo, Commit commit, PersistenceMechanism writer) {
+		
+		ClassLevelMetric metric = factory.build();
 		for(Modification change : commit.getModifications()) {
 			if(metric.accepts(change.getNewPath())) {
 				double value = metric.calculate(change.getSourceCode());
@@ -41,7 +43,7 @@ public class ClassLevelMetricCalculator implements MetricCalculator {
 
 	@Override
 	public String name() {
-		return "Class Level metric Processor for " + metric.getName();
+		return "Class Level metric Processor for " + factory.getName();
 	}
 
 }

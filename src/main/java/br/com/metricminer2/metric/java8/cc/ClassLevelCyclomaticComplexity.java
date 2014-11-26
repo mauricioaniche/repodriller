@@ -18,11 +18,11 @@ package br.com.metricminer2.metric.java8.cc;
 
 import java.io.ByteArrayInputStream;
 
-import br.com.metricminer2.metric.ClassLevelCodeMetric;
+import br.com.metricminer2.metric.ClassLevelMetric;
 import br.com.metricminer2.metric.MetricException;
 import br.com.metricminer2.metric.java8.Java8AntLRVisitor;
 
-public class ClassLevelCyclomaticComplexity implements ClassLevelCodeMetric {
+public class ClassLevelCyclomaticComplexity implements ClassLevelMetric {
 
 	private CCListener visitor;
 	

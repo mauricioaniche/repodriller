@@ -16,18 +16,9 @@
 
 package br.com.metricminer2.metric;
 
-public class MetricException extends RuntimeException {
 
-	private static final long serialVersionUID = 1L;
+public interface ClassLevelMetric extends CodeMetric {
 
-	public MetricException(ClassLevelMetric metric,
-			String sourceCode, Throwable t) {
-		super("Metric: " + metric.getClass().getName() + " in source code " + sourceCode, t);
-	}
-	
-	public MetricException(MethodLevelMetric metric,
-			String sourceCode, Throwable t) {
-		super("Metric: " + metric.getClass().getName() + " in source code " + sourceCode, t);
-	}
+	double calculate(String sourceCode);
 
 }
