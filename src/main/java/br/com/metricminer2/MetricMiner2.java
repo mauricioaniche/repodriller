@@ -71,7 +71,6 @@ public class MetricMiner2 {
 			log.info("# -------------------------------------------------- #");
 			
 		} catch(Throwable ex) {
-			jc.usage();
 			ex.printStackTrace();
 		}
 	}

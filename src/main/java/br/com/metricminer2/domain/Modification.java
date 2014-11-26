@@ -60,7 +60,7 @@ public class Modification {
 	}
 
 	public boolean wasDeleted() {
-		return !type.equals(ModificationType.DELETE);
+		return type.equals(ModificationType.DELETE);
 	}
 	
 	
