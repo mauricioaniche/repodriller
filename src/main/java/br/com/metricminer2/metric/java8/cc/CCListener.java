@@ -12,6 +12,7 @@ import br.com.metricminer2.metric.java8.Java8AntlrFullMethodName;
 import br.com.metricminer2.metric.java8.Java8BaseListener;
 import br.com.metricminer2.metric.java8.Java8Parser;
 import br.com.metricminer2.metric.java8.Java8Parser.ExpressionContext;
+import br.com.metricminer2.metric.java8.Java8Parser.StaticInitializerContext;
 
 public class CCListener extends Java8BaseListener {
 
@@ -55,6 +56,15 @@ public class CCListener extends Java8BaseListener {
 		findAndOr(ctx.expression());
 		increaseCc();
 	}
+	
+	@Override public void enterStaticInitializer(StaticInitializerContext ctx) {
+		methodStack.push("(static block)");
+		increaseCc();
+	};
+
+	@Override public void exitStaticInitializer(StaticInitializerContext ctx) {
+		methodStack.pop();
+	};
 	
 	@Override public void enterConditionalExpression(@NotNull Java8Parser.ConditionalExpressionContext ctx) {
 		if(ctx.ifTernaryExpression()!=null) increaseCc();
