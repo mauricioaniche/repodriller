@@ -49,7 +49,7 @@ public class SourceCodeRepositoryNavigator {
 		visitors = new HashMap<CommitVisitor, PersistenceMechanism>();
 	}
 	
-	public SourceCodeRepositoryNavigator autoConfig() {
+	public SourceCodeRepositoryNavigator scmFromConfig() {
 		
 		if(opts.getScm().equals("git")) {
 			if(!opts.getProjectPath().isEmpty()) {
