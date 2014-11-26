@@ -19,6 +19,8 @@ package br.com.metricminer2;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import org.apache.log4j.Logger;
+
 import br.com.metricminer2.action.Action;
 
 import com.beust.jcommander.JCommander;
@@ -27,6 +29,7 @@ public class MetricMiner2 {
 
 	private MMOptions opts;
 	private JCommander jc;
+	private static Logger log = Logger.getLogger(MetricMiner2.class);
 
 	public MetricMiner2(String[] args) {
 		opts = new MMOptions();
@@ -51,22 +54,21 @@ public class MetricMiner2 {
 			
 			Calendar startDate = Calendar.getInstance();
 			
-			System.out.println("# -------------------------------------------------- #");
-			System.out.println("#                   MetricMiner                      #");
-			System.out.println("#                      v2.0                          #");
-			System.out.println("#             www.metricminer.org.br                 #");
-			System.out.println("# -------------------------------------------------- #");
-			System.out.println("Starting engine: " + new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").format(startDate.getTime()));
+			log.info("# -------------------------------------------------- #");
+			log.info("#                   MetricMiner                      #");
+			log.info("#                      v2.0                          #");
+			log.info("#             www.metricminer.org.br                 #");
+			log.info("# -------------------------------------------------- #");
+			log.info("Starting engine: " + new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").format(startDate.getTime()));
 			
 			Action.all().run(opts);
 			
 			Calendar finishDate = Calendar.getInstance();
-			System.out.println();
-			System.out.println("Finished: " + new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").format(finishDate.getTime()));
-			System.out.println("It took " + (finishDate.getTimeInMillis() - startDate.getTimeInMillis())/1000 + " seconds.");
-			System.out.println();
-			System.out.println("Brought to you by MetricMiner (metricminer.org.br)");
-			System.out.println("# -------------------------------------------------- #");
+			log.info("Finished: " + new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").format(finishDate.getTime()));
+			long seconds = (finishDate.getTimeInMillis() - startDate.getTimeInMillis())/1000;
+			log.info("It took " + seconds + " seconds (~" + seconds/60 + " minutes).");
+			log.info("Brought to you by MetricMiner (metricminer.org.br)");
+			log.info("# -------------------------------------------------- #");
 			
 		} catch(Throwable ex) {
 			jc.usage();

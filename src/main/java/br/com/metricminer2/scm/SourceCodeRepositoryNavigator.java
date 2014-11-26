@@ -104,22 +104,18 @@ public class SourceCodeRepositoryNavigator {
 	}
 
 	private void printScript() {
-		System.out.println("# --------------------------------------------------");
-		System.out.println("Study has been executed in the following projects:");
-		System.out.println();
+		log.info("# --------------------------------------------------");
+		log.info("Study has been executed in the following projects:");
 		for(SCMRepository repo : repos) {
-			System.out.println("- " + repo.getOrigin() + ", from " + repo.getFirstCommit() + " to " + repo.getHeadCommit());
+			log.info("- " + repo.getOrigin() + ", from " + repo.getFirstCommit() + " to " + repo.getHeadCommit());
 		}
 		
-		System.out.println();
-		System.out.println("The following processors were executed:");
-		System.out.println();
+		log.info("The following processors were executed:");
 		
 		for(CommitVisitor visitor : visitors.keySet()) {
-			System.out.println("- " + visitor.name() + " (" + visitor.getClass().getName() + ")");
+			log.info("- " + visitor.name() + " (" + visitor.getClass().getName() + ")");
 		}
 		
-		System.out.println();
 	}
 
 	private void closeAllPersistence() {
