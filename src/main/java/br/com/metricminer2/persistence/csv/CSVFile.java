@@ -37,7 +37,7 @@ public class CSVFile implements PersistenceMechanism {
 	}
 
 	@Override
-	public void write(Object... line) {
+	public synchronized void write(Object... line) {
 		
 		boolean first = true;
 		for(Object o : line) {
