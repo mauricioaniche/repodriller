@@ -41,6 +41,9 @@ public class MMOptions {
 
 	@Parameter(names={"-h", "-usage"}, description="How to use it")
 	private boolean usage;
+
+	@Parameter(names={"-sysout"}, description="Write in the standard output")
+	private boolean sysOut;
 	
 	@Parameter(names="-threads", description="Number of threads to use")
 	private int threads;
@@ -89,4 +92,46 @@ public class MMOptions {
 	public boolean isUsage() {
 		return usage;
 	}
+
+	public void setStudy(String study) {
+		this.study = study;
+	}
+
+	public void setProjectsPath(String projectsPath) {
+		this.projectsPath = projectsPath;
+	}
+
+	public void setProjectPath(String projectPath) {
+		this.projectPath = projectPath;
+	}
+
+	public void setCsv(String csv) {
+		this.csv = csv;
+	}
+
+	public void setScm(String scm) {
+		this.scm = scm;
+	}
+
+	public void setDetail(boolean detail) {
+		this.detail = detail;
+	}
+
+	public void setUsage(boolean usage) {
+		this.usage = usage;
+	}
+
+	public void setThreads(int threads) {
+		this.threads = threads;
+	}
+
+
+	public boolean isSysOut() {
+		return sysOut;
+	}
+	
+	public void setSysOut(boolean sysOut) {
+		this.sysOut = sysOut;
+	}
+	
 }

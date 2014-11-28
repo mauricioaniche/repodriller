@@ -18,12 +18,15 @@ package br.com.metricminer2.persistence;
 
 import br.com.metricminer2.MMOptions;
 import br.com.metricminer2.persistence.csv.CSVFile;
+import br.com.metricminer2.persistence.csv.SysOut;
 
 public class PersistenceMechanismBuilder {
 
 	public PersistenceMechanism from(MMOptions opts) {
 		if(opts.hasCsv()) {
 			return new CSVFile(opts.getCsv());
+		} else if(opts.isSysOut()) {
+			return new SysOut();
 		}
 
 		throw new PersistenceMechanismException("Persistence mechanism not found.");
