@@ -24,6 +24,7 @@ import org.junit.Test;
 
 import br.com.metricminer2.domain.ChangeSet;
 import br.com.metricminer2.domain.Commit;
+import br.com.metricminer2.domain.ModificationType;
 import br.com.metricminer2.scm.GitRepository;
 import br.com.metricminer2.scm.SCMRepository;
 
@@ -61,6 +62,21 @@ public class GitRepositoryTest {
 		Assert.assertEquals("Matricula.java", commit.getModifications().get(0).getNewPath());
 		Assert.assertTrue(commit.getModifications().get(0).getDiff().startsWith("diff --git a/Matricula.java b/Matricula.java"));
 		Assert.assertTrue(commit.getModifications().get(0).getSourceCode().startsWith("package model;"));
+		
+	}
+	
+	@Test
+	public void shouldGetModificationStatus() {
+		
+		Commit commit = git.getCommit("866e997a9e44cb4ddd9e00efe49361420aff2559");
+		Assert.assertEquals(ModificationType.ADD, commit.getModifications().get(0).getType());
+		
+		commit = git.getCommit("57dbd017d1a744b949e7ca0b1c1a3b3dd4c1cbc1");
+		Assert.assertEquals(ModificationType.MODIFY, commit.getModifications().get(0).getType());
+		
+		commit = git.getCommit("ffccf1e7497eb8136fd66ed5e42bef29677c4b71");
+		Assert.assertEquals(ModificationType.DELETE, commit.getModifications().get(0).getType());
+		
 		
 	}
 	

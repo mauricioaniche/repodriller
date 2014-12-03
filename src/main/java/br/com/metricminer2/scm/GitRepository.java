@@ -154,18 +154,11 @@ public class GitRepository implements SCM {
 				theCommit = new Commit(hash, committer, date, msg, parent);
 
 				for (DiffEntry diff : diffsForTheCommit(repo, jgitCommit)) {
-
-					ModificationType change = Enum.valueOf(ModificationType.class, diff.getChangeType().toString());
-					String oldPath, newPath;
 					
-					// for some reason, when it is a rename, it switches the new and old path
-					if(ModificationType.RENAME.equals(change)) {
-						newPath = diff.getOldPath();
-						oldPath = diff.getNewPath();
-					} else {
-						oldPath = diff.getOldPath();
-						newPath = diff.getNewPath();
-					}
+					ModificationType change = Enum.valueOf(ModificationType.class, diff.getChangeType().toString());
+					
+					String oldPath = diff.getOldPath();
+					String newPath = diff.getNewPath();
 
 					String diffText = "";
 					String sc = "";
@@ -190,8 +183,8 @@ public class GitRepository implements SCM {
 	private List<DiffEntry> diffsForTheCommit(Repository repo, RevCommit commit) throws IOException,
 			AmbiguousObjectException, IncorrectObjectTypeException {
 
-		AnyObjectId hash = repo.resolve(commit.getName());
-		AnyObjectId parent = commit.getParentCount() > 0 ? repo.resolve(commit.getParent(0).getName()) : null;
+		AnyObjectId currentCommit = repo.resolve(commit.getName());
+		AnyObjectId parentCommit = commit.getParentCount() > 0 ? repo.resolve(commit.getParent(0).getName()) : null;
 
 		DiffFormatter df = new DiffFormatter(DisabledOutputStream.INSTANCE);
 		df.setRepository(repo);
@@ -199,12 +192,12 @@ public class GitRepository implements SCM {
 		df.setDetectRenames(true);
 		List<DiffEntry> diffs = null;
 
-		if (parent == null) {
+		if (parentCommit == null) {
 			RevWalk rw = new RevWalk(repo);
 			diffs = df.scan(new EmptyTreeIterator(), new CanonicalTreeParser(null, rw.getObjectReader(), commit.getTree()));
 			rw.release();
 		} else {
-			diffs = df.scan(hash, parent);
+			diffs = df.scan(parentCommit, currentCommit);
 		}
 		
 		df.release();
