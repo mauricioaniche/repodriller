@@ -9,10 +9,10 @@ cd metricminer2
 
 Then, you can:
 
-compile : `mvn clean compile`
-test    : `mvn test`
-eclipse : `mvn eclipse:eclipse`
-build   : `mvn clean assembly:single`
+* compile : `mvn clean compile`
+* test    : `mvn test`
+* eclipse : `mvn eclipse:eclipse`
+* build   : `mvn clean assembly:single`
 
 # License
 
