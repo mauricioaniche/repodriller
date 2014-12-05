@@ -2,10 +2,10 @@
 
 Required: Git, Maven.
 
-`
+```
 git clone https://github.com/metricminer-msr/metricminer2.git
 cd metricminer2
-`
+```
 
 Then, you can:
 
