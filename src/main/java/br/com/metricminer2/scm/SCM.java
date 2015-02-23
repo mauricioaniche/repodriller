@@ -26,5 +26,7 @@ public interface SCM {
 	List<ChangeSet> getChangeSets();
 
 	Commit getCommit(String id);
+	
+	ChangeSet getHead();
 
 }

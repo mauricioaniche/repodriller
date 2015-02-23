@@ -32,6 +32,9 @@ import br.com.metricminer2.MMOptions;
 import br.com.metricminer2.domain.ChangeSet;
 import br.com.metricminer2.domain.Commit;
 import br.com.metricminer2.persistence.PersistenceMechanism;
+import br.com.metricminer2.scm.commitrange.AllCommits;
+import br.com.metricminer2.scm.commitrange.CommitRange;
+import br.com.metricminer2.scm.commitrange.OnlyInHead;
 
 import com.google.common.collect.Lists;
 
@@ -42,11 +45,13 @@ public class SourceCodeRepositoryNavigator {
 	
 	private static Logger log = Logger.getLogger(SourceCodeRepositoryNavigator.class);
 	private MMOptions opts;
+	private CommitRange range;
 	
 	public SourceCodeRepositoryNavigator(MMOptions opts) {
 		this.opts = opts;
 		repos = new ArrayList<SCMRepository>();
 		visitors = new HashMap<CommitVisitor, PersistenceMechanism>();
+		range = new AllCommits();
 	}
 	
 	public SourceCodeRepositoryNavigator projectsFromConfig() {
@@ -58,6 +63,11 @@ public class SourceCodeRepositoryNavigator {
 				in(GitRepository.allIn(opts.getProjectsPath()));
 			}
 		}
+		return this;
+	}
+	
+	public SourceCodeRepositoryNavigator head() {
+		range = new OnlyInHead();
 		return this;
 	}
 
@@ -75,7 +85,7 @@ public class SourceCodeRepositoryNavigator {
 		for(SCMRepository repo : repos) {
 			log.info("Git repository in " + repo.getPath());
 			
-			List<ChangeSet> allCs = repo.getScm().getChangeSets();
+			List<ChangeSet> allCs = range.get(repo.getScm());
 			log.info("Total of commits: " + allCs.size());
 			
 			log.info("Starting " + opts.getThreads() + " threads");

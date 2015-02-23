@@ -40,6 +40,13 @@ public class GitRepositoryTest {
 	}
 	
 	@Test
+	public void shouldGetHead() {
+		ChangeSet head = git.getHead();
+		
+		Assert.assertEquals("f0dd1308bd904a9b108a6a40865166ee962af3d4", head.getId());
+	}
+	
+	@Test
 	public void shouldGetAllCommits() {
 		List<ChangeSet> cs = git.getChangeSets();
 		

@@ -35,6 +35,7 @@ import org.eclipse.jgit.errors.IncorrectObjectTypeException;
 import org.eclipse.jgit.errors.MissingObjectException;
 import org.eclipse.jgit.lib.AnyObjectId;
 import org.eclipse.jgit.lib.Constants;
+import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
@@ -109,6 +110,21 @@ public class GitRepository implements SCM {
 
 	}
 
+	public ChangeSet getHead() {
+		try {
+			Git git = Git.open(new File(path));
+			ObjectId head = git.getRepository().resolve(Constants.HEAD);
+			
+			RevWalk revWalk = new RevWalk(git.getRepository());
+	        RevCommit r = revWalk.parseCommit(head);
+	        return new ChangeSet(r.getName(), convertToDate(r));
+			
+		} catch (Exception e) {
+			throw new RuntimeException("error in getHead() for " + path, e);
+		}
+		
+		
+	}
 	@Override
 	public List<ChangeSet> getChangeSets() {
 		try {
@@ -118,8 +134,7 @@ public class GitRepository implements SCM {
 
 			for (RevCommit r : git.log().all().call()) {
 				String hash = r.getName();
-				GregorianCalendar date = new GregorianCalendar();
-				date.setTime(new Date(r.getCommitTime() * 1000L));
+				GregorianCalendar date = convertToDate(r);
 
 				allCs.add(new ChangeSet(hash, date));
 			}
@@ -128,6 +143,12 @@ public class GitRepository implements SCM {
 		} catch (Exception e) {
 			throw new RuntimeException("error in getChangeSets for " + path, e);
 		}
+	}
+
+	private GregorianCalendar convertToDate(RevCommit revCommit) {
+		GregorianCalendar date = new GregorianCalendar();
+		date.setTime(new Date(revCommit.getCommitTime() * 1000L));
+		return date;
 	}
 
 	@Override
