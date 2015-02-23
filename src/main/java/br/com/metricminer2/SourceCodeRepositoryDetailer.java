@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-package br.com.metricminer2.scm;
+package br.com.metricminer2;
 
 import br.com.metricminer2.domain.Commit;
 import br.com.metricminer2.domain.Modification;
 import br.com.metricminer2.persistence.PersistenceMechanism;
+import br.com.metricminer2.scm.GitRepository;
+import br.com.metricminer2.scm.SCMRepository;
 
 public class SourceCodeRepositoryDetailer {
 

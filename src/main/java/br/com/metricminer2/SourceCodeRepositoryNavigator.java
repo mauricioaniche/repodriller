@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package br.com.metricminer2.scm;
+package br.com.metricminer2;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,10 +28,12 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
-import br.com.metricminer2.MMOptions;
 import br.com.metricminer2.domain.ChangeSet;
 import br.com.metricminer2.domain.Commit;
 import br.com.metricminer2.persistence.PersistenceMechanism;
+import br.com.metricminer2.scm.CommitVisitor;
+import br.com.metricminer2.scm.GitRepository;
+import br.com.metricminer2.scm.SCMRepository;
 import br.com.metricminer2.scm.commitrange.AllCommits;
 import br.com.metricminer2.scm.commitrange.CommitRange;
 import br.com.metricminer2.scm.commitrange.OnlyInHead;

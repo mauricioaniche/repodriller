@@ -17,13 +17,13 @@
 package br.com.metricminer2.examples;
 
 import br.com.metricminer2.MMOptions;
+import br.com.metricminer2.SourceCodeRepositoryNavigator;
 import br.com.metricminer2.Study;
 import br.com.metricminer2.metric.ClassLevelMetricCalculator;
 import br.com.metricminer2.metric.MethodLevelMetricCalculator;
 import br.com.metricminer2.metric.java8.cc.MethodLevelCyclomaticComplexityFactory;
 import br.com.metricminer2.metric.java8.methods.NumberOfMethodsFactory;
 import br.com.metricminer2.persistence.csv.CSVFile;
-import br.com.metricminer2.scm.SourceCodeRepositoryNavigator;
 
 public class Example3 implements Study {
 

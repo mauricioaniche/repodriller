@@ -24,8 +24,8 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
+import br.com.metricminer2.SourceCodeRepositoryDetailer;
 import br.com.metricminer2.persistence.PersistenceMechanism;
-import br.com.metricminer2.scm.SourceCodeRepositoryDetailer;
 
 public class SourceCodeRepositoryDetailerTest {
 

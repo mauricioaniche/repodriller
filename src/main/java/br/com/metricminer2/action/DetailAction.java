@@ -17,9 +17,9 @@
 package br.com.metricminer2.action;
 
 import br.com.metricminer2.MMOptions;
+import br.com.metricminer2.SourceCodeRepositoryDetailer;
 import br.com.metricminer2.persistence.PersistenceMechanism;
 import br.com.metricminer2.persistence.PersistenceMechanismBuilder;
-import br.com.metricminer2.scm.SourceCodeRepositoryDetailer;
 
 public class DetailAction extends Action {
 
