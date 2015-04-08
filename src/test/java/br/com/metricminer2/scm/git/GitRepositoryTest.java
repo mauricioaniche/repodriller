@@ -16,6 +16,7 @@
 
 package br.com.metricminer2.scm.git;
 
+import java.io.File;
 import java.util.List;
 
 import org.junit.Assert;
@@ -37,6 +38,15 @@ public class GitRepositoryTest {
 	public void setUp() {
 		path = this.getClass().getResource("/repo-1/").getPath();
 		git = new GitRepository(path);
+	}
+	
+	@Test
+	public void shouldListAllFilesInACommit() {
+		List<File> files1 = git.files("a7053a4dcd627f5f4f213dc9aa002eb1caf926f8");
+		List<File> files2 = git.files("f0dd1308bd904a9b108a6a40865166ee962af3d4");
+		
+		Assert.assertEquals(3, files1.size());
+		Assert.assertEquals(2, files2.size());
 	}
 	
 	@Test

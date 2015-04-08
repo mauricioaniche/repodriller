@@ -16,6 +16,7 @@
 
 package br.com.metricminer2.scm;
 
+import java.io.File;
 import java.util.List;
 
 import br.com.metricminer2.domain.ChangeSet;
@@ -28,5 +29,7 @@ public interface SCM {
 	Commit getCommit(String id);
 	
 	ChangeSet getHead();
+	
+	List<File> files(String hash);
 
 }

@@ -255,4 +255,30 @@ public class GitRepository implements SCM {
 		}
 	}
 
+	public List<File> files(String hash) {
+		
+		try {
+			Git git = Git.open(new File(path));
+			String currentBranch = git.getRepository().getBranch();
+			
+			RevCommit commit = git.log().add(git.getRepository().resolve(hash)).call().iterator().next();
+
+			git.branchCreate().setStartPoint(commit).setName("mm").setForce(true).call();
+			git.checkout().setName("mm").call();
+
+			List<File> arquivos = new ArrayList<File>();
+			for(File f : new File(path).listFiles()) {
+				if(f.isFile()) arquivos.add(f);
+			}
+			
+			git.checkout().setName(currentBranch).call();
+			git.branchDelete().setBranchNames("mm").call();
+			
+			return arquivos;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+		
+	}
+
 }
