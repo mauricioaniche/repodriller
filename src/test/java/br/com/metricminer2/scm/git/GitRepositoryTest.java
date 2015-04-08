@@ -44,25 +44,27 @@ public class GitRepositoryTest {
 	public void shouldListAllFilesInACommit() {
 		List<File> files1 = git.files("a7053a4dcd627f5f4f213dc9aa002eb1caf926f8");
 		List<File> files2 = git.files("f0dd1308bd904a9b108a6a40865166ee962af3d4");
+		List<File> files3 = git.files("9e71dd5726d775fb4a5f08506a539216e878adbb");
 		
 		Assert.assertEquals(3, files1.size());
 		Assert.assertEquals(2, files2.size());
+		Assert.assertEquals(3, files3.size());
 	}
 	
 	@Test
 	public void shouldGetHead() {
 		ChangeSet head = git.getHead();
 		
-		Assert.assertEquals("f0dd1308bd904a9b108a6a40865166ee962af3d4", head.getId());
+		Assert.assertEquals("9e71dd5726d775fb4a5f08506a539216e878adbb", head.getId());
 	}
 	
 	@Test
 	public void shouldGetAllCommits() {
 		List<ChangeSet> cs = git.getChangeSets();
 		
-		Assert.assertEquals(10, cs.size());
-		Assert.assertEquals("f0dd1308bd904a9b108a6a40865166ee962af3d4", cs.get(0).getId());
-		Assert.assertEquals("866e997a9e44cb4ddd9e00efe49361420aff2559", cs.get(9).getId());
+		Assert.assertEquals(11, cs.size());
+		Assert.assertEquals("9e71dd5726d775fb4a5f08506a539216e878adbb", cs.get(0).getId());
+		Assert.assertEquals("866e997a9e44cb4ddd9e00efe49361420aff2559", cs.get(10).getId());
 	}
 	
 	@Test
@@ -117,6 +119,6 @@ public class GitRepositoryTest {
 		
 		Assert.assertEquals(path, repo.getPath());
 		Assert.assertEquals("866e997a9e44cb4ddd9e00efe49361420aff2559", repo.getFirstCommit());
-		Assert.assertEquals("f0dd1308bd904a9b108a6a40865166ee962af3d4", repo.getHeadCommit());
+		Assert.assertEquals("9e71dd5726d775fb4a5f08506a539216e878adbb", repo.getHeadCommit());
 	}
 }

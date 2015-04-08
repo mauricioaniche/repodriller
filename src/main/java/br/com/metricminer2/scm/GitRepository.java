@@ -266,10 +266,7 @@ public class GitRepository implements SCM {
 			git.branchCreate().setStartPoint(commit).setName("mm").setForce(true).call();
 			git.checkout().setName("mm").call();
 
-			List<File> arquivos = new ArrayList<File>();
-			for(File f : new File(path).listFiles()) {
-				if(f.isFile()) arquivos.add(f);
-			}
+			List<File> arquivos = getAllFilesInPath();
 			
 			git.checkout().setName(currentBranch).call();
 			git.branchDelete().setBranchNames("mm").call();
@@ -279,6 +276,21 @@ public class GitRepository implements SCM {
 			throw new RuntimeException(e);
 		}
 		
+	}
+
+	private List<File> getAllFilesInPath() {
+		return getAllFilesInPath(path, new ArrayList<File>());
+	}
+	private List<File> getAllFilesInPath(String pathToLook, List<File> arquivos) {
+		for(File f : new File(pathToLook).listFiles()) {
+			if(f.isFile()) arquivos.add(f);
+			if(isAProjectSubdirectory(f)) getAllFilesInPath(f.getAbsolutePath(), arquivos);
+		}
+		return arquivos;
+	}
+
+	private boolean isAProjectSubdirectory(File f) {
+		return f.isDirectory() && !f.getName().equals(".git");
 	}
 
 }
