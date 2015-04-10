@@ -21,8 +21,6 @@ import java.util.Calendar;
 
 import org.apache.log4j.Logger;
 
-import br.com.metricminer2.action.Action;
-
 import com.beust.jcommander.JCommander;
 
 public class MetricMiner2 {
@@ -61,18 +59,25 @@ public class MetricMiner2 {
 			log.info("# -------------------------------------------------- #");
 			log.info("Starting engine: " + new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").format(startDate.getTime()));
 			
-			Action.all().run(opts);
+			executeStudy();
 			
 			Calendar finishDate = Calendar.getInstance();
 			log.info("Finished: " + new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").format(finishDate.getTime()));
 			long seconds = (finishDate.getTimeInMillis() - startDate.getTimeInMillis())/1000;
 			log.info("It took " + seconds + " seconds (~" + seconds/60 + " minutes).");
-			log.info("Brought to you by MetricMiner (metricminer.org.br)");
+			log.info("Brought to you by MetricMiner2 (metricminer.org.br)");
 			log.info("# -------------------------------------------------- #");
 			
 		} catch(Throwable ex) {
-			ex.printStackTrace();
+			log.error("Some error ocurred", ex);
 		}
+	}
+
+	private void executeStudy() throws Exception {
+		log.info("Initializing study in " + opts.getStudy());
+		Class<?> studyClazz = Class.forName(opts.getStudy());
+		Study study = (Study) studyClazz.newInstance();
+		study.execute(opts);
 	}
 
 
