@@ -32,6 +32,8 @@ public class MetricMiner2 {
 	public MetricMiner2(String[] args) {
 		opts = new MMOptions();
 		jc = new JCommander(opts, args);
+		if(args.length==0) 
+			jc.setDefaultProvider(new PropertiesProvider());
 	}
 	
 	public static void main(String[] args) {
