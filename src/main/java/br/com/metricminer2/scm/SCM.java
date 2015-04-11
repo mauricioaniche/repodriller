@@ -32,4 +32,6 @@ public interface SCM {
 	
 	List<File> files(String hash);
 
+	long totalCommits();
+
 }

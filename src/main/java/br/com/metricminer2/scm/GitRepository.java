@@ -293,4 +293,9 @@ public class GitRepository implements SCM {
 		return f.isDirectory() && !f.getName().equals(".git");
 	}
 
+	@Override
+	public long totalCommits() {
+		return getChangeSets().size();
+	}
+
 }

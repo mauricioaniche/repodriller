@@ -65,10 +65,14 @@ public class SourceCodeRepositoryNavigator {
 				in(GitRepository.allIn(opts.getProjectsPath()));
 			}
 		}
+		else {
+			log.error("I only understand git for now... Sorry, dude! :/");
+			System.exit(1);
+		}
 		return this;
 	}
 	
-	public SourceCodeRepositoryNavigator head() {
+	public SourceCodeRepositoryNavigator onlyInHeadCommit() {
 		range = new OnlyInHead();
 		return this;
 	}
