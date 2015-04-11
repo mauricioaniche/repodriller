@@ -67,7 +67,7 @@ public class MethodsAndAttributesListener extends Java8BaseListener {
 
 	@Override public void enterMethodDeclaration(Java8Parser.MethodDeclarationContext ctx) {
 		
-			methodsInARow.push(Java8AntlrFullMethodName.fullMethodName(ctx));
+			methodsInARow.push(Java8AntlrMethods.fullMethodName(ctx));
 			if(!methodIsInAInnerClass()) addMethod(ctx);
 			
 	}
@@ -77,7 +77,7 @@ public class MethodsAndAttributesListener extends Java8BaseListener {
 	}
 
 	private void addMethod(MethodDeclarationContext ctx) {
-		String name = Java8AntlrFullMethodName.fullMethodName(ctx);
+		String name = Java8AntlrMethods.fullMethodName(ctx);
 		if(ignoreGettersAndSetters && (name.startsWith("get") || name.startsWith("set"))) return;
 		
 		int lines = ctx.stop.getLine() - ctx.start.getLine();
@@ -111,7 +111,7 @@ public class MethodsAndAttributesListener extends Java8BaseListener {
 
 	@Override public void enterConstructorDeclaration(Java8Parser.ConstructorDeclarationContext ctx) {
 		int lines = ctx.stop.getLine() - ctx.start.getLine();
-		constructorMethods.add(new Method(Java8AntlrFullMethodName.fullMethodName(ctx), lines));
+		constructorMethods.add(new Method(Java8AntlrMethods.fullMethodName(ctx), lines));
 	}
 
 	@Override public void enterFieldDeclaration(@NotNull Java8Parser.FieldDeclarationContext ctx) {
