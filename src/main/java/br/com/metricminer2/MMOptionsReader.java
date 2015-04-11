@@ -13,27 +13,13 @@ public class MMOptionsReader {
 	public MMOptions read() {
 
 		try {
-			MMOptions opts = new MMOptions();
 
 			FileInputStream is = new FileInputStream(new File("research.mm2"));
 			Properties props = new Properties();
 			props.load(is);
-			
-			if(props.containsKey("study"))
-				opts.setStudy(props.getProperty("study"));
-			if(props.containsKey("projects"))
-				opts.setProjectsPath(props.getProperty("projects"));
-			if(props.containsKey("project"))
-				opts.setProjectPath(props.getProperty("project"));
-			if(props.containsKey("csv"))
-				opts.setCsv(props.getProperty("csv"));
-			if(props.containsKey("scm"))
-				opts.setScm(props.getProperty("scm"));
-			if(props.containsKey("threads"))
-				opts.setThreads(Integer.valueOf(props.getProperty("threads")));
-			if(props.containsKey("sysOut"))
-				opts.setSysOut(true);
 
+			MMOptions opts = new MMOptions(props);
+			
 			is.close();
 			return opts;
 		} catch (Exception e) {

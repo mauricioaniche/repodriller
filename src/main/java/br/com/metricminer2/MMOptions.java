@@ -16,102 +16,56 @@
 
 package br.com.metricminer2;
 
+import java.util.Properties;
+
 public class MMOptions {
 
-	private String study;
-	private String projectsPath;
-	private String projectPath;
-	private String csv;
-	private String scm;
-	private boolean detail;
-	private boolean usage;
-	private boolean sysOut;
-	private int threads;
+	private Properties props;
+
+	public MMOptions(Properties props) {
+		this.props = props;
+	}
 
 	public String getCsv() {
-		return csv;
+		return props.getProperty("csv");
 	}
 	
 	public String getStudy() {
-		return study;
+		return props.getProperty("study");
 	}
 
 	public String getProjectsPath() {
-		return projectsPath == null ? "" : projectsPath;
-	}
-	
-	public boolean isDetail() {
-		return detail;
+		String projects = props.getProperty("projects");
+		return projects == null ? "" : projects;
 	}
 	
 	public boolean isStudy() {
-		return study!=null && !study.isEmpty();
+		return props.containsKey("study");
 	}
 
 	public boolean hasCsv() {
-		return csv!=null && !csv.isEmpty();
-	}
-
-	@Override
-	public String toString() {
-		return "MMOptions [study=" + study + ", projects=" + projectsPath + ", csv=" + csv + ", detail=" + detail + "]";
+		return props.containsKey("csv");
 	}
 
 	public int getThreads() {
-		return threads == 0 ? 1 : threads;
+		String threads = props.getProperty("threads");
+		return threads == null ? 1 : Integer.valueOf(threads);
 	}
 
 	public String getScm() {
-		return scm;
+		return props.getProperty("scm");
 	}
 
 	public String getProjectPath() {
-		return projectPath == null ? "" : projectPath;
+		String project = props.getProperty("project");
+		return project == null ? "" : project;
 	}
 	
-	public boolean isUsage() {
-		return usage;
-	}
-
-	public void setStudy(String study) {
-		this.study = study;
-	}
-
-	public void setProjectsPath(String projectsPath) {
-		this.projectsPath = projectsPath;
-	}
-
-	public void setProjectPath(String projectPath) {
-		this.projectPath = projectPath;
-	}
-
-	public void setCsv(String csv) {
-		this.csv = csv;
-	}
-
-	public void setScm(String scm) {
-		this.scm = scm;
-	}
-
-	public void setDetail(boolean detail) {
-		this.detail = detail;
-	}
-
-	public void setUsage(boolean usage) {
-		this.usage = usage;
-	}
-
-	public void setThreads(int threads) {
-		this.threads = threads;
-	}
-
-
 	public boolean isSysOut() {
-		return sysOut;
+		return props.containsKey("sysout");
 	}
-	
-	public void setSysOut(boolean sysOut) {
-		this.sysOut = sysOut;
+
+	public String specific(String project, String key) {
+		return props.getProperty(project + "." + key);
 	}
-	
 }
