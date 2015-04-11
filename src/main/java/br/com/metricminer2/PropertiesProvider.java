@@ -15,7 +15,7 @@ public class PropertiesProvider implements IDefaultProvider {
 
 	public PropertiesProvider() {
 		try {
-			FileInputStream is = new FileInputStream(new File("."));
+			FileInputStream is = new FileInputStream(new File("research.mm2"));
 			props = new Properties();
 			props.load(is);
 		} catch (Exception e) {
