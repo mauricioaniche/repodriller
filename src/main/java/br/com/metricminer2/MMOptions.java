@@ -16,36 +16,16 @@
 
 package br.com.metricminer2;
 
-import com.beust.jcommander.Parameter;
-
-
 public class MMOptions {
 
-	@Parameter(names="-study", description="Class with the study definition")
 	private String study;
-	
-	@Parameter(names="-projects", description="Path to the projects that will be analyzed")
 	private String projectsPath;
-
-	@Parameter(names="-project", description="Path to a single project that will be analyzed")
 	private String projectPath;
-
-	@Parameter(names="-csv", description="Path to the CSV that will be outputed")
 	private String csv;
-
-	@Parameter(names="-scm", description="SCM to be used (git)")
 	private String scm;
-	
-	@Parameter(names="-detail", description="Give details from all projects")
 	private boolean detail;
-
-	@Parameter(names={"-h", "-usage"}, description="How to use it")
 	private boolean usage;
-
-	@Parameter(names={"-sysout"}, description="Write in the standard output")
 	private boolean sysOut;
-	
-	@Parameter(names="-threads", description="Number of threads to use")
 	private int threads;
 
 	public String getCsv() {

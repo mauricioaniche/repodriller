@@ -21,19 +21,13 @@ import java.util.Calendar;
 
 import org.apache.log4j.Logger;
 
-import com.beust.jcommander.JCommander;
-
 public class MetricMiner2 {
 
 	private MMOptions opts;
-	private JCommander jc;
 	private static Logger log = Logger.getLogger(MetricMiner2.class);
 
 	public MetricMiner2(String[] args) {
-		opts = new MMOptions();
-		jc = new JCommander(opts, args);
-		if(args.length==0) 
-			jc.setDefaultProvider(new PropertiesProvider());
+		opts = new MMOptionsReader().read();
 	}
 	
 	public static void main(String[] args) {
@@ -45,11 +39,7 @@ public class MetricMiner2 {
 	}
 
 	public void start() {
-		if(opts.isUsage()) {
-			jc.usage();
-			System.exit(0);
-		}
-		
+
 		try {
 			
 			Calendar startDate = Calendar.getInstance();
