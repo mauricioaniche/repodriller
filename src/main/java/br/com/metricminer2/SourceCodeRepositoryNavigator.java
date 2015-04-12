@@ -100,8 +100,12 @@ public class SourceCodeRepositoryNavigator {
 			for(List<ChangeSet> partition : partitions) {
 				
 				exec.submit(() -> {
-					for(ChangeSet cs : partition) {
-						processEverythingOnChangeSet(repo, cs);
+					try {
+						for(ChangeSet cs : partition) {
+							processEverythingOnChangeSet(repo, cs);
+						}
+					} catch (Throwable e) {
+						e.printStackTrace();
 					}
 				});
 			}

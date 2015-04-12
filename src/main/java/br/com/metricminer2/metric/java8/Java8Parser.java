@@ -1,4 +1,4 @@
-// Generated from Java8.g4 by ANTLR 4.3
+// Generated from Java8.g4 by ANTLR 4.5
 
     package br.com.metricminer2.metric.java8;
 
@@ -36,23 +36,6 @@ public class Java8Parser extends Parser {
 		OR_ASSIGN=96, XOR_ASSIGN=97, MOD_ASSIGN=98, LSHIFT_ASSIGN=99, RSHIFT_ASSIGN=100, 
 		URSHIFT_ASSIGN=101, Identifier=102, AT=103, ELLIPSIS=104, WS=105, COMMENT=106, 
 		LINE_COMMENT=107;
-	public static final String[] tokenNames = {
-		"<INVALID>", "'abstract'", "'assert'", "'boolean'", "'break'", "'byte'", 
-		"'case'", "'catch'", "'char'", "'class'", "'const'", "'continue'", "'default'", 
-		"'do'", "'double'", "'else'", "'enum'", "'extends'", "'final'", "'finally'", 
-		"'float'", "'for'", "'if'", "'goto'", "'implements'", "'import'", "'instanceof'", 
-		"'int'", "'interface'", "'long'", "'native'", "'new'", "'package'", "'private'", 
-		"'protected'", "'public'", "'return'", "'short'", "'static'", "'strictfp'", 
-		"'super'", "'switch'", "'synchronized'", "'this'", "'throw'", "'throws'", 
-		"'transient'", "'try'", "'void'", "'volatile'", "'while'", "IntegerLiteral", 
-		"FloatingPointLiteral", "BooleanLiteral", "CharacterLiteral", "StringLiteral", 
-		"'null'", "'('", "')'", "'{'", "'}'", "'['", "']'", "';'", "','", "'.'", 
-		"'='", "'>'", "'<'", "'!'", "'~'", "'?'", "':'", "'=='", "'<='", "'>='", 
-		"'!='", "'&&'", "'||'", "'++'", "'--'", "'+'", "'-'", "'*'", "'/'", "'&'", 
-		"'|'", "'^'", "'%'", "'->'", "'::'", "'+='", "'-='", "'*='", "'/='", "'&='", 
-		"'|='", "'^='", "'%='", "'<<='", "'>>='", "'>>>='", "Identifier", "'@'", 
-		"'...'", "WS", "COMMENT", "LINE_COMMENT"
-	};
 	public static final int
 		RULE_literal = 0, RULE_type = 1, RULE_primitiveType = 2, RULE_numericType = 3, 
 		RULE_integralType = 4, RULE_floatingPointType = 5, RULE_referenceType = 6, 
@@ -211,11 +194,74 @@ public class Java8Parser extends Parser {
 		"castExpression"
 	};
 
-	@Override
-	public String getGrammarFileName() { return "Java8.g4"; }
+	private static final String[] _LITERAL_NAMES = {
+		null, "'abstract'", "'assert'", "'boolean'", "'break'", "'byte'", "'case'", 
+		"'catch'", "'char'", "'class'", "'const'", "'continue'", "'default'", 
+		"'do'", "'double'", "'else'", "'enum'", "'extends'", "'final'", "'finally'", 
+		"'float'", "'for'", "'if'", "'goto'", "'implements'", "'import'", "'instanceof'", 
+		"'int'", "'interface'", "'long'", "'native'", "'new'", "'package'", "'private'", 
+		"'protected'", "'public'", "'return'", "'short'", "'static'", "'strictfp'", 
+		"'super'", "'switch'", "'synchronized'", "'this'", "'throw'", "'throws'", 
+		"'transient'", "'try'", "'void'", "'volatile'", "'while'", null, null, 
+		null, null, null, "'null'", "'('", "')'", "'{'", "'}'", "'['", "']'", 
+		"';'", "','", "'.'", "'='", "'>'", "'<'", "'!'", "'~'", "'?'", "':'", 
+		"'=='", "'<='", "'>='", "'!='", "'&&'", "'||'", "'++'", "'--'", "'+'", 
+		"'-'", "'*'", "'/'", "'&'", "'|'", "'^'", "'%'", "'->'", "'::'", "'+='", 
+		"'-='", "'*='", "'/='", "'&='", "'|='", "'^='", "'%='", "'<<='", "'>>='", 
+		"'>>>='", null, "'@'", "'...'"
+	};
+	private static final String[] _SYMBOLIC_NAMES = {
+		null, "ABSTRACT", "ASSERT", "BOOLEAN", "BREAK", "BYTE", "CASE", "CATCH", 
+		"CHAR", "CLASS", "CONST", "CONTINUE", "DEFAULT", "DO", "DOUBLE", "ELSE", 
+		"ENUM", "EXTENDS", "FINAL", "FINALLY", "FLOAT", "FOR", "IF", "GOTO", "IMPLEMENTS", 
+		"IMPORT", "INSTANCEOF", "INT", "INTERFACE", "LONG", "NATIVE", "NEW", "PACKAGE", 
+		"PRIVATE", "PROTECTED", "PUBLIC", "RETURN", "SHORT", "STATIC", "STRICTFP", 
+		"SUPER", "SWITCH", "SYNCHRONIZED", "THIS", "THROW", "THROWS", "TRANSIENT", 
+		"TRY", "VOID", "VOLATILE", "WHILE", "IntegerLiteral", "FloatingPointLiteral", 
+		"BooleanLiteral", "CharacterLiteral", "StringLiteral", "NullLiteral", 
+		"LPAREN", "RPAREN", "LBRACE", "RBRACE", "LBRACK", "RBRACK", "SEMI", "COMMA", 
+		"DOT", "ASSIGN", "GT", "LT", "BANG", "TILDE", "QUESTION", "COLON", "EQUAL", 
+		"LE", "GE", "NOTEQUAL", "AND", "OR", "INC", "DEC", "ADD", "SUB", "MUL", 
+		"DIV", "BITAND", "BITOR", "CARET", "MOD", "ARROW", "COLONCOLON", "ADD_ASSIGN", 
+		"SUB_ASSIGN", "MUL_ASSIGN", "DIV_ASSIGN", "AND_ASSIGN", "OR_ASSIGN", "XOR_ASSIGN", 
+		"MOD_ASSIGN", "LSHIFT_ASSIGN", "RSHIFT_ASSIGN", "URSHIFT_ASSIGN", "Identifier", 
+		"AT", "ELLIPSIS", "WS", "COMMENT", "LINE_COMMENT"
+	};
+	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
+
+	/**
+	 * @deprecated Use {@link #VOCABULARY} instead.
+	 */
+	@Deprecated
+	public static final String[] tokenNames;
+	static {
+		tokenNames = new String[_SYMBOLIC_NAMES.length];
+		for (int i = 0; i < tokenNames.length; i++) {
+			tokenNames[i] = VOCABULARY.getLiteralName(i);
+			if (tokenNames[i] == null) {
+				tokenNames[i] = VOCABULARY.getSymbolicName(i);
+			}
+
+			if (tokenNames[i] == null) {
+				tokenNames[i] = "<INVALID>";
+			}
+		}
+	}
 
 	@Override
-	public String[] getTokenNames() { return tokenNames; }
+	@Deprecated
+	public String[] getTokenNames() {
+		return tokenNames;
+	}
+
+	@Override
+
+	public Vocabulary getVocabulary() {
+		return VOCABULARY;
+	}
+
+	@Override
+	public String getGrammarFileName() { return "Java8.g4"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }
@@ -231,12 +277,12 @@ public class Java8Parser extends Parser {
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 	public static class LiteralContext extends ParserRuleContext {
-		public TerminalNode StringLiteral() { return getToken(Java8Parser.StringLiteral, 0); }
-		public TerminalNode NullLiteral() { return getToken(Java8Parser.NullLiteral, 0); }
 		public TerminalNode IntegerLiteral() { return getToken(Java8Parser.IntegerLiteral, 0); }
 		public TerminalNode FloatingPointLiteral() { return getToken(Java8Parser.FloatingPointLiteral, 0); }
 		public TerminalNode BooleanLiteral() { return getToken(Java8Parser.BooleanLiteral, 0); }
 		public TerminalNode CharacterLiteral() { return getToken(Java8Parser.CharacterLiteral, 0); }
+		public TerminalNode StringLiteral() { return getToken(Java8Parser.StringLiteral, 0); }
+		public TerminalNode NullLiteral() { return getToken(Java8Parser.NullLiteral, 0); }
 		public LiteralContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -262,8 +308,9 @@ public class Java8Parser extends Parser {
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral))) != 0)) ) {
 			_errHandler.recoverInline(this);
+			} else {
+				consume();
 			}
-			consume();
 			}
 		}
 		catch (RecognitionException re) {
@@ -278,11 +325,11 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class TypeContext extends ParserRuleContext {
-		public ReferenceTypeContext referenceType() {
-			return getRuleContext(ReferenceTypeContext.class,0);
-		}
 		public PrimitiveTypeContext primitiveType() {
 			return getRuleContext(PrimitiveTypeContext.class,0);
+		}
+		public ReferenceTypeContext referenceType() {
+			return getRuleContext(ReferenceTypeContext.class,0);
 		}
 		public TypeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -307,14 +354,15 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(478); primitiveType();
+				setState(478);
+				primitiveType();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(479); referenceType();
+				setState(479);
+				referenceType();
 				}
 				break;
 			}
@@ -331,14 +379,14 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class PrimitiveTypeContext extends ParserRuleContext {
+		public NumericTypeContext numericType() {
+			return getRuleContext(NumericTypeContext.class,0);
+		}
 		public List<AnnotationContext> annotation() {
 			return getRuleContexts(AnnotationContext.class);
 		}
 		public AnnotationContext annotation(int i) {
 			return getRuleContext(AnnotationContext.class,i);
-		}
-		public NumericTypeContext numericType() {
-			return getRuleContext(NumericTypeContext.class,0);
 		}
 		public PrimitiveTypeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -370,17 +418,18 @@ public class Java8Parser extends Parser {
 				while (_la==AT) {
 					{
 					{
-					setState(482); annotation();
+					setState(482);
+					annotation();
 					}
 					}
 					setState(487);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(488); numericType();
+				setState(488);
+				numericType();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
@@ -390,14 +439,16 @@ public class Java8Parser extends Parser {
 				while (_la==AT) {
 					{
 					{
-					setState(489); annotation();
+					setState(489);
+					annotation();
 					}
 					}
 					setState(494);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(495); match(BOOLEAN);
+				setState(495);
+				match(BOOLEAN);
 				}
 				break;
 			}
@@ -447,14 +498,16 @@ public class Java8Parser extends Parser {
 			case SHORT:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(498); integralType();
+				setState(498);
+				integralType();
 				}
 				break;
 			case DOUBLE:
 			case FLOAT:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(499); floatingPointType();
+				setState(499);
+				floatingPointType();
 				}
 				break;
 			default:
@@ -498,8 +551,9 @@ public class Java8Parser extends Parser {
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BYTE) | (1L << CHAR) | (1L << INT) | (1L << LONG) | (1L << SHORT))) != 0)) ) {
 			_errHandler.recoverInline(this);
+			} else {
+				consume();
 			}
-			consume();
 			}
 		}
 		catch (RecognitionException re) {
@@ -539,8 +593,9 @@ public class Java8Parser extends Parser {
 			_la = _input.LA(1);
 			if ( !(_la==DOUBLE || _la==FLOAT) ) {
 			_errHandler.recoverInline(this);
+			} else {
+				consume();
 			}
-			consume();
 			}
 		}
 		catch (RecognitionException re) {
@@ -555,14 +610,14 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class ReferenceTypeContext extends ParserRuleContext {
-		public ArrayTypeContext arrayType() {
-			return getRuleContext(ArrayTypeContext.class,0);
+		public ClassOrInterfaceTypeContext classOrInterfaceType() {
+			return getRuleContext(ClassOrInterfaceTypeContext.class,0);
 		}
 		public TypeVariableContext typeVariable() {
 			return getRuleContext(TypeVariableContext.class,0);
 		}
-		public ClassOrInterfaceTypeContext classOrInterfaceType() {
-			return getRuleContext(ClassOrInterfaceTypeContext.class,0);
+		public ArrayTypeContext arrayType() {
+			return getRuleContext(ArrayTypeContext.class,0);
 		}
 		public ReferenceTypeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -587,21 +642,22 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(506); classOrInterfaceType();
+				setState(506);
+				classOrInterfaceType();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(507); typeVariable();
+				setState(507);
+				typeVariable();
 				}
 				break;
-
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(508); arrayType();
+				setState(508);
+				arrayType();
 				}
 				break;
 			}
@@ -618,12 +674,6 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class ClassOrInterfaceTypeContext extends ParserRuleContext {
-		public List<InterfaceType_lf_classOrInterfaceTypeContext> interfaceType_lf_classOrInterfaceType() {
-			return getRuleContexts(InterfaceType_lf_classOrInterfaceTypeContext.class);
-		}
-		public ClassType_lf_classOrInterfaceTypeContext classType_lf_classOrInterfaceType(int i) {
-			return getRuleContext(ClassType_lf_classOrInterfaceTypeContext.class,i);
-		}
 		public ClassType_lfno_classOrInterfaceTypeContext classType_lfno_classOrInterfaceType() {
 			return getRuleContext(ClassType_lfno_classOrInterfaceTypeContext.class,0);
 		}
@@ -632,6 +682,12 @@ public class Java8Parser extends Parser {
 		}
 		public List<ClassType_lf_classOrInterfaceTypeContext> classType_lf_classOrInterfaceType() {
 			return getRuleContexts(ClassType_lf_classOrInterfaceTypeContext.class);
+		}
+		public ClassType_lf_classOrInterfaceTypeContext classType_lf_classOrInterfaceType(int i) {
+			return getRuleContext(ClassType_lf_classOrInterfaceTypeContext.class,i);
+		}
+		public List<InterfaceType_lf_classOrInterfaceTypeContext> interfaceType_lf_classOrInterfaceType() {
+			return getRuleContexts(InterfaceType_lf_classOrInterfaceTypeContext.class);
 		}
 		public InterfaceType_lf_classOrInterfaceTypeContext interfaceType_lf_classOrInterfaceType(int i) {
 			return getRuleContext(InterfaceType_lf_classOrInterfaceTypeContext.class,i);
@@ -661,13 +717,14 @@ public class Java8Parser extends Parser {
 			switch ( getInterpreter().adaptivePredict(_input,6,_ctx) ) {
 			case 1:
 				{
-				setState(511); classType_lfno_classOrInterfaceType();
+				setState(511);
+				classType_lfno_classOrInterfaceType();
 				}
 				break;
-
 			case 2:
 				{
-				setState(512); interfaceType_lfno_classOrInterfaceType();
+				setState(512);
+				interfaceType_lfno_classOrInterfaceType();
 				}
 				break;
 			}
@@ -681,13 +738,14 @@ public class Java8Parser extends Parser {
 					switch ( getInterpreter().adaptivePredict(_input,7,_ctx) ) {
 					case 1:
 						{
-						setState(515); classType_lf_classOrInterfaceType();
+						setState(515);
+						classType_lf_classOrInterfaceType();
 						}
 						break;
-
 					case 2:
 						{
-						setState(516); interfaceType_lf_classOrInterfaceType();
+						setState(516);
+						interfaceType_lf_classOrInterfaceType();
 						}
 						break;
 					}
@@ -711,18 +769,18 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class ClassTypeContext extends ParserRuleContext {
-		public TypeArgumentsContext typeArguments() {
-			return getRuleContext(TypeArgumentsContext.class,0);
-		}
 		public TerminalNode Identifier() { return getToken(Java8Parser.Identifier, 0); }
 		public List<AnnotationContext> annotation() {
 			return getRuleContexts(AnnotationContext.class);
 		}
-		public ClassOrInterfaceTypeContext classOrInterfaceType() {
-			return getRuleContext(ClassOrInterfaceTypeContext.class,0);
-		}
 		public AnnotationContext annotation(int i) {
 			return getRuleContext(AnnotationContext.class,i);
+		}
+		public TypeArgumentsContext typeArguments() {
+			return getRuleContext(TypeArgumentsContext.class,0);
+		}
+		public ClassOrInterfaceTypeContext classOrInterfaceType() {
+			return getRuleContext(ClassOrInterfaceTypeContext.class,0);
 		}
 		public ClassTypeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -754,49 +812,56 @@ public class Java8Parser extends Parser {
 				while (_la==AT) {
 					{
 					{
-					setState(522); annotation();
+					setState(522);
+					annotation();
 					}
 					}
 					setState(527);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(528); match(Identifier);
+				setState(528);
+				match(Identifier);
 				setState(530);
 				_la = _input.LA(1);
 				if (_la==LT) {
 					{
-					setState(529); typeArguments();
+					setState(529);
+					typeArguments();
 					}
 				}
 
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(532); classOrInterfaceType();
-				setState(533); match(DOT);
+				setState(532);
+				classOrInterfaceType();
+				setState(533);
+				match(DOT);
 				setState(537);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==AT) {
 					{
 					{
-					setState(534); annotation();
+					setState(534);
+					annotation();
 					}
 					}
 					setState(539);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(540); match(Identifier);
+				setState(540);
+				match(Identifier);
 				setState(542);
 				_la = _input.LA(1);
 				if (_la==LT) {
 					{
-					setState(541); typeArguments();
+					setState(541);
+					typeArguments();
 					}
 				}
 
@@ -816,15 +881,15 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class ClassType_lf_classOrInterfaceTypeContext extends ParserRuleContext {
-		public TypeArgumentsContext typeArguments() {
-			return getRuleContext(TypeArgumentsContext.class,0);
-		}
 		public TerminalNode Identifier() { return getToken(Java8Parser.Identifier, 0); }
 		public List<AnnotationContext> annotation() {
 			return getRuleContexts(AnnotationContext.class);
 		}
 		public AnnotationContext annotation(int i) {
 			return getRuleContext(AnnotationContext.class,i);
+		}
+		public TypeArgumentsContext typeArguments() {
+			return getRuleContext(TypeArgumentsContext.class,0);
 		}
 		public ClassType_lf_classOrInterfaceTypeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -847,26 +912,30 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(546); match(DOT);
+			setState(546);
+			match(DOT);
 			setState(550);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==AT) {
 				{
 				{
-				setState(547); annotation();
+				setState(547);
+				annotation();
 				}
 				}
 				setState(552);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(553); match(Identifier);
+			setState(553);
+			match(Identifier);
 			setState(555);
 			switch ( getInterpreter().adaptivePredict(_input,15,_ctx) ) {
 			case 1:
 				{
-				setState(554); typeArguments();
+				setState(554);
+				typeArguments();
 				}
 				break;
 			}
@@ -884,15 +953,15 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class ClassType_lfno_classOrInterfaceTypeContext extends ParserRuleContext {
-		public TypeArgumentsContext typeArguments() {
-			return getRuleContext(TypeArgumentsContext.class,0);
-		}
 		public TerminalNode Identifier() { return getToken(Java8Parser.Identifier, 0); }
 		public List<AnnotationContext> annotation() {
 			return getRuleContexts(AnnotationContext.class);
 		}
 		public AnnotationContext annotation(int i) {
 			return getRuleContext(AnnotationContext.class,i);
+		}
+		public TypeArgumentsContext typeArguments() {
+			return getRuleContext(TypeArgumentsContext.class,0);
 		}
 		public ClassType_lfno_classOrInterfaceTypeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -921,19 +990,22 @@ public class Java8Parser extends Parser {
 			while (_la==AT) {
 				{
 				{
-				setState(557); annotation();
+				setState(557);
+				annotation();
 				}
 				}
 				setState(562);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(563); match(Identifier);
+			setState(563);
+			match(Identifier);
 			setState(565);
 			switch ( getInterpreter().adaptivePredict(_input,17,_ctx) ) {
 			case 1:
 				{
-				setState(564); typeArguments();
+				setState(564);
+				typeArguments();
 				}
 				break;
 			}
@@ -974,7 +1046,8 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(567); classType();
+			setState(567);
+			classType();
 			}
 		}
 		catch (RecognitionException re) {
@@ -1012,7 +1085,8 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(569); classType_lf_classOrInterfaceType();
+			setState(569);
+			classType_lf_classOrInterfaceType();
 			}
 		}
 		catch (RecognitionException re) {
@@ -1050,7 +1124,8 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(571); classType_lfno_classOrInterfaceType();
+			setState(571);
+			classType_lfno_classOrInterfaceType();
 			}
 		}
 		catch (RecognitionException re) {
@@ -1099,14 +1174,16 @@ public class Java8Parser extends Parser {
 			while (_la==AT) {
 				{
 				{
-				setState(573); annotation();
+				setState(573);
+				annotation();
 				}
 				}
 				setState(578);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(579); match(Identifier);
+			setState(579);
+			match(Identifier);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1121,17 +1198,17 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class ArrayTypeContext extends ParserRuleContext {
-		public TypeVariableContext typeVariable() {
-			return getRuleContext(TypeVariableContext.class,0);
+		public PrimitiveTypeContext primitiveType() {
+			return getRuleContext(PrimitiveTypeContext.class,0);
 		}
 		public DimsContext dims() {
 			return getRuleContext(DimsContext.class,0);
 		}
-		public PrimitiveTypeContext primitiveType() {
-			return getRuleContext(PrimitiveTypeContext.class,0);
-		}
 		public ClassOrInterfaceTypeContext classOrInterfaceType() {
 			return getRuleContext(ClassOrInterfaceTypeContext.class,0);
+		}
+		public TypeVariableContext typeVariable() {
+			return getRuleContext(TypeVariableContext.class,0);
 		}
 		public ArrayTypeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1156,24 +1233,28 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(581); primitiveType();
-				setState(582); dims();
+				setState(581);
+				primitiveType();
+				setState(582);
+				dims();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(584); classOrInterfaceType();
-				setState(585); dims();
+				setState(584);
+				classOrInterfaceType();
+				setState(585);
+				dims();
 				}
 				break;
-
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(587); typeVariable();
-				setState(588); dims();
+				setState(587);
+				typeVariable();
+				setState(588);
+				dims();
 				}
 				break;
 			}
@@ -1224,15 +1305,18 @@ public class Java8Parser extends Parser {
 			while (_la==AT) {
 				{
 				{
-				setState(592); annotation();
+				setState(592);
+				annotation();
 				}
 				}
 				setState(597);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(598); match(LBRACK);
-			setState(599); match(RBRACK);
+			setState(598);
+			match(LBRACK);
+			setState(599);
+			match(RBRACK);
 			setState(610);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,22,_ctx);
@@ -1246,15 +1330,18 @@ public class Java8Parser extends Parser {
 					while (_la==AT) {
 						{
 						{
-						setState(600); annotation();
+						setState(600);
+						annotation();
 						}
 						}
 						setState(605);
 						_errHandler.sync(this);
 						_la = _input.LA(1);
 					}
-					setState(606); match(LBRACK);
-					setState(607); match(RBRACK);
+					setState(606);
+					match(LBRACK);
+					setState(607);
+					match(RBRACK);
 					}
 					} 
 				}
@@ -1313,19 +1400,22 @@ public class Java8Parser extends Parser {
 			while (_la==AT) {
 				{
 				{
-				setState(613); typeParameterModifier();
+				setState(613);
+				typeParameterModifier();
 				}
 				}
 				setState(618);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(619); match(Identifier);
+			setState(619);
+			match(Identifier);
 			setState(621);
 			_la = _input.LA(1);
 			if (_la==EXTENDS) {
 				{
-				setState(620); typeBound();
+				setState(620);
+				typeBound();
 				}
 			}
 
@@ -1366,7 +1456,8 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(623); annotation();
+			setState(623);
+			annotation();
 			}
 		}
 		catch (RecognitionException re) {
@@ -1417,23 +1508,27 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(625); match(EXTENDS);
-				setState(626); typeVariable();
+				setState(625);
+				match(EXTENDS);
+				setState(626);
+				typeVariable();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(627); match(EXTENDS);
-				setState(628); classOrInterfaceType();
+				setState(627);
+				match(EXTENDS);
+				setState(628);
+				classOrInterfaceType();
 				setState(632);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==BITAND) {
 					{
 					{
-					setState(629); additionalBound();
+					setState(629);
+					additionalBound();
 					}
 					}
 					setState(634);
@@ -1479,8 +1574,10 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(637); match(BITAND);
-			setState(638); interfaceType();
+			setState(637);
+			match(BITAND);
+			setState(638);
+			interfaceType();
 			}
 		}
 		catch (RecognitionException re) {
@@ -1518,9 +1615,12 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(640); match(LT);
-			setState(641); typeArgumentList();
-			setState(642); match(GT);
+			setState(640);
+			match(LT);
+			setState(641);
+			typeArgumentList();
+			setState(642);
+			match(GT);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1562,15 +1662,18 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(644); typeArgument();
+			setState(644);
+			typeArgument();
 			setState(649);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==COMMA) {
 				{
 				{
-				setState(645); match(COMMA);
-				setState(646); typeArgument();
+				setState(645);
+				match(COMMA);
+				setState(646);
+				typeArgument();
 				}
 				}
 				setState(651);
@@ -1620,14 +1723,15 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(652); referenceType();
+				setState(652);
+				referenceType();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(653); wildcard();
+				setState(653);
+				wildcard();
 				}
 				break;
 			}
@@ -1644,14 +1748,14 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class WildcardContext extends ParserRuleContext {
-		public WildcardBoundsContext wildcardBounds() {
-			return getRuleContext(WildcardBoundsContext.class,0);
-		}
 		public List<AnnotationContext> annotation() {
 			return getRuleContexts(AnnotationContext.class);
 		}
 		public AnnotationContext annotation(int i) {
 			return getRuleContext(AnnotationContext.class,i);
+		}
+		public WildcardBoundsContext wildcardBounds() {
+			return getRuleContext(WildcardBoundsContext.class,0);
 		}
 		public WildcardContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1680,19 +1784,22 @@ public class Java8Parser extends Parser {
 			while (_la==AT) {
 				{
 				{
-				setState(656); annotation();
+				setState(656);
+				annotation();
 				}
 				}
 				setState(661);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(662); match(QUESTION);
+			setState(662);
+			match(QUESTION);
 			setState(664);
 			_la = _input.LA(1);
 			if (_la==EXTENDS || _la==SUPER) {
 				{
-				setState(663); wildcardBounds();
+				setState(663);
+				wildcardBounds();
 				}
 			}
 
@@ -1736,15 +1843,19 @@ public class Java8Parser extends Parser {
 			case EXTENDS:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(666); match(EXTENDS);
-				setState(667); referenceType();
+				setState(666);
+				match(EXTENDS);
+				setState(667);
+				referenceType();
 				}
 				break;
 			case SUPER:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(668); match(SUPER);
-				setState(669); referenceType();
+				setState(668);
+				match(SUPER);
+				setState(669);
+				referenceType();
 				}
 				break;
 			default:
@@ -1797,7 +1908,8 @@ public class Java8Parser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			{
-			setState(673); match(Identifier);
+			setState(673);
+			match(Identifier);
 			}
 			_ctx.stop = _input.LT(-1);
 			setState(680);
@@ -1813,8 +1925,10 @@ public class Java8Parser extends Parser {
 					pushNewRecursionContext(_localctx, _startState, RULE_packageName);
 					setState(675);
 					if (!(precpred(_ctx, 1))) throw new FailedPredicateException(this, "precpred(_ctx, 1)");
-					setState(676); match(DOT);
-					setState(677); match(Identifier);
+					setState(676);
+					match(DOT);
+					setState(677);
+					match(Identifier);
 					}
 					} 
 				}
@@ -1863,16 +1977,19 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(683); match(Identifier);
+				setState(683);
+				match(Identifier);
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(684); packageOrTypeName(0);
-				setState(685); match(DOT);
-				setState(686); match(Identifier);
+				setState(684);
+				packageOrTypeName(0);
+				setState(685);
+				match(DOT);
+				setState(686);
+				match(Identifier);
 				}
 				break;
 			}
@@ -1923,7 +2040,8 @@ public class Java8Parser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			{
-			setState(691); match(Identifier);
+			setState(691);
+			match(Identifier);
 			}
 			_ctx.stop = _input.LT(-1);
 			setState(698);
@@ -1939,8 +2057,10 @@ public class Java8Parser extends Parser {
 					pushNewRecursionContext(_localctx, _startState, RULE_packageOrTypeName);
 					setState(693);
 					if (!(precpred(_ctx, 1))) throw new FailedPredicateException(this, "precpred(_ctx, 1)");
-					setState(694); match(DOT);
-					setState(695); match(Identifier);
+					setState(694);
+					match(DOT);
+					setState(695);
+					match(Identifier);
 					}
 					} 
 				}
@@ -1989,16 +2109,19 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(701); match(Identifier);
+				setState(701);
+				match(Identifier);
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(702); ambiguousName(0);
-				setState(703); match(DOT);
-				setState(704); match(Identifier);
+				setState(702);
+				ambiguousName(0);
+				setState(703);
+				match(DOT);
+				setState(704);
+				match(Identifier);
 				}
 				break;
 			}
@@ -2036,7 +2159,8 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(708); match(Identifier);
+			setState(708);
+			match(Identifier);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2085,7 +2209,8 @@ public class Java8Parser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			{
-			setState(711); match(Identifier);
+			setState(711);
+			match(Identifier);
 			}
 			_ctx.stop = _input.LT(-1);
 			setState(718);
@@ -2101,8 +2226,10 @@ public class Java8Parser extends Parser {
 					pushNewRecursionContext(_localctx, _startState, RULE_ambiguousName);
 					setState(713);
 					if (!(precpred(_ctx, 1))) throw new FailedPredicateException(this, "precpred(_ctx, 1)");
-					setState(714); match(DOT);
-					setState(715); match(Identifier);
+					setState(714);
+					match(DOT);
+					setState(715);
+					match(Identifier);
 					}
 					} 
 				}
@@ -2124,21 +2251,21 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class CompilationUnitContext extends ParserRuleContext {
-		public TypeDeclarationContext typeDeclaration(int i) {
-			return getRuleContext(TypeDeclarationContext.class,i);
-		}
-		public ImportDeclarationContext importDeclaration(int i) {
-			return getRuleContext(ImportDeclarationContext.class,i);
-		}
-		public List<ImportDeclarationContext> importDeclaration() {
-			return getRuleContexts(ImportDeclarationContext.class);
-		}
 		public TerminalNode EOF() { return getToken(Java8Parser.EOF, 0); }
 		public PackageDeclarationContext packageDeclaration() {
 			return getRuleContext(PackageDeclarationContext.class,0);
 		}
+		public List<ImportDeclarationContext> importDeclaration() {
+			return getRuleContexts(ImportDeclarationContext.class);
+		}
+		public ImportDeclarationContext importDeclaration(int i) {
+			return getRuleContext(ImportDeclarationContext.class,i);
+		}
 		public List<TypeDeclarationContext> typeDeclaration() {
 			return getRuleContexts(TypeDeclarationContext.class);
+		}
+		public TypeDeclarationContext typeDeclaration(int i) {
+			return getRuleContext(TypeDeclarationContext.class,i);
 		}
 		public CompilationUnitContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -2165,7 +2292,8 @@ public class Java8Parser extends Parser {
 			switch ( getInterpreter().adaptivePredict(_input,37,_ctx) ) {
 			case 1:
 				{
-				setState(721); packageDeclaration();
+				setState(721);
+				packageDeclaration();
 				}
 				break;
 			}
@@ -2175,7 +2303,8 @@ public class Java8Parser extends Parser {
 			while (_la==IMPORT) {
 				{
 				{
-				setState(724); importDeclaration();
+				setState(724);
+				importDeclaration();
 				}
 				}
 				setState(729);
@@ -2188,14 +2317,16 @@ public class Java8Parser extends Parser {
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << ABSTRACT) | (1L << CLASS) | (1L << ENUM) | (1L << FINAL) | (1L << INTERFACE) | (1L << PRIVATE) | (1L << PROTECTED) | (1L << PUBLIC) | (1L << STATIC) | (1L << STRICTFP) | (1L << SEMI))) != 0) || _la==AT) {
 				{
 				{
-				setState(730); typeDeclaration();
+				setState(730);
+				typeDeclaration();
 				}
 				}
 				setState(735);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(736); match(EOF);
+			setState(736);
+			match(EOF);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2247,30 +2378,36 @@ public class Java8Parser extends Parser {
 			while (_la==AT) {
 				{
 				{
-				setState(738); packageModifier();
+				setState(738);
+				packageModifier();
 				}
 				}
 				setState(743);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(744); match(PACKAGE);
-			setState(745); match(Identifier);
+			setState(744);
+			match(PACKAGE);
+			setState(745);
+			match(Identifier);
 			setState(750);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==DOT) {
 				{
 				{
-				setState(746); match(DOT);
-				setState(747); match(Identifier);
+				setState(746);
+				match(DOT);
+				setState(747);
+				match(Identifier);
 				}
 				}
 				setState(752);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(753); match(SEMI);
+			setState(753);
+			match(SEMI);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2308,7 +2445,8 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(755); annotation();
+			setState(755);
+			annotation();
 			}
 		}
 		catch (RecognitionException re) {
@@ -2323,17 +2461,17 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class ImportDeclarationContext extends ParserRuleContext {
-		public SingleStaticImportDeclarationContext singleStaticImportDeclaration() {
-			return getRuleContext(SingleStaticImportDeclarationContext.class,0);
-		}
-		public StaticImportOnDemandDeclarationContext staticImportOnDemandDeclaration() {
-			return getRuleContext(StaticImportOnDemandDeclarationContext.class,0);
-		}
 		public SingleTypeImportDeclarationContext singleTypeImportDeclaration() {
 			return getRuleContext(SingleTypeImportDeclarationContext.class,0);
 		}
 		public TypeImportOnDemandDeclarationContext typeImportOnDemandDeclaration() {
 			return getRuleContext(TypeImportOnDemandDeclarationContext.class,0);
+		}
+		public SingleStaticImportDeclarationContext singleStaticImportDeclaration() {
+			return getRuleContext(SingleStaticImportDeclarationContext.class,0);
+		}
+		public StaticImportOnDemandDeclarationContext staticImportOnDemandDeclaration() {
+			return getRuleContext(StaticImportOnDemandDeclarationContext.class,0);
 		}
 		public ImportDeclarationContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -2358,28 +2496,29 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(757); singleTypeImportDeclaration();
+				setState(757);
+				singleTypeImportDeclaration();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(758); typeImportOnDemandDeclaration();
+				setState(758);
+				typeImportOnDemandDeclaration();
 				}
 				break;
-
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(759); singleStaticImportDeclaration();
+				setState(759);
+				singleStaticImportDeclaration();
 				}
 				break;
-
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(760); staticImportOnDemandDeclaration();
+				setState(760);
+				staticImportOnDemandDeclaration();
 				}
 				break;
 			}
@@ -2419,9 +2558,12 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(763); match(IMPORT);
-			setState(764); typeName();
-			setState(765); match(SEMI);
+			setState(763);
+			match(IMPORT);
+			setState(764);
+			typeName();
+			setState(765);
+			match(SEMI);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2459,11 +2601,16 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(767); match(IMPORT);
-			setState(768); packageOrTypeName(0);
-			setState(769); match(DOT);
-			setState(770); match(MUL);
-			setState(771); match(SEMI);
+			setState(767);
+			match(IMPORT);
+			setState(768);
+			packageOrTypeName(0);
+			setState(769);
+			match(DOT);
+			setState(770);
+			match(MUL);
+			setState(771);
+			match(SEMI);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2478,10 +2625,10 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class SingleStaticImportDeclarationContext extends ParserRuleContext {
-		public TerminalNode Identifier() { return getToken(Java8Parser.Identifier, 0); }
 		public TypeNameContext typeName() {
 			return getRuleContext(TypeNameContext.class,0);
 		}
+		public TerminalNode Identifier() { return getToken(Java8Parser.Identifier, 0); }
 		public SingleStaticImportDeclarationContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -2502,12 +2649,18 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(773); match(IMPORT);
-			setState(774); match(STATIC);
-			setState(775); typeName();
-			setState(776); match(DOT);
-			setState(777); match(Identifier);
-			setState(778); match(SEMI);
+			setState(773);
+			match(IMPORT);
+			setState(774);
+			match(STATIC);
+			setState(775);
+			typeName();
+			setState(776);
+			match(DOT);
+			setState(777);
+			match(Identifier);
+			setState(778);
+			match(SEMI);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2545,12 +2698,18 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(780); match(IMPORT);
-			setState(781); match(STATIC);
-			setState(782); typeName();
-			setState(783); match(DOT);
-			setState(784); match(MUL);
-			setState(785); match(SEMI);
+			setState(780);
+			match(IMPORT);
+			setState(781);
+			match(STATIC);
+			setState(782);
+			typeName();
+			setState(783);
+			match(DOT);
+			setState(784);
+			match(MUL);
+			setState(785);
+			match(SEMI);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2594,21 +2753,22 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(787); classDeclaration();
+				setState(787);
+				classDeclaration();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(788); interfaceDeclaration();
+				setState(788);
+				interfaceDeclaration();
 				}
 				break;
-
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(789); match(SEMI);
+				setState(789);
+				match(SEMI);
 				}
 				break;
 			}
@@ -2625,11 +2785,11 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class ClassDeclarationContext extends ParserRuleContext {
-		public EnumDeclarationContext enumDeclaration() {
-			return getRuleContext(EnumDeclarationContext.class,0);
-		}
 		public NormalClassDeclarationContext normalClassDeclaration() {
 			return getRuleContext(NormalClassDeclarationContext.class,0);
+		}
+		public EnumDeclarationContext enumDeclaration() {
+			return getRuleContext(EnumDeclarationContext.class,0);
 		}
 		public ClassDeclarationContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -2654,14 +2814,15 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(792); normalClassDeclaration();
+				setState(792);
+				normalClassDeclaration();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(793); enumDeclaration();
+				setState(793);
+				enumDeclaration();
 				}
 				break;
 			}
@@ -2685,11 +2846,11 @@ public class Java8Parser extends Parser {
 		public List<ClassModifierContext> classModifier() {
 			return getRuleContexts(ClassModifierContext.class);
 		}
-		public TypeParametersContext typeParameters() {
-			return getRuleContext(TypeParametersContext.class,0);
-		}
 		public ClassModifierContext classModifier(int i) {
 			return getRuleContext(ClassModifierContext.class,i);
+		}
+		public TypeParametersContext typeParameters() {
+			return getRuleContext(TypeParametersContext.class,0);
 		}
 		public SuperclassContext superclass() {
 			return getRuleContext(SuperclassContext.class,0);
@@ -2724,20 +2885,24 @@ public class Java8Parser extends Parser {
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << ABSTRACT) | (1L << FINAL) | (1L << PRIVATE) | (1L << PROTECTED) | (1L << PUBLIC) | (1L << STATIC) | (1L << STRICTFP))) != 0) || _la==AT) {
 				{
 				{
-				setState(796); classModifier();
+				setState(796);
+				classModifier();
 				}
 				}
 				setState(801);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(802); match(CLASS);
-			setState(803); match(Identifier);
+			setState(802);
+			match(CLASS);
+			setState(803);
+			match(Identifier);
 			setState(805);
 			_la = _input.LA(1);
 			if (_la==LT) {
 				{
-				setState(804); typeParameters();
+				setState(804);
+				typeParameters();
 				}
 			}
 
@@ -2745,7 +2910,8 @@ public class Java8Parser extends Parser {
 			_la = _input.LA(1);
 			if (_la==EXTENDS) {
 				{
-				setState(807); superclass();
+				setState(807);
+				superclass();
 				}
 			}
 
@@ -2753,11 +2919,13 @@ public class Java8Parser extends Parser {
 			_la = _input.LA(1);
 			if (_la==IMPLEMENTS) {
 				{
-				setState(810); superinterfaces();
+				setState(810);
+				superinterfaces();
 				}
 			}
 
-			setState(813); classBody();
+			setState(813);
+			classBody();
 			}
 		}
 		catch (RecognitionException re) {
@@ -2798,49 +2966,57 @@ public class Java8Parser extends Parser {
 			case AT:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(815); annotation();
+				setState(815);
+				annotation();
 				}
 				break;
 			case PUBLIC:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(816); match(PUBLIC);
+				setState(816);
+				match(PUBLIC);
 				}
 				break;
 			case PROTECTED:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(817); match(PROTECTED);
+				setState(817);
+				match(PROTECTED);
 				}
 				break;
 			case PRIVATE:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(818); match(PRIVATE);
+				setState(818);
+				match(PRIVATE);
 				}
 				break;
 			case ABSTRACT:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(819); match(ABSTRACT);
+				setState(819);
+				match(ABSTRACT);
 				}
 				break;
 			case STATIC:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(820); match(STATIC);
+				setState(820);
+				match(STATIC);
 				}
 				break;
 			case FINAL:
 				enterOuterAlt(_localctx, 7);
 				{
-				setState(821); match(FINAL);
+				setState(821);
+				match(FINAL);
 				}
 				break;
 			case STRICTFP:
 				enterOuterAlt(_localctx, 8);
 				{
-				setState(822); match(STRICTFP);
+				setState(822);
+				match(STRICTFP);
 				}
 				break;
 			default:
@@ -2882,9 +3058,12 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(825); match(LT);
-			setState(826); typeParameterList();
-			setState(827); match(GT);
+			setState(825);
+			match(LT);
+			setState(826);
+			typeParameterList();
+			setState(827);
+			match(GT);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2926,15 +3105,18 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(829); typeParameter();
+			setState(829);
+			typeParameter();
 			setState(834);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==COMMA) {
 				{
 				{
-				setState(830); match(COMMA);
-				setState(831); typeParameter();
+				setState(830);
+				match(COMMA);
+				setState(831);
+				typeParameter();
 				}
 				}
 				setState(836);
@@ -2978,8 +3160,10 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(837); match(EXTENDS);
-			setState(838); classType();
+			setState(837);
+			match(EXTENDS);
+			setState(838);
+			classType();
 			}
 		}
 		catch (RecognitionException re) {
@@ -3017,8 +3201,10 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(840); match(IMPLEMENTS);
-			setState(841); interfaceTypeList();
+			setState(840);
+			match(IMPLEMENTS);
+			setState(841);
+			interfaceTypeList();
 			}
 		}
 		catch (RecognitionException re) {
@@ -3060,15 +3246,18 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(843); interfaceType();
+			setState(843);
+			interfaceType();
 			setState(848);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==COMMA) {
 				{
 				{
-				setState(844); match(COMMA);
-				setState(845); interfaceType();
+				setState(844);
+				match(COMMA);
+				setState(845);
+				interfaceType();
 				}
 				}
 				setState(850);
@@ -3116,21 +3305,24 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(851); match(LBRACE);
+			setState(851);
+			match(LBRACE);
 			setState(855);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << ABSTRACT) | (1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << CLASS) | (1L << DOUBLE) | (1L << ENUM) | (1L << FINAL) | (1L << FLOAT) | (1L << INT) | (1L << INTERFACE) | (1L << LONG) | (1L << NATIVE) | (1L << PRIVATE) | (1L << PROTECTED) | (1L << PUBLIC) | (1L << SHORT) | (1L << STATIC) | (1L << STRICTFP) | (1L << SYNCHRONIZED) | (1L << TRANSIENT) | (1L << VOID) | (1L << VOLATILE) | (1L << LBRACE) | (1L << SEMI))) != 0) || ((((_la - 68)) & ~0x3f) == 0 && ((1L << (_la - 68)) & ((1L << (LT - 68)) | (1L << (Identifier - 68)) | (1L << (AT - 68)))) != 0)) {
 				{
 				{
-				setState(852); classBodyDeclaration();
+				setState(852);
+				classBodyDeclaration();
 				}
 				}
 				setState(857);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(858); match(RBRACE);
+			setState(858);
+			match(RBRACE);
 			}
 		}
 		catch (RecognitionException re) {
@@ -3148,14 +3340,14 @@ public class Java8Parser extends Parser {
 		public ClassMemberDeclarationContext classMemberDeclaration() {
 			return getRuleContext(ClassMemberDeclarationContext.class,0);
 		}
+		public InstanceInitializerContext instanceInitializer() {
+			return getRuleContext(InstanceInitializerContext.class,0);
+		}
 		public StaticInitializerContext staticInitializer() {
 			return getRuleContext(StaticInitializerContext.class,0);
 		}
 		public ConstructorDeclarationContext constructorDeclaration() {
 			return getRuleContext(ConstructorDeclarationContext.class,0);
-		}
-		public InstanceInitializerContext instanceInitializer() {
-			return getRuleContext(InstanceInitializerContext.class,0);
 		}
 		public ClassBodyDeclarationContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -3180,28 +3372,29 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(860); classMemberDeclaration();
+				setState(860);
+				classMemberDeclaration();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(861); instanceInitializer();
+				setState(861);
+				instanceInitializer();
 				}
 				break;
-
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(862); staticInitializer();
+				setState(862);
+				staticInitializer();
 				}
 				break;
-
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(863); constructorDeclaration();
+				setState(863);
+				constructorDeclaration();
 				}
 				break;
 			}
@@ -3218,6 +3411,9 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class ClassMemberDeclarationContext extends ParserRuleContext {
+		public FieldDeclarationContext fieldDeclaration() {
+			return getRuleContext(FieldDeclarationContext.class,0);
+		}
 		public MethodDeclarationContext methodDeclaration() {
 			return getRuleContext(MethodDeclarationContext.class,0);
 		}
@@ -3226,9 +3422,6 @@ public class Java8Parser extends Parser {
 		}
 		public InterfaceDeclarationContext interfaceDeclaration() {
 			return getRuleContext(InterfaceDeclarationContext.class,0);
-		}
-		public FieldDeclarationContext fieldDeclaration() {
-			return getRuleContext(FieldDeclarationContext.class,0);
 		}
 		public ClassMemberDeclarationContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -3253,35 +3446,36 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(866); fieldDeclaration();
+				setState(866);
+				fieldDeclaration();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(867); methodDeclaration();
+				setState(867);
+				methodDeclaration();
 				}
 				break;
-
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(868); classDeclaration();
+				setState(868);
+				classDeclaration();
 				}
 				break;
-
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(869); interfaceDeclaration();
+				setState(869);
+				interfaceDeclaration();
 				}
 				break;
-
 			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(870); match(SEMI);
+				setState(870);
+				match(SEMI);
 				}
 				break;
 			}
@@ -3298,14 +3492,14 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class FieldDeclarationContext extends ParserRuleContext {
-		public List<FieldModifierContext> fieldModifier() {
-			return getRuleContexts(FieldModifierContext.class);
-		}
 		public UnannTypeContext unannType() {
 			return getRuleContext(UnannTypeContext.class,0);
 		}
 		public VariableDeclaratorListContext variableDeclaratorList() {
 			return getRuleContext(VariableDeclaratorListContext.class,0);
+		}
+		public List<FieldModifierContext> fieldModifier() {
+			return getRuleContexts(FieldModifierContext.class);
 		}
 		public FieldModifierContext fieldModifier(int i) {
 			return getRuleContext(FieldModifierContext.class,i);
@@ -3337,16 +3531,20 @@ public class Java8Parser extends Parser {
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << FINAL) | (1L << PRIVATE) | (1L << PROTECTED) | (1L << PUBLIC) | (1L << STATIC) | (1L << TRANSIENT) | (1L << VOLATILE))) != 0) || _la==AT) {
 				{
 				{
-				setState(873); fieldModifier();
+				setState(873);
+				fieldModifier();
 				}
 				}
 				setState(878);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(879); unannType();
-			setState(880); variableDeclaratorList();
-			setState(881); match(SEMI);
+			setState(879);
+			unannType();
+			setState(880);
+			variableDeclaratorList();
+			setState(881);
+			match(SEMI);
 			}
 		}
 		catch (RecognitionException re) {
@@ -3387,49 +3585,57 @@ public class Java8Parser extends Parser {
 			case AT:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(883); annotation();
+				setState(883);
+				annotation();
 				}
 				break;
 			case PUBLIC:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(884); match(PUBLIC);
+				setState(884);
+				match(PUBLIC);
 				}
 				break;
 			case PROTECTED:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(885); match(PROTECTED);
+				setState(885);
+				match(PROTECTED);
 				}
 				break;
 			case PRIVATE:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(886); match(PRIVATE);
+				setState(886);
+				match(PRIVATE);
 				}
 				break;
 			case STATIC:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(887); match(STATIC);
+				setState(887);
+				match(STATIC);
 				}
 				break;
 			case FINAL:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(888); match(FINAL);
+				setState(888);
+				match(FINAL);
 				}
 				break;
 			case TRANSIENT:
 				enterOuterAlt(_localctx, 7);
 				{
-				setState(889); match(TRANSIENT);
+				setState(889);
+				match(TRANSIENT);
 				}
 				break;
 			case VOLATILE:
 				enterOuterAlt(_localctx, 8);
 				{
-				setState(890); match(VOLATILE);
+				setState(890);
+				match(VOLATILE);
 				}
 				break;
 			default:
@@ -3475,15 +3681,18 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(893); variableDeclarator();
+			setState(893);
+			variableDeclarator();
 			setState(898);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==COMMA) {
 				{
 				{
-				setState(894); match(COMMA);
-				setState(895); variableDeclarator();
+				setState(894);
+				match(COMMA);
+				setState(895);
+				variableDeclarator();
 				}
 				}
 				setState(900);
@@ -3504,11 +3713,11 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class VariableDeclaratorContext extends ParserRuleContext {
-		public VariableInitializerContext variableInitializer() {
-			return getRuleContext(VariableInitializerContext.class,0);
-		}
 		public VariableDeclaratorIdContext variableDeclaratorId() {
 			return getRuleContext(VariableDeclaratorIdContext.class,0);
+		}
+		public VariableInitializerContext variableInitializer() {
+			return getRuleContext(VariableInitializerContext.class,0);
 		}
 		public VariableDeclaratorContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -3531,13 +3740,16 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(901); variableDeclaratorId();
+			setState(901);
+			variableDeclaratorId();
 			setState(904);
 			_la = _input.LA(1);
 			if (_la==ASSIGN) {
 				{
-				setState(902); match(ASSIGN);
-				setState(903); variableInitializer();
+				setState(902);
+				match(ASSIGN);
+				setState(903);
+				variableInitializer();
 				}
 			}
 
@@ -3580,12 +3792,14 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(906); match(Identifier);
+			setState(906);
+			match(Identifier);
 			setState(908);
 			_la = _input.LA(1);
 			if (_la==LBRACK || _la==AT) {
 				{
-				setState(907); dims();
+				setState(907);
+				dims();
 				}
 			}
 
@@ -3603,11 +3817,11 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class VariableInitializerContext extends ParserRuleContext {
-		public ArrayInitializerContext arrayInitializer() {
-			return getRuleContext(ArrayInitializerContext.class,0);
-		}
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
+		}
+		public ArrayInitializerContext arrayInitializer() {
+			return getRuleContext(ArrayInitializerContext.class,0);
 		}
 		public VariableInitializerContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -3658,13 +3872,15 @@ public class Java8Parser extends Parser {
 			case AT:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(910); expression();
+				setState(910);
+				expression();
 				}
 				break;
 			case LBRACE:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(911); arrayInitializer();
+				setState(911);
+				arrayInitializer();
 				}
 				break;
 			default:
@@ -3683,11 +3899,11 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class UnannTypeContext extends ParserRuleContext {
-		public UnannReferenceTypeContext unannReferenceType() {
-			return getRuleContext(UnannReferenceTypeContext.class,0);
-		}
 		public UnannPrimitiveTypeContext unannPrimitiveType() {
 			return getRuleContext(UnannPrimitiveTypeContext.class,0);
+		}
+		public UnannReferenceTypeContext unannReferenceType() {
+			return getRuleContext(UnannReferenceTypeContext.class,0);
 		}
 		public UnannTypeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -3712,14 +3928,15 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(914); unannPrimitiveType();
+				setState(914);
+				unannPrimitiveType();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(915); unannReferenceType();
+				setState(915);
+				unannReferenceType();
 				}
 				break;
 			}
@@ -3768,13 +3985,15 @@ public class Java8Parser extends Parser {
 			case SHORT:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(918); numericType();
+				setState(918);
+				numericType();
 				}
 				break;
 			case BOOLEAN:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(919); match(BOOLEAN);
+				setState(919);
+				match(BOOLEAN);
 				}
 				break;
 			default:
@@ -3793,14 +4012,14 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class UnannReferenceTypeContext extends ParserRuleContext {
-		public UnannArrayTypeContext unannArrayType() {
-			return getRuleContext(UnannArrayTypeContext.class,0);
-		}
 		public UnannClassOrInterfaceTypeContext unannClassOrInterfaceType() {
 			return getRuleContext(UnannClassOrInterfaceTypeContext.class,0);
 		}
 		public UnannTypeVariableContext unannTypeVariable() {
 			return getRuleContext(UnannTypeVariableContext.class,0);
+		}
+		public UnannArrayTypeContext unannArrayType() {
+			return getRuleContext(UnannArrayTypeContext.class,0);
 		}
 		public UnannReferenceTypeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -3825,21 +4044,22 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(922); unannClassOrInterfaceType();
+				setState(922);
+				unannClassOrInterfaceType();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(923); unannTypeVariable();
+				setState(923);
+				unannTypeVariable();
 				}
 				break;
-
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(924); unannArrayType();
+				setState(924);
+				unannArrayType();
 				}
 				break;
 			}
@@ -3856,14 +4076,14 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class UnannClassOrInterfaceTypeContext extends ParserRuleContext {
+		public UnannClassType_lfno_unannClassOrInterfaceTypeContext unannClassType_lfno_unannClassOrInterfaceType() {
+			return getRuleContext(UnannClassType_lfno_unannClassOrInterfaceTypeContext.class,0);
+		}
 		public UnannInterfaceType_lfno_unannClassOrInterfaceTypeContext unannInterfaceType_lfno_unannClassOrInterfaceType() {
 			return getRuleContext(UnannInterfaceType_lfno_unannClassOrInterfaceTypeContext.class,0);
 		}
-		public UnannInterfaceType_lf_unannClassOrInterfaceTypeContext unannInterfaceType_lf_unannClassOrInterfaceType(int i) {
-			return getRuleContext(UnannInterfaceType_lf_unannClassOrInterfaceTypeContext.class,i);
-		}
-		public UnannClassType_lfno_unannClassOrInterfaceTypeContext unannClassType_lfno_unannClassOrInterfaceType() {
-			return getRuleContext(UnannClassType_lfno_unannClassOrInterfaceTypeContext.class,0);
+		public List<UnannClassType_lf_unannClassOrInterfaceTypeContext> unannClassType_lf_unannClassOrInterfaceType() {
+			return getRuleContexts(UnannClassType_lf_unannClassOrInterfaceTypeContext.class);
 		}
 		public UnannClassType_lf_unannClassOrInterfaceTypeContext unannClassType_lf_unannClassOrInterfaceType(int i) {
 			return getRuleContext(UnannClassType_lf_unannClassOrInterfaceTypeContext.class,i);
@@ -3871,8 +4091,8 @@ public class Java8Parser extends Parser {
 		public List<UnannInterfaceType_lf_unannClassOrInterfaceTypeContext> unannInterfaceType_lf_unannClassOrInterfaceType() {
 			return getRuleContexts(UnannInterfaceType_lf_unannClassOrInterfaceTypeContext.class);
 		}
-		public List<UnannClassType_lf_unannClassOrInterfaceTypeContext> unannClassType_lf_unannClassOrInterfaceType() {
-			return getRuleContexts(UnannClassType_lf_unannClassOrInterfaceTypeContext.class);
+		public UnannInterfaceType_lf_unannClassOrInterfaceTypeContext unannInterfaceType_lf_unannClassOrInterfaceType(int i) {
+			return getRuleContext(UnannInterfaceType_lf_unannClassOrInterfaceTypeContext.class,i);
 		}
 		public UnannClassOrInterfaceTypeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -3899,13 +4119,14 @@ public class Java8Parser extends Parser {
 			switch ( getInterpreter().adaptivePredict(_input,64,_ctx) ) {
 			case 1:
 				{
-				setState(927); unannClassType_lfno_unannClassOrInterfaceType();
+				setState(927);
+				unannClassType_lfno_unannClassOrInterfaceType();
 				}
 				break;
-
 			case 2:
 				{
-				setState(928); unannInterfaceType_lfno_unannClassOrInterfaceType();
+				setState(928);
+				unannInterfaceType_lfno_unannClassOrInterfaceType();
 				}
 				break;
 			}
@@ -3919,13 +4140,14 @@ public class Java8Parser extends Parser {
 					switch ( getInterpreter().adaptivePredict(_input,65,_ctx) ) {
 					case 1:
 						{
-						setState(931); unannClassType_lf_unannClassOrInterfaceType();
+						setState(931);
+						unannClassType_lf_unannClassOrInterfaceType();
 						}
 						break;
-
 					case 2:
 						{
-						setState(932); unannInterfaceType_lf_unannClassOrInterfaceType();
+						setState(932);
+						unannInterfaceType_lf_unannClassOrInterfaceType();
 						}
 						break;
 					}
@@ -3949,15 +4171,15 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class UnannClassTypeContext extends ParserRuleContext {
+		public TerminalNode Identifier() { return getToken(Java8Parser.Identifier, 0); }
 		public TypeArgumentsContext typeArguments() {
 			return getRuleContext(TypeArgumentsContext.class,0);
 		}
-		public TerminalNode Identifier() { return getToken(Java8Parser.Identifier, 0); }
-		public List<AnnotationContext> annotation() {
-			return getRuleContexts(AnnotationContext.class);
-		}
 		public UnannClassOrInterfaceTypeContext unannClassOrInterfaceType() {
 			return getRuleContext(UnannClassOrInterfaceTypeContext.class,0);
+		}
+		public List<AnnotationContext> annotation() {
+			return getRuleContexts(AnnotationContext.class);
 		}
 		public AnnotationContext annotation(int i) {
 			return getRuleContext(AnnotationContext.class,i);
@@ -3986,42 +4208,48 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(938); match(Identifier);
+				setState(938);
+				match(Identifier);
 				setState(940);
 				_la = _input.LA(1);
 				if (_la==LT) {
 					{
-					setState(939); typeArguments();
+					setState(939);
+					typeArguments();
 					}
 				}
 
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(942); unannClassOrInterfaceType();
-				setState(943); match(DOT);
+				setState(942);
+				unannClassOrInterfaceType();
+				setState(943);
+				match(DOT);
 				setState(947);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==AT) {
 					{
 					{
-					setState(944); annotation();
+					setState(944);
+					annotation();
 					}
 					}
 					setState(949);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(950); match(Identifier);
+				setState(950);
+				match(Identifier);
 				setState(952);
 				_la = _input.LA(1);
 				if (_la==LT) {
 					{
-					setState(951); typeArguments();
+					setState(951);
+					typeArguments();
 					}
 				}
 
@@ -4041,15 +4269,15 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class UnannClassType_lf_unannClassOrInterfaceTypeContext extends ParserRuleContext {
-		public TypeArgumentsContext typeArguments() {
-			return getRuleContext(TypeArgumentsContext.class,0);
-		}
 		public TerminalNode Identifier() { return getToken(Java8Parser.Identifier, 0); }
 		public List<AnnotationContext> annotation() {
 			return getRuleContexts(AnnotationContext.class);
 		}
 		public AnnotationContext annotation(int i) {
 			return getRuleContext(AnnotationContext.class,i);
+		}
+		public TypeArgumentsContext typeArguments() {
+			return getRuleContext(TypeArgumentsContext.class,0);
 		}
 		public UnannClassType_lf_unannClassOrInterfaceTypeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -4072,26 +4300,30 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(956); match(DOT);
+			setState(956);
+			match(DOT);
 			setState(960);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==AT) {
 				{
 				{
-				setState(957); annotation();
+				setState(957);
+				annotation();
 				}
 				}
 				setState(962);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(963); match(Identifier);
+			setState(963);
+			match(Identifier);
 			setState(965);
 			_la = _input.LA(1);
 			if (_la==LT) {
 				{
-				setState(964); typeArguments();
+				setState(964);
+				typeArguments();
 				}
 			}
 
@@ -4109,10 +4341,10 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class UnannClassType_lfno_unannClassOrInterfaceTypeContext extends ParserRuleContext {
+		public TerminalNode Identifier() { return getToken(Java8Parser.Identifier, 0); }
 		public TypeArgumentsContext typeArguments() {
 			return getRuleContext(TypeArgumentsContext.class,0);
 		}
-		public TerminalNode Identifier() { return getToken(Java8Parser.Identifier, 0); }
 		public UnannClassType_lfno_unannClassOrInterfaceTypeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -4134,12 +4366,14 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(967); match(Identifier);
+			setState(967);
+			match(Identifier);
 			setState(969);
 			_la = _input.LA(1);
 			if (_la==LT) {
 				{
-				setState(968); typeArguments();
+				setState(968);
+				typeArguments();
 				}
 			}
 
@@ -4180,7 +4414,8 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(971); unannClassType();
+			setState(971);
+			unannClassType();
 			}
 		}
 		catch (RecognitionException re) {
@@ -4218,7 +4453,8 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(973); unannClassType_lf_unannClassOrInterfaceType();
+			setState(973);
+			unannClassType_lf_unannClassOrInterfaceType();
 			}
 		}
 		catch (RecognitionException re) {
@@ -4256,7 +4492,8 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(975); unannClassType_lfno_unannClassOrInterfaceType();
+			setState(975);
+			unannClassType_lfno_unannClassOrInterfaceType();
 			}
 		}
 		catch (RecognitionException re) {
@@ -4292,7 +4529,8 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(977); match(Identifier);
+			setState(977);
+			match(Identifier);
 			}
 		}
 		catch (RecognitionException re) {
@@ -4307,17 +4545,17 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class UnannArrayTypeContext extends ParserRuleContext {
+		public UnannPrimitiveTypeContext unannPrimitiveType() {
+			return getRuleContext(UnannPrimitiveTypeContext.class,0);
+		}
+		public DimsContext dims() {
+			return getRuleContext(DimsContext.class,0);
+		}
 		public UnannClassOrInterfaceTypeContext unannClassOrInterfaceType() {
 			return getRuleContext(UnannClassOrInterfaceTypeContext.class,0);
 		}
 		public UnannTypeVariableContext unannTypeVariable() {
 			return getRuleContext(UnannTypeVariableContext.class,0);
-		}
-		public DimsContext dims() {
-			return getRuleContext(DimsContext.class,0);
-		}
-		public UnannPrimitiveTypeContext unannPrimitiveType() {
-			return getRuleContext(UnannPrimitiveTypeContext.class,0);
 		}
 		public UnannArrayTypeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -4342,24 +4580,28 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(979); unannPrimitiveType();
-				setState(980); dims();
+				setState(979);
+				unannPrimitiveType();
+				setState(980);
+				dims();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(982); unannClassOrInterfaceType();
-				setState(983); dims();
+				setState(982);
+				unannClassOrInterfaceType();
+				setState(983);
+				dims();
 				}
 				break;
-
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(985); unannTypeVariable();
-				setState(986); dims();
+				setState(985);
+				unannTypeVariable();
+				setState(986);
+				dims();
 				}
 				break;
 			}
@@ -4376,11 +4618,11 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class MethodDeclarationContext extends ParserRuleContext {
-		public MethodBodyContext methodBody() {
-			return getRuleContext(MethodBodyContext.class,0);
-		}
 		public MethodHeaderContext methodHeader() {
 			return getRuleContext(MethodHeaderContext.class,0);
+		}
+		public MethodBodyContext methodBody() {
+			return getRuleContext(MethodBodyContext.class,0);
 		}
 		public List<MethodModifierContext> methodModifier() {
 			return getRuleContexts(MethodModifierContext.class);
@@ -4415,15 +4657,18 @@ public class Java8Parser extends Parser {
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << ABSTRACT) | (1L << FINAL) | (1L << NATIVE) | (1L << PRIVATE) | (1L << PROTECTED) | (1L << PUBLIC) | (1L << STATIC) | (1L << STRICTFP) | (1L << SYNCHRONIZED))) != 0) || _la==AT) {
 				{
 				{
-				setState(990); methodModifier();
+				setState(990);
+				methodModifier();
 				}
 				}
 				setState(995);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(996); methodHeader();
-			setState(997); methodBody();
+			setState(996);
+			methodHeader();
+			setState(997);
+			methodBody();
 			}
 		}
 		catch (RecognitionException re) {
@@ -4464,61 +4709,71 @@ public class Java8Parser extends Parser {
 			case AT:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(999); annotation();
+				setState(999);
+				annotation();
 				}
 				break;
 			case PUBLIC:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1000); match(PUBLIC);
+				setState(1000);
+				match(PUBLIC);
 				}
 				break;
 			case PROTECTED:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(1001); match(PROTECTED);
+				setState(1001);
+				match(PROTECTED);
 				}
 				break;
 			case PRIVATE:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(1002); match(PRIVATE);
+				setState(1002);
+				match(PRIVATE);
 				}
 				break;
 			case ABSTRACT:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(1003); match(ABSTRACT);
+				setState(1003);
+				match(ABSTRACT);
 				}
 				break;
 			case STATIC:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(1004); match(STATIC);
+				setState(1004);
+				match(STATIC);
 				}
 				break;
 			case FINAL:
 				enterOuterAlt(_localctx, 7);
 				{
-				setState(1005); match(FINAL);
+				setState(1005);
+				match(FINAL);
 				}
 				break;
 			case SYNCHRONIZED:
 				enterOuterAlt(_localctx, 8);
 				{
-				setState(1006); match(SYNCHRONIZED);
+				setState(1006);
+				match(SYNCHRONIZED);
 				}
 				break;
 			case NATIVE:
 				enterOuterAlt(_localctx, 9);
 				{
-				setState(1007); match(NATIVE);
+				setState(1007);
+				match(NATIVE);
 				}
 				break;
 			case STRICTFP:
 				enterOuterAlt(_localctx, 10);
 				{
-				setState(1008); match(STRICTFP);
+				setState(1008);
+				match(STRICTFP);
 				}
 				break;
 			default:
@@ -4537,20 +4792,20 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class MethodHeaderContext extends ParserRuleContext {
-		public Throws_Context throws_() {
-			return getRuleContext(Throws_Context.class,0);
-		}
-		public List<AnnotationContext> annotation() {
-			return getRuleContexts(AnnotationContext.class);
-		}
 		public ResultContext result() {
 			return getRuleContext(ResultContext.class,0);
 		}
 		public MethodDeclaratorContext methodDeclarator() {
 			return getRuleContext(MethodDeclaratorContext.class,0);
 		}
+		public Throws_Context throws_() {
+			return getRuleContext(Throws_Context.class,0);
+		}
 		public TypeParametersContext typeParameters() {
 			return getRuleContext(TypeParametersContext.class,0);
+		}
+		public List<AnnotationContext> annotation() {
+			return getRuleContexts(AnnotationContext.class);
 		}
 		public AnnotationContext annotation(int i) {
 			return getRuleContext(AnnotationContext.class,i);
@@ -4588,13 +4843,16 @@ public class Java8Parser extends Parser {
 			case Identifier:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1011); result();
-				setState(1012); methodDeclarator();
+				setState(1011);
+				result();
+				setState(1012);
+				methodDeclarator();
 				setState(1014);
 				_la = _input.LA(1);
 				if (_la==THROWS) {
 					{
-					setState(1013); throws_();
+					setState(1013);
+					throws_();
 					}
 				}
 
@@ -4603,27 +4861,32 @@ public class Java8Parser extends Parser {
 			case LT:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1016); typeParameters();
+				setState(1016);
+				typeParameters();
 				setState(1020);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==AT) {
 					{
 					{
-					setState(1017); annotation();
+					setState(1017);
+					annotation();
 					}
 					}
 					setState(1022);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(1023); result();
-				setState(1024); methodDeclarator();
+				setState(1023);
+				result();
+				setState(1024);
+				methodDeclarator();
 				setState(1026);
 				_la = _input.LA(1);
 				if (_la==THROWS) {
 					{
-					setState(1025); throws_();
+					setState(1025);
+					throws_();
 					}
 				}
 
@@ -4679,13 +4942,15 @@ public class Java8Parser extends Parser {
 			case Identifier:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1030); unannType();
+				setState(1030);
+				unannType();
 				}
 				break;
 			case VOID:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1031); match(VOID);
+				setState(1031);
+				match(VOID);
 				}
 				break;
 			default:
@@ -4732,22 +4997,27 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1034); match(Identifier);
-			setState(1035); match(LPAREN);
+			setState(1034);
+			match(Identifier);
+			setState(1035);
+			match(LPAREN);
 			setState(1037);
 			_la = _input.LA(1);
 			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FINAL) | (1L << FLOAT) | (1L << INT) | (1L << LONG) | (1L << SHORT))) != 0) || _la==Identifier || _la==AT) {
 				{
-				setState(1036); formalParameterList();
+				setState(1036);
+				formalParameterList();
 				}
 			}
 
-			setState(1039); match(RPAREN);
+			setState(1039);
+			match(RPAREN);
 			setState(1041);
 			_la = _input.LA(1);
 			if (_la==LBRACK || _la==AT) {
 				{
-				setState(1040); dims();
+				setState(1040);
+				dims();
 				}
 			}
 
@@ -4765,11 +5035,11 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class FormalParameterListContext extends ParserRuleContext {
-		public LastFormalParameterContext lastFormalParameter() {
-			return getRuleContext(LastFormalParameterContext.class,0);
-		}
 		public FormalParametersContext formalParameters() {
 			return getRuleContext(FormalParametersContext.class,0);
+		}
+		public LastFormalParameterContext lastFormalParameter() {
+			return getRuleContext(LastFormalParameterContext.class,0);
 		}
 		public FormalParameterListContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -4794,16 +5064,19 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1043); formalParameters();
-				setState(1044); match(COMMA);
-				setState(1045); lastFormalParameter();
+				setState(1043);
+				formalParameters();
+				setState(1044);
+				match(COMMA);
+				setState(1045);
+				lastFormalParameter();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1047); lastFormalParameter();
+				setState(1047);
+				lastFormalParameter();
 				}
 				break;
 			}
@@ -4823,11 +5096,11 @@ public class Java8Parser extends Parser {
 		public List<FormalParameterContext> formalParameter() {
 			return getRuleContexts(FormalParameterContext.class);
 		}
-		public ReceiverParameterContext receiverParameter() {
-			return getRuleContext(ReceiverParameterContext.class,0);
-		}
 		public FormalParameterContext formalParameter(int i) {
 			return getRuleContext(FormalParameterContext.class,i);
+		}
+		public ReceiverParameterContext receiverParameter() {
+			return getRuleContext(ReceiverParameterContext.class,0);
 		}
 		public FormalParametersContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -4853,7 +5126,8 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1050); formalParameter();
+				setState(1050);
+				formalParameter();
 				setState(1055);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,85,_ctx);
@@ -4861,8 +5135,10 @@ public class Java8Parser extends Parser {
 					if ( _alt==1 ) {
 						{
 						{
-						setState(1051); match(COMMA);
-						setState(1052); formalParameter();
+						setState(1051);
+						match(COMMA);
+						setState(1052);
+						formalParameter();
 						}
 						} 
 					}
@@ -4872,11 +5148,11 @@ public class Java8Parser extends Parser {
 				}
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1058); receiverParameter();
+				setState(1058);
+				receiverParameter();
 				setState(1063);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,86,_ctx);
@@ -4884,8 +5160,10 @@ public class Java8Parser extends Parser {
 					if ( _alt==1 ) {
 						{
 						{
-						setState(1059); match(COMMA);
-						setState(1060); formalParameter();
+						setState(1059);
+						match(COMMA);
+						setState(1060);
+						formalParameter();
 						}
 						} 
 					}
@@ -4909,17 +5187,17 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class FormalParameterContext extends ParserRuleContext {
-		public VariableModifierContext variableModifier(int i) {
-			return getRuleContext(VariableModifierContext.class,i);
-		}
 		public UnannTypeContext unannType() {
 			return getRuleContext(UnannTypeContext.class,0);
+		}
+		public VariableDeclaratorIdContext variableDeclaratorId() {
+			return getRuleContext(VariableDeclaratorIdContext.class,0);
 		}
 		public List<VariableModifierContext> variableModifier() {
 			return getRuleContexts(VariableModifierContext.class);
 		}
-		public VariableDeclaratorIdContext variableDeclaratorId() {
-			return getRuleContext(VariableDeclaratorIdContext.class,0);
+		public VariableModifierContext variableModifier(int i) {
+			return getRuleContext(VariableModifierContext.class,i);
 		}
 		public FormalParameterContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -4948,15 +5226,18 @@ public class Java8Parser extends Parser {
 			while (_la==FINAL || _la==AT) {
 				{
 				{
-				setState(1068); variableModifier();
+				setState(1068);
+				variableModifier();
 				}
 				}
 				setState(1073);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(1074); unannType();
-			setState(1075); variableDeclaratorId();
+			setState(1074);
+			unannType();
+			setState(1075);
+			variableDeclaratorId();
 			}
 		}
 		catch (RecognitionException re) {
@@ -4997,13 +5278,15 @@ public class Java8Parser extends Parser {
 			case AT:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1077); annotation();
+				setState(1077);
+				annotation();
 				}
 				break;
 			case FINAL:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1078); match(FINAL);
+				setState(1078);
+				match(FINAL);
 				}
 				break;
 			default:
@@ -5022,27 +5305,27 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class LastFormalParameterContext extends ParserRuleContext {
+		public UnannTypeContext unannType() {
+			return getRuleContext(UnannTypeContext.class,0);
+		}
+		public TerminalNode ELLIPSIS() { return getToken(Java8Parser.ELLIPSIS, 0); }
+		public VariableDeclaratorIdContext variableDeclaratorId() {
+			return getRuleContext(VariableDeclaratorIdContext.class,0);
+		}
+		public List<VariableModifierContext> variableModifier() {
+			return getRuleContexts(VariableModifierContext.class);
+		}
 		public VariableModifierContext variableModifier(int i) {
 			return getRuleContext(VariableModifierContext.class,i);
 		}
 		public List<AnnotationContext> annotation() {
 			return getRuleContexts(AnnotationContext.class);
 		}
-		public FormalParameterContext formalParameter() {
-			return getRuleContext(FormalParameterContext.class,0);
-		}
-		public TerminalNode ELLIPSIS() { return getToken(Java8Parser.ELLIPSIS, 0); }
-		public UnannTypeContext unannType() {
-			return getRuleContext(UnannTypeContext.class,0);
-		}
-		public List<VariableModifierContext> variableModifier() {
-			return getRuleContexts(VariableModifierContext.class);
-		}
-		public VariableDeclaratorIdContext variableDeclaratorId() {
-			return getRuleContext(VariableDeclaratorIdContext.class,0);
-		}
 		public AnnotationContext annotation(int i) {
 			return getRuleContext(AnnotationContext.class,i);
+		}
+		public FormalParameterContext formalParameter() {
+			return getRuleContext(FormalParameterContext.class,0);
 		}
 		public LastFormalParameterContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -5074,36 +5357,41 @@ public class Java8Parser extends Parser {
 				while (_la==FINAL || _la==AT) {
 					{
 					{
-					setState(1081); variableModifier();
+					setState(1081);
+					variableModifier();
 					}
 					}
 					setState(1086);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(1087); unannType();
+				setState(1087);
+				unannType();
 				setState(1091);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==AT) {
 					{
 					{
-					setState(1088); annotation();
+					setState(1088);
+					annotation();
 					}
 					}
 					setState(1093);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(1094); match(ELLIPSIS);
-				setState(1095); variableDeclaratorId();
+				setState(1094);
+				match(ELLIPSIS);
+				setState(1095);
+				variableDeclaratorId();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1097); formalParameter();
+				setState(1097);
+				formalParameter();
 				}
 				break;
 			}
@@ -5120,16 +5408,16 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class ReceiverParameterContext extends ParserRuleContext {
-		public TerminalNode Identifier() { return getToken(Java8Parser.Identifier, 0); }
-		public List<AnnotationContext> annotation() {
-			return getRuleContexts(AnnotationContext.class);
-		}
 		public UnannTypeContext unannType() {
 			return getRuleContext(UnannTypeContext.class,0);
+		}
+		public List<AnnotationContext> annotation() {
+			return getRuleContexts(AnnotationContext.class);
 		}
 		public AnnotationContext annotation(int i) {
 			return getRuleContext(AnnotationContext.class,i);
 		}
+		public TerminalNode Identifier() { return getToken(Java8Parser.Identifier, 0); }
 		public ReceiverParameterContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -5157,24 +5445,29 @@ public class Java8Parser extends Parser {
 			while (_la==AT) {
 				{
 				{
-				setState(1100); annotation();
+				setState(1100);
+				annotation();
 				}
 				}
 				setState(1105);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(1106); unannType();
+			setState(1106);
+			unannType();
 			setState(1109);
 			_la = _input.LA(1);
 			if (_la==Identifier) {
 				{
-				setState(1107); match(Identifier);
-				setState(1108); match(DOT);
+				setState(1107);
+				match(Identifier);
+				setState(1108);
+				match(DOT);
 				}
 			}
 
-			setState(1111); match(THIS);
+			setState(1111);
+			match(THIS);
 			}
 		}
 		catch (RecognitionException re) {
@@ -5212,8 +5505,10 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1113); match(THROWS);
-			setState(1114); exceptionTypeList();
+			setState(1113);
+			match(THROWS);
+			setState(1114);
+			exceptionTypeList();
 			}
 		}
 		catch (RecognitionException re) {
@@ -5255,15 +5550,18 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1116); exceptionType();
+			setState(1116);
+			exceptionType();
 			setState(1121);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==COMMA) {
 				{
 				{
-				setState(1117); match(COMMA);
-				setState(1118); exceptionType();
+				setState(1117);
+				match(COMMA);
+				setState(1118);
+				exceptionType();
 				}
 				}
 				setState(1123);
@@ -5284,11 +5582,11 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class ExceptionTypeContext extends ParserRuleContext {
-		public TypeVariableContext typeVariable() {
-			return getRuleContext(TypeVariableContext.class,0);
-		}
 		public ClassTypeContext classType() {
 			return getRuleContext(ClassTypeContext.class,0);
+		}
+		public TypeVariableContext typeVariable() {
+			return getRuleContext(TypeVariableContext.class,0);
 		}
 		public ExceptionTypeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -5313,14 +5611,15 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1124); classType();
+				setState(1124);
+				classType();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1125); typeVariable();
+				setState(1125);
+				typeVariable();
 				}
 				break;
 			}
@@ -5363,13 +5662,15 @@ public class Java8Parser extends Parser {
 			case LBRACE:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1128); block();
+				setState(1128);
+				block();
 				}
 				break;
 			case SEMI:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1129); match(SEMI);
+				setState(1129);
+				match(SEMI);
 				}
 				break;
 			default:
@@ -5411,7 +5712,8 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1132); block();
+			setState(1132);
+			block();
 			}
 		}
 		catch (RecognitionException re) {
@@ -5449,8 +5751,10 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1134); match(STATIC);
-			setState(1135); block();
+			setState(1134);
+			match(STATIC);
+			setState(1135);
+			block();
 			}
 		}
 		catch (RecognitionException re) {
@@ -5465,20 +5769,20 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class ConstructorDeclarationContext extends ParserRuleContext {
-		public ConstructorBodyContext constructorBody() {
-			return getRuleContext(ConstructorBodyContext.class,0);
-		}
-		public Throws_Context throws_() {
-			return getRuleContext(Throws_Context.class,0);
-		}
 		public ConstructorDeclaratorContext constructorDeclarator() {
 			return getRuleContext(ConstructorDeclaratorContext.class,0);
+		}
+		public ConstructorBodyContext constructorBody() {
+			return getRuleContext(ConstructorBodyContext.class,0);
 		}
 		public List<ConstructorModifierContext> constructorModifier() {
 			return getRuleContexts(ConstructorModifierContext.class);
 		}
 		public ConstructorModifierContext constructorModifier(int i) {
 			return getRuleContext(ConstructorModifierContext.class,i);
+		}
+		public Throws_Context throws_() {
+			return getRuleContext(Throws_Context.class,0);
 		}
 		public ConstructorDeclarationContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -5507,23 +5811,27 @@ public class Java8Parser extends Parser {
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << PRIVATE) | (1L << PROTECTED) | (1L << PUBLIC))) != 0) || _la==AT) {
 				{
 				{
-				setState(1137); constructorModifier();
+				setState(1137);
+				constructorModifier();
 				}
 				}
 				setState(1142);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(1143); constructorDeclarator();
+			setState(1143);
+			constructorDeclarator();
 			setState(1145);
 			_la = _input.LA(1);
 			if (_la==THROWS) {
 				{
-				setState(1144); throws_();
+				setState(1144);
+				throws_();
 				}
 			}
 
-			setState(1147); constructorBody();
+			setState(1147);
+			constructorBody();
 			}
 		}
 		catch (RecognitionException re) {
@@ -5564,25 +5872,29 @@ public class Java8Parser extends Parser {
 			case AT:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1149); annotation();
+				setState(1149);
+				annotation();
 				}
 				break;
 			case PUBLIC:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1150); match(PUBLIC);
+				setState(1150);
+				match(PUBLIC);
 				}
 				break;
 			case PROTECTED:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(1151); match(PROTECTED);
+				setState(1151);
+				match(PROTECTED);
 				}
 				break;
 			case PRIVATE:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(1152); match(PRIVATE);
+				setState(1152);
+				match(PRIVATE);
 				}
 				break;
 			default:
@@ -5604,11 +5916,11 @@ public class Java8Parser extends Parser {
 		public SimpleTypeNameContext simpleTypeName() {
 			return getRuleContext(SimpleTypeNameContext.class,0);
 		}
-		public FormalParameterListContext formalParameterList() {
-			return getRuleContext(FormalParameterListContext.class,0);
-		}
 		public TypeParametersContext typeParameters() {
 			return getRuleContext(TypeParametersContext.class,0);
+		}
+		public FormalParameterListContext formalParameterList() {
+			return getRuleContext(FormalParameterListContext.class,0);
 		}
 		public ConstructorDeclaratorContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -5635,21 +5947,26 @@ public class Java8Parser extends Parser {
 			_la = _input.LA(1);
 			if (_la==LT) {
 				{
-				setState(1155); typeParameters();
+				setState(1155);
+				typeParameters();
 				}
 			}
 
-			setState(1158); simpleTypeName();
-			setState(1159); match(LPAREN);
+			setState(1158);
+			simpleTypeName();
+			setState(1159);
+			match(LPAREN);
 			setState(1161);
 			_la = _input.LA(1);
 			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FINAL) | (1L << FLOAT) | (1L << INT) | (1L << LONG) | (1L << SHORT))) != 0) || _la==Identifier || _la==AT) {
 				{
-				setState(1160); formalParameterList();
+				setState(1160);
+				formalParameterList();
 				}
 			}
 
-			setState(1163); match(RPAREN);
+			setState(1163);
+			match(RPAREN);
 			}
 		}
 		catch (RecognitionException re) {
@@ -5685,7 +6002,8 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1165); match(Identifier);
+			setState(1165);
+			match(Identifier);
 			}
 		}
 		catch (RecognitionException re) {
@@ -5727,12 +6045,14 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1167); match(LBRACE);
+			setState(1167);
+			match(LBRACE);
 			setState(1169);
 			switch ( getInterpreter().adaptivePredict(_input,103,_ctx) ) {
 			case 1:
 				{
-				setState(1168); explicitConstructorInvocation();
+				setState(1168);
+				explicitConstructorInvocation();
 				}
 				break;
 			}
@@ -5740,11 +6060,13 @@ public class Java8Parser extends Parser {
 			_la = _input.LA(1);
 			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << ABSTRACT) | (1L << ASSERT) | (1L << BOOLEAN) | (1L << BREAK) | (1L << BYTE) | (1L << CHAR) | (1L << CLASS) | (1L << CONTINUE) | (1L << DO) | (1L << DOUBLE) | (1L << ENUM) | (1L << FINAL) | (1L << FLOAT) | (1L << FOR) | (1L << IF) | (1L << INT) | (1L << LONG) | (1L << NEW) | (1L << PRIVATE) | (1L << PROTECTED) | (1L << PUBLIC) | (1L << RETURN) | (1L << SHORT) | (1L << STATIC) | (1L << STRICTFP) | (1L << SUPER) | (1L << SWITCH) | (1L << SYNCHRONIZED) | (1L << THIS) | (1L << THROW) | (1L << TRY) | (1L << VOID) | (1L << WHILE) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN) | (1L << LBRACE) | (1L << SEMI))) != 0) || ((((_la - 79)) & ~0x3f) == 0 && ((1L << (_la - 79)) & ((1L << (INC - 79)) | (1L << (DEC - 79)) | (1L << (Identifier - 79)) | (1L << (AT - 79)))) != 0)) {
 				{
-				setState(1171); blockStatements();
+				setState(1171);
+				blockStatements();
 				}
 			}
 
-			setState(1174); match(RBRACE);
+			setState(1174);
+			match(RBRACE);
 			}
 		}
 		catch (RecognitionException re) {
@@ -5762,14 +6084,14 @@ public class Java8Parser extends Parser {
 		public TypeArgumentsContext typeArguments() {
 			return getRuleContext(TypeArgumentsContext.class,0);
 		}
-		public PrimaryContext primary() {
-			return getRuleContext(PrimaryContext.class,0);
+		public ArgumentListContext argumentList() {
+			return getRuleContext(ArgumentListContext.class,0);
 		}
 		public ExpressionNameContext expressionName() {
 			return getRuleContext(ExpressionNameContext.class,0);
 		}
-		public ArgumentListContext argumentList() {
-			return getRuleContext(ArgumentListContext.class,0);
+		public PrimaryContext primary() {
+			return getRuleContext(PrimaryContext.class,0);
 		}
 		public ExplicitConstructorInvocationContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -5799,25 +6121,30 @@ public class Java8Parser extends Parser {
 				_la = _input.LA(1);
 				if (_la==LT) {
 					{
-					setState(1176); typeArguments();
+					setState(1176);
+					typeArguments();
 					}
 				}
 
-				setState(1179); match(THIS);
-				setState(1180); match(LPAREN);
+				setState(1179);
+				match(THIS);
+				setState(1180);
+				match(LPAREN);
 				setState(1182);
 				_la = _input.LA(1);
 				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FLOAT) | (1L << INT) | (1L << LONG) | (1L << NEW) | (1L << SHORT) | (1L << SUPER) | (1L << THIS) | (1L << VOID) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN))) != 0) || ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & ((1L << (BANG - 69)) | (1L << (TILDE - 69)) | (1L << (INC - 69)) | (1L << (DEC - 69)) | (1L << (ADD - 69)) | (1L << (SUB - 69)) | (1L << (Identifier - 69)) | (1L << (AT - 69)))) != 0)) {
 					{
-					setState(1181); argumentList();
+					setState(1181);
+					argumentList();
 					}
 				}
 
-				setState(1184); match(RPAREN);
-				setState(1185); match(SEMI);
+				setState(1184);
+				match(RPAREN);
+				setState(1185);
+				match(SEMI);
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
@@ -5825,78 +6152,98 @@ public class Java8Parser extends Parser {
 				_la = _input.LA(1);
 				if (_la==LT) {
 					{
-					setState(1186); typeArguments();
+					setState(1186);
+					typeArguments();
 					}
 				}
 
-				setState(1189); match(SUPER);
-				setState(1190); match(LPAREN);
+				setState(1189);
+				match(SUPER);
+				setState(1190);
+				match(LPAREN);
 				setState(1192);
 				_la = _input.LA(1);
 				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FLOAT) | (1L << INT) | (1L << LONG) | (1L << NEW) | (1L << SHORT) | (1L << SUPER) | (1L << THIS) | (1L << VOID) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN))) != 0) || ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & ((1L << (BANG - 69)) | (1L << (TILDE - 69)) | (1L << (INC - 69)) | (1L << (DEC - 69)) | (1L << (ADD - 69)) | (1L << (SUB - 69)) | (1L << (Identifier - 69)) | (1L << (AT - 69)))) != 0)) {
 					{
-					setState(1191); argumentList();
+					setState(1191);
+					argumentList();
 					}
 				}
 
-				setState(1194); match(RPAREN);
-				setState(1195); match(SEMI);
+				setState(1194);
+				match(RPAREN);
+				setState(1195);
+				match(SEMI);
 				}
 				break;
-
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(1196); expressionName();
-				setState(1197); match(DOT);
+				setState(1196);
+				expressionName();
+				setState(1197);
+				match(DOT);
 				setState(1199);
 				_la = _input.LA(1);
 				if (_la==LT) {
 					{
-					setState(1198); typeArguments();
+					setState(1198);
+					typeArguments();
 					}
 				}
 
-				setState(1201); match(SUPER);
-				setState(1202); match(LPAREN);
+				setState(1201);
+				match(SUPER);
+				setState(1202);
+				match(LPAREN);
 				setState(1204);
 				_la = _input.LA(1);
 				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FLOAT) | (1L << INT) | (1L << LONG) | (1L << NEW) | (1L << SHORT) | (1L << SUPER) | (1L << THIS) | (1L << VOID) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN))) != 0) || ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & ((1L << (BANG - 69)) | (1L << (TILDE - 69)) | (1L << (INC - 69)) | (1L << (DEC - 69)) | (1L << (ADD - 69)) | (1L << (SUB - 69)) | (1L << (Identifier - 69)) | (1L << (AT - 69)))) != 0)) {
 					{
-					setState(1203); argumentList();
+					setState(1203);
+					argumentList();
 					}
 				}
 
-				setState(1206); match(RPAREN);
-				setState(1207); match(SEMI);
+				setState(1206);
+				match(RPAREN);
+				setState(1207);
+				match(SEMI);
 				}
 				break;
-
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(1209); primary();
-				setState(1210); match(DOT);
+				setState(1209);
+				primary();
+				setState(1210);
+				match(DOT);
 				setState(1212);
 				_la = _input.LA(1);
 				if (_la==LT) {
 					{
-					setState(1211); typeArguments();
+					setState(1211);
+					typeArguments();
 					}
 				}
 
-				setState(1214); match(SUPER);
-				setState(1215); match(LPAREN);
+				setState(1214);
+				match(SUPER);
+				setState(1215);
+				match(LPAREN);
 				setState(1217);
 				_la = _input.LA(1);
 				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FLOAT) | (1L << INT) | (1L << LONG) | (1L << NEW) | (1L << SHORT) | (1L << SUPER) | (1L << THIS) | (1L << VOID) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN))) != 0) || ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & ((1L << (BANG - 69)) | (1L << (TILDE - 69)) | (1L << (INC - 69)) | (1L << (DEC - 69)) | (1L << (ADD - 69)) | (1L << (SUB - 69)) | (1L << (Identifier - 69)) | (1L << (AT - 69)))) != 0)) {
 					{
-					setState(1216); argumentList();
+					setState(1216);
+					argumentList();
 					}
 				}
 
-				setState(1219); match(RPAREN);
-				setState(1220); match(SEMI);
+				setState(1219);
+				match(RPAREN);
+				setState(1220);
+				match(SEMI);
 				}
 				break;
 			}
@@ -5953,24 +6300,29 @@ public class Java8Parser extends Parser {
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << ABSTRACT) | (1L << FINAL) | (1L << PRIVATE) | (1L << PROTECTED) | (1L << PUBLIC) | (1L << STATIC) | (1L << STRICTFP))) != 0) || _la==AT) {
 				{
 				{
-				setState(1224); classModifier();
+				setState(1224);
+				classModifier();
 				}
 				}
 				setState(1229);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(1230); match(ENUM);
-			setState(1231); match(Identifier);
+			setState(1230);
+			match(ENUM);
+			setState(1231);
+			match(Identifier);
 			setState(1233);
 			_la = _input.LA(1);
 			if (_la==IMPLEMENTS) {
 				{
-				setState(1232); superinterfaces();
+				setState(1232);
+				superinterfaces();
 				}
 			}
 
-			setState(1235); enumBody();
+			setState(1235);
+			enumBody();
 			}
 		}
 		catch (RecognitionException re) {
@@ -5985,11 +6337,11 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class EnumBodyContext extends ParserRuleContext {
-		public EnumBodyDeclarationsContext enumBodyDeclarations() {
-			return getRuleContext(EnumBodyDeclarationsContext.class,0);
-		}
 		public EnumConstantListContext enumConstantList() {
 			return getRuleContext(EnumConstantListContext.class,0);
+		}
+		public EnumBodyDeclarationsContext enumBodyDeclarations() {
+			return getRuleContext(EnumBodyDeclarationsContext.class,0);
 		}
 		public EnumBodyContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -6012,12 +6364,14 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1237); match(LBRACE);
+			setState(1237);
+			match(LBRACE);
 			setState(1239);
 			_la = _input.LA(1);
 			if (_la==Identifier || _la==AT) {
 				{
-				setState(1238); enumConstantList();
+				setState(1238);
+				enumConstantList();
 				}
 			}
 
@@ -6025,7 +6379,8 @@ public class Java8Parser extends Parser {
 			_la = _input.LA(1);
 			if (_la==COMMA) {
 				{
-				setState(1241); match(COMMA);
+				setState(1241);
+				match(COMMA);
 				}
 			}
 
@@ -6033,11 +6388,13 @@ public class Java8Parser extends Parser {
 			_la = _input.LA(1);
 			if (_la==SEMI) {
 				{
-				setState(1244); enumBodyDeclarations();
+				setState(1244);
+				enumBodyDeclarations();
 				}
 			}
 
-			setState(1247); match(RBRACE);
+			setState(1247);
+			match(RBRACE);
 			}
 		}
 		catch (RecognitionException re) {
@@ -6079,7 +6436,8 @@ public class Java8Parser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1249); enumConstant();
+			setState(1249);
+			enumConstant();
 			setState(1254);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,119,_ctx);
@@ -6087,8 +6445,10 @@ public class Java8Parser extends Parser {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(1250); match(COMMA);
-					setState(1251); enumConstant();
+					setState(1250);
+					match(COMMA);
+					setState(1251);
+					enumConstant();
 					}
 					} 
 				}
@@ -6111,14 +6471,14 @@ public class Java8Parser extends Parser {
 
 	public static class EnumConstantContext extends ParserRuleContext {
 		public TerminalNode Identifier() { return getToken(Java8Parser.Identifier, 0); }
-		public ClassBodyContext classBody() {
-			return getRuleContext(ClassBodyContext.class,0);
-		}
 		public List<EnumConstantModifierContext> enumConstantModifier() {
 			return getRuleContexts(EnumConstantModifierContext.class);
 		}
 		public EnumConstantModifierContext enumConstantModifier(int i) {
 			return getRuleContext(EnumConstantModifierContext.class,i);
+		}
+		public ClassBodyContext classBody() {
+			return getRuleContext(ClassBodyContext.class,0);
 		}
 		public ArgumentListContext argumentList() {
 			return getRuleContext(ArgumentListContext.class,0);
@@ -6150,28 +6510,33 @@ public class Java8Parser extends Parser {
 			while (_la==AT) {
 				{
 				{
-				setState(1257); enumConstantModifier();
+				setState(1257);
+				enumConstantModifier();
 				}
 				}
 				setState(1262);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(1263); match(Identifier);
+			setState(1263);
+			match(Identifier);
 			setState(1269);
 			_la = _input.LA(1);
 			if (_la==LPAREN) {
 				{
-				setState(1264); match(LPAREN);
+				setState(1264);
+				match(LPAREN);
 				setState(1266);
 				_la = _input.LA(1);
 				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FLOAT) | (1L << INT) | (1L << LONG) | (1L << NEW) | (1L << SHORT) | (1L << SUPER) | (1L << THIS) | (1L << VOID) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN))) != 0) || ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & ((1L << (BANG - 69)) | (1L << (TILDE - 69)) | (1L << (INC - 69)) | (1L << (DEC - 69)) | (1L << (ADD - 69)) | (1L << (SUB - 69)) | (1L << (Identifier - 69)) | (1L << (AT - 69)))) != 0)) {
 					{
-					setState(1265); argumentList();
+					setState(1265);
+					argumentList();
 					}
 				}
 
-				setState(1268); match(RPAREN);
+				setState(1268);
+				match(RPAREN);
 				}
 			}
 
@@ -6179,7 +6544,8 @@ public class Java8Parser extends Parser {
 			_la = _input.LA(1);
 			if (_la==LBRACE) {
 				{
-				setState(1271); classBody();
+				setState(1271);
+				classBody();
 				}
 			}
 
@@ -6220,7 +6586,8 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1274); annotation();
+			setState(1274);
+			annotation();
 			}
 		}
 		catch (RecognitionException re) {
@@ -6262,14 +6629,16 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1276); match(SEMI);
+			setState(1276);
+			match(SEMI);
 			setState(1280);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << ABSTRACT) | (1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << CLASS) | (1L << DOUBLE) | (1L << ENUM) | (1L << FINAL) | (1L << FLOAT) | (1L << INT) | (1L << INTERFACE) | (1L << LONG) | (1L << NATIVE) | (1L << PRIVATE) | (1L << PROTECTED) | (1L << PUBLIC) | (1L << SHORT) | (1L << STATIC) | (1L << STRICTFP) | (1L << SYNCHRONIZED) | (1L << TRANSIENT) | (1L << VOID) | (1L << VOLATILE) | (1L << LBRACE) | (1L << SEMI))) != 0) || ((((_la - 68)) & ~0x3f) == 0 && ((1L << (_la - 68)) & ((1L << (LT - 68)) | (1L << (Identifier - 68)) | (1L << (AT - 68)))) != 0)) {
 				{
 				{
-				setState(1277); classBodyDeclaration();
+				setState(1277);
+				classBodyDeclaration();
 				}
 				}
 				setState(1282);
@@ -6319,14 +6688,15 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1283); normalInterfaceDeclaration();
+				setState(1283);
+				normalInterfaceDeclaration();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1284); annotationTypeDeclaration();
+				setState(1284);
+				annotationTypeDeclaration();
 				}
 				break;
 			}
@@ -6386,20 +6756,24 @@ public class Java8Parser extends Parser {
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << ABSTRACT) | (1L << PRIVATE) | (1L << PROTECTED) | (1L << PUBLIC) | (1L << STATIC) | (1L << STRICTFP))) != 0) || _la==AT) {
 				{
 				{
-				setState(1287); interfaceModifier();
+				setState(1287);
+				interfaceModifier();
 				}
 				}
 				setState(1292);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(1293); match(INTERFACE);
-			setState(1294); match(Identifier);
+			setState(1293);
+			match(INTERFACE);
+			setState(1294);
+			match(Identifier);
 			setState(1296);
 			_la = _input.LA(1);
 			if (_la==LT) {
 				{
-				setState(1295); typeParameters();
+				setState(1295);
+				typeParameters();
 				}
 			}
 
@@ -6407,11 +6781,13 @@ public class Java8Parser extends Parser {
 			_la = _input.LA(1);
 			if (_la==EXTENDS) {
 				{
-				setState(1298); extendsInterfaces();
+				setState(1298);
+				extendsInterfaces();
 				}
 			}
 
-			setState(1301); interfaceBody();
+			setState(1301);
+			interfaceBody();
 			}
 		}
 		catch (RecognitionException re) {
@@ -6452,43 +6828,50 @@ public class Java8Parser extends Parser {
 			case AT:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1303); annotation();
+				setState(1303);
+				annotation();
 				}
 				break;
 			case PUBLIC:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1304); match(PUBLIC);
+				setState(1304);
+				match(PUBLIC);
 				}
 				break;
 			case PROTECTED:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(1305); match(PROTECTED);
+				setState(1305);
+				match(PROTECTED);
 				}
 				break;
 			case PRIVATE:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(1306); match(PRIVATE);
+				setState(1306);
+				match(PRIVATE);
 				}
 				break;
 			case ABSTRACT:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(1307); match(ABSTRACT);
+				setState(1307);
+				match(ABSTRACT);
 				}
 				break;
 			case STATIC:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(1308); match(STATIC);
+				setState(1308);
+				match(STATIC);
 				}
 				break;
 			case STRICTFP:
 				enterOuterAlt(_localctx, 7);
 				{
-				setState(1309); match(STRICTFP);
+				setState(1309);
+				match(STRICTFP);
 				}
 				break;
 			default:
@@ -6530,8 +6913,10 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1312); match(EXTENDS);
-			setState(1313); interfaceTypeList();
+			setState(1312);
+			match(EXTENDS);
+			setState(1313);
+			interfaceTypeList();
 			}
 		}
 		catch (RecognitionException re) {
@@ -6546,11 +6931,11 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class InterfaceBodyContext extends ParserRuleContext {
-		public InterfaceMemberDeclarationContext interfaceMemberDeclaration(int i) {
-			return getRuleContext(InterfaceMemberDeclarationContext.class,i);
-		}
 		public List<InterfaceMemberDeclarationContext> interfaceMemberDeclaration() {
 			return getRuleContexts(InterfaceMemberDeclarationContext.class);
+		}
+		public InterfaceMemberDeclarationContext interfaceMemberDeclaration(int i) {
+			return getRuleContext(InterfaceMemberDeclarationContext.class,i);
 		}
 		public InterfaceBodyContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -6573,21 +6958,24 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1315); match(LBRACE);
+			setState(1315);
+			match(LBRACE);
 			setState(1319);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << ABSTRACT) | (1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << CLASS) | (1L << DEFAULT) | (1L << DOUBLE) | (1L << ENUM) | (1L << FINAL) | (1L << FLOAT) | (1L << INT) | (1L << INTERFACE) | (1L << LONG) | (1L << PRIVATE) | (1L << PROTECTED) | (1L << PUBLIC) | (1L << SHORT) | (1L << STATIC) | (1L << STRICTFP) | (1L << VOID) | (1L << SEMI))) != 0) || ((((_la - 68)) & ~0x3f) == 0 && ((1L << (_la - 68)) & ((1L << (LT - 68)) | (1L << (Identifier - 68)) | (1L << (AT - 68)))) != 0)) {
 				{
 				{
-				setState(1316); interfaceMemberDeclaration();
+				setState(1316);
+				interfaceMemberDeclaration();
 				}
 				}
 				setState(1321);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(1322); match(RBRACE);
+			setState(1322);
+			match(RBRACE);
 			}
 		}
 		catch (RecognitionException re) {
@@ -6602,17 +6990,17 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class InterfaceMemberDeclarationContext extends ParserRuleContext {
-		public ClassDeclarationContext classDeclaration() {
-			return getRuleContext(ClassDeclarationContext.class,0);
-		}
-		public InterfaceDeclarationContext interfaceDeclaration() {
-			return getRuleContext(InterfaceDeclarationContext.class,0);
-		}
 		public ConstantDeclarationContext constantDeclaration() {
 			return getRuleContext(ConstantDeclarationContext.class,0);
 		}
 		public InterfaceMethodDeclarationContext interfaceMethodDeclaration() {
 			return getRuleContext(InterfaceMethodDeclarationContext.class,0);
+		}
+		public ClassDeclarationContext classDeclaration() {
+			return getRuleContext(ClassDeclarationContext.class,0);
+		}
+		public InterfaceDeclarationContext interfaceDeclaration() {
+			return getRuleContext(InterfaceDeclarationContext.class,0);
 		}
 		public InterfaceMemberDeclarationContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -6637,35 +7025,36 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1324); constantDeclaration();
+				setState(1324);
+				constantDeclaration();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1325); interfaceMethodDeclaration();
+				setState(1325);
+				interfaceMethodDeclaration();
 				}
 				break;
-
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(1326); classDeclaration();
+				setState(1326);
+				classDeclaration();
 				}
 				break;
-
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(1327); interfaceDeclaration();
+				setState(1327);
+				interfaceDeclaration();
 				}
 				break;
-
 			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(1328); match(SEMI);
+				setState(1328);
+				match(SEMI);
 				}
 				break;
 			}
@@ -6682,17 +7071,17 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class ConstantDeclarationContext extends ParserRuleContext {
-		public ConstantModifierContext constantModifier(int i) {
-			return getRuleContext(ConstantModifierContext.class,i);
-		}
 		public UnannTypeContext unannType() {
 			return getRuleContext(UnannTypeContext.class,0);
+		}
+		public VariableDeclaratorListContext variableDeclaratorList() {
+			return getRuleContext(VariableDeclaratorListContext.class,0);
 		}
 		public List<ConstantModifierContext> constantModifier() {
 			return getRuleContexts(ConstantModifierContext.class);
 		}
-		public VariableDeclaratorListContext variableDeclaratorList() {
-			return getRuleContext(VariableDeclaratorListContext.class,0);
+		public ConstantModifierContext constantModifier(int i) {
+			return getRuleContext(ConstantModifierContext.class,i);
 		}
 		public ConstantDeclarationContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -6721,16 +7110,20 @@ public class Java8Parser extends Parser {
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << FINAL) | (1L << PUBLIC) | (1L << STATIC))) != 0) || _la==AT) {
 				{
 				{
-				setState(1331); constantModifier();
+				setState(1331);
+				constantModifier();
 				}
 				}
 				setState(1336);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(1337); unannType();
-			setState(1338); variableDeclaratorList();
-			setState(1339); match(SEMI);
+			setState(1337);
+			unannType();
+			setState(1338);
+			variableDeclaratorList();
+			setState(1339);
+			match(SEMI);
 			}
 		}
 		catch (RecognitionException re) {
@@ -6771,25 +7164,29 @@ public class Java8Parser extends Parser {
 			case AT:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1341); annotation();
+				setState(1341);
+				annotation();
 				}
 				break;
 			case PUBLIC:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1342); match(PUBLIC);
+				setState(1342);
+				match(PUBLIC);
 				}
 				break;
 			case STATIC:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(1343); match(STATIC);
+				setState(1343);
+				match(STATIC);
 				}
 				break;
 			case FINAL:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(1344); match(FINAL);
+				setState(1344);
+				match(FINAL);
 				}
 				break;
 			default:
@@ -6808,14 +7205,14 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class InterfaceMethodDeclarationContext extends ParserRuleContext {
+		public MethodHeaderContext methodHeader() {
+			return getRuleContext(MethodHeaderContext.class,0);
+		}
 		public MethodBodyContext methodBody() {
 			return getRuleContext(MethodBodyContext.class,0);
 		}
 		public List<InterfaceMethodModifierContext> interfaceMethodModifier() {
 			return getRuleContexts(InterfaceMethodModifierContext.class);
-		}
-		public MethodHeaderContext methodHeader() {
-			return getRuleContext(MethodHeaderContext.class,0);
 		}
 		public InterfaceMethodModifierContext interfaceMethodModifier(int i) {
 			return getRuleContext(InterfaceMethodModifierContext.class,i);
@@ -6847,15 +7244,18 @@ public class Java8Parser extends Parser {
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << ABSTRACT) | (1L << DEFAULT) | (1L << PUBLIC) | (1L << STATIC) | (1L << STRICTFP))) != 0) || _la==AT) {
 				{
 				{
-				setState(1347); interfaceMethodModifier();
+				setState(1347);
+				interfaceMethodModifier();
 				}
 				}
 				setState(1352);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(1353); methodHeader();
-			setState(1354); methodBody();
+			setState(1353);
+			methodHeader();
+			setState(1354);
+			methodBody();
 			}
 		}
 		catch (RecognitionException re) {
@@ -6896,37 +7296,43 @@ public class Java8Parser extends Parser {
 			case AT:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1356); annotation();
+				setState(1356);
+				annotation();
 				}
 				break;
 			case PUBLIC:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1357); match(PUBLIC);
+				setState(1357);
+				match(PUBLIC);
 				}
 				break;
 			case ABSTRACT:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(1358); match(ABSTRACT);
+				setState(1358);
+				match(ABSTRACT);
 				}
 				break;
 			case DEFAULT:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(1359); match(DEFAULT);
+				setState(1359);
+				match(DEFAULT);
 				}
 				break;
 			case STATIC:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(1360); match(STATIC);
+				setState(1360);
+				match(STATIC);
 				}
 				break;
 			case STRICTFP:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(1361); match(STRICTFP);
+				setState(1361);
+				match(STRICTFP);
 				}
 				break;
 			default:
@@ -6983,7 +7389,8 @@ public class Java8Parser extends Parser {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(1364); interfaceModifier();
+					setState(1364);
+					interfaceModifier();
 					}
 					} 
 				}
@@ -6991,10 +7398,14 @@ public class Java8Parser extends Parser {
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,136,_ctx);
 			}
-			setState(1370); match(AT);
-			setState(1371); match(INTERFACE);
-			setState(1372); match(Identifier);
-			setState(1373); annotationTypeBody();
+			setState(1370);
+			match(AT);
+			setState(1371);
+			match(INTERFACE);
+			setState(1372);
+			match(Identifier);
+			setState(1373);
+			annotationTypeBody();
 			}
 		}
 		catch (RecognitionException re) {
@@ -7036,21 +7447,24 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1375); match(LBRACE);
+			setState(1375);
+			match(LBRACE);
 			setState(1379);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << ABSTRACT) | (1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << CLASS) | (1L << DOUBLE) | (1L << ENUM) | (1L << FINAL) | (1L << FLOAT) | (1L << INT) | (1L << INTERFACE) | (1L << LONG) | (1L << PRIVATE) | (1L << PROTECTED) | (1L << PUBLIC) | (1L << SHORT) | (1L << STATIC) | (1L << STRICTFP) | (1L << SEMI))) != 0) || _la==Identifier || _la==AT) {
 				{
 				{
-				setState(1376); annotationTypeMemberDeclaration();
+				setState(1376);
+				annotationTypeMemberDeclaration();
 				}
 				}
 				setState(1381);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(1382); match(RBRACE);
+			setState(1382);
+			match(RBRACE);
 			}
 		}
 		catch (RecognitionException re) {
@@ -7065,17 +7479,17 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class AnnotationTypeMemberDeclarationContext extends ParserRuleContext {
-		public ClassDeclarationContext classDeclaration() {
-			return getRuleContext(ClassDeclarationContext.class,0);
-		}
 		public AnnotationTypeElementDeclarationContext annotationTypeElementDeclaration() {
 			return getRuleContext(AnnotationTypeElementDeclarationContext.class,0);
 		}
-		public InterfaceDeclarationContext interfaceDeclaration() {
-			return getRuleContext(InterfaceDeclarationContext.class,0);
-		}
 		public ConstantDeclarationContext constantDeclaration() {
 			return getRuleContext(ConstantDeclarationContext.class,0);
+		}
+		public ClassDeclarationContext classDeclaration() {
+			return getRuleContext(ClassDeclarationContext.class,0);
+		}
+		public InterfaceDeclarationContext interfaceDeclaration() {
+			return getRuleContext(InterfaceDeclarationContext.class,0);
 		}
 		public AnnotationTypeMemberDeclarationContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -7100,35 +7514,36 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1384); annotationTypeElementDeclaration();
+				setState(1384);
+				annotationTypeElementDeclaration();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1385); constantDeclaration();
+				setState(1385);
+				constantDeclaration();
 				}
 				break;
-
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(1386); classDeclaration();
+				setState(1386);
+				classDeclaration();
 				}
 				break;
-
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(1387); interfaceDeclaration();
+				setState(1387);
+				interfaceDeclaration();
 				}
 				break;
-
 			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(1388); match(SEMI);
+				setState(1388);
+				match(SEMI);
 				}
 				break;
 			}
@@ -7145,21 +7560,21 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class AnnotationTypeElementDeclarationContext extends ParserRuleContext {
-		public TerminalNode Identifier() { return getToken(Java8Parser.Identifier, 0); }
 		public UnannTypeContext unannType() {
 			return getRuleContext(UnannTypeContext.class,0);
+		}
+		public TerminalNode Identifier() { return getToken(Java8Parser.Identifier, 0); }
+		public List<AnnotationTypeElementModifierContext> annotationTypeElementModifier() {
+			return getRuleContexts(AnnotationTypeElementModifierContext.class);
+		}
+		public AnnotationTypeElementModifierContext annotationTypeElementModifier(int i) {
+			return getRuleContext(AnnotationTypeElementModifierContext.class,i);
 		}
 		public DimsContext dims() {
 			return getRuleContext(DimsContext.class,0);
 		}
 		public DefaultValueContext defaultValue() {
 			return getRuleContext(DefaultValueContext.class,0);
-		}
-		public AnnotationTypeElementModifierContext annotationTypeElementModifier(int i) {
-			return getRuleContext(AnnotationTypeElementModifierContext.class,i);
-		}
-		public List<AnnotationTypeElementModifierContext> annotationTypeElementModifier() {
-			return getRuleContexts(AnnotationTypeElementModifierContext.class);
 		}
 		public AnnotationTypeElementDeclarationContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -7188,22 +7603,28 @@ public class Java8Parser extends Parser {
 			while (_la==ABSTRACT || _la==PUBLIC || _la==AT) {
 				{
 				{
-				setState(1391); annotationTypeElementModifier();
+				setState(1391);
+				annotationTypeElementModifier();
 				}
 				}
 				setState(1396);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(1397); unannType();
-			setState(1398); match(Identifier);
-			setState(1399); match(LPAREN);
-			setState(1400); match(RPAREN);
+			setState(1397);
+			unannType();
+			setState(1398);
+			match(Identifier);
+			setState(1399);
+			match(LPAREN);
+			setState(1400);
+			match(RPAREN);
 			setState(1402);
 			_la = _input.LA(1);
 			if (_la==LBRACK || _la==AT) {
 				{
-				setState(1401); dims();
+				setState(1401);
+				dims();
 				}
 			}
 
@@ -7211,11 +7632,13 @@ public class Java8Parser extends Parser {
 			_la = _input.LA(1);
 			if (_la==DEFAULT) {
 				{
-				setState(1404); defaultValue();
+				setState(1404);
+				defaultValue();
 				}
 			}
 
-			setState(1407); match(SEMI);
+			setState(1407);
+			match(SEMI);
 			}
 		}
 		catch (RecognitionException re) {
@@ -7256,19 +7679,22 @@ public class Java8Parser extends Parser {
 			case AT:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1409); annotation();
+				setState(1409);
+				annotation();
 				}
 				break;
 			case PUBLIC:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1410); match(PUBLIC);
+				setState(1410);
+				match(PUBLIC);
 				}
 				break;
 			case ABSTRACT:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(1411); match(ABSTRACT);
+				setState(1411);
+				match(ABSTRACT);
 				}
 				break;
 			default:
@@ -7310,8 +7736,10 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1414); match(DEFAULT);
-			setState(1415); elementValue();
+			setState(1414);
+			match(DEFAULT);
+			setState(1415);
+			elementValue();
 			}
 		}
 		catch (RecognitionException re) {
@@ -7358,21 +7786,22 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1417); normalAnnotation();
+				setState(1417);
+				normalAnnotation();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1418); markerAnnotation();
+				setState(1418);
+				markerAnnotation();
 				}
 				break;
-
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(1419); singleElementAnnotation();
+				setState(1419);
+				singleElementAnnotation();
 				}
 				break;
 			}
@@ -7389,11 +7818,11 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class NormalAnnotationContext extends ParserRuleContext {
-		public ElementValuePairListContext elementValuePairList() {
-			return getRuleContext(ElementValuePairListContext.class,0);
-		}
 		public TypeNameContext typeName() {
 			return getRuleContext(TypeNameContext.class,0);
+		}
+		public ElementValuePairListContext elementValuePairList() {
+			return getRuleContext(ElementValuePairListContext.class,0);
 		}
 		public NormalAnnotationContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -7416,18 +7845,23 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1422); match(AT);
-			setState(1423); typeName();
-			setState(1424); match(LPAREN);
+			setState(1422);
+			match(AT);
+			setState(1423);
+			typeName();
+			setState(1424);
+			match(LPAREN);
 			setState(1426);
 			_la = _input.LA(1);
 			if (_la==Identifier) {
 				{
-				setState(1425); elementValuePairList();
+				setState(1425);
+				elementValuePairList();
 				}
 			}
 
-			setState(1428); match(RPAREN);
+			setState(1428);
+			match(RPAREN);
 			}
 		}
 		catch (RecognitionException re) {
@@ -7442,11 +7876,11 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class ElementValuePairListContext extends ParserRuleContext {
-		public ElementValuePairContext elementValuePair(int i) {
-			return getRuleContext(ElementValuePairContext.class,i);
-		}
 		public List<ElementValuePairContext> elementValuePair() {
 			return getRuleContexts(ElementValuePairContext.class);
+		}
+		public ElementValuePairContext elementValuePair(int i) {
+			return getRuleContext(ElementValuePairContext.class,i);
 		}
 		public ElementValuePairListContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -7469,15 +7903,18 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1430); elementValuePair();
+			setState(1430);
+			elementValuePair();
 			setState(1435);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==COMMA) {
 				{
 				{
-				setState(1431); match(COMMA);
-				setState(1432); elementValuePair();
+				setState(1431);
+				match(COMMA);
+				setState(1432);
+				elementValuePair();
 				}
 				}
 				setState(1437);
@@ -7522,9 +7959,12 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1438); match(Identifier);
-			setState(1439); match(ASSIGN);
-			setState(1440); elementValue();
+			setState(1438);
+			match(Identifier);
+			setState(1439);
+			match(ASSIGN);
+			setState(1440);
+			elementValue();
 			}
 		}
 		catch (RecognitionException re) {
@@ -7571,21 +8011,22 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1442); conditionalExpression();
+				setState(1442);
+				conditionalExpression();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1443); elementValueArrayInitializer();
+				setState(1443);
+				elementValueArrayInitializer();
 				}
 				break;
-
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(1444); annotation();
+				setState(1444);
+				annotation();
 				}
 				break;
 			}
@@ -7626,12 +8067,14 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1447); match(LBRACE);
+			setState(1447);
+			match(LBRACE);
 			setState(1449);
 			_la = _input.LA(1);
 			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FLOAT) | (1L << INT) | (1L << LONG) | (1L << NEW) | (1L << SHORT) | (1L << SUPER) | (1L << THIS) | (1L << VOID) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN) | (1L << LBRACE))) != 0) || ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & ((1L << (BANG - 69)) | (1L << (TILDE - 69)) | (1L << (INC - 69)) | (1L << (DEC - 69)) | (1L << (ADD - 69)) | (1L << (SUB - 69)) | (1L << (Identifier - 69)) | (1L << (AT - 69)))) != 0)) {
 				{
-				setState(1448); elementValueList();
+				setState(1448);
+				elementValueList();
 				}
 			}
 
@@ -7639,11 +8082,13 @@ public class Java8Parser extends Parser {
 			_la = _input.LA(1);
 			if (_la==COMMA) {
 				{
-				setState(1451); match(COMMA);
+				setState(1451);
+				match(COMMA);
 				}
 			}
 
-			setState(1454); match(RBRACE);
+			setState(1454);
+			match(RBRACE);
 			}
 		}
 		catch (RecognitionException re) {
@@ -7658,11 +8103,11 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class ElementValueListContext extends ParserRuleContext {
-		public ElementValueContext elementValue(int i) {
-			return getRuleContext(ElementValueContext.class,i);
-		}
 		public List<ElementValueContext> elementValue() {
 			return getRuleContexts(ElementValueContext.class);
+		}
+		public ElementValueContext elementValue(int i) {
+			return getRuleContext(ElementValueContext.class,i);
 		}
 		public ElementValueListContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -7685,7 +8130,8 @@ public class Java8Parser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1456); elementValue();
+			setState(1456);
+			elementValue();
 			setState(1461);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,149,_ctx);
@@ -7693,8 +8139,10 @@ public class Java8Parser extends Parser {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(1457); match(COMMA);
-					setState(1458); elementValue();
+					setState(1457);
+					match(COMMA);
+					setState(1458);
+					elementValue();
 					}
 					} 
 				}
@@ -7739,8 +8187,10 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1464); match(AT);
-			setState(1465); typeName();
+			setState(1464);
+			match(AT);
+			setState(1465);
+			typeName();
 			}
 		}
 		catch (RecognitionException re) {
@@ -7781,11 +8231,16 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1467); match(AT);
-			setState(1468); typeName();
-			setState(1469); match(LPAREN);
-			setState(1470); elementValue();
-			setState(1471); match(RPAREN);
+			setState(1467);
+			match(AT);
+			setState(1468);
+			typeName();
+			setState(1469);
+			match(LPAREN);
+			setState(1470);
+			elementValue();
+			setState(1471);
+			match(RPAREN);
 			}
 		}
 		catch (RecognitionException re) {
@@ -7824,12 +8279,14 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1473); match(LBRACE);
+			setState(1473);
+			match(LBRACE);
 			setState(1475);
 			_la = _input.LA(1);
 			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FLOAT) | (1L << INT) | (1L << LONG) | (1L << NEW) | (1L << SHORT) | (1L << SUPER) | (1L << THIS) | (1L << VOID) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN) | (1L << LBRACE))) != 0) || ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & ((1L << (BANG - 69)) | (1L << (TILDE - 69)) | (1L << (INC - 69)) | (1L << (DEC - 69)) | (1L << (ADD - 69)) | (1L << (SUB - 69)) | (1L << (Identifier - 69)) | (1L << (AT - 69)))) != 0)) {
 				{
-				setState(1474); variableInitializerList();
+				setState(1474);
+				variableInitializerList();
 				}
 			}
 
@@ -7837,11 +8294,13 @@ public class Java8Parser extends Parser {
 			_la = _input.LA(1);
 			if (_la==COMMA) {
 				{
-				setState(1477); match(COMMA);
+				setState(1477);
+				match(COMMA);
 				}
 			}
 
-			setState(1480); match(RBRACE);
+			setState(1480);
+			match(RBRACE);
 			}
 		}
 		catch (RecognitionException re) {
@@ -7883,7 +8342,8 @@ public class Java8Parser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1482); variableInitializer();
+			setState(1482);
+			variableInitializer();
 			setState(1487);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,152,_ctx);
@@ -7891,8 +8351,10 @@ public class Java8Parser extends Parser {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(1483); match(COMMA);
-					setState(1484); variableInitializer();
+					setState(1483);
+					match(COMMA);
+					setState(1484);
+					variableInitializer();
 					}
 					} 
 				}
@@ -7938,16 +8400,19 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1490); match(LBRACE);
+			setState(1490);
+			match(LBRACE);
 			setState(1492);
 			_la = _input.LA(1);
 			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << ABSTRACT) | (1L << ASSERT) | (1L << BOOLEAN) | (1L << BREAK) | (1L << BYTE) | (1L << CHAR) | (1L << CLASS) | (1L << CONTINUE) | (1L << DO) | (1L << DOUBLE) | (1L << ENUM) | (1L << FINAL) | (1L << FLOAT) | (1L << FOR) | (1L << IF) | (1L << INT) | (1L << LONG) | (1L << NEW) | (1L << PRIVATE) | (1L << PROTECTED) | (1L << PUBLIC) | (1L << RETURN) | (1L << SHORT) | (1L << STATIC) | (1L << STRICTFP) | (1L << SUPER) | (1L << SWITCH) | (1L << SYNCHRONIZED) | (1L << THIS) | (1L << THROW) | (1L << TRY) | (1L << VOID) | (1L << WHILE) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN) | (1L << LBRACE) | (1L << SEMI))) != 0) || ((((_la - 79)) & ~0x3f) == 0 && ((1L << (_la - 79)) & ((1L << (INC - 79)) | (1L << (DEC - 79)) | (1L << (Identifier - 79)) | (1L << (AT - 79)))) != 0)) {
 				{
-				setState(1491); blockStatements();
+				setState(1491);
+				blockStatements();
 				}
 			}
 
-			setState(1494); match(RBRACE);
+			setState(1494);
+			match(RBRACE);
 			}
 		}
 		catch (RecognitionException re) {
@@ -7989,14 +8454,16 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1496); blockStatement();
+			setState(1496);
+			blockStatement();
 			setState(1500);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << ABSTRACT) | (1L << ASSERT) | (1L << BOOLEAN) | (1L << BREAK) | (1L << BYTE) | (1L << CHAR) | (1L << CLASS) | (1L << CONTINUE) | (1L << DO) | (1L << DOUBLE) | (1L << ENUM) | (1L << FINAL) | (1L << FLOAT) | (1L << FOR) | (1L << IF) | (1L << INT) | (1L << LONG) | (1L << NEW) | (1L << PRIVATE) | (1L << PROTECTED) | (1L << PUBLIC) | (1L << RETURN) | (1L << SHORT) | (1L << STATIC) | (1L << STRICTFP) | (1L << SUPER) | (1L << SWITCH) | (1L << SYNCHRONIZED) | (1L << THIS) | (1L << THROW) | (1L << TRY) | (1L << VOID) | (1L << WHILE) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN) | (1L << LBRACE) | (1L << SEMI))) != 0) || ((((_la - 79)) & ~0x3f) == 0 && ((1L << (_la - 79)) & ((1L << (INC - 79)) | (1L << (DEC - 79)) | (1L << (Identifier - 79)) | (1L << (AT - 79)))) != 0)) {
 				{
 				{
-				setState(1497); blockStatement();
+				setState(1497);
+				blockStatement();
 				}
 				}
 				setState(1502);
@@ -8017,14 +8484,14 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class BlockStatementContext extends ParserRuleContext {
+		public LocalVariableDeclarationStatementContext localVariableDeclarationStatement() {
+			return getRuleContext(LocalVariableDeclarationStatementContext.class,0);
+		}
 		public ClassDeclarationContext classDeclaration() {
 			return getRuleContext(ClassDeclarationContext.class,0);
 		}
 		public StatementContext statement() {
 			return getRuleContext(StatementContext.class,0);
-		}
-		public LocalVariableDeclarationStatementContext localVariableDeclarationStatement() {
-			return getRuleContext(LocalVariableDeclarationStatementContext.class,0);
 		}
 		public BlockStatementContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -8049,21 +8516,22 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1503); localVariableDeclarationStatement();
+				setState(1503);
+				localVariableDeclarationStatement();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1504); classDeclaration();
+				setState(1504);
+				classDeclaration();
 				}
 				break;
-
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(1505); statement();
+				setState(1505);
+				statement();
 				}
 				break;
 			}
@@ -8103,8 +8571,10 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1508); localVariableDeclaration();
-			setState(1509); match(SEMI);
+			setState(1508);
+			localVariableDeclaration();
+			setState(1509);
+			match(SEMI);
 			}
 		}
 		catch (RecognitionException re) {
@@ -8119,17 +8589,17 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class LocalVariableDeclarationContext extends ParserRuleContext {
-		public VariableModifierContext variableModifier(int i) {
-			return getRuleContext(VariableModifierContext.class,i);
-		}
 		public UnannTypeContext unannType() {
 			return getRuleContext(UnannTypeContext.class,0);
+		}
+		public VariableDeclaratorListContext variableDeclaratorList() {
+			return getRuleContext(VariableDeclaratorListContext.class,0);
 		}
 		public List<VariableModifierContext> variableModifier() {
 			return getRuleContexts(VariableModifierContext.class);
 		}
-		public VariableDeclaratorListContext variableDeclaratorList() {
-			return getRuleContext(VariableDeclaratorListContext.class,0);
+		public VariableModifierContext variableModifier(int i) {
+			return getRuleContext(VariableModifierContext.class,i);
 		}
 		public LocalVariableDeclarationContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -8158,15 +8628,18 @@ public class Java8Parser extends Parser {
 			while (_la==FINAL || _la==AT) {
 				{
 				{
-				setState(1511); variableModifier();
+				setState(1511);
+				variableModifier();
 				}
 				}
 				setState(1516);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(1517); unannType();
-			setState(1518); variableDeclaratorList();
+			setState(1517);
+			unannType();
+			setState(1518);
+			variableDeclaratorList();
 			}
 		}
 		catch (RecognitionException re) {
@@ -8181,11 +8654,14 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class StatementContext extends ParserRuleContext {
-		public IfThenStatementContext ifThenStatement() {
-			return getRuleContext(IfThenStatementContext.class,0);
+		public StatementWithoutTrailingSubstatementContext statementWithoutTrailingSubstatement() {
+			return getRuleContext(StatementWithoutTrailingSubstatementContext.class,0);
 		}
 		public LabeledStatementContext labeledStatement() {
 			return getRuleContext(LabeledStatementContext.class,0);
+		}
+		public IfThenStatementContext ifThenStatement() {
+			return getRuleContext(IfThenStatementContext.class,0);
 		}
 		public IfThenElseStatementContext ifThenElseStatement() {
 			return getRuleContext(IfThenElseStatementContext.class,0);
@@ -8195,9 +8671,6 @@ public class Java8Parser extends Parser {
 		}
 		public ForStatementContext forStatement() {
 			return getRuleContext(ForStatementContext.class,0);
-		}
-		public StatementWithoutTrailingSubstatementContext statementWithoutTrailingSubstatement() {
-			return getRuleContext(StatementWithoutTrailingSubstatementContext.class,0);
 		}
 		public StatementContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -8222,42 +8695,43 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1520); statementWithoutTrailingSubstatement();
+				setState(1520);
+				statementWithoutTrailingSubstatement();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1521); labeledStatement();
+				setState(1521);
+				labeledStatement();
 				}
 				break;
-
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(1522); ifThenStatement();
+				setState(1522);
+				ifThenStatement();
 				}
 				break;
-
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(1523); ifThenElseStatement();
+				setState(1523);
+				ifThenElseStatement();
 				}
 				break;
-
 			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(1524); whileStatement();
+				setState(1524);
+				whileStatement();
 				}
 				break;
-
 			case 6:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(1525); forStatement();
+				setState(1525);
+				forStatement();
 				}
 				break;
 			}
@@ -8274,20 +8748,20 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class StatementNoShortIfContext extends ParserRuleContext {
-		public ForStatementNoShortIfContext forStatementNoShortIf() {
-			return getRuleContext(ForStatementNoShortIfContext.class,0);
-		}
-		public WhileStatementNoShortIfContext whileStatementNoShortIf() {
-			return getRuleContext(WhileStatementNoShortIfContext.class,0);
-		}
-		public IfThenElseStatementNoShortIfContext ifThenElseStatementNoShortIf() {
-			return getRuleContext(IfThenElseStatementNoShortIfContext.class,0);
+		public StatementWithoutTrailingSubstatementContext statementWithoutTrailingSubstatement() {
+			return getRuleContext(StatementWithoutTrailingSubstatementContext.class,0);
 		}
 		public LabeledStatementNoShortIfContext labeledStatementNoShortIf() {
 			return getRuleContext(LabeledStatementNoShortIfContext.class,0);
 		}
-		public StatementWithoutTrailingSubstatementContext statementWithoutTrailingSubstatement() {
-			return getRuleContext(StatementWithoutTrailingSubstatementContext.class,0);
+		public IfThenElseStatementNoShortIfContext ifThenElseStatementNoShortIf() {
+			return getRuleContext(IfThenElseStatementNoShortIfContext.class,0);
+		}
+		public WhileStatementNoShortIfContext whileStatementNoShortIf() {
+			return getRuleContext(WhileStatementNoShortIfContext.class,0);
+		}
+		public ForStatementNoShortIfContext forStatementNoShortIf() {
+			return getRuleContext(ForStatementNoShortIfContext.class,0);
 		}
 		public StatementNoShortIfContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -8312,35 +8786,36 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1528); statementWithoutTrailingSubstatement();
+				setState(1528);
+				statementWithoutTrailingSubstatement();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1529); labeledStatementNoShortIf();
+				setState(1529);
+				labeledStatementNoShortIf();
 				}
 				break;
-
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(1530); ifThenElseStatementNoShortIf();
+				setState(1530);
+				ifThenElseStatementNoShortIf();
 				}
 				break;
-
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(1531); whileStatementNoShortIf();
+				setState(1531);
+				whileStatementNoShortIf();
 				}
 				break;
-
 			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(1532); forStatementNoShortIf();
+				setState(1532);
+				forStatementNoShortIf();
 				}
 				break;
 			}
@@ -8357,41 +8832,41 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class StatementWithoutTrailingSubstatementContext extends ParserRuleContext {
+		public BlockContext block() {
+			return getRuleContext(BlockContext.class,0);
+		}
+		public EmptyStatementContext emptyStatement() {
+			return getRuleContext(EmptyStatementContext.class,0);
+		}
 		public ExpressionStatementContext expressionStatement() {
 			return getRuleContext(ExpressionStatementContext.class,0);
+		}
+		public AssertStatementContext assertStatement() {
+			return getRuleContext(AssertStatementContext.class,0);
+		}
+		public SwitchStatementContext switchStatement() {
+			return getRuleContext(SwitchStatementContext.class,0);
+		}
+		public DoStatementContext doStatement() {
+			return getRuleContext(DoStatementContext.class,0);
+		}
+		public BreakStatementContext breakStatement() {
+			return getRuleContext(BreakStatementContext.class,0);
+		}
+		public ContinueStatementContext continueStatement() {
+			return getRuleContext(ContinueStatementContext.class,0);
+		}
+		public ReturnStatementContext returnStatement() {
+			return getRuleContext(ReturnStatementContext.class,0);
+		}
+		public SynchronizedStatementContext synchronizedStatement() {
+			return getRuleContext(SynchronizedStatementContext.class,0);
 		}
 		public ThrowStatementContext throwStatement() {
 			return getRuleContext(ThrowStatementContext.class,0);
 		}
 		public TryStatementContext tryStatement() {
 			return getRuleContext(TryStatementContext.class,0);
-		}
-		public DoStatementContext doStatement() {
-			return getRuleContext(DoStatementContext.class,0);
-		}
-		public SwitchStatementContext switchStatement() {
-			return getRuleContext(SwitchStatementContext.class,0);
-		}
-		public SynchronizedStatementContext synchronizedStatement() {
-			return getRuleContext(SynchronizedStatementContext.class,0);
-		}
-		public AssertStatementContext assertStatement() {
-			return getRuleContext(AssertStatementContext.class,0);
-		}
-		public ContinueStatementContext continueStatement() {
-			return getRuleContext(ContinueStatementContext.class,0);
-		}
-		public BlockContext block() {
-			return getRuleContext(BlockContext.class,0);
-		}
-		public ReturnStatementContext returnStatement() {
-			return getRuleContext(ReturnStatementContext.class,0);
-		}
-		public EmptyStatementContext emptyStatement() {
-			return getRuleContext(EmptyStatementContext.class,0);
-		}
-		public BreakStatementContext breakStatement() {
-			return getRuleContext(BreakStatementContext.class,0);
 		}
 		public StatementWithoutTrailingSubstatementContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -8416,13 +8891,15 @@ public class Java8Parser extends Parser {
 			case LBRACE:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1535); block();
+				setState(1535);
+				block();
 				}
 				break;
 			case SEMI:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1536); emptyStatement();
+				setState(1536);
+				emptyStatement();
 				}
 				break;
 			case BOOLEAN:
@@ -8450,61 +8927,71 @@ public class Java8Parser extends Parser {
 			case AT:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(1537); expressionStatement();
+				setState(1537);
+				expressionStatement();
 				}
 				break;
 			case ASSERT:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(1538); assertStatement();
+				setState(1538);
+				assertStatement();
 				}
 				break;
 			case SWITCH:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(1539); switchStatement();
+				setState(1539);
+				switchStatement();
 				}
 				break;
 			case DO:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(1540); doStatement();
+				setState(1540);
+				doStatement();
 				}
 				break;
 			case BREAK:
 				enterOuterAlt(_localctx, 7);
 				{
-				setState(1541); breakStatement();
+				setState(1541);
+				breakStatement();
 				}
 				break;
 			case CONTINUE:
 				enterOuterAlt(_localctx, 8);
 				{
-				setState(1542); continueStatement();
+				setState(1542);
+				continueStatement();
 				}
 				break;
 			case RETURN:
 				enterOuterAlt(_localctx, 9);
 				{
-				setState(1543); returnStatement();
+				setState(1543);
+				returnStatement();
 				}
 				break;
 			case SYNCHRONIZED:
 				enterOuterAlt(_localctx, 10);
 				{
-				setState(1544); synchronizedStatement();
+				setState(1544);
+				synchronizedStatement();
 				}
 				break;
 			case THROW:
 				enterOuterAlt(_localctx, 11);
 				{
-				setState(1545); throwStatement();
+				setState(1545);
+				throwStatement();
 				}
 				break;
 			case TRY:
 				enterOuterAlt(_localctx, 12);
 				{
-				setState(1546); tryStatement();
+				setState(1546);
+				tryStatement();
 				}
 				break;
 			default:
@@ -8543,7 +9030,8 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1549); match(SEMI);
+			setState(1549);
+			match(SEMI);
 			}
 		}
 		catch (RecognitionException re) {
@@ -8582,9 +9070,12 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1551); match(Identifier);
-			setState(1552); match(COLON);
-			setState(1553); statement();
+			setState(1551);
+			match(Identifier);
+			setState(1552);
+			match(COLON);
+			setState(1553);
+			statement();
 			}
 		}
 		catch (RecognitionException re) {
@@ -8623,9 +9114,12 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1555); match(Identifier);
-			setState(1556); match(COLON);
-			setState(1557); statementNoShortIf();
+			setState(1555);
+			match(Identifier);
+			setState(1556);
+			match(COLON);
+			setState(1557);
+			statementNoShortIf();
 			}
 		}
 		catch (RecognitionException re) {
@@ -8663,8 +9157,10 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1559); statementExpression();
-			setState(1560); match(SEMI);
+			setState(1559);
+			statementExpression();
+			setState(1560);
+			match(SEMI);
 			}
 		}
 		catch (RecognitionException re) {
@@ -8679,23 +9175,23 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class StatementExpressionContext extends ParserRuleContext {
-		public PostDecrementExpressionContext postDecrementExpression() {
-			return getRuleContext(PostDecrementExpressionContext.class,0);
-		}
-		public PostIncrementExpressionContext postIncrementExpression() {
-			return getRuleContext(PostIncrementExpressionContext.class,0);
-		}
 		public AssignmentContext assignment() {
 			return getRuleContext(AssignmentContext.class,0);
-		}
-		public MethodInvocationContext methodInvocation() {
-			return getRuleContext(MethodInvocationContext.class,0);
 		}
 		public PreIncrementExpressionContext preIncrementExpression() {
 			return getRuleContext(PreIncrementExpressionContext.class,0);
 		}
 		public PreDecrementExpressionContext preDecrementExpression() {
 			return getRuleContext(PreDecrementExpressionContext.class,0);
+		}
+		public PostIncrementExpressionContext postIncrementExpression() {
+			return getRuleContext(PostIncrementExpressionContext.class,0);
+		}
+		public PostDecrementExpressionContext postDecrementExpression() {
+			return getRuleContext(PostDecrementExpressionContext.class,0);
+		}
+		public MethodInvocationContext methodInvocation() {
+			return getRuleContext(MethodInvocationContext.class,0);
 		}
 		public ClassInstanceCreationExpressionContext classInstanceCreationExpression() {
 			return getRuleContext(ClassInstanceCreationExpressionContext.class,0);
@@ -8723,49 +9219,50 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1562); assignment();
+				setState(1562);
+				assignment();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1563); preIncrementExpression();
+				setState(1563);
+				preIncrementExpression();
 				}
 				break;
-
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(1564); preDecrementExpression();
+				setState(1564);
+				preDecrementExpression();
 				}
 				break;
-
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(1565); postIncrementExpression();
+				setState(1565);
+				postIncrementExpression();
 				}
 				break;
-
 			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(1566); postDecrementExpression();
+				setState(1566);
+				postDecrementExpression();
 				}
 				break;
-
 			case 6:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(1567); methodInvocation();
+				setState(1567);
+				methodInvocation();
 				}
 				break;
-
 			case 7:
 				enterOuterAlt(_localctx, 7);
 				{
-				setState(1568); classInstanceCreationExpression();
+				setState(1568);
+				classInstanceCreationExpression();
 				}
 				break;
 			}
@@ -8782,11 +9279,11 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class IfThenStatementContext extends ParserRuleContext {
-		public StatementContext statement() {
-			return getRuleContext(StatementContext.class,0);
-		}
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
+		}
+		public StatementContext statement() {
+			return getRuleContext(StatementContext.class,0);
 		}
 		public IfThenStatementContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -8808,11 +9305,16 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1571); match(IF);
-			setState(1572); match(LPAREN);
-			setState(1573); expression();
-			setState(1574); match(RPAREN);
-			setState(1575); statement();
+			setState(1571);
+			match(IF);
+			setState(1572);
+			match(LPAREN);
+			setState(1573);
+			expression();
+			setState(1574);
+			match(RPAREN);
+			setState(1575);
+			statement();
 			}
 		}
 		catch (RecognitionException re) {
@@ -8827,14 +9329,14 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class IfThenElseStatementContext extends ParserRuleContext {
+		public ExpressionContext expression() {
+			return getRuleContext(ExpressionContext.class,0);
+		}
 		public StatementNoShortIfContext statementNoShortIf() {
 			return getRuleContext(StatementNoShortIfContext.class,0);
 		}
 		public StatementContext statement() {
 			return getRuleContext(StatementContext.class,0);
-		}
-		public ExpressionContext expression() {
-			return getRuleContext(ExpressionContext.class,0);
 		}
 		public IfThenElseStatementContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -8856,13 +9358,20 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1577); match(IF);
-			setState(1578); match(LPAREN);
-			setState(1579); expression();
-			setState(1580); match(RPAREN);
-			setState(1581); statementNoShortIf();
-			setState(1582); match(ELSE);
-			setState(1583); statement();
+			setState(1577);
+			match(IF);
+			setState(1578);
+			match(LPAREN);
+			setState(1579);
+			expression();
+			setState(1580);
+			match(RPAREN);
+			setState(1581);
+			statementNoShortIf();
+			setState(1582);
+			match(ELSE);
+			setState(1583);
+			statement();
 			}
 		}
 		catch (RecognitionException re) {
@@ -8877,14 +9386,14 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class IfThenElseStatementNoShortIfContext extends ParserRuleContext {
+		public ExpressionContext expression() {
+			return getRuleContext(ExpressionContext.class,0);
+		}
 		public List<StatementNoShortIfContext> statementNoShortIf() {
 			return getRuleContexts(StatementNoShortIfContext.class);
 		}
 		public StatementNoShortIfContext statementNoShortIf(int i) {
 			return getRuleContext(StatementNoShortIfContext.class,i);
-		}
-		public ExpressionContext expression() {
-			return getRuleContext(ExpressionContext.class,0);
 		}
 		public IfThenElseStatementNoShortIfContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -8906,13 +9415,20 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1585); match(IF);
-			setState(1586); match(LPAREN);
-			setState(1587); expression();
-			setState(1588); match(RPAREN);
-			setState(1589); statementNoShortIf();
-			setState(1590); match(ELSE);
-			setState(1591); statementNoShortIf();
+			setState(1585);
+			match(IF);
+			setState(1586);
+			match(LPAREN);
+			setState(1587);
+			expression();
+			setState(1588);
+			match(RPAREN);
+			setState(1589);
+			statementNoShortIf();
+			setState(1590);
+			match(ELSE);
+			setState(1591);
+			statementNoShortIf();
 			}
 		}
 		catch (RecognitionException re) {
@@ -8927,11 +9443,11 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class AssertStatementContext extends ParserRuleContext {
-		public ExpressionContext expression(int i) {
-			return getRuleContext(ExpressionContext.class,i);
-		}
 		public List<ExpressionContext> expression() {
 			return getRuleContexts(ExpressionContext.class);
+		}
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
 		}
 		public AssertStatementContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -8956,20 +9472,27 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1593); match(ASSERT);
-				setState(1594); expression();
-				setState(1595); match(SEMI);
+				setState(1593);
+				match(ASSERT);
+				setState(1594);
+				expression();
+				setState(1595);
+				match(SEMI);
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1597); match(ASSERT);
-				setState(1598); expression();
-				setState(1599); match(COLON);
-				setState(1600); expression();
-				setState(1601); match(SEMI);
+				setState(1597);
+				match(ASSERT);
+				setState(1598);
+				expression();
+				setState(1599);
+				match(COLON);
+				setState(1600);
+				expression();
+				setState(1601);
+				match(SEMI);
 				}
 				break;
 			}
@@ -8986,11 +9509,11 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class SwitchStatementContext extends ParserRuleContext {
-		public SwitchBlockContext switchBlock() {
-			return getRuleContext(SwitchBlockContext.class,0);
-		}
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
+		}
+		public SwitchBlockContext switchBlock() {
+			return getRuleContext(SwitchBlockContext.class,0);
 		}
 		public SwitchStatementContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -9012,11 +9535,16 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1605); match(SWITCH);
-			setState(1606); match(LPAREN);
-			setState(1607); expression();
-			setState(1608); match(RPAREN);
-			setState(1609); switchBlock();
+			setState(1605);
+			match(SWITCH);
+			setState(1606);
+			match(LPAREN);
+			setState(1607);
+			expression();
+			setState(1608);
+			match(RPAREN);
+			setState(1609);
+			switchBlock();
 			}
 		}
 		catch (RecognitionException re) {
@@ -9031,14 +9559,14 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class SwitchBlockContext extends ParserRuleContext {
+		public List<SwitchBlockStatementGroupContext> switchBlockStatementGroup() {
+			return getRuleContexts(SwitchBlockStatementGroupContext.class);
+		}
 		public SwitchBlockStatementGroupContext switchBlockStatementGroup(int i) {
 			return getRuleContext(SwitchBlockStatementGroupContext.class,i);
 		}
 		public List<SwitchLabelContext> switchLabel() {
 			return getRuleContexts(SwitchLabelContext.class);
-		}
-		public List<SwitchBlockStatementGroupContext> switchBlockStatementGroup() {
-			return getRuleContexts(SwitchBlockStatementGroupContext.class);
 		}
 		public SwitchLabelContext switchLabel(int i) {
 			return getRuleContext(SwitchLabelContext.class,i);
@@ -9065,7 +9593,8 @@ public class Java8Parser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1611); match(LBRACE);
+			setState(1611);
+			match(LBRACE);
 			setState(1615);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,162,_ctx);
@@ -9073,7 +9602,8 @@ public class Java8Parser extends Parser {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(1612); switchBlockStatementGroup();
+					setState(1612);
+					switchBlockStatementGroup();
 					}
 					} 
 				}
@@ -9087,14 +9617,16 @@ public class Java8Parser extends Parser {
 			while (_la==CASE || _la==DEFAULT) {
 				{
 				{
-				setState(1618); switchLabel();
+				setState(1618);
+				switchLabel();
 				}
 				}
 				setState(1623);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(1624); match(RBRACE);
+			setState(1624);
+			match(RBRACE);
 			}
 		}
 		catch (RecognitionException re) {
@@ -9135,8 +9667,10 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1626); switchLabels();
-			setState(1627); blockStatements();
+			setState(1626);
+			switchLabels();
+			setState(1627);
+			blockStatements();
 			}
 		}
 		catch (RecognitionException re) {
@@ -9178,14 +9712,16 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1629); switchLabel();
+			setState(1629);
+			switchLabel();
 			setState(1633);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==CASE || _la==DEFAULT) {
 				{
 				{
-				setState(1630); switchLabel();
+				setState(1630);
+				switchLabel();
 				}
 				}
 				setState(1635);
@@ -9235,26 +9771,32 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1636); match(CASE);
-				setState(1637); constantExpression();
-				setState(1638); match(COLON);
+				setState(1636);
+				match(CASE);
+				setState(1637);
+				constantExpression();
+				setState(1638);
+				match(COLON);
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1640); match(CASE);
-				setState(1641); enumConstantName();
-				setState(1642); match(COLON);
+				setState(1640);
+				match(CASE);
+				setState(1641);
+				enumConstantName();
+				setState(1642);
+				match(COLON);
 				}
 				break;
-
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(1644); match(DEFAULT);
-				setState(1645); match(COLON);
+				setState(1644);
+				match(DEFAULT);
+				setState(1645);
+				match(COLON);
 				}
 				break;
 			}
@@ -9292,7 +9834,8 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1648); match(Identifier);
+			setState(1648);
+			match(Identifier);
 			}
 		}
 		catch (RecognitionException re) {
@@ -9307,11 +9850,11 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class WhileStatementContext extends ParserRuleContext {
-		public StatementContext statement() {
-			return getRuleContext(StatementContext.class,0);
-		}
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
+		}
+		public StatementContext statement() {
+			return getRuleContext(StatementContext.class,0);
 		}
 		public WhileStatementContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -9333,11 +9876,16 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1650); match(WHILE);
-			setState(1651); match(LPAREN);
-			setState(1652); expression();
-			setState(1653); match(RPAREN);
-			setState(1654); statement();
+			setState(1650);
+			match(WHILE);
+			setState(1651);
+			match(LPAREN);
+			setState(1652);
+			expression();
+			setState(1653);
+			match(RPAREN);
+			setState(1654);
+			statement();
 			}
 		}
 		catch (RecognitionException re) {
@@ -9352,11 +9900,11 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class WhileStatementNoShortIfContext extends ParserRuleContext {
-		public StatementNoShortIfContext statementNoShortIf() {
-			return getRuleContext(StatementNoShortIfContext.class,0);
-		}
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
+		}
+		public StatementNoShortIfContext statementNoShortIf() {
+			return getRuleContext(StatementNoShortIfContext.class,0);
 		}
 		public WhileStatementNoShortIfContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -9378,11 +9926,16 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1656); match(WHILE);
-			setState(1657); match(LPAREN);
-			setState(1658); expression();
-			setState(1659); match(RPAREN);
-			setState(1660); statementNoShortIf();
+			setState(1656);
+			match(WHILE);
+			setState(1657);
+			match(LPAREN);
+			setState(1658);
+			expression();
+			setState(1659);
+			match(RPAREN);
+			setState(1660);
+			statementNoShortIf();
 			}
 		}
 		catch (RecognitionException re) {
@@ -9423,13 +9976,20 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1662); match(DO);
-			setState(1663); statement();
-			setState(1664); match(WHILE);
-			setState(1665); match(LPAREN);
-			setState(1666); expression();
-			setState(1667); match(RPAREN);
-			setState(1668); match(SEMI);
+			setState(1662);
+			match(DO);
+			setState(1663);
+			statement();
+			setState(1664);
+			match(WHILE);
+			setState(1665);
+			match(LPAREN);
+			setState(1666);
+			expression();
+			setState(1667);
+			match(RPAREN);
+			setState(1668);
+			match(SEMI);
 			}
 		}
 		catch (RecognitionException re) {
@@ -9473,14 +10033,15 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1670); basicForStatement();
+				setState(1670);
+				basicForStatement();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1671); enhancedForStatement();
+				setState(1671);
+				enhancedForStatement();
 				}
 				break;
 			}
@@ -9526,14 +10087,15 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1674); basicForStatementNoShortIf();
+				setState(1674);
+				basicForStatementNoShortIf();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1675); enhancedForStatementNoShortIf();
+				setState(1675);
+				enhancedForStatementNoShortIf();
 				}
 				break;
 			}
@@ -9550,17 +10112,17 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class BasicForStatementContext extends ParserRuleContext {
-		public ForUpdateContext forUpdate() {
-			return getRuleContext(ForUpdateContext.class,0);
+		public StatementContext statement() {
+			return getRuleContext(StatementContext.class,0);
 		}
 		public ForInitContext forInit() {
 			return getRuleContext(ForInitContext.class,0);
 		}
-		public StatementContext statement() {
-			return getRuleContext(StatementContext.class,0);
-		}
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
+		}
+		public ForUpdateContext forUpdate() {
+			return getRuleContext(ForUpdateContext.class,0);
 		}
 		public BasicForStatementContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -9583,36 +10145,45 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1678); match(FOR);
-			setState(1679); match(LPAREN);
+			setState(1678);
+			match(FOR);
+			setState(1679);
+			match(LPAREN);
 			setState(1681);
 			_la = _input.LA(1);
 			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FINAL) | (1L << FLOAT) | (1L << INT) | (1L << LONG) | (1L << NEW) | (1L << SHORT) | (1L << SUPER) | (1L << THIS) | (1L << VOID) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN))) != 0) || ((((_la - 79)) & ~0x3f) == 0 && ((1L << (_la - 79)) & ((1L << (INC - 79)) | (1L << (DEC - 79)) | (1L << (Identifier - 79)) | (1L << (AT - 79)))) != 0)) {
 				{
-				setState(1680); forInit();
+				setState(1680);
+				forInit();
 				}
 			}
 
-			setState(1683); match(SEMI);
+			setState(1683);
+			match(SEMI);
 			setState(1685);
 			_la = _input.LA(1);
 			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FLOAT) | (1L << INT) | (1L << LONG) | (1L << NEW) | (1L << SHORT) | (1L << SUPER) | (1L << THIS) | (1L << VOID) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN))) != 0) || ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & ((1L << (BANG - 69)) | (1L << (TILDE - 69)) | (1L << (INC - 69)) | (1L << (DEC - 69)) | (1L << (ADD - 69)) | (1L << (SUB - 69)) | (1L << (Identifier - 69)) | (1L << (AT - 69)))) != 0)) {
 				{
-				setState(1684); expression();
+				setState(1684);
+				expression();
 				}
 			}
 
-			setState(1687); match(SEMI);
+			setState(1687);
+			match(SEMI);
 			setState(1689);
 			_la = _input.LA(1);
 			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FLOAT) | (1L << INT) | (1L << LONG) | (1L << NEW) | (1L << SHORT) | (1L << SUPER) | (1L << THIS) | (1L << VOID) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN))) != 0) || ((((_la - 79)) & ~0x3f) == 0 && ((1L << (_la - 79)) & ((1L << (INC - 79)) | (1L << (DEC - 79)) | (1L << (Identifier - 79)) | (1L << (AT - 79)))) != 0)) {
 				{
-				setState(1688); forUpdate();
+				setState(1688);
+				forUpdate();
 				}
 			}
 
-			setState(1691); match(RPAREN);
-			setState(1692); statement();
+			setState(1691);
+			match(RPAREN);
+			setState(1692);
+			statement();
 			}
 		}
 		catch (RecognitionException re) {
@@ -9627,17 +10198,17 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class BasicForStatementNoShortIfContext extends ParserRuleContext {
-		public ForUpdateContext forUpdate() {
-			return getRuleContext(ForUpdateContext.class,0);
+		public StatementNoShortIfContext statementNoShortIf() {
+			return getRuleContext(StatementNoShortIfContext.class,0);
 		}
 		public ForInitContext forInit() {
 			return getRuleContext(ForInitContext.class,0);
 		}
-		public StatementNoShortIfContext statementNoShortIf() {
-			return getRuleContext(StatementNoShortIfContext.class,0);
-		}
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
+		}
+		public ForUpdateContext forUpdate() {
+			return getRuleContext(ForUpdateContext.class,0);
 		}
 		public BasicForStatementNoShortIfContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -9660,36 +10231,45 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1694); match(FOR);
-			setState(1695); match(LPAREN);
+			setState(1694);
+			match(FOR);
+			setState(1695);
+			match(LPAREN);
 			setState(1697);
 			_la = _input.LA(1);
 			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FINAL) | (1L << FLOAT) | (1L << INT) | (1L << LONG) | (1L << NEW) | (1L << SHORT) | (1L << SUPER) | (1L << THIS) | (1L << VOID) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN))) != 0) || ((((_la - 79)) & ~0x3f) == 0 && ((1L << (_la - 79)) & ((1L << (INC - 79)) | (1L << (DEC - 79)) | (1L << (Identifier - 79)) | (1L << (AT - 79)))) != 0)) {
 				{
-				setState(1696); forInit();
+				setState(1696);
+				forInit();
 				}
 			}
 
-			setState(1699); match(SEMI);
+			setState(1699);
+			match(SEMI);
 			setState(1701);
 			_la = _input.LA(1);
 			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FLOAT) | (1L << INT) | (1L << LONG) | (1L << NEW) | (1L << SHORT) | (1L << SUPER) | (1L << THIS) | (1L << VOID) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN))) != 0) || ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & ((1L << (BANG - 69)) | (1L << (TILDE - 69)) | (1L << (INC - 69)) | (1L << (DEC - 69)) | (1L << (ADD - 69)) | (1L << (SUB - 69)) | (1L << (Identifier - 69)) | (1L << (AT - 69)))) != 0)) {
 				{
-				setState(1700); expression();
+				setState(1700);
+				expression();
 				}
 			}
 
-			setState(1703); match(SEMI);
+			setState(1703);
+			match(SEMI);
 			setState(1705);
 			_la = _input.LA(1);
 			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FLOAT) | (1L << INT) | (1L << LONG) | (1L << NEW) | (1L << SHORT) | (1L << SUPER) | (1L << THIS) | (1L << VOID) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN))) != 0) || ((((_la - 79)) & ~0x3f) == 0 && ((1L << (_la - 79)) & ((1L << (INC - 79)) | (1L << (DEC - 79)) | (1L << (Identifier - 79)) | (1L << (AT - 79)))) != 0)) {
 				{
-				setState(1704); forUpdate();
+				setState(1704);
+				forUpdate();
 				}
 			}
 
-			setState(1707); match(RPAREN);
-			setState(1708); statementNoShortIf();
+			setState(1707);
+			match(RPAREN);
+			setState(1708);
+			statementNoShortIf();
 			}
 		}
 		catch (RecognitionException re) {
@@ -9704,11 +10284,11 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class ForInitContext extends ParserRuleContext {
-		public LocalVariableDeclarationContext localVariableDeclaration() {
-			return getRuleContext(LocalVariableDeclarationContext.class,0);
-		}
 		public StatementExpressionListContext statementExpressionList() {
 			return getRuleContext(StatementExpressionListContext.class,0);
+		}
+		public LocalVariableDeclarationContext localVariableDeclaration() {
+			return getRuleContext(LocalVariableDeclarationContext.class,0);
 		}
 		public ForInitContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -9733,14 +10313,15 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1710); statementExpressionList();
+				setState(1710);
+				statementExpressionList();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1711); localVariableDeclaration();
+				setState(1711);
+				localVariableDeclaration();
 				}
 				break;
 			}
@@ -9780,7 +10361,8 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1714); statementExpressionList();
+			setState(1714);
+			statementExpressionList();
 			}
 		}
 		catch (RecognitionException re) {
@@ -9795,11 +10377,11 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class StatementExpressionListContext extends ParserRuleContext {
-		public StatementExpressionContext statementExpression(int i) {
-			return getRuleContext(StatementExpressionContext.class,i);
-		}
 		public List<StatementExpressionContext> statementExpression() {
 			return getRuleContexts(StatementExpressionContext.class);
+		}
+		public StatementExpressionContext statementExpression(int i) {
+			return getRuleContext(StatementExpressionContext.class,i);
 		}
 		public StatementExpressionListContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -9822,15 +10404,18 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1716); statementExpression();
+			setState(1716);
+			statementExpression();
 			setState(1721);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==COMMA) {
 				{
 				{
-				setState(1717); match(COMMA);
-				setState(1718); statementExpression();
+				setState(1717);
+				match(COMMA);
+				setState(1718);
+				statementExpression();
 				}
 				}
 				setState(1723);
@@ -9851,23 +10436,23 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class EnhancedForStatementContext extends ParserRuleContext {
-		public VariableModifierContext variableModifier(int i) {
-			return getRuleContext(VariableModifierContext.class,i);
-		}
 		public UnannTypeContext unannType() {
 			return getRuleContext(UnannTypeContext.class,0);
-		}
-		public List<VariableModifierContext> variableModifier() {
-			return getRuleContexts(VariableModifierContext.class);
 		}
 		public VariableDeclaratorIdContext variableDeclaratorId() {
 			return getRuleContext(VariableDeclaratorIdContext.class,0);
 		}
+		public ExpressionContext expression() {
+			return getRuleContext(ExpressionContext.class,0);
+		}
 		public StatementContext statement() {
 			return getRuleContext(StatementContext.class,0);
 		}
-		public ExpressionContext expression() {
-			return getRuleContext(ExpressionContext.class,0);
+		public List<VariableModifierContext> variableModifier() {
+			return getRuleContexts(VariableModifierContext.class);
+		}
+		public VariableModifierContext variableModifier(int i) {
+			return getRuleContext(VariableModifierContext.class,i);
 		}
 		public EnhancedForStatementContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -9890,27 +10475,36 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1724); match(FOR);
-			setState(1725); match(LPAREN);
+			setState(1724);
+			match(FOR);
+			setState(1725);
+			match(LPAREN);
 			setState(1729);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==FINAL || _la==AT) {
 				{
 				{
-				setState(1726); variableModifier();
+				setState(1726);
+				variableModifier();
 				}
 				}
 				setState(1731);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(1732); unannType();
-			setState(1733); variableDeclaratorId();
-			setState(1734); match(COLON);
-			setState(1735); expression();
-			setState(1736); match(RPAREN);
-			setState(1737); statement();
+			setState(1732);
+			unannType();
+			setState(1733);
+			variableDeclaratorId();
+			setState(1734);
+			match(COLON);
+			setState(1735);
+			expression();
+			setState(1736);
+			match(RPAREN);
+			setState(1737);
+			statement();
 			}
 		}
 		catch (RecognitionException re) {
@@ -9925,23 +10519,23 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class EnhancedForStatementNoShortIfContext extends ParserRuleContext {
-		public VariableModifierContext variableModifier(int i) {
-			return getRuleContext(VariableModifierContext.class,i);
-		}
 		public UnannTypeContext unannType() {
 			return getRuleContext(UnannTypeContext.class,0);
-		}
-		public List<VariableModifierContext> variableModifier() {
-			return getRuleContexts(VariableModifierContext.class);
 		}
 		public VariableDeclaratorIdContext variableDeclaratorId() {
 			return getRuleContext(VariableDeclaratorIdContext.class,0);
 		}
+		public ExpressionContext expression() {
+			return getRuleContext(ExpressionContext.class,0);
+		}
 		public StatementNoShortIfContext statementNoShortIf() {
 			return getRuleContext(StatementNoShortIfContext.class,0);
 		}
-		public ExpressionContext expression() {
-			return getRuleContext(ExpressionContext.class,0);
+		public List<VariableModifierContext> variableModifier() {
+			return getRuleContexts(VariableModifierContext.class);
+		}
+		public VariableModifierContext variableModifier(int i) {
+			return getRuleContext(VariableModifierContext.class,i);
 		}
 		public EnhancedForStatementNoShortIfContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -9964,27 +10558,36 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1739); match(FOR);
-			setState(1740); match(LPAREN);
+			setState(1739);
+			match(FOR);
+			setState(1740);
+			match(LPAREN);
 			setState(1744);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==FINAL || _la==AT) {
 				{
 				{
-				setState(1741); variableModifier();
+				setState(1741);
+				variableModifier();
 				}
 				}
 				setState(1746);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(1747); unannType();
-			setState(1748); variableDeclaratorId();
-			setState(1749); match(COLON);
-			setState(1750); expression();
-			setState(1751); match(RPAREN);
-			setState(1752); statementNoShortIf();
+			setState(1747);
+			unannType();
+			setState(1748);
+			variableDeclaratorId();
+			setState(1749);
+			match(COLON);
+			setState(1750);
+			expression();
+			setState(1751);
+			match(RPAREN);
+			setState(1752);
+			statementNoShortIf();
 			}
 		}
 		catch (RecognitionException re) {
@@ -10021,16 +10624,19 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1754); match(BREAK);
+			setState(1754);
+			match(BREAK);
 			setState(1756);
 			_la = _input.LA(1);
 			if (_la==Identifier) {
 				{
-				setState(1755); match(Identifier);
+				setState(1755);
+				match(Identifier);
 				}
 			}
 
-			setState(1758); match(SEMI);
+			setState(1758);
+			match(SEMI);
 			}
 		}
 		catch (RecognitionException re) {
@@ -10067,16 +10673,19 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1760); match(CONTINUE);
+			setState(1760);
+			match(CONTINUE);
 			setState(1762);
 			_la = _input.LA(1);
 			if (_la==Identifier) {
 				{
-				setState(1761); match(Identifier);
+				setState(1761);
+				match(Identifier);
 				}
 			}
 
-			setState(1764); match(SEMI);
+			setState(1764);
+			match(SEMI);
 			}
 		}
 		catch (RecognitionException re) {
@@ -10115,16 +10724,19 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1766); match(RETURN);
+			setState(1766);
+			match(RETURN);
 			setState(1768);
 			_la = _input.LA(1);
 			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FLOAT) | (1L << INT) | (1L << LONG) | (1L << NEW) | (1L << SHORT) | (1L << SUPER) | (1L << THIS) | (1L << VOID) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN))) != 0) || ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & ((1L << (BANG - 69)) | (1L << (TILDE - 69)) | (1L << (INC - 69)) | (1L << (DEC - 69)) | (1L << (ADD - 69)) | (1L << (SUB - 69)) | (1L << (Identifier - 69)) | (1L << (AT - 69)))) != 0)) {
 				{
-				setState(1767); expression();
+				setState(1767);
+				expression();
 				}
 			}
 
-			setState(1770); match(SEMI);
+			setState(1770);
+			match(SEMI);
 			}
 		}
 		catch (RecognitionException re) {
@@ -10162,9 +10774,12 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1772); match(THROW);
-			setState(1773); expression();
-			setState(1774); match(SEMI);
+			setState(1772);
+			match(THROW);
+			setState(1773);
+			expression();
+			setState(1774);
+			match(SEMI);
 			}
 		}
 		catch (RecognitionException re) {
@@ -10205,11 +10820,16 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1776); match(SYNCHRONIZED);
-			setState(1777); match(LPAREN);
-			setState(1778); expression();
-			setState(1779); match(RPAREN);
-			setState(1780); block();
+			setState(1776);
+			match(SYNCHRONIZED);
+			setState(1777);
+			match(LPAREN);
+			setState(1778);
+			expression();
+			setState(1779);
+			match(RPAREN);
+			setState(1780);
+			block();
 			}
 		}
 		catch (RecognitionException re) {
@@ -10224,14 +10844,14 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class TryStatementContext extends ParserRuleContext {
+		public BlockContext block() {
+			return getRuleContext(BlockContext.class,0);
+		}
 		public CatchesContext catches() {
 			return getRuleContext(CatchesContext.class,0);
 		}
 		public Finally_Context finally_() {
 			return getRuleContext(Finally_Context.class,0);
-		}
-		public BlockContext block() {
-			return getRuleContext(BlockContext.class,0);
 		}
 		public TryWithResourcesStatementContext tryWithResourcesStatement() {
 			return getRuleContext(TryWithResourcesStatementContext.class,0);
@@ -10260,33 +10880,39 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1782); match(TRY);
-				setState(1783); block();
-				setState(1784); catches();
+				setState(1782);
+				match(TRY);
+				setState(1783);
+				block();
+				setState(1784);
+				catches();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1786); match(TRY);
-				setState(1787); block();
+				setState(1786);
+				match(TRY);
+				setState(1787);
+				block();
 				setState(1789);
 				_la = _input.LA(1);
 				if (_la==CATCH) {
 					{
-					setState(1788); catches();
+					setState(1788);
+					catches();
 					}
 				}
 
-				setState(1791); finally_();
+				setState(1791);
+				finally_();
 				}
 				break;
-
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(1793); tryWithResourcesStatement();
+				setState(1793);
+				tryWithResourcesStatement();
 				}
 				break;
 			}
@@ -10303,11 +10929,11 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class CatchesContext extends ParserRuleContext {
-		public CatchClauseContext catchClause(int i) {
-			return getRuleContext(CatchClauseContext.class,i);
-		}
 		public List<CatchClauseContext> catchClause() {
 			return getRuleContexts(CatchClauseContext.class);
+		}
+		public CatchClauseContext catchClause(int i) {
+			return getRuleContext(CatchClauseContext.class,i);
 		}
 		public CatchesContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -10330,14 +10956,16 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1796); catchClause();
+			setState(1796);
+			catchClause();
 			setState(1800);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==CATCH) {
 				{
 				{
-				setState(1797); catchClause();
+				setState(1797);
+				catchClause();
 				}
 				}
 				setState(1802);
@@ -10384,11 +11012,16 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1803); match(CATCH);
-			setState(1804); match(LPAREN);
-			setState(1805); catchFormalParameter();
-			setState(1806); match(RPAREN);
-			setState(1807); block();
+			setState(1803);
+			match(CATCH);
+			setState(1804);
+			match(LPAREN);
+			setState(1805);
+			catchFormalParameter();
+			setState(1806);
+			match(RPAREN);
+			setState(1807);
+			block();
 			}
 		}
 		catch (RecognitionException re) {
@@ -10406,14 +11039,14 @@ public class Java8Parser extends Parser {
 		public CatchTypeContext catchType() {
 			return getRuleContext(CatchTypeContext.class,0);
 		}
-		public VariableModifierContext variableModifier(int i) {
-			return getRuleContext(VariableModifierContext.class,i);
+		public VariableDeclaratorIdContext variableDeclaratorId() {
+			return getRuleContext(VariableDeclaratorIdContext.class,0);
 		}
 		public List<VariableModifierContext> variableModifier() {
 			return getRuleContexts(VariableModifierContext.class);
 		}
-		public VariableDeclaratorIdContext variableDeclaratorId() {
-			return getRuleContext(VariableDeclaratorIdContext.class,0);
+		public VariableModifierContext variableModifier(int i) {
+			return getRuleContext(VariableModifierContext.class,i);
 		}
 		public CatchFormalParameterContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -10442,15 +11075,18 @@ public class Java8Parser extends Parser {
 			while (_la==FINAL || _la==AT) {
 				{
 				{
-				setState(1809); variableModifier();
+				setState(1809);
+				variableModifier();
 				}
 				}
 				setState(1814);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(1815); catchType();
-			setState(1816); variableDeclaratorId();
+			setState(1815);
+			catchType();
+			setState(1816);
+			variableDeclaratorId();
 			}
 		}
 		catch (RecognitionException re) {
@@ -10468,11 +11104,11 @@ public class Java8Parser extends Parser {
 		public UnannClassTypeContext unannClassType() {
 			return getRuleContext(UnannClassTypeContext.class,0);
 		}
-		public ClassTypeContext classType(int i) {
-			return getRuleContext(ClassTypeContext.class,i);
-		}
 		public List<ClassTypeContext> classType() {
 			return getRuleContexts(ClassTypeContext.class);
+		}
+		public ClassTypeContext classType(int i) {
+			return getRuleContext(ClassTypeContext.class,i);
 		}
 		public CatchTypeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -10495,15 +11131,18 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1818); unannClassType();
+			setState(1818);
+			unannClassType();
 			setState(1823);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==BITOR) {
 				{
 				{
-				setState(1819); match(BITOR);
-				setState(1820); classType();
+				setState(1819);
+				match(BITOR);
+				setState(1820);
+				classType();
 				}
 				}
 				setState(1825);
@@ -10547,8 +11186,10 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1826); match(FINALLY);
-			setState(1827); block();
+			setState(1826);
+			match(FINALLY);
+			setState(1827);
+			block();
 			}
 		}
 		catch (RecognitionException re) {
@@ -10563,17 +11204,17 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class TryWithResourcesStatementContext extends ParserRuleContext {
-		public CatchesContext catches() {
-			return getRuleContext(CatchesContext.class,0);
-		}
-		public Finally_Context finally_() {
-			return getRuleContext(Finally_Context.class,0);
-		}
 		public ResourceSpecificationContext resourceSpecification() {
 			return getRuleContext(ResourceSpecificationContext.class,0);
 		}
 		public BlockContext block() {
 			return getRuleContext(BlockContext.class,0);
+		}
+		public CatchesContext catches() {
+			return getRuleContext(CatchesContext.class,0);
+		}
+		public Finally_Context finally_() {
+			return getRuleContext(Finally_Context.class,0);
 		}
 		public TryWithResourcesStatementContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -10596,14 +11237,18 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1829); match(TRY);
-			setState(1830); resourceSpecification();
-			setState(1831); block();
+			setState(1829);
+			match(TRY);
+			setState(1830);
+			resourceSpecification();
+			setState(1831);
+			block();
 			setState(1833);
 			_la = _input.LA(1);
 			if (_la==CATCH) {
 				{
-				setState(1832); catches();
+				setState(1832);
+				catches();
 				}
 			}
 
@@ -10611,7 +11256,8 @@ public class Java8Parser extends Parser {
 			_la = _input.LA(1);
 			if (_la==FINALLY) {
 				{
-				setState(1835); finally_();
+				setState(1835);
+				finally_();
 				}
 			}
 
@@ -10653,17 +11299,21 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1838); match(LPAREN);
-			setState(1839); resourceList();
+			setState(1838);
+			match(LPAREN);
+			setState(1839);
+			resourceList();
 			setState(1841);
 			_la = _input.LA(1);
 			if (_la==SEMI) {
 				{
-				setState(1840); match(SEMI);
+				setState(1840);
+				match(SEMI);
 				}
 			}
 
-			setState(1843); match(RPAREN);
+			setState(1843);
+			match(RPAREN);
 			}
 		}
 		catch (RecognitionException re) {
@@ -10678,11 +11328,11 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class ResourceListContext extends ParserRuleContext {
-		public ResourceContext resource(int i) {
-			return getRuleContext(ResourceContext.class,i);
-		}
 		public List<ResourceContext> resource() {
 			return getRuleContexts(ResourceContext.class);
+		}
+		public ResourceContext resource(int i) {
+			return getRuleContext(ResourceContext.class,i);
 		}
 		public ResourceListContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -10705,7 +11355,8 @@ public class Java8Parser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(1845); resource();
+			setState(1845);
+			resource();
 			setState(1850);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,189,_ctx);
@@ -10713,8 +11364,10 @@ public class Java8Parser extends Parser {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(1846); match(SEMI);
-					setState(1847); resource();
+					setState(1846);
+					match(SEMI);
+					setState(1847);
+					resource();
 					}
 					} 
 				}
@@ -10736,20 +11389,20 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class ResourceContext extends ParserRuleContext {
-		public VariableModifierContext variableModifier(int i) {
-			return getRuleContext(VariableModifierContext.class,i);
-		}
 		public UnannTypeContext unannType() {
 			return getRuleContext(UnannTypeContext.class,0);
-		}
-		public List<VariableModifierContext> variableModifier() {
-			return getRuleContexts(VariableModifierContext.class);
 		}
 		public VariableDeclaratorIdContext variableDeclaratorId() {
 			return getRuleContext(VariableDeclaratorIdContext.class,0);
 		}
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
+		}
+		public List<VariableModifierContext> variableModifier() {
+			return getRuleContexts(VariableModifierContext.class);
+		}
+		public VariableModifierContext variableModifier(int i) {
+			return getRuleContext(VariableModifierContext.class,i);
 		}
 		public ResourceContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -10778,17 +11431,22 @@ public class Java8Parser extends Parser {
 			while (_la==FINAL || _la==AT) {
 				{
 				{
-				setState(1853); variableModifier();
+				setState(1853);
+				variableModifier();
 				}
 				}
 				setState(1858);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(1859); unannType();
-			setState(1860); variableDeclaratorId();
-			setState(1861); match(ASSIGN);
-			setState(1862); expression();
+			setState(1859);
+			unannType();
+			setState(1860);
+			variableDeclaratorId();
+			setState(1861);
+			match(ASSIGN);
+			setState(1862);
+			expression();
 			}
 		}
 		catch (RecognitionException re) {
@@ -10803,9 +11461,6 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class PrimaryContext extends ParserRuleContext {
-		public PrimaryNoNewArray_lf_primaryContext primaryNoNewArray_lf_primary(int i) {
-			return getRuleContext(PrimaryNoNewArray_lf_primaryContext.class,i);
-		}
 		public PrimaryNoNewArray_lfno_primaryContext primaryNoNewArray_lfno_primary() {
 			return getRuleContext(PrimaryNoNewArray_lfno_primaryContext.class,0);
 		}
@@ -10814,6 +11469,9 @@ public class Java8Parser extends Parser {
 		}
 		public List<PrimaryNoNewArray_lf_primaryContext> primaryNoNewArray_lf_primary() {
 			return getRuleContexts(PrimaryNoNewArray_lf_primaryContext.class);
+		}
+		public PrimaryNoNewArray_lf_primaryContext primaryNoNewArray_lf_primary(int i) {
+			return getRuleContext(PrimaryNoNewArray_lf_primaryContext.class,i);
 		}
 		public PrimaryContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -10840,13 +11498,14 @@ public class Java8Parser extends Parser {
 			switch ( getInterpreter().adaptivePredict(_input,191,_ctx) ) {
 			case 1:
 				{
-				setState(1864); primaryNoNewArray_lfno_primary();
+				setState(1864);
+				primaryNoNewArray_lfno_primary();
 				}
 				break;
-
 			case 2:
 				{
-				setState(1865); arrayCreationExpression();
+				setState(1865);
+				arrayCreationExpression();
 				}
 				break;
 			}
@@ -10857,7 +11516,8 @@ public class Java8Parser extends Parser {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(1868); primaryNoNewArray_lf_primary();
+					setState(1868);
+					primaryNoNewArray_lf_primary();
 					}
 					} 
 				}
@@ -10879,29 +11539,29 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class PrimaryNoNewArrayContext extends ParserRuleContext {
-		public FieldAccessContext fieldAccess() {
-			return getRuleContext(FieldAccessContext.class,0);
-		}
-		public MethodInvocationContext methodInvocation() {
-			return getRuleContext(MethodInvocationContext.class,0);
-		}
-		public TypeNameContext typeName() {
-			return getRuleContext(TypeNameContext.class,0);
-		}
 		public LiteralContext literal() {
 			return getRuleContext(LiteralContext.class,0);
 		}
-		public ArrayAccessContext arrayAccess() {
-			return getRuleContext(ArrayAccessContext.class,0);
-		}
-		public MethodReferenceContext methodReference() {
-			return getRuleContext(MethodReferenceContext.class,0);
+		public TypeNameContext typeName() {
+			return getRuleContext(TypeNameContext.class,0);
 		}
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
 		public ClassInstanceCreationExpressionContext classInstanceCreationExpression() {
 			return getRuleContext(ClassInstanceCreationExpressionContext.class,0);
+		}
+		public FieldAccessContext fieldAccess() {
+			return getRuleContext(FieldAccessContext.class,0);
+		}
+		public ArrayAccessContext arrayAccess() {
+			return getRuleContext(ArrayAccessContext.class,0);
+		}
+		public MethodInvocationContext methodInvocation() {
+			return getRuleContext(MethodInvocationContext.class,0);
+		}
+		public MethodReferenceContext methodReference() {
+			return getRuleContext(MethodReferenceContext.class,0);
 		}
 		public PrimaryNoNewArrayContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -10927,99 +11587,110 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1874); literal();
+				setState(1874);
+				literal();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1875); typeName();
+				setState(1875);
+				typeName();
 				setState(1880);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==LBRACK) {
 					{
 					{
-					setState(1876); match(LBRACK);
-					setState(1877); match(RBRACK);
+					setState(1876);
+					match(LBRACK);
+					setState(1877);
+					match(RBRACK);
 					}
 					}
 					setState(1882);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(1883); match(DOT);
-				setState(1884); match(CLASS);
+				setState(1883);
+				match(DOT);
+				setState(1884);
+				match(CLASS);
 				}
 				break;
-
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(1886); match(VOID);
-				setState(1887); match(DOT);
-				setState(1888); match(CLASS);
+				setState(1886);
+				match(VOID);
+				setState(1887);
+				match(DOT);
+				setState(1888);
+				match(CLASS);
 				}
 				break;
-
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(1889); match(THIS);
+				setState(1889);
+				match(THIS);
 				}
 				break;
-
 			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(1890); typeName();
-				setState(1891); match(DOT);
-				setState(1892); match(THIS);
+				setState(1890);
+				typeName();
+				setState(1891);
+				match(DOT);
+				setState(1892);
+				match(THIS);
 				}
 				break;
-
 			case 6:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(1894); match(LPAREN);
-				setState(1895); expression();
-				setState(1896); match(RPAREN);
+				setState(1894);
+				match(LPAREN);
+				setState(1895);
+				expression();
+				setState(1896);
+				match(RPAREN);
 				}
 				break;
-
 			case 7:
 				enterOuterAlt(_localctx, 7);
 				{
-				setState(1898); classInstanceCreationExpression();
+				setState(1898);
+				classInstanceCreationExpression();
 				}
 				break;
-
 			case 8:
 				enterOuterAlt(_localctx, 8);
 				{
-				setState(1899); fieldAccess();
+				setState(1899);
+				fieldAccess();
 				}
 				break;
-
 			case 9:
 				enterOuterAlt(_localctx, 9);
 				{
-				setState(1900); arrayAccess();
+				setState(1900);
+				arrayAccess();
 				}
 				break;
-
 			case 10:
 				enterOuterAlt(_localctx, 10);
 				{
-				setState(1901); methodInvocation();
+				setState(1901);
+				methodInvocation();
 				}
 				break;
-
 			case 11:
 				enterOuterAlt(_localctx, 11);
 				{
-				setState(1902); methodReference();
+				setState(1902);
+				methodReference();
 				}
 				break;
 			}
@@ -11070,26 +11741,26 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class PrimaryNoNewArray_lfno_arrayAccessContext extends ParserRuleContext {
-		public FieldAccessContext fieldAccess() {
-			return getRuleContext(FieldAccessContext.class,0);
-		}
-		public MethodInvocationContext methodInvocation() {
-			return getRuleContext(MethodInvocationContext.class,0);
-		}
-		public TypeNameContext typeName() {
-			return getRuleContext(TypeNameContext.class,0);
-		}
 		public LiteralContext literal() {
 			return getRuleContext(LiteralContext.class,0);
 		}
-		public MethodReferenceContext methodReference() {
-			return getRuleContext(MethodReferenceContext.class,0);
+		public TypeNameContext typeName() {
+			return getRuleContext(TypeNameContext.class,0);
 		}
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
 		public ClassInstanceCreationExpressionContext classInstanceCreationExpression() {
 			return getRuleContext(ClassInstanceCreationExpressionContext.class,0);
+		}
+		public FieldAccessContext fieldAccess() {
+			return getRuleContext(FieldAccessContext.class,0);
+		}
+		public MethodInvocationContext methodInvocation() {
+			return getRuleContext(MethodInvocationContext.class,0);
+		}
+		public MethodReferenceContext methodReference() {
+			return getRuleContext(MethodReferenceContext.class,0);
 		}
 		public PrimaryNoNewArray_lfno_arrayAccessContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -11115,92 +11786,103 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1907); literal();
+				setState(1907);
+				literal();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1908); typeName();
+				setState(1908);
+				typeName();
 				setState(1913);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==LBRACK) {
 					{
 					{
-					setState(1909); match(LBRACK);
-					setState(1910); match(RBRACK);
+					setState(1909);
+					match(LBRACK);
+					setState(1910);
+					match(RBRACK);
 					}
 					}
 					setState(1915);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(1916); match(DOT);
-				setState(1917); match(CLASS);
+				setState(1916);
+				match(DOT);
+				setState(1917);
+				match(CLASS);
 				}
 				break;
-
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(1919); match(VOID);
-				setState(1920); match(DOT);
-				setState(1921); match(CLASS);
+				setState(1919);
+				match(VOID);
+				setState(1920);
+				match(DOT);
+				setState(1921);
+				match(CLASS);
 				}
 				break;
-
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(1922); match(THIS);
+				setState(1922);
+				match(THIS);
 				}
 				break;
-
 			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(1923); typeName();
-				setState(1924); match(DOT);
-				setState(1925); match(THIS);
+				setState(1923);
+				typeName();
+				setState(1924);
+				match(DOT);
+				setState(1925);
+				match(THIS);
 				}
 				break;
-
 			case 6:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(1927); match(LPAREN);
-				setState(1928); expression();
-				setState(1929); match(RPAREN);
+				setState(1927);
+				match(LPAREN);
+				setState(1928);
+				expression();
+				setState(1929);
+				match(RPAREN);
 				}
 				break;
-
 			case 7:
 				enterOuterAlt(_localctx, 7);
 				{
-				setState(1931); classInstanceCreationExpression();
+				setState(1931);
+				classInstanceCreationExpression();
 				}
 				break;
-
 			case 8:
 				enterOuterAlt(_localctx, 8);
 				{
-				setState(1932); fieldAccess();
+				setState(1932);
+				fieldAccess();
 				}
 				break;
-
 			case 9:
 				enterOuterAlt(_localctx, 9);
 				{
-				setState(1933); methodInvocation();
+				setState(1933);
+				methodInvocation();
 				}
 				break;
-
 			case 10:
 				enterOuterAlt(_localctx, 10);
 				{
-				setState(1934); methodReference();
+				setState(1934);
+				methodReference();
 				}
 				break;
 			}
@@ -11220,17 +11902,17 @@ public class Java8Parser extends Parser {
 		public ClassInstanceCreationExpression_lf_primaryContext classInstanceCreationExpression_lf_primary() {
 			return getRuleContext(ClassInstanceCreationExpression_lf_primaryContext.class,0);
 		}
+		public FieldAccess_lf_primaryContext fieldAccess_lf_primary() {
+			return getRuleContext(FieldAccess_lf_primaryContext.class,0);
+		}
 		public ArrayAccess_lf_primaryContext arrayAccess_lf_primary() {
 			return getRuleContext(ArrayAccess_lf_primaryContext.class,0);
-		}
-		public MethodReference_lf_primaryContext methodReference_lf_primary() {
-			return getRuleContext(MethodReference_lf_primaryContext.class,0);
 		}
 		public MethodInvocation_lf_primaryContext methodInvocation_lf_primary() {
 			return getRuleContext(MethodInvocation_lf_primaryContext.class,0);
 		}
-		public FieldAccess_lf_primaryContext fieldAccess_lf_primary() {
-			return getRuleContext(FieldAccess_lf_primaryContext.class,0);
+		public MethodReference_lf_primaryContext methodReference_lf_primary() {
+			return getRuleContext(MethodReference_lf_primaryContext.class,0);
 		}
 		public PrimaryNoNewArray_lf_primaryContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -11255,35 +11937,36 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1937); classInstanceCreationExpression_lf_primary();
+				setState(1937);
+				classInstanceCreationExpression_lf_primary();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1938); fieldAccess_lf_primary();
+				setState(1938);
+				fieldAccess_lf_primary();
 				}
 				break;
-
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(1939); arrayAccess_lf_primary();
+				setState(1939);
+				arrayAccess_lf_primary();
 				}
 				break;
-
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(1940); methodInvocation_lf_primary();
+				setState(1940);
+				methodInvocation_lf_primary();
 				}
 				break;
-
 			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(1941); methodReference_lf_primary();
+				setState(1941);
+				methodReference_lf_primary();
 				}
 				break;
 			}
@@ -11337,14 +12020,14 @@ public class Java8Parser extends Parser {
 		public ClassInstanceCreationExpression_lf_primaryContext classInstanceCreationExpression_lf_primary() {
 			return getRuleContext(ClassInstanceCreationExpression_lf_primaryContext.class,0);
 		}
-		public MethodReference_lf_primaryContext methodReference_lf_primary() {
-			return getRuleContext(MethodReference_lf_primaryContext.class,0);
+		public FieldAccess_lf_primaryContext fieldAccess_lf_primary() {
+			return getRuleContext(FieldAccess_lf_primaryContext.class,0);
 		}
 		public MethodInvocation_lf_primaryContext methodInvocation_lf_primary() {
 			return getRuleContext(MethodInvocation_lf_primaryContext.class,0);
 		}
-		public FieldAccess_lf_primaryContext fieldAccess_lf_primary() {
-			return getRuleContext(FieldAccess_lf_primaryContext.class,0);
+		public MethodReference_lf_primaryContext methodReference_lf_primary() {
+			return getRuleContext(MethodReference_lf_primaryContext.class,0);
 		}
 		public PrimaryNoNewArray_lf_primary_lfno_arrayAccess_lf_primaryContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -11369,28 +12052,29 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1946); classInstanceCreationExpression_lf_primary();
+				setState(1946);
+				classInstanceCreationExpression_lf_primary();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1947); fieldAccess_lf_primary();
+				setState(1947);
+				fieldAccess_lf_primary();
 				}
 				break;
-
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(1948); methodInvocation_lf_primary();
+				setState(1948);
+				methodInvocation_lf_primary();
 				}
 				break;
-
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(1949); methodReference_lf_primary();
+				setState(1949);
+				methodReference_lf_primary();
 				}
 				break;
 			}
@@ -11407,32 +12091,32 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class PrimaryNoNewArray_lfno_primaryContext extends ParserRuleContext {
-		public FieldAccess_lfno_primaryContext fieldAccess_lfno_primary() {
-			return getRuleContext(FieldAccess_lfno_primaryContext.class,0);
+		public LiteralContext literal() {
+			return getRuleContext(LiteralContext.class,0);
 		}
 		public TypeNameContext typeName() {
 			return getRuleContext(TypeNameContext.class,0);
 		}
-		public ClassInstanceCreationExpression_lfno_primaryContext classInstanceCreationExpression_lfno_primary() {
-			return getRuleContext(ClassInstanceCreationExpression_lfno_primaryContext.class,0);
-		}
-		public MethodReference_lfno_primaryContext methodReference_lfno_primary() {
-			return getRuleContext(MethodReference_lfno_primaryContext.class,0);
-		}
-		public LiteralContext literal() {
-			return getRuleContext(LiteralContext.class,0);
-		}
-		public ArrayAccess_lfno_primaryContext arrayAccess_lfno_primary() {
-			return getRuleContext(ArrayAccess_lfno_primaryContext.class,0);
+		public UnannPrimitiveTypeContext unannPrimitiveType() {
+			return getRuleContext(UnannPrimitiveTypeContext.class,0);
 		}
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
-		public UnannPrimitiveTypeContext unannPrimitiveType() {
-			return getRuleContext(UnannPrimitiveTypeContext.class,0);
+		public ClassInstanceCreationExpression_lfno_primaryContext classInstanceCreationExpression_lfno_primary() {
+			return getRuleContext(ClassInstanceCreationExpression_lfno_primaryContext.class,0);
+		}
+		public FieldAccess_lfno_primaryContext fieldAccess_lfno_primary() {
+			return getRuleContext(FieldAccess_lfno_primaryContext.class,0);
+		}
+		public ArrayAccess_lfno_primaryContext arrayAccess_lfno_primary() {
+			return getRuleContext(ArrayAccess_lfno_primaryContext.class,0);
 		}
 		public MethodInvocation_lfno_primaryContext methodInvocation_lfno_primary() {
 			return getRuleContext(MethodInvocation_lfno_primaryContext.class,0);
+		}
+		public MethodReference_lfno_primaryContext methodReference_lfno_primary() {
+			return getRuleContext(MethodReference_lfno_primaryContext.class,0);
 		}
 		public PrimaryNoNewArray_lfno_primaryContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -11458,122 +12142,137 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1952); literal();
+				setState(1952);
+				literal();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1953); typeName();
+				setState(1953);
+				typeName();
 				setState(1958);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==LBRACK) {
 					{
 					{
-					setState(1954); match(LBRACK);
-					setState(1955); match(RBRACK);
+					setState(1954);
+					match(LBRACK);
+					setState(1955);
+					match(RBRACK);
 					}
 					}
 					setState(1960);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(1961); match(DOT);
-				setState(1962); match(CLASS);
+				setState(1961);
+				match(DOT);
+				setState(1962);
+				match(CLASS);
 				}
 				break;
-
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(1964); unannPrimitiveType();
+				setState(1964);
+				unannPrimitiveType();
 				setState(1969);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==LBRACK) {
 					{
 					{
-					setState(1965); match(LBRACK);
-					setState(1966); match(RBRACK);
+					setState(1965);
+					match(LBRACK);
+					setState(1966);
+					match(RBRACK);
 					}
 					}
 					setState(1971);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(1972); match(DOT);
-				setState(1973); match(CLASS);
+				setState(1972);
+				match(DOT);
+				setState(1973);
+				match(CLASS);
 				}
 				break;
-
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(1975); match(VOID);
-				setState(1976); match(DOT);
-				setState(1977); match(CLASS);
+				setState(1975);
+				match(VOID);
+				setState(1976);
+				match(DOT);
+				setState(1977);
+				match(CLASS);
 				}
 				break;
-
 			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(1978); match(THIS);
+				setState(1978);
+				match(THIS);
 				}
 				break;
-
 			case 6:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(1979); typeName();
-				setState(1980); match(DOT);
-				setState(1981); match(THIS);
+				setState(1979);
+				typeName();
+				setState(1980);
+				match(DOT);
+				setState(1981);
+				match(THIS);
 				}
 				break;
-
 			case 7:
 				enterOuterAlt(_localctx, 7);
 				{
-				setState(1983); match(LPAREN);
-				setState(1984); expression();
-				setState(1985); match(RPAREN);
+				setState(1983);
+				match(LPAREN);
+				setState(1984);
+				expression();
+				setState(1985);
+				match(RPAREN);
 				}
 				break;
-
 			case 8:
 				enterOuterAlt(_localctx, 8);
 				{
-				setState(1987); classInstanceCreationExpression_lfno_primary();
+				setState(1987);
+				classInstanceCreationExpression_lfno_primary();
 				}
 				break;
-
 			case 9:
 				enterOuterAlt(_localctx, 9);
 				{
-				setState(1988); fieldAccess_lfno_primary();
+				setState(1988);
+				fieldAccess_lfno_primary();
 				}
 				break;
-
 			case 10:
 				enterOuterAlt(_localctx, 10);
 				{
-				setState(1989); arrayAccess_lfno_primary();
+				setState(1989);
+				arrayAccess_lfno_primary();
 				}
 				break;
-
 			case 11:
 				enterOuterAlt(_localctx, 11);
 				{
-				setState(1990); methodInvocation_lfno_primary();
+				setState(1990);
+				methodInvocation_lfno_primary();
 				}
 				break;
-
 			case 12:
 				enterOuterAlt(_localctx, 12);
 				{
-				setState(1991); methodReference_lfno_primary();
+				setState(1991);
+				methodReference_lfno_primary();
 				}
 				break;
 			}
@@ -11624,29 +12323,29 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class PrimaryNoNewArray_lfno_primary_lfno_arrayAccess_lfno_primaryContext extends ParserRuleContext {
-		public FieldAccess_lfno_primaryContext fieldAccess_lfno_primary() {
-			return getRuleContext(FieldAccess_lfno_primaryContext.class,0);
+		public LiteralContext literal() {
+			return getRuleContext(LiteralContext.class,0);
 		}
 		public TypeNameContext typeName() {
 			return getRuleContext(TypeNameContext.class,0);
 		}
-		public ClassInstanceCreationExpression_lfno_primaryContext classInstanceCreationExpression_lfno_primary() {
-			return getRuleContext(ClassInstanceCreationExpression_lfno_primaryContext.class,0);
-		}
-		public MethodReference_lfno_primaryContext methodReference_lfno_primary() {
-			return getRuleContext(MethodReference_lfno_primaryContext.class,0);
-		}
-		public LiteralContext literal() {
-			return getRuleContext(LiteralContext.class,0);
+		public UnannPrimitiveTypeContext unannPrimitiveType() {
+			return getRuleContext(UnannPrimitiveTypeContext.class,0);
 		}
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
-		public UnannPrimitiveTypeContext unannPrimitiveType() {
-			return getRuleContext(UnannPrimitiveTypeContext.class,0);
+		public ClassInstanceCreationExpression_lfno_primaryContext classInstanceCreationExpression_lfno_primary() {
+			return getRuleContext(ClassInstanceCreationExpression_lfno_primaryContext.class,0);
+		}
+		public FieldAccess_lfno_primaryContext fieldAccess_lfno_primary() {
+			return getRuleContext(FieldAccess_lfno_primaryContext.class,0);
 		}
 		public MethodInvocation_lfno_primaryContext methodInvocation_lfno_primary() {
 			return getRuleContext(MethodInvocation_lfno_primaryContext.class,0);
+		}
+		public MethodReference_lfno_primaryContext methodReference_lfno_primary() {
+			return getRuleContext(MethodReference_lfno_primaryContext.class,0);
 		}
 		public PrimaryNoNewArray_lfno_primary_lfno_arrayAccess_lfno_primaryContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -11672,115 +12371,130 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1996); literal();
+				setState(1996);
+				literal();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(1997); typeName();
+				setState(1997);
+				typeName();
 				setState(2002);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==LBRACK) {
 					{
 					{
-					setState(1998); match(LBRACK);
-					setState(1999); match(RBRACK);
+					setState(1998);
+					match(LBRACK);
+					setState(1999);
+					match(RBRACK);
 					}
 					}
 					setState(2004);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(2005); match(DOT);
-				setState(2006); match(CLASS);
+				setState(2005);
+				match(DOT);
+				setState(2006);
+				match(CLASS);
 				}
 				break;
-
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(2008); unannPrimitiveType();
+				setState(2008);
+				unannPrimitiveType();
 				setState(2013);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==LBRACK) {
 					{
 					{
-					setState(2009); match(LBRACK);
-					setState(2010); match(RBRACK);
+					setState(2009);
+					match(LBRACK);
+					setState(2010);
+					match(RBRACK);
 					}
 					}
 					setState(2015);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(2016); match(DOT);
-				setState(2017); match(CLASS);
+				setState(2016);
+				match(DOT);
+				setState(2017);
+				match(CLASS);
 				}
 				break;
-
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(2019); match(VOID);
-				setState(2020); match(DOT);
-				setState(2021); match(CLASS);
+				setState(2019);
+				match(VOID);
+				setState(2020);
+				match(DOT);
+				setState(2021);
+				match(CLASS);
 				}
 				break;
-
 			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(2022); match(THIS);
+				setState(2022);
+				match(THIS);
 				}
 				break;
-
 			case 6:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(2023); typeName();
-				setState(2024); match(DOT);
-				setState(2025); match(THIS);
+				setState(2023);
+				typeName();
+				setState(2024);
+				match(DOT);
+				setState(2025);
+				match(THIS);
 				}
 				break;
-
 			case 7:
 				enterOuterAlt(_localctx, 7);
 				{
-				setState(2027); match(LPAREN);
-				setState(2028); expression();
-				setState(2029); match(RPAREN);
+				setState(2027);
+				match(LPAREN);
+				setState(2028);
+				expression();
+				setState(2029);
+				match(RPAREN);
 				}
 				break;
-
 			case 8:
 				enterOuterAlt(_localctx, 8);
 				{
-				setState(2031); classInstanceCreationExpression_lfno_primary();
+				setState(2031);
+				classInstanceCreationExpression_lfno_primary();
 				}
 				break;
-
 			case 9:
 				enterOuterAlt(_localctx, 9);
 				{
-				setState(2032); fieldAccess_lfno_primary();
+				setState(2032);
+				fieldAccess_lfno_primary();
 				}
 				break;
-
 			case 10:
 				enterOuterAlt(_localctx, 10);
 				{
-				setState(2033); methodInvocation_lfno_primary();
+				setState(2033);
+				methodInvocation_lfno_primary();
 				}
 				break;
-
 			case 11:
 				enterOuterAlt(_localctx, 11);
 				{
-				setState(2034); methodReference_lfno_primary();
+				setState(2034);
+				methodReference_lfno_primary();
 				}
 				break;
 			}
@@ -11797,33 +12511,33 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class ClassInstanceCreationExpressionContext extends ParserRuleContext {
-		public TypeArgumentsContext typeArguments() {
-			return getRuleContext(TypeArgumentsContext.class,0);
-		}
 		public List<TerminalNode> Identifier() { return getTokens(Java8Parser.Identifier); }
-		public List<AnnotationContext> annotation() {
-			return getRuleContexts(AnnotationContext.class);
-		}
 		public TerminalNode Identifier(int i) {
 			return getToken(Java8Parser.Identifier, i);
 		}
-		public TypeArgumentsOrDiamondContext typeArgumentsOrDiamond() {
-			return getRuleContext(TypeArgumentsOrDiamondContext.class,0);
+		public TypeArgumentsContext typeArguments() {
+			return getRuleContext(TypeArgumentsContext.class,0);
 		}
-		public ClassBodyContext classBody() {
-			return getRuleContext(ClassBodyContext.class,0);
+		public List<AnnotationContext> annotation() {
+			return getRuleContexts(AnnotationContext.class);
 		}
 		public AnnotationContext annotation(int i) {
 			return getRuleContext(AnnotationContext.class,i);
 		}
-		public PrimaryContext primary() {
-			return getRuleContext(PrimaryContext.class,0);
+		public TypeArgumentsOrDiamondContext typeArgumentsOrDiamond() {
+			return getRuleContext(TypeArgumentsOrDiamondContext.class,0);
+		}
+		public ArgumentListContext argumentList() {
+			return getRuleContext(ArgumentListContext.class,0);
+		}
+		public ClassBodyContext classBody() {
+			return getRuleContext(ClassBodyContext.class,0);
 		}
 		public ExpressionNameContext expressionName() {
 			return getRuleContext(ExpressionNameContext.class,0);
 		}
-		public ArgumentListContext argumentList() {
-			return getRuleContext(ArgumentListContext.class,0);
+		public PrimaryContext primary() {
+			return getRuleContext(PrimaryContext.class,0);
 		}
 		public ClassInstanceCreationExpressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -11849,12 +12563,14 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(2037); match(NEW);
+				setState(2037);
+				match(NEW);
 				setState(2039);
 				_la = _input.LA(1);
 				if (_la==LT) {
 					{
-					setState(2038); typeArguments();
+					setState(2038);
+					typeArguments();
 					}
 				}
 
@@ -11864,35 +12580,40 @@ public class Java8Parser extends Parser {
 				while (_la==AT) {
 					{
 					{
-					setState(2041); annotation();
+					setState(2041);
+					annotation();
 					}
 					}
 					setState(2046);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(2047); match(Identifier);
+				setState(2047);
+				match(Identifier);
 				setState(2058);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==DOT) {
 					{
 					{
-					setState(2048); match(DOT);
+					setState(2048);
+					match(DOT);
 					setState(2052);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 					while (_la==AT) {
 						{
 						{
-						setState(2049); annotation();
+						setState(2049);
+						annotation();
 						}
 						}
 						setState(2054);
 						_errHandler.sync(this);
 						_la = _input.LA(1);
 					}
-					setState(2055); match(Identifier);
+					setState(2055);
+					match(Identifier);
 					}
 					}
 					setState(2060);
@@ -11903,42 +12624,50 @@ public class Java8Parser extends Parser {
 				_la = _input.LA(1);
 				if (_la==LT) {
 					{
-					setState(2061); typeArgumentsOrDiamond();
+					setState(2061);
+					typeArgumentsOrDiamond();
 					}
 				}
 
-				setState(2064); match(LPAREN);
+				setState(2064);
+				match(LPAREN);
 				setState(2066);
 				_la = _input.LA(1);
 				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FLOAT) | (1L << INT) | (1L << LONG) | (1L << NEW) | (1L << SHORT) | (1L << SUPER) | (1L << THIS) | (1L << VOID) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN))) != 0) || ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & ((1L << (BANG - 69)) | (1L << (TILDE - 69)) | (1L << (INC - 69)) | (1L << (DEC - 69)) | (1L << (ADD - 69)) | (1L << (SUB - 69)) | (1L << (Identifier - 69)) | (1L << (AT - 69)))) != 0)) {
 					{
-					setState(2065); argumentList();
+					setState(2065);
+					argumentList();
 					}
 				}
 
-				setState(2068); match(RPAREN);
+				setState(2068);
+				match(RPAREN);
 				setState(2070);
 				_la = _input.LA(1);
 				if (_la==LBRACE) {
 					{
-					setState(2069); classBody();
+					setState(2069);
+					classBody();
 					}
 				}
 
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(2072); expressionName();
-				setState(2073); match(DOT);
-				setState(2074); match(NEW);
+				setState(2072);
+				expressionName();
+				setState(2073);
+				match(DOT);
+				setState(2074);
+				match(NEW);
 				setState(2076);
 				_la = _input.LA(1);
 				if (_la==LT) {
 					{
-					setState(2075); typeArguments();
+					setState(2075);
+					typeArguments();
 					}
 				}
 
@@ -11948,54 +12677,64 @@ public class Java8Parser extends Parser {
 				while (_la==AT) {
 					{
 					{
-					setState(2078); annotation();
+					setState(2078);
+					annotation();
 					}
 					}
 					setState(2083);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(2084); match(Identifier);
+				setState(2084);
+				match(Identifier);
 				setState(2086);
 				_la = _input.LA(1);
 				if (_la==LT) {
 					{
-					setState(2085); typeArgumentsOrDiamond();
+					setState(2085);
+					typeArgumentsOrDiamond();
 					}
 				}
 
-				setState(2088); match(LPAREN);
+				setState(2088);
+				match(LPAREN);
 				setState(2090);
 				_la = _input.LA(1);
 				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FLOAT) | (1L << INT) | (1L << LONG) | (1L << NEW) | (1L << SHORT) | (1L << SUPER) | (1L << THIS) | (1L << VOID) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN))) != 0) || ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & ((1L << (BANG - 69)) | (1L << (TILDE - 69)) | (1L << (INC - 69)) | (1L << (DEC - 69)) | (1L << (ADD - 69)) | (1L << (SUB - 69)) | (1L << (Identifier - 69)) | (1L << (AT - 69)))) != 0)) {
 					{
-					setState(2089); argumentList();
+					setState(2089);
+					argumentList();
 					}
 				}
 
-				setState(2092); match(RPAREN);
+				setState(2092);
+				match(RPAREN);
 				setState(2094);
 				_la = _input.LA(1);
 				if (_la==LBRACE) {
 					{
-					setState(2093); classBody();
+					setState(2093);
+					classBody();
 					}
 				}
 
 				}
 				break;
-
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(2096); primary();
-				setState(2097); match(DOT);
-				setState(2098); match(NEW);
+				setState(2096);
+				primary();
+				setState(2097);
+				match(DOT);
+				setState(2098);
+				match(NEW);
 				setState(2100);
 				_la = _input.LA(1);
 				if (_la==LT) {
 					{
-					setState(2099); typeArguments();
+					setState(2099);
+					typeArguments();
 					}
 				}
 
@@ -12005,37 +12744,44 @@ public class Java8Parser extends Parser {
 				while (_la==AT) {
 					{
 					{
-					setState(2102); annotation();
+					setState(2102);
+					annotation();
 					}
 					}
 					setState(2107);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(2108); match(Identifier);
+				setState(2108);
+				match(Identifier);
 				setState(2110);
 				_la = _input.LA(1);
 				if (_la==LT) {
 					{
-					setState(2109); typeArgumentsOrDiamond();
+					setState(2109);
+					typeArgumentsOrDiamond();
 					}
 				}
 
-				setState(2112); match(LPAREN);
+				setState(2112);
+				match(LPAREN);
 				setState(2114);
 				_la = _input.LA(1);
 				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FLOAT) | (1L << INT) | (1L << LONG) | (1L << NEW) | (1L << SHORT) | (1L << SUPER) | (1L << THIS) | (1L << VOID) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN))) != 0) || ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & ((1L << (BANG - 69)) | (1L << (TILDE - 69)) | (1L << (INC - 69)) | (1L << (DEC - 69)) | (1L << (ADD - 69)) | (1L << (SUB - 69)) | (1L << (Identifier - 69)) | (1L << (AT - 69)))) != 0)) {
 					{
-					setState(2113); argumentList();
+					setState(2113);
+					argumentList();
 					}
 				}
 
-				setState(2116); match(RPAREN);
+				setState(2116);
+				match(RPAREN);
 				setState(2118);
 				_la = _input.LA(1);
 				if (_la==LBRACE) {
 					{
-					setState(2117); classBody();
+					setState(2117);
+					classBody();
 					}
 				}
 
@@ -12055,24 +12801,24 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class ClassInstanceCreationExpression_lf_primaryContext extends ParserRuleContext {
+		public TerminalNode Identifier() { return getToken(Java8Parser.Identifier, 0); }
 		public TypeArgumentsContext typeArguments() {
 			return getRuleContext(TypeArgumentsContext.class,0);
 		}
-		public TerminalNode Identifier() { return getToken(Java8Parser.Identifier, 0); }
 		public List<AnnotationContext> annotation() {
 			return getRuleContexts(AnnotationContext.class);
-		}
-		public TypeArgumentsOrDiamondContext typeArgumentsOrDiamond() {
-			return getRuleContext(TypeArgumentsOrDiamondContext.class,0);
-		}
-		public ClassBodyContext classBody() {
-			return getRuleContext(ClassBodyContext.class,0);
 		}
 		public AnnotationContext annotation(int i) {
 			return getRuleContext(AnnotationContext.class,i);
 		}
+		public TypeArgumentsOrDiamondContext typeArgumentsOrDiamond() {
+			return getRuleContext(TypeArgumentsOrDiamondContext.class,0);
+		}
 		public ArgumentListContext argumentList() {
 			return getRuleContext(ArgumentListContext.class,0);
+		}
+		public ClassBodyContext classBody() {
+			return getRuleContext(ClassBodyContext.class,0);
 		}
 		public ClassInstanceCreationExpression_lf_primaryContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -12095,13 +12841,16 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(2122); match(DOT);
-			setState(2123); match(NEW);
+			setState(2122);
+			match(DOT);
+			setState(2123);
+			match(NEW);
 			setState(2125);
 			_la = _input.LA(1);
 			if (_la==LT) {
 				{
-				setState(2124); typeArguments();
+				setState(2124);
+				typeArguments();
 				}
 			}
 
@@ -12111,37 +12860,44 @@ public class Java8Parser extends Parser {
 			while (_la==AT) {
 				{
 				{
-				setState(2127); annotation();
+				setState(2127);
+				annotation();
 				}
 				}
 				setState(2132);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(2133); match(Identifier);
+			setState(2133);
+			match(Identifier);
 			setState(2135);
 			_la = _input.LA(1);
 			if (_la==LT) {
 				{
-				setState(2134); typeArgumentsOrDiamond();
+				setState(2134);
+				typeArgumentsOrDiamond();
 				}
 			}
 
-			setState(2137); match(LPAREN);
+			setState(2137);
+			match(LPAREN);
 			setState(2139);
 			_la = _input.LA(1);
 			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FLOAT) | (1L << INT) | (1L << LONG) | (1L << NEW) | (1L << SHORT) | (1L << SUPER) | (1L << THIS) | (1L << VOID) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN))) != 0) || ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & ((1L << (BANG - 69)) | (1L << (TILDE - 69)) | (1L << (INC - 69)) | (1L << (DEC - 69)) | (1L << (ADD - 69)) | (1L << (SUB - 69)) | (1L << (Identifier - 69)) | (1L << (AT - 69)))) != 0)) {
 				{
-				setState(2138); argumentList();
+				setState(2138);
+				argumentList();
 				}
 			}
 
-			setState(2141); match(RPAREN);
+			setState(2141);
+			match(RPAREN);
 			setState(2143);
 			switch ( getInterpreter().adaptivePredict(_input,227,_ctx) ) {
 			case 1:
 				{
-				setState(2142); classBody();
+				setState(2142);
+				classBody();
 				}
 				break;
 			}
@@ -12159,30 +12915,30 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class ClassInstanceCreationExpression_lfno_primaryContext extends ParserRuleContext {
-		public TypeArgumentsContext typeArguments() {
-			return getRuleContext(TypeArgumentsContext.class,0);
-		}
 		public List<TerminalNode> Identifier() { return getTokens(Java8Parser.Identifier); }
-		public List<AnnotationContext> annotation() {
-			return getRuleContexts(AnnotationContext.class);
-		}
 		public TerminalNode Identifier(int i) {
 			return getToken(Java8Parser.Identifier, i);
 		}
-		public TypeArgumentsOrDiamondContext typeArgumentsOrDiamond() {
-			return getRuleContext(TypeArgumentsOrDiamondContext.class,0);
+		public TypeArgumentsContext typeArguments() {
+			return getRuleContext(TypeArgumentsContext.class,0);
 		}
-		public ClassBodyContext classBody() {
-			return getRuleContext(ClassBodyContext.class,0);
+		public List<AnnotationContext> annotation() {
+			return getRuleContexts(AnnotationContext.class);
 		}
 		public AnnotationContext annotation(int i) {
 			return getRuleContext(AnnotationContext.class,i);
 		}
-		public ExpressionNameContext expressionName() {
-			return getRuleContext(ExpressionNameContext.class,0);
+		public TypeArgumentsOrDiamondContext typeArgumentsOrDiamond() {
+			return getRuleContext(TypeArgumentsOrDiamondContext.class,0);
 		}
 		public ArgumentListContext argumentList() {
 			return getRuleContext(ArgumentListContext.class,0);
+		}
+		public ClassBodyContext classBody() {
+			return getRuleContext(ClassBodyContext.class,0);
+		}
+		public ExpressionNameContext expressionName() {
+			return getRuleContext(ExpressionNameContext.class,0);
 		}
 		public ClassInstanceCreationExpression_lfno_primaryContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -12208,12 +12964,14 @@ public class Java8Parser extends Parser {
 			case NEW:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(2145); match(NEW);
+				setState(2145);
+				match(NEW);
 				setState(2147);
 				_la = _input.LA(1);
 				if (_la==LT) {
 					{
-					setState(2146); typeArguments();
+					setState(2146);
+					typeArguments();
 					}
 				}
 
@@ -12223,35 +12981,40 @@ public class Java8Parser extends Parser {
 				while (_la==AT) {
 					{
 					{
-					setState(2149); annotation();
+					setState(2149);
+					annotation();
 					}
 					}
 					setState(2154);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(2155); match(Identifier);
+				setState(2155);
+				match(Identifier);
 				setState(2166);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==DOT) {
 					{
 					{
-					setState(2156); match(DOT);
+					setState(2156);
+					match(DOT);
 					setState(2160);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 					while (_la==AT) {
 						{
 						{
-						setState(2157); annotation();
+						setState(2157);
+						annotation();
 						}
 						}
 						setState(2162);
 						_errHandler.sync(this);
 						_la = _input.LA(1);
 					}
-					setState(2163); match(Identifier);
+					setState(2163);
+					match(Identifier);
 					}
 					}
 					setState(2168);
@@ -12262,25 +13025,30 @@ public class Java8Parser extends Parser {
 				_la = _input.LA(1);
 				if (_la==LT) {
 					{
-					setState(2169); typeArgumentsOrDiamond();
+					setState(2169);
+					typeArgumentsOrDiamond();
 					}
 				}
 
-				setState(2172); match(LPAREN);
+				setState(2172);
+				match(LPAREN);
 				setState(2174);
 				_la = _input.LA(1);
 				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FLOAT) | (1L << INT) | (1L << LONG) | (1L << NEW) | (1L << SHORT) | (1L << SUPER) | (1L << THIS) | (1L << VOID) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN))) != 0) || ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & ((1L << (BANG - 69)) | (1L << (TILDE - 69)) | (1L << (INC - 69)) | (1L << (DEC - 69)) | (1L << (ADD - 69)) | (1L << (SUB - 69)) | (1L << (Identifier - 69)) | (1L << (AT - 69)))) != 0)) {
 					{
-					setState(2173); argumentList();
+					setState(2173);
+					argumentList();
 					}
 				}
 
-				setState(2176); match(RPAREN);
+				setState(2176);
+				match(RPAREN);
 				setState(2178);
 				switch ( getInterpreter().adaptivePredict(_input,234,_ctx) ) {
 				case 1:
 					{
-					setState(2177); classBody();
+					setState(2177);
+					classBody();
 					}
 					break;
 				}
@@ -12289,14 +13057,18 @@ public class Java8Parser extends Parser {
 			case Identifier:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(2180); expressionName();
-				setState(2181); match(DOT);
-				setState(2182); match(NEW);
+				setState(2180);
+				expressionName();
+				setState(2181);
+				match(DOT);
+				setState(2182);
+				match(NEW);
 				setState(2184);
 				_la = _input.LA(1);
 				if (_la==LT) {
 					{
-					setState(2183); typeArguments();
+					setState(2183);
+					typeArguments();
 					}
 				}
 
@@ -12306,37 +13078,44 @@ public class Java8Parser extends Parser {
 				while (_la==AT) {
 					{
 					{
-					setState(2186); annotation();
+					setState(2186);
+					annotation();
 					}
 					}
 					setState(2191);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(2192); match(Identifier);
+				setState(2192);
+				match(Identifier);
 				setState(2194);
 				_la = _input.LA(1);
 				if (_la==LT) {
 					{
-					setState(2193); typeArgumentsOrDiamond();
+					setState(2193);
+					typeArgumentsOrDiamond();
 					}
 				}
 
-				setState(2196); match(LPAREN);
+				setState(2196);
+				match(LPAREN);
 				setState(2198);
 				_la = _input.LA(1);
 				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FLOAT) | (1L << INT) | (1L << LONG) | (1L << NEW) | (1L << SHORT) | (1L << SUPER) | (1L << THIS) | (1L << VOID) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN))) != 0) || ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & ((1L << (BANG - 69)) | (1L << (TILDE - 69)) | (1L << (INC - 69)) | (1L << (DEC - 69)) | (1L << (ADD - 69)) | (1L << (SUB - 69)) | (1L << (Identifier - 69)) | (1L << (AT - 69)))) != 0)) {
 					{
-					setState(2197); argumentList();
+					setState(2197);
+					argumentList();
 					}
 				}
 
-				setState(2200); match(RPAREN);
+				setState(2200);
+				match(RPAREN);
 				setState(2202);
 				switch ( getInterpreter().adaptivePredict(_input,239,_ctx) ) {
 				case 1:
 					{
-					setState(2201); classBody();
+					setState(2201);
+					classBody();
 					}
 					break;
 				}
@@ -12384,15 +13163,17 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(2206); typeArguments();
+				setState(2206);
+				typeArguments();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(2207); match(LT);
-				setState(2208); match(GT);
+				setState(2207);
+				match(LT);
+				setState(2208);
+				match(GT);
 				}
 				break;
 			}
@@ -12409,12 +13190,12 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class FieldAccessContext extends ParserRuleContext {
+		public PrimaryContext primary() {
+			return getRuleContext(PrimaryContext.class,0);
+		}
 		public TerminalNode Identifier() { return getToken(Java8Parser.Identifier, 0); }
 		public TypeNameContext typeName() {
 			return getRuleContext(TypeNameContext.class,0);
-		}
-		public PrimaryContext primary() {
-			return getRuleContext(PrimaryContext.class,0);
 		}
 		public FieldAccessContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -12439,29 +13220,38 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(2211); primary();
-				setState(2212); match(DOT);
-				setState(2213); match(Identifier);
+				setState(2211);
+				primary();
+				setState(2212);
+				match(DOT);
+				setState(2213);
+				match(Identifier);
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(2215); match(SUPER);
-				setState(2216); match(DOT);
-				setState(2217); match(Identifier);
+				setState(2215);
+				match(SUPER);
+				setState(2216);
+				match(DOT);
+				setState(2217);
+				match(Identifier);
 				}
 				break;
-
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(2218); typeName();
-				setState(2219); match(DOT);
-				setState(2220); match(SUPER);
-				setState(2221); match(DOT);
-				setState(2222); match(Identifier);
+				setState(2218);
+				typeName();
+				setState(2219);
+				match(DOT);
+				setState(2220);
+				match(SUPER);
+				setState(2221);
+				match(DOT);
+				setState(2222);
+				match(Identifier);
 				}
 				break;
 			}
@@ -12499,8 +13289,10 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(2226); match(DOT);
-			setState(2227); match(Identifier);
+			setState(2226);
+			match(DOT);
+			setState(2227);
+			match(Identifier);
 			}
 		}
 		catch (RecognitionException re) {
@@ -12542,19 +13334,27 @@ public class Java8Parser extends Parser {
 			case SUPER:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(2229); match(SUPER);
-				setState(2230); match(DOT);
-				setState(2231); match(Identifier);
+				setState(2229);
+				match(SUPER);
+				setState(2230);
+				match(DOT);
+				setState(2231);
+				match(Identifier);
 				}
 				break;
 			case Identifier:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(2232); typeName();
-				setState(2233); match(DOT);
-				setState(2234); match(SUPER);
-				setState(2235); match(DOT);
-				setState(2236); match(Identifier);
+				setState(2232);
+				typeName();
+				setState(2233);
+				match(DOT);
+				setState(2234);
+				match(SUPER);
+				setState(2235);
+				match(DOT);
+				setState(2236);
+				match(Identifier);
 				}
 				break;
 			default:
@@ -12573,23 +13373,23 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class ArrayAccessContext extends ParserRuleContext {
-		public PrimaryNoNewArray_lfno_arrayAccessContext primaryNoNewArray_lfno_arrayAccess() {
-			return getRuleContext(PrimaryNoNewArray_lfno_arrayAccessContext.class,0);
-		}
-		public ExpressionContext expression(int i) {
-			return getRuleContext(ExpressionContext.class,i);
-		}
-		public PrimaryNoNewArray_lf_arrayAccessContext primaryNoNewArray_lf_arrayAccess(int i) {
-			return getRuleContext(PrimaryNoNewArray_lf_arrayAccessContext.class,i);
+		public ExpressionNameContext expressionName() {
+			return getRuleContext(ExpressionNameContext.class,0);
 		}
 		public List<ExpressionContext> expression() {
 			return getRuleContexts(ExpressionContext.class);
 		}
-		public ExpressionNameContext expressionName() {
-			return getRuleContext(ExpressionNameContext.class,0);
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
+		}
+		public PrimaryNoNewArray_lfno_arrayAccessContext primaryNoNewArray_lfno_arrayAccess() {
+			return getRuleContext(PrimaryNoNewArray_lfno_arrayAccessContext.class,0);
 		}
 		public List<PrimaryNoNewArray_lf_arrayAccessContext> primaryNoNewArray_lf_arrayAccess() {
 			return getRuleContexts(PrimaryNoNewArray_lf_arrayAccessContext.class);
+		}
+		public PrimaryNoNewArray_lf_arrayAccessContext primaryNoNewArray_lf_arrayAccess(int i) {
+			return getRuleContext(PrimaryNoNewArray_lf_arrayAccessContext.class,i);
 		}
 		public ArrayAccessContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -12616,19 +13416,26 @@ public class Java8Parser extends Parser {
 			switch ( getInterpreter().adaptivePredict(_input,244,_ctx) ) {
 			case 1:
 				{
-				setState(2240); expressionName();
-				setState(2241); match(LBRACK);
-				setState(2242); expression();
-				setState(2243); match(RBRACK);
+				setState(2240);
+				expressionName();
+				setState(2241);
+				match(LBRACK);
+				setState(2242);
+				expression();
+				setState(2243);
+				match(RBRACK);
 				}
 				break;
-
 			case 2:
 				{
-				setState(2245); primaryNoNewArray_lfno_arrayAccess();
-				setState(2246); match(LBRACK);
-				setState(2247); expression();
-				setState(2248); match(RBRACK);
+				setState(2245);
+				primaryNoNewArray_lfno_arrayAccess();
+				setState(2246);
+				match(LBRACK);
+				setState(2247);
+				expression();
+				setState(2248);
+				match(RBRACK);
 				}
 				break;
 			}
@@ -12638,10 +13445,14 @@ public class Java8Parser extends Parser {
 			while (_la==LBRACK) {
 				{
 				{
-				setState(2252); primaryNoNewArray_lf_arrayAccess();
-				setState(2253); match(LBRACK);
-				setState(2254); expression();
-				setState(2255); match(RBRACK);
+				setState(2252);
+				primaryNoNewArray_lf_arrayAccess();
+				setState(2253);
+				match(LBRACK);
+				setState(2254);
+				expression();
+				setState(2255);
+				match(RBRACK);
 				}
 				}
 				setState(2261);
@@ -12665,17 +13476,17 @@ public class Java8Parser extends Parser {
 		public PrimaryNoNewArray_lf_primary_lfno_arrayAccess_lf_primaryContext primaryNoNewArray_lf_primary_lfno_arrayAccess_lf_primary() {
 			return getRuleContext(PrimaryNoNewArray_lf_primary_lfno_arrayAccess_lf_primaryContext.class,0);
 		}
-		public PrimaryNoNewArray_lf_primary_lf_arrayAccess_lf_primaryContext primaryNoNewArray_lf_primary_lf_arrayAccess_lf_primary(int i) {
-			return getRuleContext(PrimaryNoNewArray_lf_primary_lf_arrayAccess_lf_primaryContext.class,i);
-		}
-		public List<PrimaryNoNewArray_lf_primary_lf_arrayAccess_lf_primaryContext> primaryNoNewArray_lf_primary_lf_arrayAccess_lf_primary() {
-			return getRuleContexts(PrimaryNoNewArray_lf_primary_lf_arrayAccess_lf_primaryContext.class);
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
 		}
 		public ExpressionContext expression(int i) {
 			return getRuleContext(ExpressionContext.class,i);
 		}
-		public List<ExpressionContext> expression() {
-			return getRuleContexts(ExpressionContext.class);
+		public List<PrimaryNoNewArray_lf_primary_lf_arrayAccess_lf_primaryContext> primaryNoNewArray_lf_primary_lf_arrayAccess_lf_primary() {
+			return getRuleContexts(PrimaryNoNewArray_lf_primary_lf_arrayAccess_lf_primaryContext.class);
+		}
+		public PrimaryNoNewArray_lf_primary_lf_arrayAccess_lf_primaryContext primaryNoNewArray_lf_primary_lf_arrayAccess_lf_primary(int i) {
+			return getRuleContext(PrimaryNoNewArray_lf_primary_lf_arrayAccess_lf_primaryContext.class,i);
 		}
 		public ArrayAccess_lf_primaryContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -12699,10 +13510,14 @@ public class Java8Parser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			{
-			setState(2262); primaryNoNewArray_lf_primary_lfno_arrayAccess_lf_primary();
-			setState(2263); match(LBRACK);
-			setState(2264); expression();
-			setState(2265); match(RBRACK);
+			setState(2262);
+			primaryNoNewArray_lf_primary_lfno_arrayAccess_lf_primary();
+			setState(2263);
+			match(LBRACK);
+			setState(2264);
+			expression();
+			setState(2265);
+			match(RBRACK);
 			}
 			setState(2274);
 			_errHandler.sync(this);
@@ -12711,10 +13526,14 @@ public class Java8Parser extends Parser {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(2267); primaryNoNewArray_lf_primary_lf_arrayAccess_lf_primary();
-					setState(2268); match(LBRACK);
-					setState(2269); expression();
-					setState(2270); match(RBRACK);
+					setState(2267);
+					primaryNoNewArray_lf_primary_lf_arrayAccess_lf_primary();
+					setState(2268);
+					match(LBRACK);
+					setState(2269);
+					expression();
+					setState(2270);
+					match(RBRACK);
 					}
 					} 
 				}
@@ -12736,23 +13555,23 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class ArrayAccess_lfno_primaryContext extends ParserRuleContext {
-		public PrimaryNoNewArray_lfno_primary_lfno_arrayAccess_lfno_primaryContext primaryNoNewArray_lfno_primary_lfno_arrayAccess_lfno_primary() {
-			return getRuleContext(PrimaryNoNewArray_lfno_primary_lfno_arrayAccess_lfno_primaryContext.class,0);
+		public ExpressionNameContext expressionName() {
+			return getRuleContext(ExpressionNameContext.class,0);
+		}
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
 		}
 		public ExpressionContext expression(int i) {
 			return getRuleContext(ExpressionContext.class,i);
+		}
+		public PrimaryNoNewArray_lfno_primary_lfno_arrayAccess_lfno_primaryContext primaryNoNewArray_lfno_primary_lfno_arrayAccess_lfno_primary() {
+			return getRuleContext(PrimaryNoNewArray_lfno_primary_lfno_arrayAccess_lfno_primaryContext.class,0);
 		}
 		public List<PrimaryNoNewArray_lfno_primary_lf_arrayAccess_lfno_primaryContext> primaryNoNewArray_lfno_primary_lf_arrayAccess_lfno_primary() {
 			return getRuleContexts(PrimaryNoNewArray_lfno_primary_lf_arrayAccess_lfno_primaryContext.class);
 		}
 		public PrimaryNoNewArray_lfno_primary_lf_arrayAccess_lfno_primaryContext primaryNoNewArray_lfno_primary_lf_arrayAccess_lfno_primary(int i) {
 			return getRuleContext(PrimaryNoNewArray_lfno_primary_lf_arrayAccess_lfno_primaryContext.class,i);
-		}
-		public List<ExpressionContext> expression() {
-			return getRuleContexts(ExpressionContext.class);
-		}
-		public ExpressionNameContext expressionName() {
-			return getRuleContext(ExpressionNameContext.class,0);
 		}
 		public ArrayAccess_lfno_primaryContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -12779,19 +13598,26 @@ public class Java8Parser extends Parser {
 			switch ( getInterpreter().adaptivePredict(_input,247,_ctx) ) {
 			case 1:
 				{
-				setState(2277); expressionName();
-				setState(2278); match(LBRACK);
-				setState(2279); expression();
-				setState(2280); match(RBRACK);
+				setState(2277);
+				expressionName();
+				setState(2278);
+				match(LBRACK);
+				setState(2279);
+				expression();
+				setState(2280);
+				match(RBRACK);
 				}
 				break;
-
 			case 2:
 				{
-				setState(2282); primaryNoNewArray_lfno_primary_lfno_arrayAccess_lfno_primary();
-				setState(2283); match(LBRACK);
-				setState(2284); expression();
-				setState(2285); match(RBRACK);
+				setState(2282);
+				primaryNoNewArray_lfno_primary_lfno_arrayAccess_lfno_primary();
+				setState(2283);
+				match(LBRACK);
+				setState(2284);
+				expression();
+				setState(2285);
+				match(RBRACK);
 				}
 				break;
 			}
@@ -12802,10 +13628,14 @@ public class Java8Parser extends Parser {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(2289); primaryNoNewArray_lfno_primary_lf_arrayAccess_lfno_primary();
-					setState(2290); match(LBRACK);
-					setState(2291); expression();
-					setState(2292); match(RBRACK);
+					setState(2289);
+					primaryNoNewArray_lfno_primary_lf_arrayAccess_lfno_primary();
+					setState(2290);
+					match(LBRACK);
+					setState(2291);
+					expression();
+					setState(2292);
+					match(RBRACK);
 					}
 					} 
 				}
@@ -12827,24 +13657,24 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class MethodInvocationContext extends ParserRuleContext {
-		public TypeArgumentsContext typeArguments() {
-			return getRuleContext(TypeArgumentsContext.class,0);
-		}
-		public TerminalNode Identifier() { return getToken(Java8Parser.Identifier, 0); }
 		public MethodNameContext methodName() {
 			return getRuleContext(MethodNameContext.class,0);
+		}
+		public ArgumentListContext argumentList() {
+			return getRuleContext(ArgumentListContext.class,0);
 		}
 		public TypeNameContext typeName() {
 			return getRuleContext(TypeNameContext.class,0);
 		}
-		public PrimaryContext primary() {
-			return getRuleContext(PrimaryContext.class,0);
+		public TerminalNode Identifier() { return getToken(Java8Parser.Identifier, 0); }
+		public TypeArgumentsContext typeArguments() {
+			return getRuleContext(TypeArgumentsContext.class,0);
 		}
 		public ExpressionNameContext expressionName() {
 			return getRuleContext(ExpressionNameContext.class,0);
 		}
-		public ArgumentListContext argumentList() {
-			return getRuleContext(ArgumentListContext.class,0);
+		public PrimaryContext primary() {
+			return getRuleContext(PrimaryContext.class,0);
 		}
 		public MethodInvocationContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -12870,154 +13700,190 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(2299); methodName();
-				setState(2300); match(LPAREN);
+				setState(2299);
+				methodName();
+				setState(2300);
+				match(LPAREN);
 				setState(2302);
 				_la = _input.LA(1);
 				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FLOAT) | (1L << INT) | (1L << LONG) | (1L << NEW) | (1L << SHORT) | (1L << SUPER) | (1L << THIS) | (1L << VOID) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN))) != 0) || ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & ((1L << (BANG - 69)) | (1L << (TILDE - 69)) | (1L << (INC - 69)) | (1L << (DEC - 69)) | (1L << (ADD - 69)) | (1L << (SUB - 69)) | (1L << (Identifier - 69)) | (1L << (AT - 69)))) != 0)) {
 					{
-					setState(2301); argumentList();
+					setState(2301);
+					argumentList();
 					}
 				}
 
-				setState(2304); match(RPAREN);
+				setState(2304);
+				match(RPAREN);
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(2306); typeName();
-				setState(2307); match(DOT);
+				setState(2306);
+				typeName();
+				setState(2307);
+				match(DOT);
 				setState(2309);
 				_la = _input.LA(1);
 				if (_la==LT) {
 					{
-					setState(2308); typeArguments();
+					setState(2308);
+					typeArguments();
 					}
 				}
 
-				setState(2311); match(Identifier);
-				setState(2312); match(LPAREN);
+				setState(2311);
+				match(Identifier);
+				setState(2312);
+				match(LPAREN);
 				setState(2314);
 				_la = _input.LA(1);
 				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FLOAT) | (1L << INT) | (1L << LONG) | (1L << NEW) | (1L << SHORT) | (1L << SUPER) | (1L << THIS) | (1L << VOID) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN))) != 0) || ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & ((1L << (BANG - 69)) | (1L << (TILDE - 69)) | (1L << (INC - 69)) | (1L << (DEC - 69)) | (1L << (ADD - 69)) | (1L << (SUB - 69)) | (1L << (Identifier - 69)) | (1L << (AT - 69)))) != 0)) {
 					{
-					setState(2313); argumentList();
+					setState(2313);
+					argumentList();
 					}
 				}
 
-				setState(2316); match(RPAREN);
+				setState(2316);
+				match(RPAREN);
 				}
 				break;
-
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(2318); expressionName();
-				setState(2319); match(DOT);
+				setState(2318);
+				expressionName();
+				setState(2319);
+				match(DOT);
 				setState(2321);
 				_la = _input.LA(1);
 				if (_la==LT) {
 					{
-					setState(2320); typeArguments();
+					setState(2320);
+					typeArguments();
 					}
 				}
 
-				setState(2323); match(Identifier);
-				setState(2324); match(LPAREN);
+				setState(2323);
+				match(Identifier);
+				setState(2324);
+				match(LPAREN);
 				setState(2326);
 				_la = _input.LA(1);
 				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FLOAT) | (1L << INT) | (1L << LONG) | (1L << NEW) | (1L << SHORT) | (1L << SUPER) | (1L << THIS) | (1L << VOID) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN))) != 0) || ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & ((1L << (BANG - 69)) | (1L << (TILDE - 69)) | (1L << (INC - 69)) | (1L << (DEC - 69)) | (1L << (ADD - 69)) | (1L << (SUB - 69)) | (1L << (Identifier - 69)) | (1L << (AT - 69)))) != 0)) {
 					{
-					setState(2325); argumentList();
+					setState(2325);
+					argumentList();
 					}
 				}
 
-				setState(2328); match(RPAREN);
+				setState(2328);
+				match(RPAREN);
 				}
 				break;
-
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(2330); primary();
-				setState(2331); match(DOT);
+				setState(2330);
+				primary();
+				setState(2331);
+				match(DOT);
 				setState(2333);
 				_la = _input.LA(1);
 				if (_la==LT) {
 					{
-					setState(2332); typeArguments();
+					setState(2332);
+					typeArguments();
 					}
 				}
 
-				setState(2335); match(Identifier);
-				setState(2336); match(LPAREN);
+				setState(2335);
+				match(Identifier);
+				setState(2336);
+				match(LPAREN);
 				setState(2338);
 				_la = _input.LA(1);
 				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FLOAT) | (1L << INT) | (1L << LONG) | (1L << NEW) | (1L << SHORT) | (1L << SUPER) | (1L << THIS) | (1L << VOID) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN))) != 0) || ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & ((1L << (BANG - 69)) | (1L << (TILDE - 69)) | (1L << (INC - 69)) | (1L << (DEC - 69)) | (1L << (ADD - 69)) | (1L << (SUB - 69)) | (1L << (Identifier - 69)) | (1L << (AT - 69)))) != 0)) {
 					{
-					setState(2337); argumentList();
+					setState(2337);
+					argumentList();
 					}
 				}
 
-				setState(2340); match(RPAREN);
+				setState(2340);
+				match(RPAREN);
 				}
 				break;
-
 			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(2342); match(SUPER);
-				setState(2343); match(DOT);
+				setState(2342);
+				match(SUPER);
+				setState(2343);
+				match(DOT);
 				setState(2345);
 				_la = _input.LA(1);
 				if (_la==LT) {
 					{
-					setState(2344); typeArguments();
+					setState(2344);
+					typeArguments();
 					}
 				}
 
-				setState(2347); match(Identifier);
-				setState(2348); match(LPAREN);
+				setState(2347);
+				match(Identifier);
+				setState(2348);
+				match(LPAREN);
 				setState(2350);
 				_la = _input.LA(1);
 				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FLOAT) | (1L << INT) | (1L << LONG) | (1L << NEW) | (1L << SHORT) | (1L << SUPER) | (1L << THIS) | (1L << VOID) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN))) != 0) || ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & ((1L << (BANG - 69)) | (1L << (TILDE - 69)) | (1L << (INC - 69)) | (1L << (DEC - 69)) | (1L << (ADD - 69)) | (1L << (SUB - 69)) | (1L << (Identifier - 69)) | (1L << (AT - 69)))) != 0)) {
 					{
-					setState(2349); argumentList();
+					setState(2349);
+					argumentList();
 					}
 				}
 
-				setState(2352); match(RPAREN);
+				setState(2352);
+				match(RPAREN);
 				}
 				break;
-
 			case 6:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(2353); typeName();
-				setState(2354); match(DOT);
-				setState(2355); match(SUPER);
-				setState(2356); match(DOT);
+				setState(2353);
+				typeName();
+				setState(2354);
+				match(DOT);
+				setState(2355);
+				match(SUPER);
+				setState(2356);
+				match(DOT);
 				setState(2358);
 				_la = _input.LA(1);
 				if (_la==LT) {
 					{
-					setState(2357); typeArguments();
+					setState(2357);
+					typeArguments();
 					}
 				}
 
-				setState(2360); match(Identifier);
-				setState(2361); match(LPAREN);
+				setState(2360);
+				match(Identifier);
+				setState(2361);
+				match(LPAREN);
 				setState(2363);
 				_la = _input.LA(1);
 				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FLOAT) | (1L << INT) | (1L << LONG) | (1L << NEW) | (1L << SHORT) | (1L << SUPER) | (1L << THIS) | (1L << VOID) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN))) != 0) || ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & ((1L << (BANG - 69)) | (1L << (TILDE - 69)) | (1L << (INC - 69)) | (1L << (DEC - 69)) | (1L << (ADD - 69)) | (1L << (SUB - 69)) | (1L << (Identifier - 69)) | (1L << (AT - 69)))) != 0)) {
 					{
-					setState(2362); argumentList();
+					setState(2362);
+					argumentList();
 					}
 				}
 
-				setState(2365); match(RPAREN);
+				setState(2365);
+				match(RPAREN);
 				}
 				break;
 			}
@@ -13034,10 +13900,10 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class MethodInvocation_lf_primaryContext extends ParserRuleContext {
+		public TerminalNode Identifier() { return getToken(Java8Parser.Identifier, 0); }
 		public TypeArgumentsContext typeArguments() {
 			return getRuleContext(TypeArgumentsContext.class,0);
 		}
-		public TerminalNode Identifier() { return getToken(Java8Parser.Identifier, 0); }
 		public ArgumentListContext argumentList() {
 			return getRuleContext(ArgumentListContext.class,0);
 		}
@@ -13062,26 +13928,32 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(2369); match(DOT);
+			setState(2369);
+			match(DOT);
 			setState(2371);
 			_la = _input.LA(1);
 			if (_la==LT) {
 				{
-				setState(2370); typeArguments();
+				setState(2370);
+				typeArguments();
 				}
 			}
 
-			setState(2373); match(Identifier);
-			setState(2374); match(LPAREN);
+			setState(2373);
+			match(Identifier);
+			setState(2374);
+			match(LPAREN);
 			setState(2376);
 			_la = _input.LA(1);
 			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FLOAT) | (1L << INT) | (1L << LONG) | (1L << NEW) | (1L << SHORT) | (1L << SUPER) | (1L << THIS) | (1L << VOID) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN))) != 0) || ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & ((1L << (BANG - 69)) | (1L << (TILDE - 69)) | (1L << (INC - 69)) | (1L << (DEC - 69)) | (1L << (ADD - 69)) | (1L << (SUB - 69)) | (1L << (Identifier - 69)) | (1L << (AT - 69)))) != 0)) {
 				{
-				setState(2375); argumentList();
+				setState(2375);
+				argumentList();
 				}
 			}
 
-			setState(2378); match(RPAREN);
+			setState(2378);
+			match(RPAREN);
 			}
 		}
 		catch (RecognitionException re) {
@@ -13096,21 +13968,21 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class MethodInvocation_lfno_primaryContext extends ParserRuleContext {
-		public TypeArgumentsContext typeArguments() {
-			return getRuleContext(TypeArgumentsContext.class,0);
-		}
-		public TerminalNode Identifier() { return getToken(Java8Parser.Identifier, 0); }
 		public MethodNameContext methodName() {
 			return getRuleContext(MethodNameContext.class,0);
+		}
+		public ArgumentListContext argumentList() {
+			return getRuleContext(ArgumentListContext.class,0);
 		}
 		public TypeNameContext typeName() {
 			return getRuleContext(TypeNameContext.class,0);
 		}
+		public TerminalNode Identifier() { return getToken(Java8Parser.Identifier, 0); }
+		public TypeArgumentsContext typeArguments() {
+			return getRuleContext(TypeArgumentsContext.class,0);
+		}
 		public ExpressionNameContext expressionName() {
 			return getRuleContext(ExpressionNameContext.class,0);
-		}
-		public ArgumentListContext argumentList() {
-			return getRuleContext(ArgumentListContext.class,0);
 		}
 		public MethodInvocation_lfno_primaryContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -13136,127 +14008,157 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(2380); methodName();
-				setState(2381); match(LPAREN);
+				setState(2380);
+				methodName();
+				setState(2381);
+				match(LPAREN);
 				setState(2383);
 				_la = _input.LA(1);
 				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FLOAT) | (1L << INT) | (1L << LONG) | (1L << NEW) | (1L << SHORT) | (1L << SUPER) | (1L << THIS) | (1L << VOID) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN))) != 0) || ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & ((1L << (BANG - 69)) | (1L << (TILDE - 69)) | (1L << (INC - 69)) | (1L << (DEC - 69)) | (1L << (ADD - 69)) | (1L << (SUB - 69)) | (1L << (Identifier - 69)) | (1L << (AT - 69)))) != 0)) {
 					{
-					setState(2382); argumentList();
+					setState(2382);
+					argumentList();
 					}
 				}
 
-				setState(2385); match(RPAREN);
+				setState(2385);
+				match(RPAREN);
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(2387); typeName();
-				setState(2388); match(DOT);
+				setState(2387);
+				typeName();
+				setState(2388);
+				match(DOT);
 				setState(2390);
 				_la = _input.LA(1);
 				if (_la==LT) {
 					{
-					setState(2389); typeArguments();
+					setState(2389);
+					typeArguments();
 					}
 				}
 
-				setState(2392); match(Identifier);
-				setState(2393); match(LPAREN);
+				setState(2392);
+				match(Identifier);
+				setState(2393);
+				match(LPAREN);
 				setState(2395);
 				_la = _input.LA(1);
 				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FLOAT) | (1L << INT) | (1L << LONG) | (1L << NEW) | (1L << SHORT) | (1L << SUPER) | (1L << THIS) | (1L << VOID) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN))) != 0) || ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & ((1L << (BANG - 69)) | (1L << (TILDE - 69)) | (1L << (INC - 69)) | (1L << (DEC - 69)) | (1L << (ADD - 69)) | (1L << (SUB - 69)) | (1L << (Identifier - 69)) | (1L << (AT - 69)))) != 0)) {
 					{
-					setState(2394); argumentList();
+					setState(2394);
+					argumentList();
 					}
 				}
 
-				setState(2397); match(RPAREN);
+				setState(2397);
+				match(RPAREN);
 				}
 				break;
-
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(2399); expressionName();
-				setState(2400); match(DOT);
+				setState(2399);
+				expressionName();
+				setState(2400);
+				match(DOT);
 				setState(2402);
 				_la = _input.LA(1);
 				if (_la==LT) {
 					{
-					setState(2401); typeArguments();
+					setState(2401);
+					typeArguments();
 					}
 				}
 
-				setState(2404); match(Identifier);
-				setState(2405); match(LPAREN);
+				setState(2404);
+				match(Identifier);
+				setState(2405);
+				match(LPAREN);
 				setState(2407);
 				_la = _input.LA(1);
 				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FLOAT) | (1L << INT) | (1L << LONG) | (1L << NEW) | (1L << SHORT) | (1L << SUPER) | (1L << THIS) | (1L << VOID) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN))) != 0) || ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & ((1L << (BANG - 69)) | (1L << (TILDE - 69)) | (1L << (INC - 69)) | (1L << (DEC - 69)) | (1L << (ADD - 69)) | (1L << (SUB - 69)) | (1L << (Identifier - 69)) | (1L << (AT - 69)))) != 0)) {
 					{
-					setState(2406); argumentList();
+					setState(2406);
+					argumentList();
 					}
 				}
 
-				setState(2409); match(RPAREN);
+				setState(2409);
+				match(RPAREN);
 				}
 				break;
-
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(2411); match(SUPER);
-				setState(2412); match(DOT);
+				setState(2411);
+				match(SUPER);
+				setState(2412);
+				match(DOT);
 				setState(2414);
 				_la = _input.LA(1);
 				if (_la==LT) {
 					{
-					setState(2413); typeArguments();
+					setState(2413);
+					typeArguments();
 					}
 				}
 
-				setState(2416); match(Identifier);
-				setState(2417); match(LPAREN);
+				setState(2416);
+				match(Identifier);
+				setState(2417);
+				match(LPAREN);
 				setState(2419);
 				_la = _input.LA(1);
 				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FLOAT) | (1L << INT) | (1L << LONG) | (1L << NEW) | (1L << SHORT) | (1L << SUPER) | (1L << THIS) | (1L << VOID) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN))) != 0) || ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & ((1L << (BANG - 69)) | (1L << (TILDE - 69)) | (1L << (INC - 69)) | (1L << (DEC - 69)) | (1L << (ADD - 69)) | (1L << (SUB - 69)) | (1L << (Identifier - 69)) | (1L << (AT - 69)))) != 0)) {
 					{
-					setState(2418); argumentList();
+					setState(2418);
+					argumentList();
 					}
 				}
 
-				setState(2421); match(RPAREN);
+				setState(2421);
+				match(RPAREN);
 				}
 				break;
-
 			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(2422); typeName();
-				setState(2423); match(DOT);
-				setState(2424); match(SUPER);
-				setState(2425); match(DOT);
+				setState(2422);
+				typeName();
+				setState(2423);
+				match(DOT);
+				setState(2424);
+				match(SUPER);
+				setState(2425);
+				match(DOT);
 				setState(2427);
 				_la = _input.LA(1);
 				if (_la==LT) {
 					{
-					setState(2426); typeArguments();
+					setState(2426);
+					typeArguments();
 					}
 				}
 
-				setState(2429); match(Identifier);
-				setState(2430); match(LPAREN);
+				setState(2429);
+				match(Identifier);
+				setState(2430);
+				match(LPAREN);
 				setState(2432);
 				_la = _input.LA(1);
 				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FLOAT) | (1L << INT) | (1L << LONG) | (1L << NEW) | (1L << SHORT) | (1L << SUPER) | (1L << THIS) | (1L << VOID) | (1L << IntegerLiteral) | (1L << FloatingPointLiteral) | (1L << BooleanLiteral) | (1L << CharacterLiteral) | (1L << StringLiteral) | (1L << NullLiteral) | (1L << LPAREN))) != 0) || ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & ((1L << (BANG - 69)) | (1L << (TILDE - 69)) | (1L << (INC - 69)) | (1L << (DEC - 69)) | (1L << (ADD - 69)) | (1L << (SUB - 69)) | (1L << (Identifier - 69)) | (1L << (AT - 69)))) != 0)) {
 					{
-					setState(2431); argumentList();
+					setState(2431);
+					argumentList();
 					}
 				}
 
-				setState(2434); match(RPAREN);
+				setState(2434);
+				match(RPAREN);
 				}
 				break;
 			}
@@ -13273,11 +14175,11 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class ArgumentListContext extends ParserRuleContext {
-		public ExpressionContext expression(int i) {
-			return getRuleContext(ExpressionContext.class,i);
-		}
 		public List<ExpressionContext> expression() {
 			return getRuleContexts(ExpressionContext.class);
+		}
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
 		}
 		public ArgumentListContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -13300,15 +14202,18 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(2438); expression();
+			setState(2438);
+			expression();
 			setState(2443);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==COMMA) {
 				{
 				{
-				setState(2439); match(COMMA);
-				setState(2440); expression();
+				setState(2439);
+				match(COMMA);
+				setState(2440);
+				expression();
 				}
 				}
 				setState(2445);
@@ -13329,27 +14234,27 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class MethodReferenceContext extends ParserRuleContext {
-		public TypeArgumentsContext typeArguments() {
-			return getRuleContext(TypeArgumentsContext.class,0);
+		public ExpressionNameContext expressionName() {
+			return getRuleContext(ExpressionNameContext.class,0);
 		}
 		public TerminalNode Identifier() { return getToken(Java8Parser.Identifier, 0); }
-		public ArrayTypeContext arrayType() {
-			return getRuleContext(ArrayTypeContext.class,0);
+		public TypeArgumentsContext typeArguments() {
+			return getRuleContext(TypeArgumentsContext.class,0);
 		}
 		public ReferenceTypeContext referenceType() {
 			return getRuleContext(ReferenceTypeContext.class,0);
 		}
-		public TypeNameContext typeName() {
-			return getRuleContext(TypeNameContext.class,0);
-		}
 		public PrimaryContext primary() {
 			return getRuleContext(PrimaryContext.class,0);
 		}
-		public ExpressionNameContext expressionName() {
-			return getRuleContext(ExpressionNameContext.class,0);
+		public TypeNameContext typeName() {
+			return getRuleContext(TypeNameContext.class,0);
 		}
 		public ClassTypeContext classType() {
 			return getRuleContext(ClassTypeContext.class,0);
+		}
+		public ArrayTypeContext arrayType() {
+			return getRuleContext(ArrayTypeContext.class,0);
 		}
 		public MethodReferenceContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -13375,113 +14280,136 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(2446); expressionName();
-				setState(2447); match(COLONCOLON);
+				setState(2446);
+				expressionName();
+				setState(2447);
+				match(COLONCOLON);
 				setState(2449);
 				_la = _input.LA(1);
 				if (_la==LT) {
 					{
-					setState(2448); typeArguments();
+					setState(2448);
+					typeArguments();
 					}
 				}
 
-				setState(2451); match(Identifier);
+				setState(2451);
+				match(Identifier);
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(2453); referenceType();
-				setState(2454); match(COLONCOLON);
+				setState(2453);
+				referenceType();
+				setState(2454);
+				match(COLONCOLON);
 				setState(2456);
 				_la = _input.LA(1);
 				if (_la==LT) {
 					{
-					setState(2455); typeArguments();
+					setState(2455);
+					typeArguments();
 					}
 				}
 
-				setState(2458); match(Identifier);
+				setState(2458);
+				match(Identifier);
 				}
 				break;
-
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(2460); primary();
-				setState(2461); match(COLONCOLON);
+				setState(2460);
+				primary();
+				setState(2461);
+				match(COLONCOLON);
 				setState(2463);
 				_la = _input.LA(1);
 				if (_la==LT) {
 					{
-					setState(2462); typeArguments();
+					setState(2462);
+					typeArguments();
 					}
 				}
 
-				setState(2465); match(Identifier);
+				setState(2465);
+				match(Identifier);
 				}
 				break;
-
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(2467); match(SUPER);
-				setState(2468); match(COLONCOLON);
+				setState(2467);
+				match(SUPER);
+				setState(2468);
+				match(COLONCOLON);
 				setState(2470);
 				_la = _input.LA(1);
 				if (_la==LT) {
 					{
-					setState(2469); typeArguments();
+					setState(2469);
+					typeArguments();
 					}
 				}
 
-				setState(2472); match(Identifier);
+				setState(2472);
+				match(Identifier);
 				}
 				break;
-
 			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(2473); typeName();
-				setState(2474); match(DOT);
-				setState(2475); match(SUPER);
-				setState(2476); match(COLONCOLON);
+				setState(2473);
+				typeName();
+				setState(2474);
+				match(DOT);
+				setState(2475);
+				match(SUPER);
+				setState(2476);
+				match(COLONCOLON);
 				setState(2478);
 				_la = _input.LA(1);
 				if (_la==LT) {
 					{
-					setState(2477); typeArguments();
+					setState(2477);
+					typeArguments();
 					}
 				}
 
-				setState(2480); match(Identifier);
+				setState(2480);
+				match(Identifier);
 				}
 				break;
-
 			case 6:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(2482); classType();
-				setState(2483); match(COLONCOLON);
+				setState(2482);
+				classType();
+				setState(2483);
+				match(COLONCOLON);
 				setState(2485);
 				_la = _input.LA(1);
 				if (_la==LT) {
 					{
-					setState(2484); typeArguments();
+					setState(2484);
+					typeArguments();
 					}
 				}
 
-				setState(2487); match(NEW);
+				setState(2487);
+				match(NEW);
 				}
 				break;
-
 			case 7:
 				enterOuterAlt(_localctx, 7);
 				{
-				setState(2489); arrayType();
-				setState(2490); match(COLONCOLON);
-				setState(2491); match(NEW);
+				setState(2489);
+				arrayType();
+				setState(2490);
+				match(COLONCOLON);
+				setState(2491);
+				match(NEW);
 				}
 				break;
 			}
@@ -13498,10 +14426,10 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class MethodReference_lf_primaryContext extends ParserRuleContext {
+		public TerminalNode Identifier() { return getToken(Java8Parser.Identifier, 0); }
 		public TypeArgumentsContext typeArguments() {
 			return getRuleContext(TypeArgumentsContext.class,0);
 		}
-		public TerminalNode Identifier() { return getToken(Java8Parser.Identifier, 0); }
 		public MethodReference_lf_primaryContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -13523,16 +14451,19 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(2495); match(COLONCOLON);
+			setState(2495);
+			match(COLONCOLON);
 			setState(2497);
 			_la = _input.LA(1);
 			if (_la==LT) {
 				{
-				setState(2496); typeArguments();
+				setState(2496);
+				typeArguments();
 				}
 			}
 
-			setState(2499); match(Identifier);
+			setState(2499);
+			match(Identifier);
 			}
 		}
 		catch (RecognitionException re) {
@@ -13547,12 +14478,12 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class MethodReference_lfno_primaryContext extends ParserRuleContext {
-		public TypeArgumentsContext typeArguments() {
-			return getRuleContext(TypeArgumentsContext.class,0);
+		public ExpressionNameContext expressionName() {
+			return getRuleContext(ExpressionNameContext.class,0);
 		}
 		public TerminalNode Identifier() { return getToken(Java8Parser.Identifier, 0); }
-		public ArrayTypeContext arrayType() {
-			return getRuleContext(ArrayTypeContext.class,0);
+		public TypeArgumentsContext typeArguments() {
+			return getRuleContext(TypeArgumentsContext.class,0);
 		}
 		public ReferenceTypeContext referenceType() {
 			return getRuleContext(ReferenceTypeContext.class,0);
@@ -13560,11 +14491,11 @@ public class Java8Parser extends Parser {
 		public TypeNameContext typeName() {
 			return getRuleContext(TypeNameContext.class,0);
 		}
-		public ExpressionNameContext expressionName() {
-			return getRuleContext(ExpressionNameContext.class,0);
-		}
 		public ClassTypeContext classType() {
 			return getRuleContext(ClassTypeContext.class,0);
+		}
+		public ArrayTypeContext arrayType() {
+			return getRuleContext(ArrayTypeContext.class,0);
 		}
 		public MethodReference_lfno_primaryContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -13590,96 +14521,116 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(2501); expressionName();
-				setState(2502); match(COLONCOLON);
+				setState(2501);
+				expressionName();
+				setState(2502);
+				match(COLONCOLON);
 				setState(2504);
 				_la = _input.LA(1);
 				if (_la==LT) {
 					{
-					setState(2503); typeArguments();
+					setState(2503);
+					typeArguments();
 					}
 				}
 
-				setState(2506); match(Identifier);
+				setState(2506);
+				match(Identifier);
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(2508); referenceType();
-				setState(2509); match(COLONCOLON);
+				setState(2508);
+				referenceType();
+				setState(2509);
+				match(COLONCOLON);
 				setState(2511);
 				_la = _input.LA(1);
 				if (_la==LT) {
 					{
-					setState(2510); typeArguments();
+					setState(2510);
+					typeArguments();
 					}
 				}
 
-				setState(2513); match(Identifier);
+				setState(2513);
+				match(Identifier);
 				}
 				break;
-
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(2515); match(SUPER);
-				setState(2516); match(COLONCOLON);
+				setState(2515);
+				match(SUPER);
+				setState(2516);
+				match(COLONCOLON);
 				setState(2518);
 				_la = _input.LA(1);
 				if (_la==LT) {
 					{
-					setState(2517); typeArguments();
+					setState(2517);
+					typeArguments();
 					}
 				}
 
-				setState(2520); match(Identifier);
+				setState(2520);
+				match(Identifier);
 				}
 				break;
-
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(2521); typeName();
-				setState(2522); match(DOT);
-				setState(2523); match(SUPER);
-				setState(2524); match(COLONCOLON);
+				setState(2521);
+				typeName();
+				setState(2522);
+				match(DOT);
+				setState(2523);
+				match(SUPER);
+				setState(2524);
+				match(COLONCOLON);
 				setState(2526);
 				_la = _input.LA(1);
 				if (_la==LT) {
 					{
-					setState(2525); typeArguments();
+					setState(2525);
+					typeArguments();
 					}
 				}
 
-				setState(2528); match(Identifier);
+				setState(2528);
+				match(Identifier);
 				}
 				break;
-
 			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(2530); classType();
-				setState(2531); match(COLONCOLON);
+				setState(2530);
+				classType();
+				setState(2531);
+				match(COLONCOLON);
 				setState(2533);
 				_la = _input.LA(1);
 				if (_la==LT) {
 					{
-					setState(2532); typeArguments();
+					setState(2532);
+					typeArguments();
 					}
 				}
 
-				setState(2535); match(NEW);
+				setState(2535);
+				match(NEW);
 				}
 				break;
-
 			case 6:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(2537); arrayType();
-				setState(2538); match(COLONCOLON);
-				setState(2539); match(NEW);
+				setState(2537);
+				arrayType();
+				setState(2538);
+				match(COLONCOLON);
+				setState(2539);
+				match(NEW);
 				}
 				break;
 			}
@@ -13696,17 +14647,17 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class ArrayCreationExpressionContext extends ParserRuleContext {
-		public DimsContext dims() {
-			return getRuleContext(DimsContext.class,0);
-		}
 		public PrimitiveTypeContext primitiveType() {
 			return getRuleContext(PrimitiveTypeContext.class,0);
 		}
-		public ClassOrInterfaceTypeContext classOrInterfaceType() {
-			return getRuleContext(ClassOrInterfaceTypeContext.class,0);
-		}
 		public DimExprsContext dimExprs() {
 			return getRuleContext(DimExprsContext.class,0);
+		}
+		public DimsContext dims() {
+			return getRuleContext(DimsContext.class,0);
+		}
+		public ClassOrInterfaceTypeContext classOrInterfaceType() {
+			return getRuleContext(ClassOrInterfaceTypeContext.class,0);
 		}
 		public ArrayInitializerContext arrayInitializer() {
 			return getRuleContext(ArrayInitializerContext.class,0);
@@ -13734,54 +14685,67 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(2543); match(NEW);
-				setState(2544); primitiveType();
-				setState(2545); dimExprs();
+				setState(2543);
+				match(NEW);
+				setState(2544);
+				primitiveType();
+				setState(2545);
+				dimExprs();
 				setState(2547);
 				switch ( getInterpreter().adaptivePredict(_input,288,_ctx) ) {
 				case 1:
 					{
-					setState(2546); dims();
+					setState(2546);
+					dims();
 					}
 					break;
 				}
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(2549); match(NEW);
-				setState(2550); classOrInterfaceType();
-				setState(2551); dimExprs();
+				setState(2549);
+				match(NEW);
+				setState(2550);
+				classOrInterfaceType();
+				setState(2551);
+				dimExprs();
 				setState(2553);
 				switch ( getInterpreter().adaptivePredict(_input,289,_ctx) ) {
 				case 1:
 					{
-					setState(2552); dims();
+					setState(2552);
+					dims();
 					}
 					break;
 				}
 				}
 				break;
-
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(2555); match(NEW);
-				setState(2556); primitiveType();
-				setState(2557); dims();
-				setState(2558); arrayInitializer();
+				setState(2555);
+				match(NEW);
+				setState(2556);
+				primitiveType();
+				setState(2557);
+				dims();
+				setState(2558);
+				arrayInitializer();
 				}
 				break;
-
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(2560); match(NEW);
-				setState(2561); classOrInterfaceType();
-				setState(2562); dims();
-				setState(2563); arrayInitializer();
+				setState(2560);
+				match(NEW);
+				setState(2561);
+				classOrInterfaceType();
+				setState(2562);
+				dims();
+				setState(2563);
+				arrayInitializer();
 				}
 				break;
 			}
@@ -13825,7 +14789,8 @@ public class Java8Parser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(2567); dimExpr();
+			setState(2567);
+			dimExpr();
 			setState(2571);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,291,_ctx);
@@ -13833,7 +14798,8 @@ public class Java8Parser extends Parser {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(2568); dimExpr();
+					setState(2568);
+					dimExpr();
 					}
 					} 
 				}
@@ -13855,14 +14821,14 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class DimExprContext extends ParserRuleContext {
+		public ExpressionContext expression() {
+			return getRuleContext(ExpressionContext.class,0);
+		}
 		public List<AnnotationContext> annotation() {
 			return getRuleContexts(AnnotationContext.class);
 		}
 		public AnnotationContext annotation(int i) {
 			return getRuleContext(AnnotationContext.class,i);
-		}
-		public ExpressionContext expression() {
-			return getRuleContext(ExpressionContext.class,0);
 		}
 		public DimExprContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -13891,16 +14857,20 @@ public class Java8Parser extends Parser {
 			while (_la==AT) {
 				{
 				{
-				setState(2574); annotation();
+				setState(2574);
+				annotation();
 				}
 				}
 				setState(2579);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(2580); match(LBRACK);
-			setState(2581); expression();
-			setState(2582); match(RBRACK);
+			setState(2580);
+			match(LBRACK);
+			setState(2581);
+			expression();
+			setState(2582);
+			match(RBRACK);
 			}
 		}
 		catch (RecognitionException re) {
@@ -13938,7 +14908,8 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(2584); expression();
+			setState(2584);
+			expression();
 			}
 		}
 		catch (RecognitionException re) {
@@ -13953,11 +14924,11 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class ExpressionContext extends ParserRuleContext {
-		public AssignmentExpressionContext assignmentExpression() {
-			return getRuleContext(AssignmentExpressionContext.class,0);
-		}
 		public LambdaExpressionContext lambdaExpression() {
 			return getRuleContext(LambdaExpressionContext.class,0);
+		}
+		public AssignmentExpressionContext assignmentExpression() {
+			return getRuleContext(AssignmentExpressionContext.class,0);
 		}
 		public ExpressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -13982,14 +14953,15 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(2586); lambdaExpression();
+				setState(2586);
+				lambdaExpression();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(2587); assignmentExpression();
+				setState(2587);
+				assignmentExpression();
 				}
 				break;
 			}
@@ -14006,11 +14978,11 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class LambdaExpressionContext extends ParserRuleContext {
-		public LambdaBodyContext lambdaBody() {
-			return getRuleContext(LambdaBodyContext.class,0);
-		}
 		public LambdaParametersContext lambdaParameters() {
 			return getRuleContext(LambdaParametersContext.class,0);
+		}
+		public LambdaBodyContext lambdaBody() {
+			return getRuleContext(LambdaBodyContext.class,0);
 		}
 		public LambdaExpressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -14032,9 +15004,12 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(2590); lambdaParameters();
-			setState(2591); match(ARROW);
-			setState(2592); lambdaBody();
+			setState(2590);
+			lambdaParameters();
+			setState(2591);
+			match(ARROW);
+			setState(2592);
+			lambdaBody();
 			}
 		}
 		catch (RecognitionException re) {
@@ -14080,32 +15055,37 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(2594); match(Identifier);
+				setState(2594);
+				match(Identifier);
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(2595); match(LPAREN);
+				setState(2595);
+				match(LPAREN);
 				setState(2597);
 				_la = _input.LA(1);
 				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << BYTE) | (1L << CHAR) | (1L << DOUBLE) | (1L << FINAL) | (1L << FLOAT) | (1L << INT) | (1L << LONG) | (1L << SHORT))) != 0) || _la==Identifier || _la==AT) {
 					{
-					setState(2596); formalParameterList();
+					setState(2596);
+					formalParameterList();
 					}
 				}
 
-				setState(2599); match(RPAREN);
+				setState(2599);
+				match(RPAREN);
 				}
 				break;
-
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(2600); match(LPAREN);
-				setState(2601); inferredFormalParameterList();
-				setState(2602); match(RPAREN);
+				setState(2600);
+				match(LPAREN);
+				setState(2601);
+				inferredFormalParameterList();
+				setState(2602);
+				match(RPAREN);
 				}
 				break;
 			}
@@ -14147,15 +15127,18 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(2606); match(Identifier);
+			setState(2606);
+			match(Identifier);
 			setState(2611);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==COMMA) {
 				{
 				{
-				setState(2607); match(COMMA);
-				setState(2608); match(Identifier);
+				setState(2607);
+				match(COMMA);
+				setState(2608);
+				match(Identifier);
 				}
 				}
 				setState(2613);
@@ -14231,13 +15214,15 @@ public class Java8Parser extends Parser {
 			case AT:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(2614); expression();
+				setState(2614);
+				expression();
 				}
 				break;
 			case LBRACE:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(2615); block();
+				setState(2615);
+				block();
 				}
 				break;
 			default:
@@ -14285,14 +15270,15 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(2618); conditionalExpression();
+				setState(2618);
+				conditionalExpression();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(2619); assignment();
+				setState(2619);
+				assignment();
 				}
 				break;
 			}
@@ -14312,11 +15298,11 @@ public class Java8Parser extends Parser {
 		public LeftHandSideContext leftHandSide() {
 			return getRuleContext(LeftHandSideContext.class,0);
 		}
-		public ExpressionContext expression() {
-			return getRuleContext(ExpressionContext.class,0);
-		}
 		public AssignmentOperatorContext assignmentOperator() {
 			return getRuleContext(AssignmentOperatorContext.class,0);
+		}
+		public ExpressionContext expression() {
+			return getRuleContext(ExpressionContext.class,0);
 		}
 		public AssignmentContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -14338,9 +15324,12 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(2622); leftHandSide();
-			setState(2623); assignmentOperator();
-			setState(2624); expression();
+			setState(2622);
+			leftHandSide();
+			setState(2623);
+			assignmentOperator();
+			setState(2624);
+			expression();
 			}
 		}
 		catch (RecognitionException re) {
@@ -14355,14 +15344,14 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class LeftHandSideContext extends ParserRuleContext {
+		public ExpressionNameContext expressionName() {
+			return getRuleContext(ExpressionNameContext.class,0);
+		}
 		public FieldAccessContext fieldAccess() {
 			return getRuleContext(FieldAccessContext.class,0);
 		}
 		public ArrayAccessContext arrayAccess() {
 			return getRuleContext(ArrayAccessContext.class,0);
-		}
-		public ExpressionNameContext expressionName() {
-			return getRuleContext(ExpressionNameContext.class,0);
 		}
 		public LeftHandSideContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -14387,21 +15376,22 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(2626); expressionName();
+				setState(2626);
+				expressionName();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(2627); fieldAccess();
+				setState(2627);
+				fieldAccess();
 				}
 				break;
-
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(2628); arrayAccess();
+				setState(2628);
+				arrayAccess();
 				}
 				break;
 			}
@@ -14443,8 +15433,9 @@ public class Java8Parser extends Parser {
 			_la = _input.LA(1);
 			if ( !(((((_la - 66)) & ~0x3f) == 0 && ((1L << (_la - 66)) & ((1L << (ASSIGN - 66)) | (1L << (ADD_ASSIGN - 66)) | (1L << (SUB_ASSIGN - 66)) | (1L << (MUL_ASSIGN - 66)) | (1L << (DIV_ASSIGN - 66)) | (1L << (AND_ASSIGN - 66)) | (1L << (OR_ASSIGN - 66)) | (1L << (XOR_ASSIGN - 66)) | (1L << (MOD_ASSIGN - 66)) | (1L << (LSHIFT_ASSIGN - 66)) | (1L << (RSHIFT_ASSIGN - 66)) | (1L << (URSHIFT_ASSIGN - 66)))) != 0)) ) {
 			_errHandler.recoverInline(this);
+			} else {
+				consume();
 			}
-			consume();
 			}
 		}
 		catch (RecognitionException re) {
@@ -14459,14 +15450,14 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class IfTernaryExpressionContext extends ParserRuleContext {
-		public ConditionalExpressionContext conditionalExpression() {
-			return getRuleContext(ConditionalExpressionContext.class,0);
-		}
 		public ConditionalOrExpressionContext conditionalOrExpression() {
 			return getRuleContext(ConditionalOrExpressionContext.class,0);
 		}
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
+		}
+		public ConditionalExpressionContext conditionalExpression() {
+			return getRuleContext(ConditionalExpressionContext.class,0);
 		}
 		public IfTernaryExpressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -14488,11 +15479,16 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(2633); conditionalOrExpression(0);
-			setState(2634); match(QUESTION);
-			setState(2635); expression();
-			setState(2636); match(COLON);
-			setState(2637); conditionalExpression();
+			setState(2633);
+			conditionalOrExpression(0);
+			setState(2634);
+			match(QUESTION);
+			setState(2635);
+			expression();
+			setState(2636);
+			match(COLON);
+			setState(2637);
+			conditionalExpression();
 			}
 		}
 		catch (RecognitionException re) {
@@ -14536,14 +15532,15 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(2639); conditionalOrExpression(0);
+				setState(2639);
+				conditionalOrExpression(0);
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(2640); ifTernaryExpression();
+				setState(2640);
+				ifTernaryExpression();
 				}
 				break;
 			}
@@ -14560,11 +15557,11 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class ConditionalOrExpressionContext extends ParserRuleContext {
-		public ConditionalOrExpressionContext conditionalOrExpression() {
-			return getRuleContext(ConditionalOrExpressionContext.class,0);
-		}
 		public ConditionalAndExpressionContext conditionalAndExpression() {
 			return getRuleContext(ConditionalAndExpressionContext.class,0);
+		}
+		public ConditionalOrExpressionContext conditionalOrExpression() {
+			return getRuleContext(ConditionalOrExpressionContext.class,0);
 		}
 		public ConditionalOrExpressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -14596,7 +15593,8 @@ public class Java8Parser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			{
-			setState(2644); conditionalAndExpression(0);
+			setState(2644);
+			conditionalAndExpression(0);
 			}
 			_ctx.stop = _input.LT(-1);
 			setState(2651);
@@ -14612,8 +15610,10 @@ public class Java8Parser extends Parser {
 					pushNewRecursionContext(_localctx, _startState, RULE_conditionalOrExpression);
 					setState(2646);
 					if (!(precpred(_ctx, 1))) throw new FailedPredicateException(this, "precpred(_ctx, 1)");
-					setState(2647); match(OR);
-					setState(2648); conditionalAndExpression(0);
+					setState(2647);
+					match(OR);
+					setState(2648);
+					conditionalAndExpression(0);
 					}
 					} 
 				}
@@ -14671,7 +15671,8 @@ public class Java8Parser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			{
-			setState(2655); inclusiveOrExpression(0);
+			setState(2655);
+			inclusiveOrExpression(0);
 			}
 			_ctx.stop = _input.LT(-1);
 			setState(2662);
@@ -14687,8 +15688,10 @@ public class Java8Parser extends Parser {
 					pushNewRecursionContext(_localctx, _startState, RULE_conditionalAndExpression);
 					setState(2657);
 					if (!(precpred(_ctx, 1))) throw new FailedPredicateException(this, "precpred(_ctx, 1)");
-					setState(2658); match(AND);
-					setState(2659); inclusiveOrExpression(0);
+					setState(2658);
+					match(AND);
+					setState(2659);
+					inclusiveOrExpression(0);
 					}
 					} 
 				}
@@ -14710,11 +15713,11 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class InclusiveOrExpressionContext extends ParserRuleContext {
-		public InclusiveOrExpressionContext inclusiveOrExpression() {
-			return getRuleContext(InclusiveOrExpressionContext.class,0);
-		}
 		public ExclusiveOrExpressionContext exclusiveOrExpression() {
 			return getRuleContext(ExclusiveOrExpressionContext.class,0);
+		}
+		public InclusiveOrExpressionContext inclusiveOrExpression() {
+			return getRuleContext(InclusiveOrExpressionContext.class,0);
 		}
 		public InclusiveOrExpressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -14746,7 +15749,8 @@ public class Java8Parser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			{
-			setState(2666); exclusiveOrExpression(0);
+			setState(2666);
+			exclusiveOrExpression(0);
 			}
 			_ctx.stop = _input.LT(-1);
 			setState(2673);
@@ -14762,8 +15766,10 @@ public class Java8Parser extends Parser {
 					pushNewRecursionContext(_localctx, _startState, RULE_inclusiveOrExpression);
 					setState(2668);
 					if (!(precpred(_ctx, 1))) throw new FailedPredicateException(this, "precpred(_ctx, 1)");
-					setState(2669); match(BITOR);
-					setState(2670); exclusiveOrExpression(0);
+					setState(2669);
+					match(BITOR);
+					setState(2670);
+					exclusiveOrExpression(0);
 					}
 					} 
 				}
@@ -14821,7 +15827,8 @@ public class Java8Parser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			{
-			setState(2677); andExpression(0);
+			setState(2677);
+			andExpression(0);
 			}
 			_ctx.stop = _input.LT(-1);
 			setState(2684);
@@ -14837,8 +15844,10 @@ public class Java8Parser extends Parser {
 					pushNewRecursionContext(_localctx, _startState, RULE_exclusiveOrExpression);
 					setState(2679);
 					if (!(precpred(_ctx, 1))) throw new FailedPredicateException(this, "precpred(_ctx, 1)");
-					setState(2680); match(CARET);
-					setState(2681); andExpression(0);
+					setState(2680);
+					match(CARET);
+					setState(2681);
+					andExpression(0);
 					}
 					} 
 				}
@@ -14860,11 +15869,11 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class AndExpressionContext extends ParserRuleContext {
-		public AndExpressionContext andExpression() {
-			return getRuleContext(AndExpressionContext.class,0);
-		}
 		public EqualityExpressionContext equalityExpression() {
 			return getRuleContext(EqualityExpressionContext.class,0);
+		}
+		public AndExpressionContext andExpression() {
+			return getRuleContext(AndExpressionContext.class,0);
 		}
 		public AndExpressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -14896,7 +15905,8 @@ public class Java8Parser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			{
-			setState(2688); equalityExpression(0);
+			setState(2688);
+			equalityExpression(0);
 			}
 			_ctx.stop = _input.LT(-1);
 			setState(2695);
@@ -14912,8 +15922,10 @@ public class Java8Parser extends Parser {
 					pushNewRecursionContext(_localctx, _startState, RULE_andExpression);
 					setState(2690);
 					if (!(precpred(_ctx, 1))) throw new FailedPredicateException(this, "precpred(_ctx, 1)");
-					setState(2691); match(BITAND);
-					setState(2692); equalityExpression(0);
+					setState(2691);
+					match(BITAND);
+					setState(2692);
+					equalityExpression(0);
 					}
 					} 
 				}
@@ -14971,7 +15983,8 @@ public class Java8Parser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			{
-			setState(2699); relationalExpression(0);
+			setState(2699);
+			relationalExpression(0);
 			}
 			_ctx.stop = _input.LT(-1);
 			setState(2709);
@@ -14990,19 +16003,22 @@ public class Java8Parser extends Parser {
 						pushNewRecursionContext(_localctx, _startState, RULE_equalityExpression);
 						setState(2701);
 						if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
-						setState(2702); match(EQUAL);
-						setState(2703); relationalExpression(0);
+						setState(2702);
+						match(EQUAL);
+						setState(2703);
+						relationalExpression(0);
 						}
 						break;
-
 					case 2:
 						{
 						_localctx = new EqualityExpressionContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_equalityExpression);
 						setState(2704);
 						if (!(precpred(_ctx, 1))) throw new FailedPredicateException(this, "precpred(_ctx, 1)");
-						setState(2705); match(NOTEQUAL);
-						setState(2706); relationalExpression(0);
+						setState(2705);
+						match(NOTEQUAL);
+						setState(2706);
+						relationalExpression(0);
 						}
 						break;
 					}
@@ -15026,14 +16042,14 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class RelationalExpressionContext extends ParserRuleContext {
-		public ReferenceTypeContext referenceType() {
-			return getRuleContext(ReferenceTypeContext.class,0);
+		public ShiftExpressionContext shiftExpression() {
+			return getRuleContext(ShiftExpressionContext.class,0);
 		}
 		public RelationalExpressionContext relationalExpression() {
 			return getRuleContext(RelationalExpressionContext.class,0);
 		}
-		public ShiftExpressionContext shiftExpression() {
-			return getRuleContext(ShiftExpressionContext.class,0);
+		public ReferenceTypeContext referenceType() {
+			return getRuleContext(ReferenceTypeContext.class,0);
 		}
 		public RelationalExpressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -15065,7 +16081,8 @@ public class Java8Parser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			{
-			setState(2713); shiftExpression(0);
+			setState(2713);
+			shiftExpression(0);
 			}
 			_ctx.stop = _input.LT(-1);
 			setState(2732);
@@ -15084,52 +16101,58 @@ public class Java8Parser extends Parser {
 						pushNewRecursionContext(_localctx, _startState, RULE_relationalExpression);
 						setState(2715);
 						if (!(precpred(_ctx, 5))) throw new FailedPredicateException(this, "precpred(_ctx, 5)");
-						setState(2716); match(LT);
-						setState(2717); shiftExpression(0);
+						setState(2716);
+						match(LT);
+						setState(2717);
+						shiftExpression(0);
 						}
 						break;
-
 					case 2:
 						{
 						_localctx = new RelationalExpressionContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_relationalExpression);
 						setState(2718);
 						if (!(precpred(_ctx, 4))) throw new FailedPredicateException(this, "precpred(_ctx, 4)");
-						setState(2719); match(GT);
-						setState(2720); shiftExpression(0);
+						setState(2719);
+						match(GT);
+						setState(2720);
+						shiftExpression(0);
 						}
 						break;
-
 					case 3:
 						{
 						_localctx = new RelationalExpressionContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_relationalExpression);
 						setState(2721);
 						if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
-						setState(2722); match(LE);
-						setState(2723); shiftExpression(0);
+						setState(2722);
+						match(LE);
+						setState(2723);
+						shiftExpression(0);
 						}
 						break;
-
 					case 4:
 						{
 						_localctx = new RelationalExpressionContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_relationalExpression);
 						setState(2724);
 						if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
-						setState(2725); match(GE);
-						setState(2726); shiftExpression(0);
+						setState(2725);
+						match(GE);
+						setState(2726);
+						shiftExpression(0);
 						}
 						break;
-
 					case 5:
 						{
 						_localctx = new RelationalExpressionContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_relationalExpression);
 						setState(2727);
 						if (!(precpred(_ctx, 1))) throw new FailedPredicateException(this, "precpred(_ctx, 1)");
-						setState(2728); match(INSTANCEOF);
-						setState(2729); referenceType();
+						setState(2728);
+						match(INSTANCEOF);
+						setState(2729);
+						referenceType();
 						}
 						break;
 					}
@@ -15189,7 +16212,8 @@ public class Java8Parser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			{
-			setState(2736); additiveExpression(0);
+			setState(2736);
+			additiveExpression(0);
 			}
 			_ctx.stop = _input.LT(-1);
 			setState(2753);
@@ -15208,34 +16232,42 @@ public class Java8Parser extends Parser {
 						pushNewRecursionContext(_localctx, _startState, RULE_shiftExpression);
 						setState(2738);
 						if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
-						setState(2739); match(LT);
-						setState(2740); match(LT);
-						setState(2741); additiveExpression(0);
+						setState(2739);
+						match(LT);
+						setState(2740);
+						match(LT);
+						setState(2741);
+						additiveExpression(0);
 						}
 						break;
-
 					case 2:
 						{
 						_localctx = new ShiftExpressionContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_shiftExpression);
 						setState(2742);
 						if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
-						setState(2743); match(GT);
-						setState(2744); match(GT);
-						setState(2745); additiveExpression(0);
+						setState(2743);
+						match(GT);
+						setState(2744);
+						match(GT);
+						setState(2745);
+						additiveExpression(0);
 						}
 						break;
-
 					case 3:
 						{
 						_localctx = new ShiftExpressionContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_shiftExpression);
 						setState(2746);
 						if (!(precpred(_ctx, 1))) throw new FailedPredicateException(this, "precpred(_ctx, 1)");
-						setState(2747); match(GT);
-						setState(2748); match(GT);
-						setState(2749); match(GT);
-						setState(2750); additiveExpression(0);
+						setState(2747);
+						match(GT);
+						setState(2748);
+						match(GT);
+						setState(2749);
+						match(GT);
+						setState(2750);
+						additiveExpression(0);
 						}
 						break;
 					}
@@ -15295,7 +16327,8 @@ public class Java8Parser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			{
-			setState(2757); multiplicativeExpression(0);
+			setState(2757);
+			multiplicativeExpression(0);
 			}
 			_ctx.stop = _input.LT(-1);
 			setState(2767);
@@ -15314,19 +16347,22 @@ public class Java8Parser extends Parser {
 						pushNewRecursionContext(_localctx, _startState, RULE_additiveExpression);
 						setState(2759);
 						if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
-						setState(2760); match(ADD);
-						setState(2761); multiplicativeExpression(0);
+						setState(2760);
+						match(ADD);
+						setState(2761);
+						multiplicativeExpression(0);
 						}
 						break;
-
 					case 2:
 						{
 						_localctx = new AdditiveExpressionContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_additiveExpression);
 						setState(2762);
 						if (!(precpred(_ctx, 1))) throw new FailedPredicateException(this, "precpred(_ctx, 1)");
-						setState(2763); match(SUB);
-						setState(2764); multiplicativeExpression(0);
+						setState(2763);
+						match(SUB);
+						setState(2764);
+						multiplicativeExpression(0);
 						}
 						break;
 					}
@@ -15386,7 +16422,8 @@ public class Java8Parser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			{
-			setState(2771); unaryExpression();
+			setState(2771);
+			unaryExpression();
 			}
 			_ctx.stop = _input.LT(-1);
 			setState(2784);
@@ -15405,30 +16442,34 @@ public class Java8Parser extends Parser {
 						pushNewRecursionContext(_localctx, _startState, RULE_multiplicativeExpression);
 						setState(2773);
 						if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
-						setState(2774); match(MUL);
-						setState(2775); unaryExpression();
+						setState(2774);
+						match(MUL);
+						setState(2775);
+						unaryExpression();
 						}
 						break;
-
 					case 2:
 						{
 						_localctx = new MultiplicativeExpressionContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_multiplicativeExpression);
 						setState(2776);
 						if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
-						setState(2777); match(DIV);
-						setState(2778); unaryExpression();
+						setState(2777);
+						match(DIV);
+						setState(2778);
+						unaryExpression();
 						}
 						break;
-
 					case 3:
 						{
 						_localctx = new MultiplicativeExpressionContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_multiplicativeExpression);
 						setState(2779);
 						if (!(precpred(_ctx, 1))) throw new FailedPredicateException(this, "precpred(_ctx, 1)");
-						setState(2780); match(MOD);
-						setState(2781); unaryExpression();
+						setState(2780);
+						match(MOD);
+						setState(2781);
+						unaryExpression();
 						}
 						break;
 					}
@@ -15452,17 +16493,17 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class UnaryExpressionContext extends ParserRuleContext {
-		public UnaryExpressionContext unaryExpression() {
-			return getRuleContext(UnaryExpressionContext.class,0);
-		}
-		public UnaryExpressionNotPlusMinusContext unaryExpressionNotPlusMinus() {
-			return getRuleContext(UnaryExpressionNotPlusMinusContext.class,0);
-		}
 		public PreIncrementExpressionContext preIncrementExpression() {
 			return getRuleContext(PreIncrementExpressionContext.class,0);
 		}
 		public PreDecrementExpressionContext preDecrementExpression() {
 			return getRuleContext(PreDecrementExpressionContext.class,0);
+		}
+		public UnaryExpressionContext unaryExpression() {
+			return getRuleContext(UnaryExpressionContext.class,0);
+		}
+		public UnaryExpressionNotPlusMinusContext unaryExpressionNotPlusMinus() {
+			return getRuleContext(UnaryExpressionNotPlusMinusContext.class,0);
 		}
 		public UnaryExpressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -15487,27 +16528,33 @@ public class Java8Parser extends Parser {
 			case INC:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(2787); preIncrementExpression();
+				setState(2787);
+				preIncrementExpression();
 				}
 				break;
 			case DEC:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(2788); preDecrementExpression();
+				setState(2788);
+				preDecrementExpression();
 				}
 				break;
 			case ADD:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(2789); match(ADD);
-				setState(2790); unaryExpression();
+				setState(2789);
+				match(ADD);
+				setState(2790);
+				unaryExpression();
 				}
 				break;
 			case SUB:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(2791); match(SUB);
-				setState(2792); unaryExpression();
+				setState(2791);
+				match(SUB);
+				setState(2792);
+				unaryExpression();
 				}
 				break;
 			case BOOLEAN:
@@ -15535,7 +16582,8 @@ public class Java8Parser extends Parser {
 			case AT:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(2793); unaryExpressionNotPlusMinus();
+				setState(2793);
+				unaryExpressionNotPlusMinus();
 				}
 				break;
 			default:
@@ -15577,8 +16625,10 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(2796); match(INC);
-			setState(2797); unaryExpression();
+			setState(2796);
+			match(INC);
+			setState(2797);
+			unaryExpression();
 			}
 		}
 		catch (RecognitionException re) {
@@ -15616,8 +16666,10 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(2799); match(DEC);
-			setState(2800); unaryExpression();
+			setState(2799);
+			match(DEC);
+			setState(2800);
+			unaryExpression();
 			}
 		}
 		catch (RecognitionException re) {
@@ -15664,30 +16716,33 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(2802); postfixExpression();
+				setState(2802);
+				postfixExpression();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(2803); match(TILDE);
-				setState(2804); unaryExpression();
+				setState(2803);
+				match(TILDE);
+				setState(2804);
+				unaryExpression();
 				}
 				break;
-
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(2805); match(BANG);
-				setState(2806); unaryExpression();
+				setState(2805);
+				match(BANG);
+				setState(2806);
+				unaryExpression();
 				}
 				break;
-
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(2807); castExpression();
+				setState(2807);
+				castExpression();
 				}
 				break;
 			}
@@ -15704,23 +16759,23 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class PostfixExpressionContext extends ParserRuleContext {
-		public List<PostDecrementExpression_lf_postfixExpressionContext> postDecrementExpression_lf_postfixExpression() {
-			return getRuleContexts(PostDecrementExpression_lf_postfixExpressionContext.class);
-		}
-		public PostIncrementExpression_lf_postfixExpressionContext postIncrementExpression_lf_postfixExpression(int i) {
-			return getRuleContext(PostIncrementExpression_lf_postfixExpressionContext.class,i);
-		}
-		public PostDecrementExpression_lf_postfixExpressionContext postDecrementExpression_lf_postfixExpression(int i) {
-			return getRuleContext(PostDecrementExpression_lf_postfixExpressionContext.class,i);
-		}
 		public PrimaryContext primary() {
 			return getRuleContext(PrimaryContext.class,0);
+		}
+		public ExpressionNameContext expressionName() {
+			return getRuleContext(ExpressionNameContext.class,0);
 		}
 		public List<PostIncrementExpression_lf_postfixExpressionContext> postIncrementExpression_lf_postfixExpression() {
 			return getRuleContexts(PostIncrementExpression_lf_postfixExpressionContext.class);
 		}
-		public ExpressionNameContext expressionName() {
-			return getRuleContext(ExpressionNameContext.class,0);
+		public PostIncrementExpression_lf_postfixExpressionContext postIncrementExpression_lf_postfixExpression(int i) {
+			return getRuleContext(PostIncrementExpression_lf_postfixExpressionContext.class,i);
+		}
+		public List<PostDecrementExpression_lf_postfixExpressionContext> postDecrementExpression_lf_postfixExpression() {
+			return getRuleContexts(PostDecrementExpression_lf_postfixExpressionContext.class);
+		}
+		public PostDecrementExpression_lf_postfixExpressionContext postDecrementExpression_lf_postfixExpression(int i) {
+			return getRuleContext(PostDecrementExpression_lf_postfixExpressionContext.class,i);
 		}
 		public PostfixExpressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -15747,13 +16802,14 @@ public class Java8Parser extends Parser {
 			switch ( getInterpreter().adaptivePredict(_input,318,_ctx) ) {
 			case 1:
 				{
-				setState(2810); primary();
+				setState(2810);
+				primary();
 				}
 				break;
-
 			case 2:
 				{
-				setState(2811); expressionName();
+				setState(2811);
+				expressionName();
 				}
 				break;
 			}
@@ -15767,12 +16823,14 @@ public class Java8Parser extends Parser {
 					switch (_input.LA(1)) {
 					case INC:
 						{
-						setState(2814); postIncrementExpression_lf_postfixExpression();
+						setState(2814);
+						postIncrementExpression_lf_postfixExpression();
 						}
 						break;
 					case DEC:
 						{
-						setState(2815); postDecrementExpression_lf_postfixExpression();
+						setState(2815);
+						postDecrementExpression_lf_postfixExpression();
 						}
 						break;
 					default:
@@ -15821,8 +16879,10 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(2821); postfixExpression();
-			setState(2822); match(INC);
+			setState(2821);
+			postfixExpression();
+			setState(2822);
+			match(INC);
 			}
 		}
 		catch (RecognitionException re) {
@@ -15857,7 +16917,8 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(2824); match(INC);
+			setState(2824);
+			match(INC);
 			}
 		}
 		catch (RecognitionException re) {
@@ -15895,8 +16956,10 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(2826); postfixExpression();
-			setState(2827); match(DEC);
+			setState(2826);
+			postfixExpression();
+			setState(2827);
+			match(DEC);
 			}
 		}
 		catch (RecognitionException re) {
@@ -15931,7 +16994,8 @@ public class Java8Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(2829); match(DEC);
+			setState(2829);
+			match(DEC);
 			}
 		}
 		catch (RecognitionException re) {
@@ -15946,6 +17010,9 @@ public class Java8Parser extends Parser {
 	}
 
 	public static class CastExpressionContext extends ParserRuleContext {
+		public PrimitiveTypeContext primitiveType() {
+			return getRuleContext(PrimitiveTypeContext.class,0);
+		}
 		public UnaryExpressionContext unaryExpression() {
 			return getRuleContext(UnaryExpressionContext.class,0);
 		}
@@ -15955,17 +17022,14 @@ public class Java8Parser extends Parser {
 		public UnaryExpressionNotPlusMinusContext unaryExpressionNotPlusMinus() {
 			return getRuleContext(UnaryExpressionNotPlusMinusContext.class,0);
 		}
-		public PrimitiveTypeContext primitiveType() {
-			return getRuleContext(PrimitiveTypeContext.class,0);
-		}
 		public List<AdditionalBoundContext> additionalBound() {
 			return getRuleContexts(AdditionalBoundContext.class);
 		}
-		public LambdaExpressionContext lambdaExpression() {
-			return getRuleContext(LambdaExpressionContext.class,0);
-		}
 		public AdditionalBoundContext additionalBound(int i) {
 			return getRuleContext(AdditionalBoundContext.class,i);
+		}
+		public LambdaExpressionContext lambdaExpression() {
+			return getRuleContext(LambdaExpressionContext.class,0);
 		}
 		public CastExpressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -15991,56 +17055,68 @@ public class Java8Parser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(2831); match(LPAREN);
-				setState(2832); primitiveType();
-				setState(2833); match(RPAREN);
-				setState(2834); unaryExpression();
+				setState(2831);
+				match(LPAREN);
+				setState(2832);
+				primitiveType();
+				setState(2833);
+				match(RPAREN);
+				setState(2834);
+				unaryExpression();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(2836); match(LPAREN);
-				setState(2837); referenceType();
+				setState(2836);
+				match(LPAREN);
+				setState(2837);
+				referenceType();
 				setState(2841);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==BITAND) {
 					{
 					{
-					setState(2838); additionalBound();
+					setState(2838);
+					additionalBound();
 					}
 					}
 					setState(2843);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(2844); match(RPAREN);
-				setState(2845); unaryExpressionNotPlusMinus();
+				setState(2844);
+				match(RPAREN);
+				setState(2845);
+				unaryExpressionNotPlusMinus();
 				}
 				break;
-
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(2847); match(LPAREN);
-				setState(2848); referenceType();
+				setState(2847);
+				match(LPAREN);
+				setState(2848);
+				referenceType();
 				setState(2852);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==BITAND) {
 					{
 					{
-					setState(2849); additionalBound();
+					setState(2849);
+					additionalBound();
 					}
 					}
 					setState(2854);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(2855); match(RPAREN);
-				setState(2856); lambdaExpression();
+				setState(2855);
+				match(RPAREN);
+				setState(2856);
+				lambdaExpression();
 				}
 				break;
 			}
@@ -16058,129 +17134,143 @@ public class Java8Parser extends Parser {
 
 	public boolean sempred(RuleContext _localctx, int ruleIndex, int predIndex) {
 		switch (ruleIndex) {
-		case 26: return packageName_sempred((PackageNameContext)_localctx, predIndex);
-
-		case 28: return packageOrTypeName_sempred((PackageOrTypeNameContext)_localctx, predIndex);
-
-		case 31: return ambiguousName_sempred((AmbiguousNameContext)_localctx, predIndex);
-
-		case 218: return conditionalOrExpression_sempred((ConditionalOrExpressionContext)_localctx, predIndex);
-
-		case 219: return conditionalAndExpression_sempred((ConditionalAndExpressionContext)_localctx, predIndex);
-
-		case 220: return inclusiveOrExpression_sempred((InclusiveOrExpressionContext)_localctx, predIndex);
-
-		case 221: return exclusiveOrExpression_sempred((ExclusiveOrExpressionContext)_localctx, predIndex);
-
-		case 222: return andExpression_sempred((AndExpressionContext)_localctx, predIndex);
-
-		case 223: return equalityExpression_sempred((EqualityExpressionContext)_localctx, predIndex);
-
-		case 224: return relationalExpression_sempred((RelationalExpressionContext)_localctx, predIndex);
-
-		case 225: return shiftExpression_sempred((ShiftExpressionContext)_localctx, predIndex);
-
-		case 226: return additiveExpression_sempred((AdditiveExpressionContext)_localctx, predIndex);
-
-		case 227: return multiplicativeExpression_sempred((MultiplicativeExpressionContext)_localctx, predIndex);
-		}
-		return true;
-	}
-	private boolean shiftExpression_sempred(ShiftExpressionContext _localctx, int predIndex) {
-		switch (predIndex) {
-		case 16: return precpred(_ctx, 2);
-
-		case 17: return precpred(_ctx, 1);
-
-		case 15: return precpred(_ctx, 3);
-		}
-		return true;
-	}
-	private boolean additiveExpression_sempred(AdditiveExpressionContext _localctx, int predIndex) {
-		switch (predIndex) {
-		case 18: return precpred(_ctx, 2);
-
-		case 19: return precpred(_ctx, 1);
-		}
-		return true;
-	}
-	private boolean packageOrTypeName_sempred(PackageOrTypeNameContext _localctx, int predIndex) {
-		switch (predIndex) {
-		case 1: return precpred(_ctx, 1);
-		}
-		return true;
-	}
-	private boolean inclusiveOrExpression_sempred(InclusiveOrExpressionContext _localctx, int predIndex) {
-		switch (predIndex) {
-		case 5: return precpred(_ctx, 1);
-		}
-		return true;
-	}
-	private boolean relationalExpression_sempred(RelationalExpressionContext _localctx, int predIndex) {
-		switch (predIndex) {
-		case 10: return precpred(_ctx, 5);
-
-		case 11: return precpred(_ctx, 4);
-
-		case 12: return precpred(_ctx, 3);
-
-		case 13: return precpred(_ctx, 2);
-
-		case 14: return precpred(_ctx, 1);
-		}
-		return true;
-	}
-	private boolean conditionalAndExpression_sempred(ConditionalAndExpressionContext _localctx, int predIndex) {
-		switch (predIndex) {
-		case 4: return precpred(_ctx, 1);
-		}
-		return true;
-	}
-	private boolean multiplicativeExpression_sempred(MultiplicativeExpressionContext _localctx, int predIndex) {
-		switch (predIndex) {
-		case 20: return precpred(_ctx, 3);
-
-		case 21: return precpred(_ctx, 2);
-
-		case 22: return precpred(_ctx, 1);
-		}
-		return true;
-	}
-	private boolean ambiguousName_sempred(AmbiguousNameContext _localctx, int predIndex) {
-		switch (predIndex) {
-		case 2: return precpred(_ctx, 1);
-		}
-		return true;
-	}
-	private boolean andExpression_sempred(AndExpressionContext _localctx, int predIndex) {
-		switch (predIndex) {
-		case 7: return precpred(_ctx, 1);
-		}
-		return true;
-	}
-	private boolean conditionalOrExpression_sempred(ConditionalOrExpressionContext _localctx, int predIndex) {
-		switch (predIndex) {
-		case 3: return precpred(_ctx, 1);
-		}
-		return true;
-	}
-	private boolean exclusiveOrExpression_sempred(ExclusiveOrExpressionContext _localctx, int predIndex) {
-		switch (predIndex) {
-		case 6: return precpred(_ctx, 1);
-		}
-		return true;
-	}
-	private boolean equalityExpression_sempred(EqualityExpressionContext _localctx, int predIndex) {
-		switch (predIndex) {
-		case 8: return precpred(_ctx, 2);
-
-		case 9: return precpred(_ctx, 1);
+		case 26:
+			return packageName_sempred((PackageNameContext)_localctx, predIndex);
+		case 28:
+			return packageOrTypeName_sempred((PackageOrTypeNameContext)_localctx, predIndex);
+		case 31:
+			return ambiguousName_sempred((AmbiguousNameContext)_localctx, predIndex);
+		case 218:
+			return conditionalOrExpression_sempred((ConditionalOrExpressionContext)_localctx, predIndex);
+		case 219:
+			return conditionalAndExpression_sempred((ConditionalAndExpressionContext)_localctx, predIndex);
+		case 220:
+			return inclusiveOrExpression_sempred((InclusiveOrExpressionContext)_localctx, predIndex);
+		case 221:
+			return exclusiveOrExpression_sempred((ExclusiveOrExpressionContext)_localctx, predIndex);
+		case 222:
+			return andExpression_sempred((AndExpressionContext)_localctx, predIndex);
+		case 223:
+			return equalityExpression_sempred((EqualityExpressionContext)_localctx, predIndex);
+		case 224:
+			return relationalExpression_sempred((RelationalExpressionContext)_localctx, predIndex);
+		case 225:
+			return shiftExpression_sempred((ShiftExpressionContext)_localctx, predIndex);
+		case 226:
+			return additiveExpression_sempred((AdditiveExpressionContext)_localctx, predIndex);
+		case 227:
+			return multiplicativeExpression_sempred((MultiplicativeExpressionContext)_localctx, predIndex);
 		}
 		return true;
 	}
 	private boolean packageName_sempred(PackageNameContext _localctx, int predIndex) {
 		switch (predIndex) {
-		case 0: return precpred(_ctx, 1);
+		case 0:
+			return precpred(_ctx, 1);
+		}
+		return true;
+	}
+	private boolean packageOrTypeName_sempred(PackageOrTypeNameContext _localctx, int predIndex) {
+		switch (predIndex) {
+		case 1:
+			return precpred(_ctx, 1);
+		}
+		return true;
+	}
+	private boolean ambiguousName_sempred(AmbiguousNameContext _localctx, int predIndex) {
+		switch (predIndex) {
+		case 2:
+			return precpred(_ctx, 1);
+		}
+		return true;
+	}
+	private boolean conditionalOrExpression_sempred(ConditionalOrExpressionContext _localctx, int predIndex) {
+		switch (predIndex) {
+		case 3:
+			return precpred(_ctx, 1);
+		}
+		return true;
+	}
+	private boolean conditionalAndExpression_sempred(ConditionalAndExpressionContext _localctx, int predIndex) {
+		switch (predIndex) {
+		case 4:
+			return precpred(_ctx, 1);
+		}
+		return true;
+	}
+	private boolean inclusiveOrExpression_sempred(InclusiveOrExpressionContext _localctx, int predIndex) {
+		switch (predIndex) {
+		case 5:
+			return precpred(_ctx, 1);
+		}
+		return true;
+	}
+	private boolean exclusiveOrExpression_sempred(ExclusiveOrExpressionContext _localctx, int predIndex) {
+		switch (predIndex) {
+		case 6:
+			return precpred(_ctx, 1);
+		}
+		return true;
+	}
+	private boolean andExpression_sempred(AndExpressionContext _localctx, int predIndex) {
+		switch (predIndex) {
+		case 7:
+			return precpred(_ctx, 1);
+		}
+		return true;
+	}
+	private boolean equalityExpression_sempred(EqualityExpressionContext _localctx, int predIndex) {
+		switch (predIndex) {
+		case 8:
+			return precpred(_ctx, 2);
+		case 9:
+			return precpred(_ctx, 1);
+		}
+		return true;
+	}
+	private boolean relationalExpression_sempred(RelationalExpressionContext _localctx, int predIndex) {
+		switch (predIndex) {
+		case 10:
+			return precpred(_ctx, 5);
+		case 11:
+			return precpred(_ctx, 4);
+		case 12:
+			return precpred(_ctx, 3);
+		case 13:
+			return precpred(_ctx, 2);
+		case 14:
+			return precpred(_ctx, 1);
+		}
+		return true;
+	}
+	private boolean shiftExpression_sempred(ShiftExpressionContext _localctx, int predIndex) {
+		switch (predIndex) {
+		case 15:
+			return precpred(_ctx, 3);
+		case 16:
+			return precpred(_ctx, 2);
+		case 17:
+			return precpred(_ctx, 1);
+		}
+		return true;
+	}
+	private boolean additiveExpression_sempred(AdditiveExpressionContext _localctx, int predIndex) {
+		switch (predIndex) {
+		case 18:
+			return precpred(_ctx, 2);
+		case 19:
+			return precpred(_ctx, 1);
+		}
+		return true;
+	}
+	private boolean multiplicativeExpression_sempred(MultiplicativeExpressionContext _localctx, int predIndex) {
+		switch (predIndex) {
+		case 20:
+			return precpred(_ctx, 3);
+		case 21:
+			return precpred(_ctx, 2);
+		case 22:
+			return precpred(_ctx, 1);
 		}
 		return true;
 	}

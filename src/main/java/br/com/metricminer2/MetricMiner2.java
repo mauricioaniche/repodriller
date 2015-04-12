@@ -16,6 +16,7 @@
 
 package br.com.metricminer2;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -26,15 +27,15 @@ public class MetricMiner2 {
 	private MMOptions opts;
 	private static Logger log = Logger.getLogger(MetricMiner2.class);
 
-	public MetricMiner2() {
-		opts = new MMOptionsReader().read();
+	public MetricMiner2(MMOptions opts) {
+		this.opts = opts;
 	}
 	
 	public static void main(String[] args) {
-		
-//		args = new String[] {"-scm", "git", "-study", "br.com.metricminer2.examples.Example3", "-project", "/Users/mauricioaniche/workspace/metricminer2", "-csv", "/Users/mauricioaniche/Desktop/", "-threads", "1"};
-		
-		new MetricMiner2().start();
+		if(args==null || args.length==0)
+			new MetricMiner2(new MMOptionsReader().read(new File("research.mm2"))).start();
+		else
+			new MetricMiner2(new MMOptionsReader().read(new File(args[0]))).start();
 		
 	}
 

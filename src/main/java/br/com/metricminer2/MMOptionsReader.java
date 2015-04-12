@@ -10,11 +10,11 @@ public class MMOptionsReader {
 	
 	private static Logger log = Logger.getLogger(MMOptionsReader.class);
 
-	public MMOptions read() {
+	public MMOptions read(File file) {
 
 		try {
 
-			FileInputStream is = new FileInputStream(new File("research.mm2"));
+			FileInputStream is = new FileInputStream(file);
 			Properties props = new Properties();
 			props.load(is);
 
