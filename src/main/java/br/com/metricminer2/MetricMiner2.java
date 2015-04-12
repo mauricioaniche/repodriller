@@ -26,7 +26,7 @@ public class MetricMiner2 {
 	private MMOptions opts;
 	private static Logger log = Logger.getLogger(MetricMiner2.class);
 
-	public MetricMiner2(String[] args) {
+	public MetricMiner2() {
 		opts = new MMOptionsReader().read();
 	}
 	
@@ -34,7 +34,7 @@ public class MetricMiner2 {
 		
 //		args = new String[] {"-scm", "git", "-study", "br.com.metricminer2.examples.Example3", "-project", "/Users/mauricioaniche/workspace/metricminer2", "-csv", "/Users/mauricioaniche/Desktop/", "-threads", "1"};
 		
-		new MetricMiner2(args).start();
+		new MetricMiner2().start();
 		
 	}
 
