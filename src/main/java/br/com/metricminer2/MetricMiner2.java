@@ -40,6 +40,8 @@ public class MetricMiner2 {
 		
 //		args = new String[] {"-scm", "git", "-study", "br.com.metricminer2.examples.Example3", "-project", "/Users/mauricioaniche/workspace/metricminer2", "-csv", "/Users/mauricioaniche/Desktop/", "-threads", "1"};
 		
+		args = new String[] {"-scm", "git", "-study", "br.com.metricminer2.LocStudy", "-project", "/home/rcp/git-teste2", "-csv", "/home/rcp/MM2-OUT/MM2.csv", "-threads", "1"};
+
 		new MetricMiner2(args).start();
 		
 	}
