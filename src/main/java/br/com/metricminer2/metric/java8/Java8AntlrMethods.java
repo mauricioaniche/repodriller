@@ -45,7 +45,7 @@ public class Java8AntlrMethods {
 		
 		if(parameters.lastFormalParameter()!=null) {
 			LastFormalParameterContext p = parameters.lastFormalParameter();
-			if(p!=null) {
+			if(p!=null && p.formalParameter() !=null) {
 				String f = p.formalParameter().unannType().getText();
 				if(p.ELLIPSIS()!=null && !p.ELLIPSIS().getText().isEmpty()) f+="...";
 				allParams.add(f);
