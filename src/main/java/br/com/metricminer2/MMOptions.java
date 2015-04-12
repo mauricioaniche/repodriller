@@ -68,4 +68,8 @@ public class MMOptions {
 	public String specific(String project, String key) {
 		return props.getProperty(project + "." + key);
 	}
+
+	public String get(String name) {
+		return props.getProperty(name);
+	}
 }
