@@ -56,7 +56,7 @@ public class SourceCodeRepositoryNavigator {
 		range = new AllCommits();
 	}
 	
-	public SourceCodeRepositoryNavigator projectsFromConfig() {
+	private SourceCodeRepositoryNavigator projectsFromConfig() {
 		
 		if(opts.getScm().equals("git")) {
 			if(!opts.getProjectPath().isEmpty()) {
@@ -88,6 +88,9 @@ public class SourceCodeRepositoryNavigator {
 	}
 	
 	public void start() {
+		
+		if(repos.isEmpty()) projectsFromConfig();
+		
 		for(SCMRepository repo : repos) {
 			log.info("Git repository in " + repo.getPath());
 			
