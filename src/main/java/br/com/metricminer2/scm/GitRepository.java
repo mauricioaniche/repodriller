@@ -53,7 +53,7 @@ import br.com.metricminer2.domain.ModificationType;
 
 public class GitRepository implements SCM {
 
-	private static final int MAX_SIZE_OF_A_DIFF = 50000;
+	private static final int MAX_SIZE_OF_A_DIFF = 100000;
 	private static final int MAX_NUMBER_OF_FILES_IN_A_COMMIT = 50;
 	private String path;
 	private String currentBranch = "";
@@ -95,8 +95,9 @@ public class GitRepository implements SCM {
 	
 	public SCMRepository info() {
 		RevWalk rw = null;
+		Git git = null;
 		try {
-			Git git = Git.open(new File(path));
+			git = Git.open(new File(path));
 			AnyObjectId headId = git.getRepository().resolve(Constants.HEAD);
 
 			rw = new RevWalk(git.getRepository());
@@ -112,13 +113,15 @@ public class GitRepository implements SCM {
 			throw new RuntimeException("error when info " + path, e);
 		} finally {
 			if(rw!=null) rw.release();
+			if(git!=null) git.close();
 		}
 
 	}
 
 	public ChangeSet getHead() {
+		Git git = null;
 		try {
-			Git git = Git.open(new File(path));
+			git = Git.open(new File(path));
 			ObjectId head = git.getRepository().resolve(Constants.HEAD);
 			
 			RevWalk revWalk = new RevWalk(git.getRepository());
@@ -127,14 +130,17 @@ public class GitRepository implements SCM {
 			
 		} catch (Exception e) {
 			throw new RuntimeException("error in getHead() for " + path, e);
+		} finally {
+			if(git!=null) git.close();
 		}
 		
 		
 	}
 	@Override
 	public List<ChangeSet> getChangeSets() {
+		Git git = null;
 		try {
-			Git git = Git.open(new File(path));
+			git = Git.open(new File(path));
 
 			List<ChangeSet> allCs = new ArrayList<ChangeSet>();
 
@@ -148,6 +154,8 @@ public class GitRepository implements SCM {
 			return allCs;
 		} catch (Exception e) {
 			throw new RuntimeException("error in getChangeSets for " + path, e);
+		} finally {
+			if(git!=null) git.close();
 		}
 	}
 
@@ -159,8 +167,9 @@ public class GitRepository implements SCM {
 
 	@Override
 	public Commit getCommit(String id) {
+		Git git = null;
 		try {
-			Git git = Git.open(new File(path));
+			git = Git.open(new File(path));
 			Repository repo = git.getRepository();
 
 			Iterable<RevCommit> commits = git.log().add(repo.resolve(id)).call();
@@ -215,6 +224,8 @@ public class GitRepository implements SCM {
 			return theCommit;
 		} catch (Exception e) {
 			throw new RuntimeException("error detailing " + id + " in " + path, e);
+		} finally {
+			if(git!=null) git.close();
 		}
 	}
 
@@ -274,9 +285,9 @@ public class GitRepository implements SCM {
 	}
 
 	public List<File> files(String hash) {
-		
+		Git git = null;
 		try {
-			Git git = Git.open(new File(path));
+			git = Git.open(new File(path));
 			currentBranch = git.getRepository().getBranch();
 			
 			RevCommit commit = git.log().add(git.getRepository().resolve(hash)).call().iterator().next();
@@ -289,13 +300,16 @@ public class GitRepository implements SCM {
 			return arquivos;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
+		} finally {
+			if(git!=null) git.close();
 		}
 		
 	}
 	
 	public void reset() {
+		Git git = null;
 		try {
-			Git git = Git.open(new File(path));
+			git = Git.open(new File(path));
 			
 			if(!currentBranch.isEmpty()) {
 				git.checkout().setName(currentBranch).call();
@@ -304,6 +318,8 @@ public class GitRepository implements SCM {
 			}
 		} catch (Exception e) {
 			throw new RuntimeException(e);
+		} finally {
+			if(git!=null) git.close();
 		}
 		
 	}
