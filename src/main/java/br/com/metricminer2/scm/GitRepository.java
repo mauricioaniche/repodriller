@@ -208,7 +208,7 @@ public class GitRepository implements SCM {
 		AnyObjectId parentCommit = commit.getParentCount() > 0 ? repo.resolve(commit.getParent(0).getName()) : null;
 
 		DiffFormatter df = new DiffFormatter(DisabledOutputStream.INSTANCE);
-		df.setBinaryFileThreshold(10 * 1024); // 10 mb max a file
+		df.setBinaryFileThreshold(2 * 1024); // 2 mb max a file
 		df.setRepository(repo);
 		df.setDiffComparator(RawTextComparator.DEFAULT);
 		df.setDetectRenames(true);
