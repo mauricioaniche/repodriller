@@ -90,7 +90,7 @@ public class SourceCodeRepositoryNavigator {
 								
 								log.fatal("Commit " + cs.getId() + " in " + repo.getLastDir() + " caused OOME", e);
 								log.fatal("Goodbye! ;/");
-								System.exit(0);
+								System.exit(-1);
 							} catch(Throwable t) {
 								log.error(t);
 							}
