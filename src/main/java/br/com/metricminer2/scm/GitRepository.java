@@ -269,7 +269,7 @@ public class GitRepository implements SCM {
 			List<File> arquivos = getAllFilesInPath();
 			
 			git.checkout().setName(currentBranch).call();
-			git.branchDelete().setBranchNames("mm").call();
+			git.branchDelete().setBranchNames("mm").setForce(true).call();
 			
 			return arquivos;
 		} catch (Exception e) {
