@@ -16,25 +16,25 @@
 
 package br.com.metricminer2.examples;
 
-import br.com.metricminer2.MMOptions;
 import br.com.metricminer2.SourceCodeRepositoryNavigator;
 import br.com.metricminer2.Study;
 import br.com.metricminer2.domain.Commit;
 import br.com.metricminer2.persistence.PersistenceMechanism;
-import br.com.metricminer2.persistence.PersistenceMechanismBuilder;
+import br.com.metricminer2.persistence.csv.CSVFile;
 import br.com.metricminer2.scm.CommitVisitor;
 import br.com.metricminer2.scm.GitRepository;
 import br.com.metricminer2.scm.SCMRepository;
+import br.com.metricminer2.scm.commitrange.Commits;
 
 public class Example4 implements Study {
 
 	@Override
-	public void execute(MMOptions opts) {
-		PersistenceMechanism pm = new PersistenceMechanismBuilder().from(opts);
-		String projectsPath = opts.getProjectsPath();
+	public void execute() {
+		PersistenceMechanism pm = new CSVFile("/path/to/file.csv");
 		
-		new SourceCodeRepositoryNavigator(opts)
-			.in(GitRepository.build(projectsPath))
+		new SourceCodeRepositoryNavigator()
+			.in(GitRepository.allProjectsIn("/path/to/projects"))
+			.through(Commits.all())
 			.process(new CommitVisitor() {
 				
 				@Override
@@ -47,7 +47,7 @@ public class Example4 implements Study {
 					return "commit messages";
 				}
 			}, pm)
-			.start();
+			.mine();
 		
 	}
 }

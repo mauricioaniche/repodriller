@@ -16,26 +16,25 @@
 
 package br.com.metricminer2.examples;
 
-import br.com.metricminer2.MMOptions;
 import br.com.metricminer2.SourceCodeRepositoryNavigator;
 import br.com.metricminer2.Study;
 import br.com.metricminer2.metric.MethodLevelMetricCalculator;
 import br.com.metricminer2.metric.java8.cc.MethodLevelCyclomaticComplexityFactory;
-import br.com.metricminer2.persistence.PersistenceMechanism;
-import br.com.metricminer2.persistence.PersistenceMechanismBuilder;
+import br.com.metricminer2.persistence.csv.CSVFile;
 import br.com.metricminer2.scm.GitRepository;
+import br.com.metricminer2.scm.commitrange.Commits;
 
 public class Example2 implements Study {
 
 	@Override
-	public void execute(MMOptions opts) {
-		PersistenceMechanism pm = new PersistenceMechanismBuilder().from(opts);
-		String projectsPath = opts.getProjectsPath();
+	public void execute() {
 		
-		new SourceCodeRepositoryNavigator(opts)
-		.in(GitRepository.allIn(projectsPath))
-		.process(new MethodLevelMetricCalculator(new MethodLevelCyclomaticComplexityFactory()), pm)
-		.start();
+		new SourceCodeRepositoryNavigator()
+		.in(GitRepository.singleProject("/path/to/single/project"))
+		.through(Commits.onlyInHead())
+		.process(new MethodLevelMetricCalculator(new MethodLevelCyclomaticComplexityFactory()), 
+				new CSVFile("/absolute/path/file.csv"))
+		.mine();
 		
 	}
 }
