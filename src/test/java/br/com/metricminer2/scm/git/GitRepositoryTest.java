@@ -46,6 +46,8 @@ public class GitRepositoryTest {
 		List<File> files2 = git.files("f0dd1308bd904a9b108a6a40865166ee962af3d4");
 		List<File> files3 = git.files("9e71dd5726d775fb4a5f08506a539216e878adbb");
 		
+		git.reset();
+		
 		Assert.assertEquals(3, files1.size());
 		Assert.assertEquals(2, files2.size());
 		Assert.assertEquals(3, files3.size());

@@ -53,6 +53,7 @@ import br.com.metricminer2.domain.ModificationType;
 public class GitRepository implements SCM {
 
 	private String path;
+	private String currentBranch = "";
 
 	public GitRepository(String path) {
 		this.path = path;
@@ -263,7 +264,7 @@ public class GitRepository implements SCM {
 		
 		try {
 			Git git = Git.open(new File(path));
-			String currentBranch = git.getRepository().getBranch();
+			currentBranch = git.getRepository().getBranch();
 			
 			RevCommit commit = git.log().add(git.getRepository().resolve(hash)).call().iterator().next();
 
@@ -272,10 +273,22 @@ public class GitRepository implements SCM {
 
 			List<File> arquivos = getAllFilesInPath();
 			
-			git.checkout().setName(currentBranch).call();
-			git.branchDelete().setBranchNames("mm").setForce(true).call();
-			
 			return arquivos;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+		
+	}
+	
+	public void reset() {
+		try {
+			Git git = Git.open(new File(path));
+			
+			if(!currentBranch.isEmpty()) {
+				git.checkout().setName(currentBranch).call();
+				git.branchDelete().setBranchNames("mm").setForce(true).call();
+				currentBranch = "";
+			}
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

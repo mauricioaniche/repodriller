@@ -34,4 +34,6 @@ public interface SCM {
 
 	long totalCommits();
 
+	void reset();
+
 }
