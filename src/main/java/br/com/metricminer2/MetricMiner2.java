@@ -16,7 +16,6 @@
 
 package br.com.metricminer2;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -24,22 +23,9 @@ import org.apache.log4j.Logger;
 
 public class MetricMiner2 {
 
-	private MMOptions opts;
 	private static Logger log = Logger.getLogger(MetricMiner2.class);
 
-	public MetricMiner2(MMOptions opts) {
-		this.opts = opts;
-	}
-	
-	public static void main(String[] args) {
-		if(args==null || args.length==0)
-			new MetricMiner2(new MMOptionsReader().read(new File("research.mm2"))).start();
-		else
-			new MetricMiner2(new MMOptionsReader().read(new File(args[0]))).start();
-		
-	}
-
-	public void start() {
+	public void start(Study study) {
 
 		try {
 			
@@ -52,7 +38,7 @@ public class MetricMiner2 {
 			log.info("# -------------------------------------------------- #");
 			log.info("Starting engine: " + new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").format(startDate.getTime()));
 			
-			executeStudy();
+			study.execute();
 			
 			Calendar finishDate = Calendar.getInstance();
 			log.info("Finished: " + new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").format(finishDate.getTime()));
@@ -64,13 +50,6 @@ public class MetricMiner2 {
 		} catch(Throwable ex) {
 			log.error("Some error ocurred", ex);
 		}
-	}
-
-	private void executeStudy() throws Exception {
-		log.info("Initializing study in " + opts.getStudy());
-		Class<?> studyClazz = Class.forName(opts.getStudy());
-		Study study = (Study) studyClazz.newInstance();
-		study.execute(opts);
 	}
 
 

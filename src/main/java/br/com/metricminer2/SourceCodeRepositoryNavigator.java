@@ -28,55 +28,34 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
+import com.google.common.collect.Lists;
+
 import br.com.metricminer2.domain.ChangeSet;
 import br.com.metricminer2.domain.Commit;
 import br.com.metricminer2.persistence.PersistenceMechanism;
 import br.com.metricminer2.scm.CommitVisitor;
-import br.com.metricminer2.scm.GitRepository;
 import br.com.metricminer2.scm.SCMRepository;
-import br.com.metricminer2.scm.commitrange.AllCommits;
 import br.com.metricminer2.scm.commitrange.CommitRange;
-import br.com.metricminer2.scm.commitrange.OnlyInHead;
-
-import com.google.common.collect.Lists;
 
 public class SourceCodeRepositoryNavigator {
 
+	private static final int THREADS = 1;
 	private List<SCMRepository> repos;
 	private Map<CommitVisitor, PersistenceMechanism> visitors;
 	
 	private static Logger log = Logger.getLogger(SourceCodeRepositoryNavigator.class);
-	private MMOptions opts;
 	private CommitRange range;
 	
-	public SourceCodeRepositoryNavigator(MMOptions opts) {
-		this.opts = opts;
+	public SourceCodeRepositoryNavigator() {
 		repos = new ArrayList<SCMRepository>();
 		visitors = new HashMap<CommitVisitor, PersistenceMechanism>();
-		range = new AllCommits();
 	}
 	
-	private SourceCodeRepositoryNavigator projectsFromConfig() {
-		
-		if(opts.getScm().equals("git")) {
-			if(!opts.getProjectPath().isEmpty()) {
-				in(GitRepository.build(opts.getProjectPath()));
-			} else if(!opts.getProjectsPath().isEmpty()) {
-				in(GitRepository.allIn(opts.getProjectsPath()));
-			}
-		}
-		else {
-			log.error("I only understand git for now... Sorry, dude! :/");
-			System.exit(1);
-		}
+	public SourceCodeRepositoryNavigator through(CommitRange range) {
+		this.range = range;
 		return this;
 	}
 	
-	public SourceCodeRepositoryNavigator onlyInHeadCommit() {
-		range = new OnlyInHead();
-		return this;
-	}
-
 	public SourceCodeRepositoryNavigator in(SCMRepository... repo) {
 		this.repos.addAll(Arrays.asList(repo));
 		return this;
@@ -87,9 +66,7 @@ public class SourceCodeRepositoryNavigator {
 		return this;
 	}
 	
-	public void start() {
-		
-		if(repos.isEmpty()) projectsFromConfig();
+	public void mine() {
 		
 		for(SCMRepository repo : repos) {
 			log.info("Git repository in " + repo.getPath());
@@ -97,19 +74,27 @@ public class SourceCodeRepositoryNavigator {
 			List<ChangeSet> allCs = range.get(repo.getScm());
 			log.info("Total of commits: " + allCs.size());
 			
-			log.info("Starting " + opts.getThreads() + " threads");
-			ExecutorService exec = Executors.newFixedThreadPool(opts.getThreads());
-			List<List<ChangeSet>> partitions = Lists.partition(allCs, opts.getThreads());
+			log.info("Starting the engine");
+			ExecutorService exec = Executors.newFixedThreadPool(THREADS);
+			List<List<ChangeSet>> partitions = Lists.partition(allCs, THREADS);
 			for(List<ChangeSet> partition : partitions) {
 				
 				exec.submit(() -> {
-					try {
 						for(ChangeSet cs : partition) {
-							processEverythingOnChangeSet(repo, cs);
+							try {
+								processEverythingOnChangeSet(repo, cs);
+							} catch (OutOfMemoryError e) {
+								System.err.println("Commit " + cs.getId() + " in " + repo.getLastDir() + " caused OOME");
+								e.printStackTrace();
+								System.err.println("goodbye :/");
+								
+								log.fatal("Commit " + cs.getId() + " in " + repo.getLastDir() + " caused OOME", e);
+								log.fatal("Goodbye! ;/");
+								System.exit(0);
+							} catch(Throwable t) {
+								log.error(t);
+							}
 						}
-					} catch (Throwable e) {
-						e.printStackTrace();
-					}
 				});
 			}
 			

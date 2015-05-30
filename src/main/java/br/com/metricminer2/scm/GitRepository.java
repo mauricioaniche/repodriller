@@ -58,15 +58,15 @@ public class GitRepository implements SCM {
 		this.path = path;
 	}
 	
-	public static SCMRepository build(String path) {
+	public static SCMRepository singleProject(String path) {
 		return new GitRepository(path).info();
 	}
 	
-	public static SCMRepository[] allIn(String path) {
+	public static SCMRepository[] allProjectsIn(String path) {
 		List<SCMRepository> repos = new ArrayList<SCMRepository>();
 		
 		for(String dir : getAllDirsIn(path)) {
-			repos.add(build(dir));
+			repos.add(singleProject(dir));
 		}
 		
 		return repos.toArray(new SCMRepository[repos.size()]);
@@ -161,7 +161,7 @@ public class GitRepository implements SCM {
 			Commit theCommit = null;
 
 			for (RevCommit jgitCommit : commits) {
-
+				
 				Committer committer = new Committer(jgitCommit.getAuthorIdent().getName(), jgitCommit.getAuthorIdent()
 						.getEmailAddress());
 				String msg = jgitCommit.getFullMessage().trim();
@@ -174,7 +174,10 @@ public class GitRepository implements SCM {
 				
 				theCommit = new Commit(hash, committer, date, msg, parent);
 
-				for (DiffEntry diff : diffsForTheCommit(repo, jgitCommit)) {
+				List<DiffEntry> diffsForTheCommit = diffsForTheCommit(repo, jgitCommit);
+				if(diffsForTheCommit.size() > 30) throw new RuntimeException("commit " + id + " too big, sorry");
+				
+				for (DiffEntry diff : diffsForTheCommit) {
 					
 					ModificationType change = Enum.valueOf(ModificationType.class, diff.getChangeType().toString());
 					
