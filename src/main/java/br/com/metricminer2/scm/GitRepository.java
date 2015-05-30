@@ -53,7 +53,8 @@ import br.com.metricminer2.domain.ModificationType;
 
 public class GitRepository implements SCM {
 
-	private static final int MAX_NUMBER_OF_FILES_IN_A_COMMIT = 30;
+	private static final int MAX_SIZE_OF_A_DIFF = 50000;
+	private static final int MAX_NUMBER_OF_FILES_IN_A_COMMIT = 50;
 	private String path;
 	private String currentBranch = "";
 	
@@ -199,6 +200,11 @@ public class GitRepository implements SCM {
 						sc = getSourceCode(repo, diff);
 					}
 
+					if(diffText.length() > MAX_SIZE_OF_A_DIFF) {
+						log.error("diff for " + newPath + " too big");
+						diffText = "-- TOO BIG --";
+					}
+					
 					theCommit.addModification(oldPath, newPath, change, diffText, sc);
 
 				}
