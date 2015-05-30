@@ -25,6 +25,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffEntry.ChangeType;
@@ -55,6 +56,8 @@ public class GitRepository implements SCM {
 	private static final int MAX_NUMBER_OF_FILES_IN_A_COMMIT = 30;
 	private String path;
 	private String currentBranch = "";
+	
+	private static Logger log = Logger.getLogger(GitRepository.class);
 
 	public GitRepository(String path) {
 		this.path = path;
@@ -177,8 +180,10 @@ public class GitRepository implements SCM {
 				theCommit = new Commit(hash, committer, date, msg, parent);
 
 				List<DiffEntry> diffsForTheCommit = diffsForTheCommit(repo, jgitCommit);
-				if(diffsForTheCommit.size() > MAX_NUMBER_OF_FILES_IN_A_COMMIT) 
+				if(diffsForTheCommit.size() > MAX_NUMBER_OF_FILES_IN_A_COMMIT) {
+					log.error("commit " + id + " has more than files than the limit");
 					throw new RuntimeException("commit " + id + " too big, sorry");
+				}
 				
 				for (DiffEntry diff : diffsForTheCommit) {
 					
