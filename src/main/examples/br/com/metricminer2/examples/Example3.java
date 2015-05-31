@@ -16,7 +16,7 @@
 
 package br.com.metricminer2.examples;
 
-import br.com.metricminer2.SourceCodeRepositoryNavigator;
+import br.com.metricminer2.RepositoryMining;
 import br.com.metricminer2.Study;
 import br.com.metricminer2.metric.ClassLevelMetricCalculator;
 import br.com.metricminer2.metric.MethodLevelMetricCalculator;
@@ -31,7 +31,7 @@ public class Example3 implements Study {
 	public void execute() {
 		String outPath = "/output/dir/"; 
 		
-		new SourceCodeRepositoryNavigator()
+		new RepositoryMining()
 			.in(GitRepository.allProjectsIn("/path/projects/"))
 			.process(new MethodLevelMetricCalculator(new MethodLevelCyclomaticComplexityFactory()), new CSVFile(outPath, "cc.csv"))
 			.process(new ClassLevelMetricCalculator(new NumberOfMethodsFactory()), new CSVFile(outPath, "loc.csv"))

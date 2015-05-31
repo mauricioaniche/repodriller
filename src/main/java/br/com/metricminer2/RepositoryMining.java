@@ -37,31 +37,31 @@ import br.com.metricminer2.scm.CommitVisitor;
 import br.com.metricminer2.scm.SCMRepository;
 import br.com.metricminer2.scm.commitrange.CommitRange;
 
-public class SourceCodeRepositoryNavigator {
+public class RepositoryMining {
 
 	private static final int THREADS = 1;
 	private List<SCMRepository> repos;
 	private Map<CommitVisitor, PersistenceMechanism> visitors;
 	
-	private static Logger log = Logger.getLogger(SourceCodeRepositoryNavigator.class);
+	private static Logger log = Logger.getLogger(RepositoryMining.class);
 	private CommitRange range;
 	
-	public SourceCodeRepositoryNavigator() {
+	public RepositoryMining() {
 		repos = new ArrayList<SCMRepository>();
 		visitors = new HashMap<CommitVisitor, PersistenceMechanism>();
 	}
 	
-	public SourceCodeRepositoryNavigator through(CommitRange range) {
+	public RepositoryMining through(CommitRange range) {
 		this.range = range;
 		return this;
 	}
 	
-	public SourceCodeRepositoryNavigator in(SCMRepository... repo) {
+	public RepositoryMining in(SCMRepository... repo) {
 		this.repos.addAll(Arrays.asList(repo));
 		return this;
 	}
 	
-	public SourceCodeRepositoryNavigator process(CommitVisitor visitor, PersistenceMechanism writer) {
+	public RepositoryMining process(CommitVisitor visitor, PersistenceMechanism writer) {
 		visitors.put(visitor, writer);
 		return this;
 	}

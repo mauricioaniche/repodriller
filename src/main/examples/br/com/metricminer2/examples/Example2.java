@@ -16,7 +16,7 @@
 
 package br.com.metricminer2.examples;
 
-import br.com.metricminer2.SourceCodeRepositoryNavigator;
+import br.com.metricminer2.RepositoryMining;
 import br.com.metricminer2.Study;
 import br.com.metricminer2.metric.MethodLevelMetricCalculator;
 import br.com.metricminer2.metric.java8.cc.MethodLevelCyclomaticComplexityFactory;
@@ -29,7 +29,7 @@ public class Example2 implements Study {
 	@Override
 	public void execute() {
 		
-		new SourceCodeRepositoryNavigator()
+		new RepositoryMining()
 		.in(GitRepository.singleProject("/path/to/single/project"))
 		.through(Commits.onlyInHead())
 		.process(new MethodLevelMetricCalculator(new MethodLevelCyclomaticComplexityFactory()), 

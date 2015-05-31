@@ -16,7 +16,7 @@
 
 package br.com.metricminer2.examples;
 
-import br.com.metricminer2.SourceCodeRepositoryNavigator;
+import br.com.metricminer2.RepositoryMining;
 import br.com.metricminer2.Study;
 import br.com.metricminer2.domain.Commit;
 import br.com.metricminer2.persistence.PersistenceMechanism;
@@ -32,7 +32,7 @@ public class Example4 implements Study {
 	public void execute() {
 		PersistenceMechanism pm = new CSVFile("/path/to/file.csv");
 		
-		new SourceCodeRepositoryNavigator()
+		new RepositoryMining()
 			.in(GitRepository.allProjectsIn("/path/to/projects"))
 			.through(Commits.all())
 			.process(new CommitVisitor() {
