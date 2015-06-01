@@ -39,16 +39,17 @@ import br.com.metricminer2.scm.commitrange.CommitRange;
 
 public class RepositoryMining {
 
-	private static final int THREADS = 1;
 	private List<SCMRepository> repos;
 	private Map<CommitVisitor, PersistenceMechanism> visitors;
 	
 	private static Logger log = Logger.getLogger(RepositoryMining.class);
 	private CommitRange range;
+	private int threads;
 	
 	public RepositoryMining() {
 		repos = new ArrayList<SCMRepository>();
 		visitors = new HashMap<CommitVisitor, PersistenceMechanism>();
+		this.threads = 1;
 	}
 	
 	public RepositoryMining through(CommitRange range) {
@@ -74,9 +75,9 @@ public class RepositoryMining {
 			List<ChangeSet> allCs = range.get(repo.getScm());
 			log.info("Total of commits: " + allCs.size());
 			
-			log.info("Starting the engine");
-			ExecutorService exec = Executors.newFixedThreadPool(THREADS);
-			List<List<ChangeSet>> partitions = Lists.partition(allCs, THREADS);
+			log.info("Starting threads: " + threads);
+			ExecutorService exec = Executors.newFixedThreadPool(threads);
+			List<List<ChangeSet>> partitions = Lists.partition(allCs, threads);
 			for(List<ChangeSet> partition : partitions) {
 				
 				exec.submit(() -> {
@@ -153,5 +154,10 @@ public class RepositoryMining {
 			}
 		}
 		
+	}
+
+	public RepositoryMining withThreads(int n) {
+		this.threads = n;
+		return this;
 	}
 }
