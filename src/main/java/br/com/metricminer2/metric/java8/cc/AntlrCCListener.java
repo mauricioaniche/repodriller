@@ -24,18 +24,18 @@ import java.util.Stack;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.apache.commons.lang3.StringUtils;
 
-import br.com.metricminer2.metric.java8.Java8AntlrMethods;
-import br.com.metricminer2.metric.java8.Java8BaseListener;
-import br.com.metricminer2.metric.java8.Java8Parser;
-import br.com.metricminer2.metric.java8.Java8Parser.ExpressionContext;
-import br.com.metricminer2.metric.java8.Java8Parser.StaticInitializerContext;
+import br.com.metricminer2.parser.java8.Java8AntlrMethods;
+import br.com.metricminer2.parser.java8.Java8BaseListener;
+import br.com.metricminer2.parser.java8.Java8Parser;
+import br.com.metricminer2.parser.java8.Java8Parser.ExpressionContext;
+import br.com.metricminer2.parser.java8.Java8Parser.StaticInitializerContext;
 
-public class CCListener extends Java8BaseListener {
+public class AntlrCCListener extends Java8BaseListener {
 
     private Map<String, Integer> ccPerMethod;
     private Stack<String> methodStack;
 
-    public CCListener() {
+    public AntlrCCListener() {
         ccPerMethod = new HashMap<String, Integer>();
         methodStack = new Stack<String>();
     }

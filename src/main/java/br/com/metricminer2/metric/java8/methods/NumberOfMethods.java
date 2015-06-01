@@ -20,8 +20,8 @@ import java.io.ByteArrayInputStream;
 import java.util.List;
 
 import br.com.metricminer2.metric.ClassLevelMetric;
-import br.com.metricminer2.metric.java8.Java8AntLRVisitor;
-import br.com.metricminer2.metric.java8.MethodsAndAttributesListener;
+import br.com.metricminer2.parser.java8.Java8AntLRVisitor;
+import br.com.metricminer2.parser.java8.MethodsAndAttributesListener;
 
 public class NumberOfMethods implements ClassLevelMetric {
 

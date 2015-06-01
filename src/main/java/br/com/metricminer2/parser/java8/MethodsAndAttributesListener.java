@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package br.com.metricminer2.metric.java8;
+package br.com.metricminer2.parser.java8;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,8 +23,8 @@ import java.util.Stack;
 
 import org.antlr.v4.runtime.misc.NotNull;
 
-import br.com.metricminer2.metric.java8.Java8Parser.MethodDeclarationContext;
 import br.com.metricminer2.metric.java8.methods.Method;
+import br.com.metricminer2.parser.java8.Java8Parser.MethodDeclarationContext;
 
 public class MethodsAndAttributesListener extends Java8BaseListener {
 

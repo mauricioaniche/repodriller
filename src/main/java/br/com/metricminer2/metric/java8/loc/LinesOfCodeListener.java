@@ -19,9 +19,9 @@ package br.com.metricminer2.metric.java8.loc;
 import java.util.HashMap;
 import java.util.Map;
 
-import br.com.metricminer2.metric.java8.Java8AntlrMethods;
-import br.com.metricminer2.metric.java8.Java8BaseListener;
-import br.com.metricminer2.metric.java8.Java8Parser;
+import br.com.metricminer2.parser.java8.Java8AntlrMethods;
+import br.com.metricminer2.parser.java8.Java8BaseListener;
+import br.com.metricminer2.parser.java8.Java8Parser;
 
 public class LinesOfCodeListener extends Java8BaseListener {
 

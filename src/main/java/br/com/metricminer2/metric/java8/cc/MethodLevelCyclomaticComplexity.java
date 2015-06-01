@@ -22,20 +22,20 @@ import java.util.Map;
 
 import br.com.metricminer2.metric.MethodLevelMetric;
 import br.com.metricminer2.metric.MetricException;
-import br.com.metricminer2.metric.java8.Java8AntLRVisitor;
+import br.com.metricminer2.parser.jdt.JDTRunner;
 
 public class MethodLevelCyclomaticComplexity implements MethodLevelMetric {
 
 	public static final double THRESHOLD = 5;
 
-	private CCListener visitor;
-	
 	@Override
 	public Map<String, Double> calculate(String sourceCode) {
 		
 		try {
-			visitor = new CCListener();
-			new Java8AntLRVisitor().visit(visitor, new ByteArrayInputStream(sourceCode.getBytes()));
+			
+			JDTCCListener visitor = new JDTCCListener();
+			new JDTRunner().visit(visitor, new ByteArrayInputStream(sourceCode.getBytes()));
+
             
             Map<String, Double> values = new HashMap<String, Double>();
             for(Map.Entry<String, Integer> v : visitor.getCcPerMethod().entrySet()) {

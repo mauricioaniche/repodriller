@@ -27,8 +27,8 @@ import java.io.InputStream;
 import org.junit.Before;
 import org.junit.Test;
 
-import br.com.metricminer2.metric.java8.Java8AntLRVisitor;
-import br.com.metricminer2.metric.java8.MethodsAndAttributesListener;
+import br.com.metricminer2.parser.java8.Java8AntLRVisitor;
+import br.com.metricminer2.parser.java8.MethodsAndAttributesListener;
 
 
 public class MethodsAndAttributesListenerTest {

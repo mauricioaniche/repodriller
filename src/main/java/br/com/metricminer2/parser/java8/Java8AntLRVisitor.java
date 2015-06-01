@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package br.com.metricminer2.metric.java8;
+package br.com.metricminer2.parser.java8;
 
 import java.io.InputStream;
 
@@ -28,7 +28,7 @@ import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.atn.PredictionMode;
 import org.antlr.v4.runtime.tree.*;
 
-import br.com.metricminer2.metric.java8.Java8Parser.CompilationUnitContext;
+import br.com.metricminer2.parser.java8.Java8Parser.CompilationUnitContext;
  
 public class Java8AntLRVisitor {
 

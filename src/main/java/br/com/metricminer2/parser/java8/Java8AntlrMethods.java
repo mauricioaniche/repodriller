@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package br.com.metricminer2.metric.java8;
+package br.com.metricminer2.parser.java8;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.metricminer2.metric.java8.Java8Parser.ConstructorDeclarationContext;
-import br.com.metricminer2.metric.java8.Java8Parser.FormalParameterContext;
-import br.com.metricminer2.metric.java8.Java8Parser.FormalParameterListContext;
-import br.com.metricminer2.metric.java8.Java8Parser.LastFormalParameterContext;
-import br.com.metricminer2.metric.java8.Java8Parser.MethodDeclarationContext;
+import br.com.metricminer2.parser.java8.Java8Parser.ConstructorDeclarationContext;
+import br.com.metricminer2.parser.java8.Java8Parser.FormalParameterContext;
+import br.com.metricminer2.parser.java8.Java8Parser.FormalParameterListContext;
+import br.com.metricminer2.parser.java8.Java8Parser.LastFormalParameterContext;
+import br.com.metricminer2.parser.java8.Java8Parser.MethodDeclarationContext;
 
 public class Java8AntlrMethods {
 

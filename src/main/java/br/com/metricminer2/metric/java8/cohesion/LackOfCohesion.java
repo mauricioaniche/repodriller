@@ -24,9 +24,9 @@ import java.util.Set;
 
 import br.com.metricminer2.metric.ClassLevelMetric;
 import br.com.metricminer2.metric.MetricException;
-import br.com.metricminer2.metric.java8.Java8AntLRVisitor;
-import br.com.metricminer2.metric.java8.MethodsAndAttributesListener;
 import br.com.metricminer2.metric.java8.methods.Method;
+import br.com.metricminer2.parser.java8.Java8AntLRVisitor;
+import br.com.metricminer2.parser.java8.MethodsAndAttributesListener;
 
 public class LackOfCohesion implements ClassLevelMetric {
 

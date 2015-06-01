@@ -22,7 +22,7 @@ import java.util.Map;
 
 import br.com.metricminer2.metric.MethodLevelMetric;
 import br.com.metricminer2.metric.MetricException;
-import br.com.metricminer2.metric.java8.Java8AntLRVisitor;
+import br.com.metricminer2.parser.java8.Java8AntLRVisitor;
 
 public class MethodLevelLinesOfCode implements MethodLevelMetric {
 
