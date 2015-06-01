@@ -116,6 +116,9 @@ public class JDTCCListener extends ASTVisitor {
 
     private void increaseCc(int qtd) {
     	
+    	// i dont know the method... ignore!
+    	if(methodStack.isEmpty()) return;
+    	
     	String currentMethod = methodStack.peek();
     	if (!ccPerMethod.containsKey(currentMethod))
     		ccPerMethod.put(currentMethod, 0);
