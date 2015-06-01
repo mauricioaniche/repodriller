@@ -56,7 +56,6 @@ public class GitRepository implements SCM {
 	private static final int MAX_SIZE_OF_A_DIFF = 100000;
 	private static final int MAX_NUMBER_OF_FILES_IN_A_COMMIT = 50;
 	private String path;
-	private String currentBranch = "";
 	
 	private static Logger log = Logger.getLogger(GitRepository.class);
 
@@ -284,26 +283,24 @@ public class GitRepository implements SCM {
 		}
 	}
 
-	public List<File> files(String hash) {
+	public void checkout(String hash) {
 		Git git = null;
 		try {
 			git = Git.open(new File(path));
-			currentBranch = git.getRepository().getBranch();
-			
-			RevCommit commit = git.log().add(git.getRepository().resolve(hash)).call().iterator().next();
 
+			RevCommit commit = git.log().add(git.getRepository().resolve(hash)).call().iterator().next();
 			git.branchCreate().setStartPoint(commit).setName("mm").setForce(true).call();
 			git.checkout().setName("mm").call();
 
-			List<File> arquivos = getAllFilesInPath();
-			
-			return arquivos;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		} finally {
 			if(git!=null) git.close();
 		}
-		
+	}
+	
+	public List<File> files() {
+		return getAllFilesInPath();
 	}
 	
 	public void reset() {
@@ -311,11 +308,8 @@ public class GitRepository implements SCM {
 		try {
 			git = Git.open(new File(path));
 			
-			if(!currentBranch.isEmpty()) {
-				git.checkout().setName(currentBranch).call();
-				git.branchDelete().setBranchNames("mm").setForce(true).call();
-				currentBranch = "";
-			}
+			git.checkout().setName("master").call();
+			git.branchDelete().setBranchNames("mm").setForce(true).call();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		} finally {

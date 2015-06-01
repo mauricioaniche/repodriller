@@ -30,10 +30,12 @@ public interface SCM {
 	
 	ChangeSet getHead();
 	
-	List<File> files(String hash);
+	List<File> files();
 
 	long totalCommits();
 
 	void reset();
+
+	void checkout(String id);
 
 }

@@ -46,9 +46,12 @@ public class RepositoryMining {
 	private static Logger log = Logger.getLogger(RepositoryMining.class);
 	private CommitRange range;
 	
+	private boolean checkout;
+	
 	public RepositoryMining() {
 		repos = new ArrayList<SCMRepository>();
 		visitors = new HashMap<CommitVisitor, PersistenceMechanism>();
+		this.checkout = false;
 	}
 	
 	public RepositoryMining through(CommitRange range) {
@@ -63,6 +66,9 @@ public class RepositoryMining {
 	
 	public RepositoryMining process(CommitVisitor visitor, PersistenceMechanism writer) {
 		visitors.put(visitor, writer);
+		if(visitor.getClass().isAnnotationPresent(NeedsCheckout.class)) {
+			this.checkout = true;
+		}
 		return this;
 	}
 	
@@ -140,6 +146,8 @@ public class RepositoryMining {
 				" from " + commit.getCommitter().getName() + 
 				" with " + commit.getModifications().size() + " modifications");
 
+		if(checkout) repo.getScm().checkout(cs.getId());
+		
 		for(Map.Entry<CommitVisitor, PersistenceMechanism> entry : visitors.entrySet()) {
 			CommitVisitor visitor = entry.getKey();
 			PersistenceMechanism writer = entry.getValue();
@@ -152,5 +160,7 @@ public class RepositoryMining {
 						", processor=" + visitor.name(), e);
 			}
 		}
+		
+		if(checkout) repo.getScm().reset();
 	}
 }
