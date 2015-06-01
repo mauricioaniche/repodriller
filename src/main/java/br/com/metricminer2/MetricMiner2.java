@@ -23,6 +23,10 @@ import org.apache.log4j.Logger;
 
 public class MetricMiner2 {
 
+	public static void main(String[] args) {
+		System.out.println("You should not run me! :/");
+	}
+	
 	private static Logger log = Logger.getLogger(MetricMiner2.class);
 
 	public void start(Study study) {
