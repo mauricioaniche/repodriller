@@ -13,4 +13,8 @@ public class Commits {
 	public static CommitRange single(String commit) {
 		return new SingleCommit(commit);
 	}
+
+	public static CommitRange monthly(int months) {
+		return new MonthlyCommits(months);
+	}
 }
