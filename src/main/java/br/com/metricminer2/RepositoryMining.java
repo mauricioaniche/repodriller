@@ -150,7 +150,7 @@ public class RepositoryMining {
 				visitor.process(repo, commit, writer);
 			} catch (Exception e) {
 				log.error("error processing #" + commit.getHash() + " in " + repo.getPath() + 
-						", processor=" + visitor.name(), e);
+						", processor=" + visitor.name() + ", error=" + e.getMessage(), e);
 			}
 		}
 		

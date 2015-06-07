@@ -16,7 +16,6 @@
 
 package br.com.metricminer2.scm.git;
 
-import java.io.File;
 import java.util.List;
 
 import org.junit.Assert;
@@ -27,6 +26,7 @@ import br.com.metricminer2.domain.ChangeSet;
 import br.com.metricminer2.domain.Commit;
 import br.com.metricminer2.domain.ModificationType;
 import br.com.metricminer2.scm.GitRepository;
+import br.com.metricminer2.scm.RepositoryFile;
 import br.com.metricminer2.scm.SCMRepository;
 
 public class GitRepositoryTest {
@@ -43,17 +43,17 @@ public class GitRepositoryTest {
 	@Test
 	public void shouldListAllFilesInACommit() {
 		git.checkout("a7053a4dcd627f5f4f213dc9aa002eb1caf926f8");
-		List<File> files1 = git.files();
+		List<RepositoryFile> files1 = git.files();
 		Assert.assertEquals(3, files1.size());
 		git.reset();
 		
 		git.checkout("f0dd1308bd904a9b108a6a40865166ee962af3d4");
-		List<File> files2 = git.files();
+		List<RepositoryFile> files2 = git.files();
 		Assert.assertEquals(2, files2.size());
 		git.reset();
 		
 		git.checkout("9e71dd5726d775fb4a5f08506a539216e878adbb");
-		List<File> files3 = git.files();
+		List<RepositoryFile> files3 = git.files();
 		Assert.assertEquals(3, files3.size());
 		git.reset();
 		
