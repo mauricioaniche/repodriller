@@ -151,7 +151,7 @@ public class MMOptions {
 	public void setSysOut(boolean sysOut) {
 		this.sysOut = sysOut;
 	}
-	
+	 
 	public void setRange(String range) {
 		this.range = range;
 	}
