@@ -21,7 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import org.apache.log4j.Logger;
-
+ 
 import br.com.metricminer2.action.Action;
 import br.com.metricminer2.persistence.csv.GoogleStorage;
  
