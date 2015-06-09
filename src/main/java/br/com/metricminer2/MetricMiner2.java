@@ -16,15 +16,17 @@
 
 package br.com.metricminer2;
 
+import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import org.apache.log4j.Logger;
 
 import br.com.metricminer2.action.Action;
-
+import br.com.metricminer2.persistence.csv.GoogleStorage;
+ 
 import com.beust.jcommander.JCommander;
-
+ 
 public class MetricMiner2 {
 
 	private MMOptions opts;
@@ -40,8 +42,13 @@ public class MetricMiner2 {
 		
 //		args = new String[] {"-scm", "git", "-study", "br.com.metricminer2.examples.Example3", "-project", "/Users/mauricioaniche/workspace/metricminer2", "-csv", "/Users/mauricioaniche/Desktop/", "-threads", "1"};
 		
-		args = new String[] {"-scm", "git", "-study", "br.com.metricminer2.LocStudy", "-project", "/home/rcp/git-teste2", "-csv", "/home/rcp/MM2-OUT/MM2.csv", "-threads", "1"};
-
+//		args = new String[] {"-scm", "git", "-study", "br.com.metricminer2.LocStudy", "-project", "/home/rcp/git-teste2", "-csv", "/home/rcp/MM2-OUT/MM2.csv", "-threads", "1"};
+		
+//		args = new String[] {"-scm", "git", "-study", "br.com.metricminer2.LocStudy", "-project", "/home/rcp/git-teste2", "-cloudStorage", "MM2.csv", "-threads", "1","-range", "55742251b0fcb3eb6e1c6a2c19d1c8c09c389fd0"};
+		
+//		args = new String[] {"-scm", "git", "-study", "br.com.metricminer2.LocStudy", "-project", "/home/rcp/git-teste2", "-cloudStorage", "MM2.csv", "-threads", "1"};
+		
+		
 		new MetricMiner2(args).start();
 		
 	}
@@ -72,6 +79,13 @@ public class MetricMiner2 {
 			log.info("Brought to you by MetricMiner (metricminer.org.br)");
 			log.info("# -------------------------------------------------- #");
 			
+			if (opts.hasCloudStorage()) {
+			   Format formatter = new SimpleDateFormat("ssmmHH-ddMMyyyy");
+			   String stringNow = formatter.format(Calendar.getInstance().getTime());
+			   GoogleStorage storageSample = new GoogleStorage(stringNow + opts.getCloudStorage());
+			   String time = "It took " + seconds + " seconds (~" + seconds/60 + " minutes).";
+			   storageSample.insertFile(stringNow + opts.getCloudStorage(), time);
+			}
 		} catch(Throwable ex) {
 			ex.printStackTrace();
 		}

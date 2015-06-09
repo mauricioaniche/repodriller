@@ -32,10 +32,13 @@ public class MMOptions {
 
 	@Parameter(names="-csv", description="Path to the CSV that will be outputed")
 	private String csv;
-
+	
+	@Parameter(names="-cloudStorage", description="Path to the Cloud Storage that will be outputed")
+	private String cloudStorage;
+ 
 	@Parameter(names="-scm", description="SCM to be used (git)")
 	private String scm;
-	
+	 
 	@Parameter(names="-detail", description="Give details from all projects")
 	private boolean detail;
 
@@ -47,9 +50,16 @@ public class MMOptions {
 	
 	@Parameter(names="-threads", description="Number of threads to use")
 	private int threads;
+	
+	@Parameter(names="-range", description="Range of commit")
+	private String range;
 
 	public String getCsv() {
 		return csv;
+	}
+	
+	public String getCloudStorage() {
+		return cloudStorage;
 	}
 	
 	public String getStudy() {
@@ -71,10 +81,14 @@ public class MMOptions {
 	public boolean hasCsv() {
 		return csv!=null && !csv.isEmpty();
 	}
+	
+	public boolean hasCloudStorage() {
+		return cloudStorage!=null && !cloudStorage.isEmpty();
+	}
 
 	@Override
 	public String toString() {
-		return "MMOptions [study=" + study + ", projects=" + projectsPath + ", csv=" + csv + ", detail=" + detail + "]";
+		return "MMOptions [study=" + study + ", projects=" + projectsPath + ", csv=" + csv + ", detail=" + detail + " range=" + range +"]";
 	}
 
 	public int getThreads() {
@@ -108,6 +122,10 @@ public class MMOptions {
 	public void setCsv(String csv) {
 		this.csv = csv;
 	}
+	
+	public void setCloudStorage(String cloudStorage) {
+		this.cloudStorage = cloudStorage;
+	}
 
 	public void setScm(String scm) {
 		this.scm = scm;
@@ -132,6 +150,14 @@ public class MMOptions {
 	
 	public void setSysOut(boolean sysOut) {
 		this.sysOut = sysOut;
+	}
+	
+	public void setRange(String range) {
+		this.range = range;
+	}
+
+	public String getRange() {
+		return range == null ? "" : range;
 	}
 	
 }

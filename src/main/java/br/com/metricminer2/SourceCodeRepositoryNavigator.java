@@ -83,12 +83,57 @@ public class SourceCodeRepositoryNavigator {
 		return this;
 	}
 	
+	private List<String> getIDList() {
+		return Arrays.asList(opts.getRange().split(","));
+	} 
+	  
 	public void start() {
+		if (opts.getRange().isEmpty()) {
+			for(SCMRepository repo : repos) {
+				log.info("Git repository in " + repo.getPath());
+				
+				List<ChangeSet> allCs = range.get(repo.getScm());
+				log.info("Total of commits: " + allCs.size());
+				
+				log.info("Starting " + opts.getThreads() + " threads");
+				ExecutorService exec = Executors.newFixedThreadPool(opts.getThreads());
+				List<List<ChangeSet>> partitions = Lists.partition(allCs, opts.getThreads());
+				for(List<ChangeSet> partition : partitions) {
+					
+					exec.submit(() -> {
+						for(ChangeSet cs : partition) {
+							processEverythingOnChangeSet(repo, cs);
+						}
+					});
+				}
+				
+				try {
+					exec.shutdown();
+					exec.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
+				} catch (InterruptedException e) {
+					log.error("error waiting for threads to terminate in " + repo.getLastDir(), e);
+				}
+			}
+			
+			closeAllPersistence();
+			printScript();
+		} else {
+			startWithRange();
+		}
+		
+	}
+	
+	private void startWithRange() {
 		for(SCMRepository repo : repos) {
 			log.info("Git repository in " + repo.getPath());
 			
-			List<ChangeSet> allCs = range.get(repo.getScm());
-			log.info("Total of commits: " + allCs.size());
+			List<ChangeSet> allCs = new ArrayList<ChangeSet>();
+			List<String> allIds = getIDList();
+			log.info("Total of commits: " + allIds.size());
+			for (String id : allIds) {
+				ChangeSet changeSet = new ChangeSet(id, null);
+				allCs.add(changeSet);
+			}
 			
 			log.info("Starting " + opts.getThreads() + " threads");
 			ExecutorService exec = Executors.newFixedThreadPool(opts.getThreads());
