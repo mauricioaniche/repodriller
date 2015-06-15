@@ -16,49 +16,24 @@
 
 package br.com.metricminer2;
 
-import java.text.Format;
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import org.apache.log4j.Logger;
-  
-import br.com.metricminer2.action.Action;
-import br.com.metricminer2.persistence.csv.GoogleStorage;
- 
-import com.beust.jcommander.JCommander;
- 
+
+import br.com.metricminer2.persistence.google.GoogleStorage;
+
 public class MetricMiner2 {
 
-	private MMOptions opts;
-	private JCommander jc;
-	private static Logger log = Logger.getLogger(MetricMiner2.class);
-
-	public MetricMiner2(String[] args) {
-		opts = new MMOptions();
-		jc = new JCommander(opts, args);
+	public static void main(String[] args) {
+		System.out.println("You should not run me! :/");
 	}
 	
-	public static void main(String[] args) {
-		
-//		args = new String[] {"-scm", "git", "-study", "br.com.metricminer2.examples.Example3", "-project", "/Users/mauricioaniche/workspace/metricminer2", "-csv", "/Users/mauricioaniche/Desktop/", "-threads", "1"};
-		
-//		args = new String[] {"-scm", "git", "-study", "br.com.metricminer2.LocStudy", "-project", "/home/rcp/git-teste2", "-csv", "/home/rcp/MM2-OUT/MM2.csv", "-threads", "1"};
-		
-//		args = new String[] {"-scm", "git", "-study", "br.com.metricminer2.LocStudy", "-project", "/home/rcp/git-teste2", "-cloudStorage", "MM2.csv", "-threads", "1","-range", "55742251b0fcb3eb6e1c6a2c19d1c8c09c389fd0"};
-		
-//		args = new String[] {"-scm", "git", "-study", "br.com.metricminer2.LocStudy", "-project", "/home/rcp/git-teste2", "-cloudStorage", "MM2.csv", "-threads", "1"};
-		 
-		
-		new MetricMiner2(args).start();
-		
-	}
+	private static Logger log = Logger.getLogger(MetricMiner2.class);
 
-	public void start() {
-		if(opts.isUsage()) {
-			jc.usage();
-			System.exit(0);
-		}
-		
+	public void start(Study study) {
+
 		try {
 			
 			Calendar startDate = Calendar.getInstance();
@@ -70,24 +45,28 @@ public class MetricMiner2 {
 			log.info("# -------------------------------------------------- #");
 			log.info("Starting engine: " + new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").format(startDate.getTime()));
 			
-			Action.all().run(opts);
+			study.execute();
 			
 			Calendar finishDate = Calendar.getInstance();
 			log.info("Finished: " + new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").format(finishDate.getTime()));
 			long seconds = (finishDate.getTimeInMillis() - startDate.getTimeInMillis())/1000;
 			log.info("It took " + seconds + " seconds (~" + seconds/60 + " minutes).");
-			log.info("Brought to you by MetricMiner (metricminer.org.br)");
+			log.info("Brought to you by MetricMiner2 (metricminer.org.br)");
 			log.info("# -------------------------------------------------- #");
 			
-			if (opts.hasCloudStorage()) {
-			   Format formatter = new SimpleDateFormat("ssmmHH-ddMMyyyy");
-			   String stringNow = formatter.format(Calendar.getInstance().getTime());
-			   GoogleStorage storageSample = new GoogleStorage(stringNow + opts.getCloudStorage());
-			   String time = "It took " + seconds + " seconds (~" + seconds/60 + " minutes).";
-			   storageSample.insertFile(stringNow + opts.getCloudStorage(), time);
-			}
+			String applicationName = System.getenv("APPLICATION_NAME");
+			String bucketName = System.getenv("BUCKET_NAME");
+			String clientSecretFileName = System.getenv("CLIENTE_SECRET_FILE_NAME");
+			String fileName = System.getenv("FILE_NAME");
+			File dataStoreDir = new File(System.getenv("DATA_STORE_DIR"));
+			GoogleStorage googleStorage = new GoogleStorage(applicationName,
+					bucketName, clientSecretFileName, true,
+					fileName, dataStoreDir);
+			googleStorage.write("Finished: " + new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").format(finishDate.getTime()));
+			googleStorage.write("It took " + seconds + " seconds (~" + seconds/60 + " minutes).");
+			googleStorage.close();
 		} catch(Throwable ex) {
-			ex.printStackTrace();
+			log.error("Some error ocurred", ex);
 		}
 	}
 

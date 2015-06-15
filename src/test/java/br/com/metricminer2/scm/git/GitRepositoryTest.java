@@ -26,6 +26,7 @@ import br.com.metricminer2.domain.ChangeSet;
 import br.com.metricminer2.domain.Commit;
 import br.com.metricminer2.domain.ModificationType;
 import br.com.metricminer2.scm.GitRepository;
+import br.com.metricminer2.scm.RepositoryFile;
 import br.com.metricminer2.scm.SCMRepository;
 
 public class GitRepositoryTest {
@@ -40,19 +41,38 @@ public class GitRepositoryTest {
 	}
 	
 	@Test
+	public void shouldListAllFilesInACommit() {
+		git.checkout("a7053a4dcd627f5f4f213dc9aa002eb1caf926f8");
+		List<RepositoryFile> files1 = git.files();
+		Assert.assertEquals(3, files1.size());
+		git.reset();
+		
+		git.checkout("f0dd1308bd904a9b108a6a40865166ee962af3d4");
+		List<RepositoryFile> files2 = git.files();
+		Assert.assertEquals(2, files2.size());
+		git.reset();
+		
+		git.checkout("9e71dd5726d775fb4a5f08506a539216e878adbb");
+		List<RepositoryFile> files3 = git.files();
+		Assert.assertEquals(3, files3.size());
+		git.reset();
+		
+	}
+	
+	@Test
 	public void shouldGetHead() {
 		ChangeSet head = git.getHead();
 		
-		Assert.assertEquals("f0dd1308bd904a9b108a6a40865166ee962af3d4", head.getId());
+		Assert.assertEquals("9e71dd5726d775fb4a5f08506a539216e878adbb", head.getId());
 	}
 	
 	@Test
 	public void shouldGetAllCommits() {
 		List<ChangeSet> cs = git.getChangeSets();
 		
-		Assert.assertEquals(10, cs.size());
-		Assert.assertEquals("f0dd1308bd904a9b108a6a40865166ee962af3d4", cs.get(0).getId());
-		Assert.assertEquals("866e997a9e44cb4ddd9e00efe49361420aff2559", cs.get(9).getId());
+		Assert.assertEquals(11, cs.size());
+		Assert.assertEquals("9e71dd5726d775fb4a5f08506a539216e878adbb", cs.get(0).getId());
+		Assert.assertEquals("866e997a9e44cb4ddd9e00efe49361420aff2559", cs.get(10).getId());
 	}
 	
 	@Test
@@ -107,6 +127,6 @@ public class GitRepositoryTest {
 		
 		Assert.assertEquals(path, repo.getPath());
 		Assert.assertEquals("866e997a9e44cb4ddd9e00efe49361420aff2559", repo.getFirstCommit());
-		Assert.assertEquals("f0dd1308bd904a9b108a6a40865166ee962af3d4", repo.getHeadCommit());
+		Assert.assertEquals("9e71dd5726d775fb4a5f08506a539216e878adbb", repo.getHeadCommit());
 	}
 }

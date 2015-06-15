@@ -20,18 +20,17 @@ import java.io.ByteArrayInputStream;
 
 import br.com.metricminer2.metric.ClassLevelMetric;
 import br.com.metricminer2.metric.MetricException;
-import br.com.metricminer2.metric.java8.Java8AntLRVisitor;
+import br.com.metricminer2.parser.jdt.JDTRunner;
 
 public class ClassLevelCyclomaticComplexity implements ClassLevelMetric {
 
-	private CCListener visitor;
-	
 	@Override
 	public double calculate(String sourceCode) {
 		
 		try {
-			visitor = new CCListener();
-			new Java8AntLRVisitor().visit(visitor, new ByteArrayInputStream(sourceCode.getBytes()));
+			
+			JDTCCListener visitor = new JDTCCListener();
+			new JDTRunner().visit(visitor, new ByteArrayInputStream(sourceCode.getBytes()));
 			
 			return visitor.getCc();
 		} catch (Throwable t) {

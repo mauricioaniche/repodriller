@@ -191,9 +191,9 @@ public class ClassLevelCyclomaticComplexityTest {
 				classDeclaration(
 						"public int method() {" +
 						"switch(a) {"+
-						"case 1: return bla;" +
-						"case 2: return bla;" +
-						"case 3: return bla;" +
+						"case 1: return bla; break;" +
+						"case 2: return bla; break;" +
+						"case 3: return bla; break;" +
 						"}" +
 						"return a+b; }")
 				);

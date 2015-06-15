@@ -26,9 +26,9 @@ import java.util.Stack;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.NotNull;
 
-import br.com.metricminer2.metric.java8.Java8AntlrFullMethodName;
-import br.com.metricminer2.metric.java8.Java8BaseListener;
-import br.com.metricminer2.metric.java8.Java8Parser;
+import br.com.metricminer2.parser.java8.Java8AntlrMethods;
+import br.com.metricminer2.parser.java8.Java8BaseListener;
+import br.com.metricminer2.parser.java8.Java8Parser;
 
 public class MethodsPerAttributeListener extends Java8BaseListener {
 
@@ -65,7 +65,7 @@ public class MethodsPerAttributeListener extends Java8BaseListener {
 	public void enterMethodDeclaration(Java8Parser.MethodDeclarationContext ctx) {
 
 		
-		currentMethod.push(Java8AntlrFullMethodName.fullMethodName(ctx));
+		currentMethod.push(Java8AntlrMethods.fullMethodName(ctx));
 
 	}
 
@@ -75,7 +75,7 @@ public class MethodsPerAttributeListener extends Java8BaseListener {
 	}
 
 	@Override public void enterConstructorDeclaration(Java8Parser.ConstructorDeclarationContext ctx) {
-		currentMethod.push(Java8AntlrFullMethodName.fullMethodName(ctx));
+		currentMethod.push(Java8AntlrMethods.fullMethodName(ctx));
 	}
 	
 	@Override public void exitConstructorDeclaration(Java8Parser.ConstructorDeclarationContext ctx) {

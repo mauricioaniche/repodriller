@@ -28,5 +28,13 @@ public interface SCM {
 	Commit getCommit(String id);
 	
 	ChangeSet getHead();
+	
+	List<RepositoryFile> files();
+
+	long totalCommits();
+
+	void reset();
+
+	void checkout(String id);
 
 }

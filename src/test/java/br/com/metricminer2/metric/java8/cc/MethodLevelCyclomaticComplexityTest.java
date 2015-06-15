@@ -51,6 +51,18 @@ public class MethodLevelCyclomaticComplexityTest {
 						"a=a+1;" +
 						"b=b+1;" +
 						"return a+b; }"+
+						"public int method(double x, int... y) {" +
+						"a=a+1;" +
+						"b=b+1;" +
+						"return a+b; }"+
+						"public int method(double x, Map<String> y) {" +
+						"a=a+1;" +
+						"b=b+1;" +
+						"return a+b; }"+
+						"public int method(double x, Map<String,String> y) {" +
+						"a=a+1;" +
+						"b=b+1;" +
+						"return a+b; }"+
 						"public int method(int x, double y) {" +
 						"a=a+1;" +
 						"b=b+1;" +
@@ -58,10 +70,12 @@ public class MethodLevelCyclomaticComplexityTest {
 						)
 				);
 		
-		// sdsaddsa
 		assertEquals(1, cc.get("method/0"), 0.0001);
 		assertEquals(1, cc.get("method/1[int]"), 0.0001);
 		assertEquals(1, cc.get("method/1[double]"), 0.0001);
+		assertEquals(1, cc.get("method/2[double,int...]"), 0.0001);
+		assertEquals(1, cc.get("method/2[double,Map<String>]"), 0.0001);
+		assertEquals(1, cc.get("method/2[double,Map<String,String>]"), 0.0001);
 		assertEquals(1, cc.get("method/2[int,double]"), 0.0001);
 	}
 	

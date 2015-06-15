@@ -28,8 +28,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import br.com.metricminer2.metric.java8.Java8AntLRVisitor;
 import br.com.metricminer2.metric.java8.cohesion.MethodsPerAttributeListener;
+import br.com.metricminer2.parser.java8.Java8AntLRVisitor;
 
 public class MethodsPerAttributeListenerTest {
 

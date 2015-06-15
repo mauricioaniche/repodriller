@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package br.com.metricminer2.metric.java8;
+package br.com.metricminer2.parser.java8;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.metricminer2.metric.java8.Java8Parser.ConstructorDeclarationContext;
-import br.com.metricminer2.metric.java8.Java8Parser.FormalParameterContext;
-import br.com.metricminer2.metric.java8.Java8Parser.FormalParameterListContext;
-import br.com.metricminer2.metric.java8.Java8Parser.LastFormalParameterContext;
-import br.com.metricminer2.metric.java8.Java8Parser.MethodDeclarationContext;
+import br.com.metricminer2.parser.java8.Java8Parser.ConstructorDeclarationContext;
+import br.com.metricminer2.parser.java8.Java8Parser.FormalParameterContext;
+import br.com.metricminer2.parser.java8.Java8Parser.FormalParameterListContext;
+import br.com.metricminer2.parser.java8.Java8Parser.LastFormalParameterContext;
+import br.com.metricminer2.parser.java8.Java8Parser.MethodDeclarationContext;
 
-public class Java8AntlrFullMethodName {
+public class Java8AntlrMethods {
 
 	public static String fullMethodName(String name, FormalParameterListContext parameters) {
 		boolean empty = parameters == null || parameters.lastFormalParameter() == null;
@@ -45,7 +45,7 @@ public class Java8AntlrFullMethodName {
 		
 		if(parameters.lastFormalParameter()!=null) {
 			LastFormalParameterContext p = parameters.lastFormalParameter();
-			if(p!=null) {
+			if(p!=null && p.formalParameter() !=null) {
 				String f = p.formalParameter().unannType().getText();
 				if(p.ELLIPSIS()!=null && !p.ELLIPSIS().getText().isEmpty()) f+="...";
 				allParams.add(f);
@@ -55,6 +55,26 @@ public class Java8AntlrFullMethodName {
 		String fullName = name + "/" + allParams.size() + typesIn(allParams);
 		
 		return fullName;
+	}
+	
+	public static boolean hasNoParameters(FormalParameterListContext parameters) {
+		boolean noLastParameter = parameters == null || parameters.lastFormalParameter() == null;
+		boolean noParams = (parameters == null || parameters.formalParameters() == null || parameters.formalParameters().formalParameter() == null);
+		
+		return noLastParameter && noParams;
+	}
+	
+	public static List<FormalParameterContext> params(FormalParameterListContext parameters) {
+		boolean noLastParameter = parameters == null || parameters.lastFormalParameter() == null;
+		boolean noParams = (parameters == null || parameters.formalParameters() == null || parameters.formalParameters().formalParameter() == null);
+		
+		List<FormalParameterContext> all = new ArrayList<FormalParameterContext>();
+		if(!noParams) {
+			all.addAll(parameters.formalParameters().formalParameter());
+		}
+		if(!noLastParameter) all.add(parameters.lastFormalParameter().formalParameter());
+		
+		return all;
 	}
 
 	private static String typesIn(List<String> parameters) {

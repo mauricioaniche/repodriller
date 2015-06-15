@@ -62,6 +62,14 @@ public class Modification {
 	public boolean wasDeleted() {
 		return type.equals(ModificationType.DELETE);
 	}
+
+	public boolean fileNameEndsWith(String suffix) {
+		return newPath.toLowerCase().endsWith(suffix.toLowerCase());
+	}
+
+	public boolean fileNameMatches(String regex) {
+		return newPath.toLowerCase().matches(regex);
+	}
 	
 	
 

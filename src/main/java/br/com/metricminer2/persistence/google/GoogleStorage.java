@@ -1,28 +1,25 @@
-package br.com.metricminer2.persistence.csv;
+package br.com.metricminer2.persistence.google;
 
-/*
- * Copyright (c) 2014 Google Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
- */
-
-import br.com.metricminer2.persistence.PersistenceMechanism;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.security.GeneralSecurityException;
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.java6.auth.oauth2.VerificationCodeReceiver;
-import com.google.api.client.googleapis.extensions.java6.auth.oauth2.GooglePromptReceiver;
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
+import com.google.api.client.googleapis.extensions.java6.auth.oauth2.GooglePromptReceiver;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.InputStreamContent;
@@ -33,25 +30,9 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.storage.Storage;
 import com.google.api.services.storage.StorageScopes;
 import com.google.api.services.storage.model.Bucket;
-import com.google.api.services.storage.model.ObjectAccessControl;
 import com.google.api.services.storage.model.StorageObject;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.security.GeneralSecurityException;
-import java.text.Format;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.apache.commons.compress.utils.IOUtils;
+import br.com.metricminer2.persistence.PersistenceMechanism;
 
 /**
  * Main class for the Cloud Storage API command line sample. Demonstrates how to
@@ -66,14 +47,16 @@ public class GoogleStorage implements PersistenceMechanism {
 	 * machine where you have access to a browser, set AUTH_LOCAL_WEBSERVER to
 	 * true.
 	 */
-	private static final String APPLICATION_NAME = "MM2-STORAGE";
-	private static final String BUCKET_NAME = "mm2-bucket";
-	private static final String CLIENT_SECRET_FILENAME = "client_secrets.json";
-	private static final boolean AUTH_LOCAL_WEBSERVER = true;
+	private String applicationName;
+	private String bucketName;
+	private String clientSecretFileName;
+	private String fileName;
+	private File   dataStoreDir;
+	private boolean isAuthLocalWebServer;
 
 	/** Directory to store user credentials. */
 //	private static final java.io.File DATA_STORE_DIR = new java.io.File(System.getProperty("user.home"), ".store/storage_teste");
-	private static final java.io.File DATA_STORE_DIR = new java.io.File("/home/MM2", "store/google_storage");
+//	private static final java.io.File DATA_STORE_DIR = new java.io.File("/home/MM2", "store/google_storage");
 	
 	
 	/**
@@ -93,19 +76,27 @@ public class GoogleStorage implements PersistenceMechanism {
 	
 	private static StringBuilder stringBuilderContent = new StringBuilder();
 	
-	private static String fileName;
 
-	public GoogleStorage(String fileName) {
-		GoogleStorage.fileName = fileName;
+
+	public GoogleStorage(String applicationName, String bucketName, 
+							String clientSecretFileName, boolean isAuthLocalWebServer, 
+							String fileName, File dataStoreDir) {
+		
+		this.fileName = fileName;		
+        this.applicationName = applicationName;
+        this.bucketName = bucketName;
+        this.clientSecretFileName = clientSecretFileName;
+        this.isAuthLocalWebServer = isAuthLocalWebServer;
+        this.dataStoreDir = dataStoreDir;
 	}
 	
 	/** Authorizes the installed application to access user's protected data. */
-	private static Credential authorize() throws Exception {
+	private Credential authorize() throws Exception {
    // Load client secrets.
    GoogleClientSecrets clientSecrets = null;
    try {
      clientSecrets = GoogleClientSecrets.load(JSON_FACTORY,
-         new InputStreamReader(GoogleStorage.class.getResourceAsStream(String.format("/%s",CLIENT_SECRET_FILENAME))));
+         new InputStreamReader(GoogleStorage.class.getResourceAsStream(String.format("/%s",clientSecretFileName))));
      if (clientSecrets.getDetails().getClientId() == null ||
          clientSecrets.getDetails().getClientSecret() == null) {
          throw new Exception("client_secrets not well formed.");
@@ -135,7 +126,7 @@ public class GoogleStorage implements PersistenceMechanism {
        .build();
    // Authorize.
    VerificationCodeReceiver receiver = 
-       AUTH_LOCAL_WEBSERVER ? new LocalServerReceiver() : new GooglePromptReceiver();
+       isAuthLocalWebServer ? new LocalServerReceiver() : new GooglePromptReceiver();
    return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");    
  }
 
@@ -146,20 +137,20 @@ public class GoogleStorage implements PersistenceMechanism {
 			httpTransport = GoogleNetHttpTransport.newTrustedTransport();
 
 			// Initialize the data store factory.
-			dataStoreFactory = new FileDataStoreFactory(DATA_STORE_DIR);
+			dataStoreFactory = new FileDataStoreFactory(dataStoreDir);
 
 			// Authorization.
 			Credential credential = authorize();
 
 			// Set up global Storage instance.
 			client = new Storage.Builder(httpTransport, JSON_FACTORY,
-					credential).setApplicationName(APPLICATION_NAME).build();
+					credential).setApplicationName(applicationName).build();
 
 			// Get metadata about the specified bucket.
-			Storage.Buckets.Get getBucket = client.buckets().get(BUCKET_NAME);
+			Storage.Buckets.Get getBucket = client.buckets().get(bucketName);
 			getBucket.setProjection("full");
 			Bucket bucket = getBucket.execute();
-			System.out.println("name: " + BUCKET_NAME);
+			System.out.println("name: " + bucketName);
 			System.out.println("location: " + bucket.getLocation());
 			System.out.println("timeCreated: " + bucket.getTimeCreated());
 			System.out.println("owner: " + bucket.getOwner());
@@ -178,7 +169,7 @@ public class GoogleStorage implements PersistenceMechanism {
 			StorageObject objectMetadata = null;
 
 			Storage.Objects.Insert insertObject;
-			insertObject = client.objects().insert(BUCKET_NAME, objectMetadata,
+			insertObject = client.objects().insert(bucketName, objectMetadata,
 					mediaContent);
 			// If you don't provide metadata, you will have specify the object
 			// name by parameter. You will probably also want to ensure that
@@ -206,14 +197,7 @@ public class GoogleStorage implements PersistenceMechanism {
 		}
 	}
 
-	public static void main(String[] args) {
-		   Format formatter = new SimpleDateFormat("ssmmHH-ddMMyyyy");
-		   String stringNow = formatter.format(Calendar.getInstance().getTime());
-		   GoogleStorage storageSample = new GoogleStorage(stringNow + "MM2.txt");
-		   storageSample.insertFile(stringNow + "MM2.txt", "teste");
-	}
-
-	public void write(Object[] line) {
+	public void write(Object... line) {
 		boolean first = true;
 		for(Object o : line) {
 			if(!first) {
@@ -228,6 +212,6 @@ public class GoogleStorage implements PersistenceMechanism {
 	public void close() {
 		Format formatter = new SimpleDateFormat("ssmmHH-ddMMyyyy");
 		String stringNow = formatter.format(Calendar.getInstance().getTime());
-		insertFile(stringNow + fileName, stringBuilderContent.toString());
+		insertFile(fileName + stringNow + ".csv" , stringBuilderContent.toString());
 	}
 }

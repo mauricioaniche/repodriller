@@ -19,9 +19,9 @@ package br.com.metricminer2.metric.java8.loc;
 import java.util.HashMap;
 import java.util.Map;
 
-import br.com.metricminer2.metric.java8.Java8AntlrFullMethodName;
-import br.com.metricminer2.metric.java8.Java8BaseListener;
-import br.com.metricminer2.metric.java8.Java8Parser;
+import br.com.metricminer2.parser.java8.Java8AntlrMethods;
+import br.com.metricminer2.parser.java8.Java8BaseListener;
+import br.com.metricminer2.parser.java8.Java8Parser;
 
 public class LinesOfCodeListener extends Java8BaseListener {
 
@@ -32,12 +32,12 @@ public class LinesOfCodeListener extends Java8BaseListener {
 	}
 	
 	@Override public void enterMethodDeclaration(Java8Parser.MethodDeclarationContext ctx) {
-		methodLines.put(Java8AntlrFullMethodName.fullMethodName(ctx),
+		methodLines.put(Java8AntlrMethods.fullMethodName(ctx),
 				ctx.stop.getLine() - ctx.start.getLine());
 	}
 	
 	@Override public void enterConstructorDeclaration(Java8Parser.ConstructorDeclarationContext ctx) {
-		methodLines.put(Java8AntlrFullMethodName.fullMethodName(ctx),
+		methodLines.put(Java8AntlrMethods.fullMethodName(ctx),
 				ctx.stop.getLine() - ctx.start.getLine());
 	}
 	

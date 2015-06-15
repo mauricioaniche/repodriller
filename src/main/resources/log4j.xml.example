@@ -14,6 +14,11 @@
         <appender-ref ref="main"/>
     </category>
 
+    <category name="br.usp.aniche">
+        <priority value="INFO"/>
+        <appender-ref ref="main"/>
+    </category>
+
     <category name="/">
         <priority value="INFO"/>
         <appender-ref ref="main"/>

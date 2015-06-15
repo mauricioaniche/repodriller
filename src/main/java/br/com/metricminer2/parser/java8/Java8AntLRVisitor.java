@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package br.com.metricminer2.metric.java8;
+package br.com.metricminer2.parser.java8;
 
 import java.io.InputStream;
 
@@ -28,12 +28,12 @@ import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.atn.PredictionMode;
 import org.antlr.v4.runtime.tree.*;
 
-import br.com.metricminer2.metric.java8.Java8Parser.CompilationUnitContext;
+import br.com.metricminer2.parser.java8.Java8Parser.CompilationUnitContext;
  
 public class Java8AntLRVisitor {
 
 	public void visit(Java8Listener visitor, InputStream is) {
-		try { 
+		try {
 			CharStream input = new ANTLRInputStream(is);
 			Java8Lexer lex = new Java8Lexer(input);
 			CommonTokenStream tokens = new CommonTokenStream(lex);
@@ -42,16 +42,13 @@ public class Java8AntLRVisitor {
 			parser.removeErrorListeners();
 			parser.setErrorHandler(new BailErrorStrategy());
 			try {
-				 CompilationUnitContext compilationUnitContext = parser
+				CompilationUnitContext compilationUnitContext = parser
 						.compilationUnit();
 				new ParseTreeWalker().walk(visitor, compilationUnitContext);
 			} catch (RuntimeException ex) {
-				if (ex.getClass() == RuntimeException.class
-						&& ex.getCause() instanceof RecognitionException) {
-					// The BailErrorStrategy wraps the RecognitionExceptions in
-					// RuntimeExceptions so we have to make sure we're detecting
-					// a true RecognitionException not some other kind
+
 					tokens.reset(); // rewind input stream
+					
 					// back to standard listeners/handlers
 					parser.addErrorListener(ConsoleErrorListener.INSTANCE);
 					parser.setErrorHandler(new DefaultErrorStrategy());
@@ -60,7 +57,6 @@ public class Java8AntLRVisitor {
 					CompilationUnitContext compilationUnitContext = parser
 							.compilationUnit();
 					new ParseTreeWalker().walk(visitor, compilationUnitContext);
-				}
 			}
 
 		} catch (Exception e) {

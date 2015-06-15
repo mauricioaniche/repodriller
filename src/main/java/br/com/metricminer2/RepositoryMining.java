@@ -28,122 +28,74 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
+import com.google.common.collect.Lists;
+
 import br.com.metricminer2.domain.ChangeSet;
 import br.com.metricminer2.domain.Commit;
 import br.com.metricminer2.persistence.PersistenceMechanism;
 import br.com.metricminer2.scm.CommitVisitor;
-import br.com.metricminer2.scm.GitRepository;
 import br.com.metricminer2.scm.SCMRepository;
-import br.com.metricminer2.scm.commitrange.AllCommits;
 import br.com.metricminer2.scm.commitrange.CommitRange;
-import br.com.metricminer2.scm.commitrange.OnlyInHead;
 
-import com.google.common.collect.Lists;
-
-public class SourceCodeRepositoryNavigator {
+public class RepositoryMining {
 
 	private List<SCMRepository> repos;
 	private Map<CommitVisitor, PersistenceMechanism> visitors;
 	
-	private static Logger log = Logger.getLogger(SourceCodeRepositoryNavigator.class);
-	private MMOptions opts;
+	private static Logger log = Logger.getLogger(RepositoryMining.class);
 	private CommitRange range;
+	private int threads;
 	
-	public SourceCodeRepositoryNavigator(MMOptions opts) {
-		this.opts = opts;
+	public RepositoryMining() {
 		repos = new ArrayList<SCMRepository>();
 		visitors = new HashMap<CommitVisitor, PersistenceMechanism>();
-		range = new AllCommits();
+		this.threads = 1;
 	}
 	
-	public SourceCodeRepositoryNavigator projectsFromConfig() {
-		
-		if(opts.getScm().equals("git")) {
-			if(!opts.getProjectPath().isEmpty()) {
-				in(GitRepository.build(opts.getProjectPath()));
-			} else if(!opts.getProjectsPath().isEmpty()) {
-				in(GitRepository.allIn(opts.getProjectsPath()));
-			}
-		}
+	public RepositoryMining through(CommitRange range) {
+		this.range = range;
 		return this;
 	}
 	
-	public SourceCodeRepositoryNavigator head() {
-		range = new OnlyInHead();
-		return this;
-	}
-
-	public SourceCodeRepositoryNavigator in(SCMRepository... repo) {
+	public RepositoryMining in(SCMRepository... repo) {
 		this.repos.addAll(Arrays.asList(repo));
 		return this;
 	}
 	
-	public SourceCodeRepositoryNavigator process(CommitVisitor visitor, PersistenceMechanism writer) {
+	public RepositoryMining process(CommitVisitor visitor, PersistenceMechanism writer) {
 		visitors.put(visitor, writer);
 		return this;
 	}
 	
-	private List<String> getIDList() {
-		return Arrays.asList(opts.getRange().split(","));
-	} 
-	  
-	public void start() {
-		if (opts.getRange().isEmpty()) {
-			for(SCMRepository repo : repos) {
-				log.info("Git repository in " + repo.getPath());
-				
-				List<ChangeSet> allCs = range.get(repo.getScm());
-				log.info("Total of commits: " + allCs.size());
-				
-				log.info("Starting " + opts.getThreads() + " threads");
-				ExecutorService exec = Executors.newFixedThreadPool(opts.getThreads());
-				List<List<ChangeSet>> partitions = Lists.partition(allCs, opts.getThreads());
-				for(List<ChangeSet> partition : partitions) {
-					
-					exec.submit(() -> {
-						for(ChangeSet cs : partition) {
-							processEverythingOnChangeSet(repo, cs);
-						}
-					});
-				}
-				
-				try {
-					exec.shutdown();
-					exec.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
-				} catch (InterruptedException e) {
-					log.error("error waiting for threads to terminate in " + repo.getLastDir(), e);
-				}
-			}
-			
-			closeAllPersistence();
-			printScript();
-		} else {
-			startWithRange();
-		}
+	public void mine() {
 		
-	}
-	
-	private void startWithRange() {
 		for(SCMRepository repo : repos) {
 			log.info("Git repository in " + repo.getPath());
 			
-			List<ChangeSet> allCs = new ArrayList<ChangeSet>();
-			List<String> allIds = getIDList();
-			log.info("Total of commits: " + allIds.size());
-			for (String id : allIds) {
-				ChangeSet changeSet = new ChangeSet(id, null);
-				allCs.add(changeSet);
-			}
+			List<ChangeSet> allCs = range.get(repo.getScm());
+			log.info("Total of commits: " + allCs.size());
 			
-			log.info("Starting " + opts.getThreads() + " threads");
-			ExecutorService exec = Executors.newFixedThreadPool(opts.getThreads());
-			List<List<ChangeSet>> partitions = Lists.partition(allCs, opts.getThreads());
+			log.info("Starting threads: " + threads);
+			ExecutorService exec = Executors.newFixedThreadPool(threads);
+			List<List<ChangeSet>> partitions = Lists.partition(allCs, threads);
 			for(List<ChangeSet> partition : partitions) {
 				
 				exec.submit(() -> {
-					for(ChangeSet cs : partition) {
-						processEverythingOnChangeSet(repo, cs);
-					}
+						for(ChangeSet cs : partition) {
+							try {
+								processEverythingOnChangeSet(repo, cs);
+							} catch (OutOfMemoryError e) {
+								System.err.println("Commit " + cs.getId() + " in " + repo.getLastDir() + " caused OOME");
+								e.printStackTrace();
+								System.err.println("goodbye :/");
+								
+								log.fatal("Commit " + cs.getId() + " in " + repo.getLastDir() + " caused OOME", e);
+								log.fatal("Goodbye! ;/");
+								System.exit(-1);
+							} catch(Throwable t) {
+								log.error(t);
+							}
+						}
 				});
 			}
 			
@@ -198,8 +150,14 @@ public class SourceCodeRepositoryNavigator {
 				visitor.process(repo, commit, writer);
 			} catch (Exception e) {
 				log.error("error processing #" + commit.getHash() + " in " + repo.getPath() + 
-						", processor=" + visitor.name(), e);
+						", processor=" + visitor.name() + ", error=" + e.getMessage(), e);
 			}
 		}
+		
+	}
+
+	public RepositoryMining withThreads(int n) {
+		this.threads = n;
+		return this;
 	}
 }

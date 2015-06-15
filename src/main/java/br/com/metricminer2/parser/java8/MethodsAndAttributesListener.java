@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package br.com.metricminer2.metric.java8;
+package br.com.metricminer2.parser.java8;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,8 +23,8 @@ import java.util.Stack;
 
 import org.antlr.v4.runtime.misc.NotNull;
 
-import br.com.metricminer2.metric.java8.Java8Parser.MethodDeclarationContext;
 import br.com.metricminer2.metric.java8.methods.Method;
+import br.com.metricminer2.parser.java8.Java8Parser.MethodDeclarationContext;
 
 public class MethodsAndAttributesListener extends Java8BaseListener {
 
@@ -67,7 +67,7 @@ public class MethodsAndAttributesListener extends Java8BaseListener {
 
 	@Override public void enterMethodDeclaration(Java8Parser.MethodDeclarationContext ctx) {
 		
-			methodsInARow.push(Java8AntlrFullMethodName.fullMethodName(ctx));
+			methodsInARow.push(Java8AntlrMethods.fullMethodName(ctx));
 			if(!methodIsInAInnerClass()) addMethod(ctx);
 			
 	}
@@ -77,7 +77,7 @@ public class MethodsAndAttributesListener extends Java8BaseListener {
 	}
 
 	private void addMethod(MethodDeclarationContext ctx) {
-		String name = Java8AntlrFullMethodName.fullMethodName(ctx);
+		String name = Java8AntlrMethods.fullMethodName(ctx);
 		if(ignoreGettersAndSetters && (name.startsWith("get") || name.startsWith("set"))) return;
 		
 		int lines = ctx.stop.getLine() - ctx.start.getLine();
@@ -111,7 +111,7 @@ public class MethodsAndAttributesListener extends Java8BaseListener {
 
 	@Override public void enterConstructorDeclaration(Java8Parser.ConstructorDeclarationContext ctx) {
 		int lines = ctx.stop.getLine() - ctx.start.getLine();
-		constructorMethods.add(new Method(Java8AntlrFullMethodName.fullMethodName(ctx), lines));
+		constructorMethods.add(new Method(Java8AntlrMethods.fullMethodName(ctx), lines));
 	}
 
 	@Override public void enterFieldDeclaration(@NotNull Java8Parser.FieldDeclarationContext ctx) {
