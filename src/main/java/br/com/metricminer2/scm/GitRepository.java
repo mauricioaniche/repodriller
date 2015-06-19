@@ -290,7 +290,7 @@ public class GitRepository implements SCM {
 
 			RevCommit commit = git.log().add(git.getRepository().resolve(hash)).call().iterator().next();
 			git.branchCreate().setStartPoint(commit).setName("mm").setForce(true).call();
-			git.checkout().setName("mm").call();
+			git.checkout().setName("mm").setForce(true).call();
 
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -313,7 +313,7 @@ public class GitRepository implements SCM {
 		try {
 			git = Git.open(new File(path));
 			
-			git.checkout().setName("master").call();
+			git.checkout().setName("master").setForce(true).call();
 			git.branchDelete().setBranchNames("mm").setForce(true).call();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
