@@ -30,6 +30,11 @@ public class RepositoryFile {
 		return file.getName().toLowerCase().contains(text);
 	}
 	
+	@Override
+	public String toString() {
+		return "[" + file.getAbsolutePath() + "]";
+	}
+	
 	
 	
 }

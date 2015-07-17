@@ -302,10 +302,15 @@ public class GitRepository implements SCM {
 	public List<RepositoryFile> files() {
 		List<RepositoryFile> all = new ArrayList<RepositoryFile>();
 		for(File f : getAllFilesInPath()) {
+			if(isNotAnImportantFile(f)) continue;
 			all.add(new RepositoryFile(f));
 		}
 		
 		return all;
+	}
+
+	private boolean isNotAnImportantFile(File f) {
+		return f.getName().equals(".DS_Store");
 	}
 	
 	public void reset() {
