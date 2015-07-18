@@ -287,10 +287,7 @@ public class GitRepository implements SCM {
 		Git git = null;
 		try {
 			git = Git.open(new File(path));
-
-			RevCommit commit = git.log().add(git.getRepository().resolve(hash)).call().iterator().next();
-			git.branchCreate().setStartPoint(commit).setName("mm").setForce(true).call();
-			git.checkout().setName("mm").setForce(true).call();
+			git.checkout().setCreateBranch(true).setName("mm").setStartPoint(hash).setForce(true).call();
 
 		} catch (Exception e) {
 			throw new RuntimeException(e);
