@@ -24,17 +24,12 @@ import br.com.metricminer2.domain.Commit;
 public interface SCM {
 
 	List<ChangeSet> getChangeSets();
-
 	Commit getCommit(String id);
-	
 	ChangeSet getHead();
-	
 	List<RepositoryFile> files();
-
 	long totalCommits();
-
 	void reset();
-
 	void checkout(String id);
+	String blame(String file, String currentCommit, Integer line);
 
 }

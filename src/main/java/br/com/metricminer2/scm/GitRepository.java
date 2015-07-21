@@ -27,6 +27,10 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.errors.CannotDeleteCurrentBranchException;
+import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.api.errors.NotMergedException;
+import org.eclipse.jgit.blame.BlameResult;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffEntry.ChangeType;
 import org.eclipse.jgit.diff.DiffFormatter;
@@ -38,6 +42,7 @@ import org.eclipse.jgit.lib.AnyObjectId;
 import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectReader;
+import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevSort;
@@ -176,6 +181,7 @@ public class GitRepository implements SCM {
 
 			for (RevCommit jgitCommit : commits) {
 				
+				
 				Committer committer = new Committer(jgitCommit.getAuthorIdent().getName(), jgitCommit.getAuthorIdent()
 						.getEmailAddress());
 				String msg = jgitCommit.getFullMessage().trim();
@@ -287,12 +293,23 @@ public class GitRepository implements SCM {
 		Git git = null;
 		try {
 			git = Git.open(new File(path));
+			deleteMMBranch(git);
 			git.checkout().setCreateBranch(true).setName("mm").setStartPoint(hash).setForce(true).call();
 
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		} finally {
 			if(git!=null) git.close();
+		}
+	}
+
+	private void deleteMMBranch(Git git) throws GitAPIException, NotMergedException, CannotDeleteCurrentBranchException {
+		List<Ref> refs = git.branchList().call();
+		for(Ref r : refs) {
+			if(r.getName().endsWith("mm")) {
+				git.branchDelete().setBranchNames("mm").setForce(true).call();
+				break;
+			}
 		}
 	}
 	
@@ -343,6 +360,27 @@ public class GitRepository implements SCM {
 	@Override
 	public long totalCommits() {
 		return getChangeSets().size();
+	}
+
+	@Override
+	public String blame(String file, String currentCommit, Integer line) {
+		Git git = null;
+		try {
+			git = Git.open(new File(path));
+			
+			Iterable<RevCommit> commits = git.log().add(git.getRepository().resolve(currentCommit)).call();
+			ObjectId prior = commits.iterator().next().getParent(0).getId();
+			
+			BlameResult blameResult = git.blame().setFilePath(file).setStartCommit(prior).setFollowFileRenames(true).call();
+
+			return blameResult.getSourceCommit(line).getId().getName();
+			
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		} finally {
+			if(git!=null) git.close();
+		}
+
 	}
 
 }
