@@ -44,7 +44,6 @@ public class GitRepositoryTest {
 	public void shouldListAllFilesInACommit() {
 		git.checkout("a7053a4dcd627f5f4f213dc9aa002eb1caf926f8");
 		List<RepositoryFile> files1 = git.files();
-		System.out.println("files"  +files1);
 		Assert.assertEquals(3, files1.size());
 		git.reset();
 		

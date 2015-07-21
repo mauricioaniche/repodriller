@@ -16,6 +16,7 @@
 
 package br.com.metricminer2.domain;
 
+import java.io.File;
 
 public class Modification {
 
@@ -69,6 +70,13 @@ public class Modification {
 
 	public boolean fileNameMatches(String regex) {
 		return newPath.toLowerCase().matches(regex);
+	}
+
+	public String getFileName() {
+		if(!newPath.contains(File.separator)) return newPath;
+		
+		String[] fileName = newPath.split(File.separator);
+		return fileName[fileName.length-1];
 	}
 	
 	
