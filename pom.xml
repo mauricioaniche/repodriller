@@ -6,6 +6,7 @@
 	<version>2.0.3-SNAPSHOT</version>
 	<name>metricminer2</name>
 	<url>http://www.metricminer.org.br</url>
+	<description>Framework for researchers in MSR</description>
 
 	<licenses>
 		<license>
