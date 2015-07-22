@@ -16,6 +16,26 @@
 		</license>
 	</licenses>
 
+	<developers>
+		<developer>
+			<id>mauricioaniche</id>
+			<name>Mauricio Aniche</name>
+			<email>mauricioaniche@gmail.com</email>
+			<organization>University of Sao Paulo</organization>
+			<roles>
+				<role>developer</role>
+			</roles>
+			<timezone>-3</timezone>
+		</developer>
+	</developers>
+	
+	<scm>
+		<url>http://github.com/metricminer-msr/metricminer2</url>
+		<connection>scm:git:git://github.com/metricminer-msr/metricminer2</connection>
+		<developerConnection>scm:git:git@github.com:metricminer-msr/metricminer2.git</developerConnection>
+		<tag>HEAD</tag>
+	</scm>
+	
 	<repositories>
 		<repository>
 			<id>SVNKit</id>
