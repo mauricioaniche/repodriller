@@ -30,7 +30,6 @@ import br.com.metricminer2.scm.GitRepository;
 import br.com.metricminer2.scm.RepositoryFile;
 import br.com.metricminer2.scm.SCMRepository;
 
-@Ignore
 public class GitRepositoryTest {
 
 	private GitRepository git;
@@ -42,14 +41,14 @@ public class GitRepositoryTest {
 		git = new GitRepository(path);
 	}
 	
-	@Test
+	@Test @Ignore
 	public void blame() {
 		String hash = git.blame("Arquivo.java", "e7d13b0511f8a176284ce4f92ed8c6e8d09c77f2", 3);
 		
 		Assert.assertEquals("a4ece0762e797d2e2dcbd471115108dd6e05ff58", hash);
 	}
 	
-	@Test
+	@Test @Ignore
 	public void shouldListAllFilesInACommit() {
 		git.checkout("a7053a4dcd627f5f4f213dc9aa002eb1caf926f8");
 		List<RepositoryFile> files1 = git.files();
@@ -68,14 +67,14 @@ public class GitRepositoryTest {
 		
 	}
 	
-	@Test
+	@Test @Ignore
 	public void shouldGetHead() {
 		ChangeSet head = git.getHead();
 		
 		Assert.assertEquals("e7d13b0511f8a176284ce4f92ed8c6e8d09c77f2", head.getId());
 	}
 	
-	@Test
+	@Test @Ignore
 	public void shouldGetAllCommits() {
 		List<ChangeSet> cs = git.getChangeSets();
 		
@@ -84,7 +83,7 @@ public class GitRepositoryTest {
 		Assert.assertEquals("866e997a9e44cb4ddd9e00efe49361420aff2559", cs.get(12).getId());
 	}
 	
-	@Test
+	@Test @Ignore
 	public void shouldDetailACommit() {
 		
 		Commit commit = git.getCommit("866e997a9e44cb4ddd9e00efe49361420aff2559");
@@ -101,7 +100,7 @@ public class GitRepositoryTest {
 		
 	}
 	
-	@Test
+	@Test @Ignore
 	public void shouldGetModificationStatus() {
 		
 		Commit commit = git.getCommit("866e997a9e44cb4ddd9e00efe49361420aff2559");
@@ -117,7 +116,7 @@ public class GitRepositoryTest {
 	}
 	
 
-	@Test
+	@Test @Ignore
 	public void shouldDetailARename() {
 		
 		Commit commit = git.getCommit("f0dd1308bd904a9b108a6a40865166ee962af3d4");
@@ -130,7 +129,7 @@ public class GitRepositoryTest {
 		
 	}
 	
-	@Test
+	@Test @Ignore
 	public void shouldGetInfoFromARepo() {
 		SCMRepository repo = git.info();
 		
