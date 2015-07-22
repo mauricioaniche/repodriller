@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import br.com.metricminer2.domain.ChangeSet;
@@ -29,6 +30,7 @@ import br.com.metricminer2.scm.GitRepository;
 import br.com.metricminer2.scm.RepositoryFile;
 import br.com.metricminer2.scm.SCMRepository;
 
+@Ignore
 public class GitRepositoryTest {
 
 	private GitRepository git;
