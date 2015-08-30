@@ -5,7 +5,6 @@ Required: Git, Maven.
 ```
 git clone https://github.com/metricminer-msr/metricminer2.git
 cd metricminer2
-dezipar a paradinha dos testes
 ```
 
 Then, you can:
