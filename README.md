@@ -16,11 +16,7 @@ Then, you can:
 
 # Creating a Study
 
-new java project
-adicionar metricminer como referencia no projeto (ou linkar o jar)
-criar classe study
-export jar file comum no eclipse
-
+See www.metricminer.org.br.
 
 # License
 
