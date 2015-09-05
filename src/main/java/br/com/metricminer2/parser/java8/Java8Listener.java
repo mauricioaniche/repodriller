@@ -2,7 +2,6 @@
 
     package br.com.metricminer2.parser.java8;
 
-import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
