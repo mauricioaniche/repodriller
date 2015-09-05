@@ -3,10 +3,10 @@ package br.com.metricminer2.parser.jdt;
 import java.util.HashSet;
 import java.util.Set;
 
-import br.com.metricminer2.parser.java8.Java8BaseListener;
-import br.com.metricminer2.parser.java8.Java8Parser;
-import br.com.metricminer2.parser.java8.Java8Parser.InterfaceTypeContext;
-import br.com.metricminer2.parser.java8.Java8Parser.NormalClassDeclarationContext;
+import br.com.metricminer2.parser.antlr.java8.Java8BaseListener;
+import br.com.metricminer2.parser.antlr.java8.Java8Parser;
+import br.com.metricminer2.parser.antlr.java8.Java8Parser.InterfaceTypeContext;
+import br.com.metricminer2.parser.antlr.java8.Java8Parser.NormalClassDeclarationContext;
 
 public class ClassInfo extends Java8BaseListener {
 

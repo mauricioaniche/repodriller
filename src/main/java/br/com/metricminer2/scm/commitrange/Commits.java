@@ -20,7 +20,11 @@ public class Commits {
 		return new MonthlyCommits(months);
 	}
 	
-	public static CommitRange range(List<String> commits) {
-		return new SpecifiedCommitRange(commits);
+	public static CommitRange list(List<String> commits) {
+		return new ListOfCommits(commits);
+	}
+
+	public static CommitRange range(String start, String end) {
+		return new Range(start, end);
 	}
 }

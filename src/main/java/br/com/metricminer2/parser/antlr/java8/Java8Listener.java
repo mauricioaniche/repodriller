@@ -1,6 +1,6 @@
 // Generated from Java8.g4 by ANTLR 4.5
 
-    package br.com.metricminer2.parser.java8;
+    package br.com.metricminer2.parser.antlr.java8;
 
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
