@@ -16,11 +16,14 @@
 
 package br.com.metricminer2.scm.git;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.List;
+import java.util.Scanner;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import br.com.metricminer2.domain.ChangeSet;
@@ -33,22 +36,29 @@ import br.com.metricminer2.scm.SCMRepository;
 public class GitRepositoryTest {
 
 	private GitRepository git;
-	private String path;
+	private static String path;
 
+	@BeforeClass
+	public static void readPath() throws FileNotFoundException {
+		String cfgFile = GitRepositoryTest.class.getResource("/repo-1.txt").getPath();
+		Scanner sc = new java.util.Scanner(new File(cfgFile));
+		path = sc.nextLine();
+		sc.close();
+	}
+	
 	@Before
 	public void setUp() {
-		path = this.getClass().getResource("/repo-1/").getPath();
 		git = new GitRepository(path);
 	}
 	
-	@Test @Ignore
+	@Test
 	public void blame() {
 		String hash = git.blame("Arquivo.java", "e7d13b0511f8a176284ce4f92ed8c6e8d09c77f2", 3);
 		
 		Assert.assertEquals("a4ece0762e797d2e2dcbd471115108dd6e05ff58", hash);
 	}
 	
-	@Test @Ignore
+	@Test 
 	public void shouldListAllFilesInACommit() {
 		git.checkout("a7053a4dcd627f5f4f213dc9aa002eb1caf926f8");
 		List<RepositoryFile> files1 = git.files();
@@ -67,14 +77,14 @@ public class GitRepositoryTest {
 		
 	}
 	
-	@Test @Ignore
+	@Test 
 	public void shouldGetHead() {
 		ChangeSet head = git.getHead();
 		
 		Assert.assertEquals("e7d13b0511f8a176284ce4f92ed8c6e8d09c77f2", head.getId());
 	}
 	
-	@Test @Ignore
+	@Test 
 	public void shouldGetAllCommits() {
 		List<ChangeSet> cs = git.getChangeSets();
 		
@@ -83,7 +93,7 @@ public class GitRepositoryTest {
 		Assert.assertEquals("866e997a9e44cb4ddd9e00efe49361420aff2559", cs.get(12).getId());
 	}
 	
-	@Test @Ignore
+	@Test 
 	public void shouldDetailACommit() {
 		
 		Commit commit = git.getCommit("866e997a9e44cb4ddd9e00efe49361420aff2559");
@@ -100,7 +110,7 @@ public class GitRepositoryTest {
 		
 	}
 	
-	@Test @Ignore
+	@Test 
 	public void shouldGetModificationStatus() {
 		
 		Commit commit = git.getCommit("866e997a9e44cb4ddd9e00efe49361420aff2559");
@@ -116,7 +126,7 @@ public class GitRepositoryTest {
 	}
 	
 
-	@Test @Ignore
+	@Test 
 	public void shouldDetailARename() {
 		
 		Commit commit = git.getCommit("f0dd1308bd904a9b108a6a40865166ee962af3d4");
@@ -129,7 +139,7 @@ public class GitRepositoryTest {
 		
 	}
 	
-	@Test @Ignore
+	@Test 
 	public void shouldGetInfoFromARepo() {
 		SCMRepository repo = git.info();
 		
