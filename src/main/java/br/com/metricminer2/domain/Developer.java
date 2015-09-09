@@ -16,12 +16,12 @@
 
 package br.com.metricminer2.domain;
 
-public class Committer {
+public class Developer {
 
 	private String name;
 	private String email;
 
-	public Committer(String name, String email) {
+	public Developer(String name, String email) {
 		this.name = name;
 		this.email = email;
 	}

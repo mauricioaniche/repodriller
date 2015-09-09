@@ -138,7 +138,7 @@ public class RepositoryMining {
 		log.info(
 				"Commit #" + commit.getHash() + 
 				" in " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(commit.getDate().getTime()) +
-				" from " + commit.getCommitter().getName() + 
+				" from " + commit.getAuthor().getName() + 
 				" with " + commit.getModifications().size() + " modifications");
 
 		for(Map.Entry<CommitVisitor, PersistenceMechanism> entry : visitors.entrySet()) {

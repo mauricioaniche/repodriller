@@ -53,7 +53,7 @@ import org.eclipse.jgit.util.io.DisabledOutputStream;
 
 import br.com.metricminer2.domain.ChangeSet;
 import br.com.metricminer2.domain.Commit;
-import br.com.metricminer2.domain.Committer;
+import br.com.metricminer2.domain.Developer;
 import br.com.metricminer2.domain.ModificationType;
 
 public class GitRepository implements SCM {
@@ -180,10 +180,10 @@ public class GitRepository implements SCM {
 			Commit theCommit = null;
 
 			for (RevCommit jgitCommit : commits) {
-				
-				
-				Committer committer = new Committer(jgitCommit.getAuthorIdent().getName(), jgitCommit.getAuthorIdent()
-						.getEmailAddress());
+
+				Developer author = new Developer(jgitCommit.getAuthorIdent().getName(), jgitCommit.getAuthorIdent().getEmailAddress());
+				Developer committer = new Developer(jgitCommit.getCommitterIdent().getName(), jgitCommit.getCommitterIdent().getEmailAddress());
+
 				String msg = jgitCommit.getFullMessage().trim();
 				String hash = jgitCommit.getName().toString();
 				long epoch = jgitCommit.getCommitTime();
@@ -192,7 +192,7 @@ public class GitRepository implements SCM {
 				GregorianCalendar date = new GregorianCalendar();
 				date.setTime(new Date(epoch * 1000L));
 				
-				theCommit = new Commit(hash, committer, date, msg, parent);
+				theCommit = new Commit(hash, author, committer, date, msg, parent);
 
 				List<DiffEntry> diffsForTheCommit = diffsForTheCommit(repo, jgitCommit);
 				if(diffsForTheCommit.size() > MAX_NUMBER_OF_FILES_IN_A_COMMIT) {

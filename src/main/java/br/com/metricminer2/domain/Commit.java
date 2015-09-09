@@ -25,14 +25,16 @@ import java.util.List;
 public class Commit {
 
 	private String hash;
-	private Committer committer;
+	private Developer author;
+	private Developer committer;
 	private String msg;
 	private List<Modification> modifications;
 	private String parent;
 	private Calendar date;
 
-	public Commit(String hash, Committer committer, Calendar date, String msg, String parent) {
+	public Commit(String hash, Developer author, Developer committer, Calendar date, String msg, String parent) {
 		this.hash = hash;
+		this.author = author;
 		this.committer = committer;
 		this.date = date;
 		this.msg = msg;
@@ -44,12 +46,16 @@ public class Commit {
 		return hash;
 	}
 
-	public Committer getCommitter() {
-		return committer;
+	public Developer getAuthor() {
+		return author;
 	}
 
 	public String getMsg() {
 		return msg;
+	}
+	
+	public Developer getCommitter() {
+		return committer;
 	}
 
 	public String getParent() {
@@ -68,7 +74,7 @@ public class Commit {
 
 	@Override
 	public String toString() {
-		return "Commit [hash=" + hash + ", parent=" + parent + ", committer=" + committer + ", msg=" + msg + ", modifications="
+		return "Commit [hash=" + hash + ", parent=" + parent + ", author=" + author + ", msg=" + msg + ", modifications="
 				+ modifications + "]";
 	}
 	

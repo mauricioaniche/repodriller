@@ -98,8 +98,8 @@ public class GitRepositoryTest {
 		
 		Commit commit = git.getCommit("866e997a9e44cb4ddd9e00efe49361420aff2559");
 		
-		Assert.assertEquals("Maurício Aniche", commit.getCommitter().getName());
-		Assert.assertEquals("mauricioaniche@gmail.com", commit.getCommitter().getEmail());
+		Assert.assertEquals("Maurício Aniche", commit.getAuthor().getName());
+		Assert.assertEquals("mauricioaniche@gmail.com", commit.getAuthor().getEmail());
 		
 		Assert.assertEquals("Matricula adicionada", commit.getMsg());
 		Assert.assertEquals(1, commit.getModifications().size());
@@ -131,8 +131,8 @@ public class GitRepositoryTest {
 		
 		Commit commit = git.getCommit("f0dd1308bd904a9b108a6a40865166ee962af3d4");
 		
-		Assert.assertEquals("Maurício Aniche", commit.getCommitter().getName());
-		Assert.assertEquals("mauricioaniche@gmail.com", commit.getCommitter().getEmail());
+		Assert.assertEquals("Maurício Aniche", commit.getAuthor().getName());
+		Assert.assertEquals("mauricioaniche@gmail.com", commit.getAuthor().getEmail());
 		
 		Assert.assertEquals("Matricula.javax", commit.getModifications().get(0).getNewPath());
 		Assert.assertEquals("Matricula.java", commit.getModifications().get(0).getOldPath());
