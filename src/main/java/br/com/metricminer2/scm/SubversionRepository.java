@@ -159,16 +159,15 @@ public class SubversionRepository implements SCM {
 
 	private String getDiffText(SVNRepository repository, SVNURL url, SVNLogEntryPath entry, long revision) {
 		try {
-			long startRevision = revision - 1;
-			long endRevision = revision;
-
 			SVNClientManager clientManager = SVNClientManager.newInstance(null, repository.getAuthenticationManager());
 			SVNDiffClient diffClient = clientManager.getDiffClient();
 
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-			diffClient.doDiff(url, SVNRevision.create(startRevision), SVNRevision.create(startRevision), SVNRevision.create(endRevision), SVNDepth.FILES,
-					true, out);
+			SVNRevision startRevision = SVNRevision.create(revision - 1);
+			SVNRevision endRevision = SVNRevision.create(revision);
+
+			diffClient.doDiff(url, startRevision, startRevision, endRevision, SVNDepth.FILES, true, out);
 
 			String diffText = out.toString("UTF-8");
 			if (diffText.length() > MAX_SIZE_OF_A_DIFF) {
