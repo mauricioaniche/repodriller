@@ -1,0 +1,346 @@
+package br.com.metricminer2.scm;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map.Entry;
+
+import org.apache.log4j.Logger;
+import org.tmatesoft.svn.core.SVNDepth;
+import org.tmatesoft.svn.core.SVNDirEntry;
+import org.tmatesoft.svn.core.SVNException;
+import org.tmatesoft.svn.core.SVNLogEntry;
+import org.tmatesoft.svn.core.SVNLogEntryPath;
+import org.tmatesoft.svn.core.SVNURL;
+import org.tmatesoft.svn.core.auth.BasicAuthenticationManager;
+import org.tmatesoft.svn.core.auth.ISVNAuthenticationManager;
+import org.tmatesoft.svn.core.internal.io.dav.DAVRepositoryFactory;
+import org.tmatesoft.svn.core.io.SVNRepository;
+import org.tmatesoft.svn.core.io.SVNRepositoryFactory;
+import org.tmatesoft.svn.core.wc.SVNClientManager;
+import org.tmatesoft.svn.core.wc.SVNDiffClient;
+import org.tmatesoft.svn.core.wc.SVNLogClient;
+import org.tmatesoft.svn.core.wc.SVNRevision;
+import org.tmatesoft.svn.core.wc.SVNUpdateClient;
+
+import br.com.metricminer2.domain.ChangeSet;
+import br.com.metricminer2.domain.Commit;
+import br.com.metricminer2.domain.Developer;
+import br.com.metricminer2.domain.Modification;
+import br.com.metricminer2.domain.ModificationType;
+
+public class SubversionRepository implements SCM {
+
+	private static final int MAX_SIZE_OF_A_DIFF = 100000;
+	private static final int MAX_NUMBER_OF_FILES_IN_A_COMMIT = 50;
+	private SubversionConfig config;
+
+	private static Logger log = Logger.getLogger(SubversionRepository.class);
+
+	public SubversionRepository(SubversionConfig config) {
+		this.config = config;
+	}
+
+	@SuppressWarnings("rawtypes")
+	@Override
+	public List<ChangeSet> getChangeSets() {
+		SVNRepository repository = null;
+
+		try {
+			SVNURL url = SVNURL.parseURIEncoded(config.getRepositoryPath());
+			repository = SVNRepositoryFactory.create(url);
+
+			authenticateIfNecessary(repository);
+
+			List<ChangeSet> allCs = new ArrayList<ChangeSet>();
+
+			long startRevision = 0;
+			long endRevision = -1; // HEAD (the latest) revision
+			Collection log = repository.log(new String[] { "" }, null, startRevision, endRevision, true, true);
+			for (Iterator iterator = log.iterator(); iterator.hasNext();) {
+				SVNLogEntry entry = (SVNLogEntry) iterator.next();
+				allCs.add(new ChangeSet(String.valueOf(entry.getRevision()), convertToCalendar(entry.getDate())));
+			}
+
+			return allCs;
+
+		} catch (SVNException e) {
+			throw new RuntimeException("error in getHead() for " + config.getRepositoryPath(), e);
+		} finally {
+			if (repository != null)
+				repository.closeSession();
+		}
+	}
+
+	@SuppressWarnings("rawtypes")
+	@Override
+	public Commit getCommit(String id) {
+		SVNRepository repository = null;
+
+		try {
+			SVNURL url = SVNURL.parseURIEncoded(config.getRepositoryPath());
+			repository = SVNRepositoryFactory.create(url);
+
+			authenticateIfNecessary(repository);
+
+			long revision = Long.parseLong(id);
+			long startRevision = revision;
+			long endRevision = revision;
+
+			Collection repositoryLog = repository.log(new String[] { "" }, null, startRevision, endRevision, true, true);
+
+			for (Iterator iterator = repositoryLog.iterator(); iterator.hasNext();) {
+				SVNLogEntry logEntry = (SVNLogEntry) iterator.next();
+
+				Commit commit = createCommit(logEntry);
+
+				List<Modification> modifications = getModifications(repository, url, revision, logEntry);
+
+				if (modifications.size() > MAX_NUMBER_OF_FILES_IN_A_COMMIT) {
+					log.error("commit " + id + " has more than files than the limit");
+					throw new RuntimeException("commit " + id + " too big, sorry");
+				}
+
+				commit.addModifications(modifications);
+
+				return commit;
+			}
+
+		} catch (Exception e) {
+			throw new RuntimeException("error in getCommit() for " + config.getRepositoryPath(), e);
+		} finally {
+			if (repository != null)
+				repository.closeSession();
+		}
+		return null;
+	}
+
+	private Commit createCommit(SVNLogEntry logEntry) {
+		Developer committer = new Developer(logEntry.getAuthor(), null);
+		Commit commit = new Commit(String.valueOf(logEntry.getRevision()), null, committer, convertToCalendar(logEntry.getDate()), logEntry.getMessage(),
+				"");
+		return commit;
+	}
+
+	private List<Modification> getModifications(SVNRepository repository, SVNURL url, long revision, SVNLogEntry logEntry) throws SVNException,
+			UnsupportedEncodingException {
+
+		List<Modification> modifications = new ArrayList<Modification>();
+		for (Entry<String, SVNLogEntryPath> entry : logEntry.getChangedPaths().entrySet()) {
+			SVNLogEntryPath e = entry.getValue();
+
+			String diffText = getDiffText(repository, url, e, revision);
+
+			String sc = getSourceCode(repository, revision, e);
+
+			Modification modification = new Modification(e.getCopyPath(), e.getPath(), getModificationType(e), diffText, sc);
+			modifications.add(modification);
+		}
+
+		return modifications;
+	}
+
+	private String getSourceCode(SVNRepository repository, long endRevision, SVNLogEntryPath e) throws SVNException, UnsupportedEncodingException {
+		if (e.getType() == 'D')
+			return "";
+
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		repository.getFile(e.getPath(), endRevision, null, out);
+
+		String sc = out.toString("UTF-8");
+		return sc;
+	}
+
+	private String getDiffText(SVNRepository repository, SVNURL url, SVNLogEntryPath entry, long revision) {
+		try {
+			long startRevision = revision - 1;
+			long endRevision = revision;
+
+			SVNClientManager clientManager = SVNClientManager.newInstance(null, repository.getAuthenticationManager());
+			SVNDiffClient diffClient = clientManager.getDiffClient();
+
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+			diffClient.doDiff(url, SVNRevision.create(startRevision), SVNRevision.create(startRevision), SVNRevision.create(endRevision), SVNDepth.FILES,
+					true, out);
+
+			String diffText = out.toString("UTF-8");
+			if (diffText.length() > MAX_SIZE_OF_A_DIFF) {
+				log.error("diff for " + entry.getPath() + " too big");
+				diffText = "-- TOO BIG --";
+			}
+			return diffText;
+
+		} catch (Exception e) {
+			return "";
+		}
+	}
+
+	private ModificationType getModificationType(SVNLogEntryPath e) {
+		if (e.getType() == 'A') {
+			return ModificationType.ADD;
+		} else if (e.getType() == 'D') {
+			return ModificationType.DELETE;
+		} else if (e.getType() == 'M') {
+			return ModificationType.MODIFY;
+		} else if (e.getType() == 'R') {
+			return ModificationType.COPY;
+		}
+		return null;
+	}
+
+	@Override
+	public ChangeSet getHead() {
+		DAVRepositoryFactory.setup();
+
+		SVNRepository repository = null;
+
+		try {
+			SVNURL url = SVNURL.parseURIEncoded(config.getRepositoryPath());
+			repository = SVNRepositoryFactory.create(url);
+
+			authenticateIfNecessary(repository);
+
+			SVNDirEntry entry = repository.info("/", -1);
+			return new ChangeSet(String.valueOf(entry.getRevision()), convertToCalendar(entry.getDate()));
+
+		} catch (SVNException e) {
+			throw new RuntimeException("error in getHead() for " + config.getRepositoryPath(), e);
+		} finally {
+			if (repository != null)
+				repository.closeSession();
+		}
+	}
+
+	private GregorianCalendar convertToCalendar(Date date) {
+		GregorianCalendar calendar = new GregorianCalendar();
+		calendar.setTime(date);
+		return calendar;
+	}
+
+	@Override
+	public List<RepositoryFile> files() {
+		List<RepositoryFile> all = new ArrayList<RepositoryFile>();
+		for (File f : getAllFilesInPath()) {
+			if (isNotAnImportantFile(f))
+				continue;
+			all.add(new RepositoryFile(f));
+		}
+
+		return all;
+	}
+
+	private List<File> getAllFilesInPath() {
+		return getAllFilesInPath(config.getWorkingCopyPath(), new ArrayList<File>());
+	}
+
+	private List<File> getAllFilesInPath(String pathToLook, List<File> arquivos) {
+		for (File f : new File(pathToLook).listFiles()) {
+			if (f.isFile())
+				arquivos.add(f);
+			if (isAProjectSubdirectory(f))
+				getAllFilesInPath(f.getAbsolutePath(), arquivos);
+		}
+		return arquivos;
+	}
+
+	private boolean isAProjectSubdirectory(File f) {
+		return f.isDirectory() && !f.getName().equals(".svn");
+	}
+
+	private boolean isNotAnImportantFile(File f) {
+		return f.getName().equals(".DS_Store");
+	}
+
+	@Override
+	public long totalCommits() {
+		return getChangeSets().size();
+	}
+
+	@Override
+	public void reset() {
+		SVNRepository repository = null;
+		try {
+			SVNRevision revision = SVNRevision.HEAD;
+
+			SVNURL url = SVNURL.parseURIEncoded(config.getRepositoryPath());
+			repository = SVNRepositoryFactory.create(url);
+
+			authenticateIfNecessary(repository);
+
+			SVNClientManager ourClientManager = SVNClientManager.newInstance(null, repository.getAuthenticationManager());
+			SVNUpdateClient updateClient = ourClientManager.getUpdateClient();
+			updateClient.setIgnoreExternals(false);
+			updateClient.doCheckout(url, new File(config.getWorkingCopyPath()), revision, revision, SVNDepth.INFINITY, true);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (repository != null)
+				repository.closeSession();
+		}
+	}
+
+	@Override
+	public void checkout(String id) {
+		SVNRepository repository = null;
+		try {
+			SVNRevision revision = SVNRevision.create(Integer.parseInt(id));
+
+			SVNURL url = SVNURL.parseURIEncoded(config.getRepositoryPath());
+			repository = SVNRepositoryFactory.create(url);
+
+			authenticateIfNecessary(repository);
+
+			SVNClientManager ourClientManager = SVNClientManager.newInstance(null, repository.getAuthenticationManager());
+			SVNUpdateClient updateClient = ourClientManager.getUpdateClient();
+			updateClient.setIgnoreExternals(false);
+			updateClient.doCheckout(url, new File(config.getWorkingCopyPath()), revision, revision, SVNDepth.INFINITY, true);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (repository != null)
+				repository.closeSession();
+		}
+	}
+
+	@Override
+	public String blame(String file, String currentCommit, Integer line) {
+		try {
+			SVNURL url = SVNURL.parseURIEncoded(config.getRepositoryPath() + File.separator + file);
+
+			ISVNAuthenticationManager authManager = getAuthenticationManager();
+
+			SVNLogClient logClient = SVNClientManager.newInstance(null, authManager).getLogClient();
+			boolean ignoreMimeType = false;
+			boolean includeMergedRevisions = false;
+
+			logClient.doAnnotate(url, SVNRevision.UNDEFINED, SVNRevision.create(Integer.parseInt(currentCommit)), SVNRevision.HEAD, ignoreMimeType,
+					includeMergedRevisions, null, null);
+
+			return String.valueOf(SVNRevision.create(Integer.parseInt(currentCommit)).getNumber());
+
+		} catch (SVNException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private void authenticateIfNecessary(SVNRepository repository) {
+		ISVNAuthenticationManager authManager = getAuthenticationManager();
+		if (authManager != null)
+			repository.setAuthenticationManager(authManager);
+	}
+
+	private BasicAuthenticationManager getAuthenticationManager() {
+		if (config.getSubversionAuth() != null) {
+			return BasicAuthenticationManager.newInstance(config.getUsername(), config.getPassword().toCharArray());
+		}
+		return null;
+	}
+
+}
