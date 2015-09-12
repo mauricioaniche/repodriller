@@ -18,7 +18,7 @@ Then, you can:
 
 # Creating a Study
 
-See www.metricminer.org.br.
+See www.metricminer.org.br/documentation.
 
 # License
 
