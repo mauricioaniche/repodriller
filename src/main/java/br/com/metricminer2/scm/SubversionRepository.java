@@ -2,6 +2,7 @@ package br.com.metricminer2.scm;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,6 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.tmatesoft.svn.core.SVNDepth;
 import org.tmatesoft.svn.core.SVNDirEntry;
@@ -20,7 +22,6 @@ import org.tmatesoft.svn.core.SVNLogEntryPath;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.auth.BasicAuthenticationManager;
 import org.tmatesoft.svn.core.auth.ISVNAuthenticationManager;
-import org.tmatesoft.svn.core.internal.io.dav.DAVRepositoryFactory;
 import org.tmatesoft.svn.core.io.SVNRepository;
 import org.tmatesoft.svn.core.io.SVNRepositoryFactory;
 import org.tmatesoft.svn.core.wc.SVNClientManager;
@@ -35,16 +36,83 @@ import br.com.metricminer2.domain.Developer;
 import br.com.metricminer2.domain.Modification;
 import br.com.metricminer2.domain.ModificationType;
 
+/**
+ * @author Juliano Silva
+ *
+ */
 public class SubversionRepository implements SCM {
 
 	private static final int MAX_SIZE_OF_A_DIFF = 100000;
 	private static final int MAX_NUMBER_OF_FILES_IN_A_COMMIT = 50;
-	private SubversionConfig config;
 
 	private static Logger log = Logger.getLogger(SubversionRepository.class);
+	private String path;
+	private String username;
+	private String password;
+	private String workingCopyPath;
 
-	public SubversionRepository(SubversionConfig config) {
-		this.config = config;
+	public SubversionRepository(String path, String username, String password) {
+		this.path = path;
+		this.username = username;
+		this.password = password;
+
+		workingCopyPath = createWorkingCopy();
+	}
+
+	public SubversionRepository(String repositoryPath) {
+		this(repositoryPath, null, null);
+	}
+
+	public static SCMRepository singleProject(String path) {
+		return new SubversionRepository(path).info();
+	}
+
+	public static SCMRepository[] allProjectsIn(String path) {
+		List<SCMRepository> repos = new ArrayList<SCMRepository>();
+
+		for (String dir : getAllDirsIn(path)) {
+			repos.add(singleProject(dir));
+		}
+
+		return repos.toArray(new SCMRepository[repos.size()]);
+	}
+
+	private static List<String> getAllDirsIn(String path) {
+		File dir = new File(path);
+		String[] files = dir.list();
+
+		List<String> projects = new ArrayList<String>();
+		for (String file : files) {
+			File possibleDir = new File(dir, file);
+			if (possibleDir.isDirectory()) {
+				projects.add(possibleDir.getAbsolutePath());
+			}
+		}
+
+		return projects;
+	}
+
+	public SCMRepository info() {
+		SVNRepository repository = null;
+		try {
+			SVNURL url = SVNURL.parseURIEncoded(path);
+			repository = SVNRepositoryFactory.create(url);
+
+			authenticateIfNecessary(repository);
+
+			SVNDirEntry firstRevision = repository.info("/", 0);
+			SVNDirEntry lastRevision = repository.info("/", SVNRevision.HEAD.getNumber());
+
+			return new SCMRepository(this, lastRevision.getURL().getPath(), path, String.valueOf(lastRevision.getRevision()), String.valueOf(firstRevision
+					.getRevision()));
+
+		} catch (SVNException e) {
+			throw new RuntimeException("error in getHead() for " + path, e);
+		} finally {
+			if (repository != null)
+				repository.closeSession();
+		}
+
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -53,7 +121,7 @@ public class SubversionRepository implements SCM {
 		SVNRepository repository = null;
 
 		try {
-			SVNURL url = SVNURL.parseURIEncoded(config.getRepositoryPath());
+			SVNURL url = SVNURL.parseURIEncoded(path);
 			repository = SVNRepositoryFactory.create(url);
 
 			authenticateIfNecessary(repository);
@@ -71,7 +139,7 @@ public class SubversionRepository implements SCM {
 			return allCs;
 
 		} catch (SVNException e) {
-			throw new RuntimeException("error in getHead() for " + config.getRepositoryPath(), e);
+			throw new RuntimeException("error in getHead() for " + path, e);
 		} finally {
 			if (repository != null)
 				repository.closeSession();
@@ -84,7 +152,7 @@ public class SubversionRepository implements SCM {
 		SVNRepository repository = null;
 
 		try {
-			SVNURL url = SVNURL.parseURIEncoded(config.getRepositoryPath());
+			SVNURL url = SVNURL.parseURIEncoded(path);
 			repository = SVNRepositoryFactory.create(url);
 
 			authenticateIfNecessary(repository);
@@ -113,7 +181,7 @@ public class SubversionRepository implements SCM {
 			}
 
 		} catch (Exception e) {
-			throw new RuntimeException("error in getCommit() for " + config.getRepositoryPath(), e);
+			throw new RuntimeException("error in getCommit() for " + path, e);
 		} finally {
 			if (repository != null)
 				repository.closeSession();
@@ -196,12 +264,10 @@ public class SubversionRepository implements SCM {
 
 	@Override
 	public ChangeSet getHead() {
-		DAVRepositoryFactory.setup();
-
 		SVNRepository repository = null;
 
 		try {
-			SVNURL url = SVNURL.parseURIEncoded(config.getRepositoryPath());
+			SVNURL url = SVNURL.parseURIEncoded(path);
 			repository = SVNRepositoryFactory.create(url);
 
 			authenticateIfNecessary(repository);
@@ -210,7 +276,7 @@ public class SubversionRepository implements SCM {
 			return new ChangeSet(String.valueOf(entry.getRevision()), convertToCalendar(entry.getDate()));
 
 		} catch (SVNException e) {
-			throw new RuntimeException("error in getHead() for " + config.getRepositoryPath(), e);
+			throw new RuntimeException("error in getHead() for " + path, e);
 		} finally {
 			if (repository != null)
 				repository.closeSession();
@@ -236,7 +302,7 @@ public class SubversionRepository implements SCM {
 	}
 
 	private List<File> getAllFilesInPath() {
-		return getAllFilesInPath(config.getWorkingCopyPath(), new ArrayList<File>());
+		return getAllFilesInPath(workingCopyPath, new ArrayList<File>());
 	}
 
 	private List<File> getAllFilesInPath(String pathToLook, List<File> arquivos) {
@@ -268,7 +334,7 @@ public class SubversionRepository implements SCM {
 		try {
 			SVNRevision revision = SVNRevision.HEAD;
 
-			SVNURL url = SVNURL.parseURIEncoded(config.getRepositoryPath());
+			SVNURL url = SVNURL.parseURIEncoded(path);
 			repository = SVNRepositoryFactory.create(url);
 
 			authenticateIfNecessary(repository);
@@ -276,7 +342,7 @@ public class SubversionRepository implements SCM {
 			SVNClientManager ourClientManager = SVNClientManager.newInstance(null, repository.getAuthenticationManager());
 			SVNUpdateClient updateClient = ourClientManager.getUpdateClient();
 			updateClient.setIgnoreExternals(false);
-			updateClient.doCheckout(url, new File(config.getWorkingCopyPath()), revision, revision, SVNDepth.INFINITY, true);
+			updateClient.doCheckout(url, new File(workingCopyPath), revision, revision, SVNDepth.INFINITY, true);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		} finally {
@@ -289,9 +355,11 @@ public class SubversionRepository implements SCM {
 	public void checkout(String id) {
 		SVNRepository repository = null;
 		try {
+			clearWorkingCopy();
+
 			SVNRevision revision = SVNRevision.create(Integer.parseInt(id));
 
-			SVNURL url = SVNURL.parseURIEncoded(config.getRepositoryPath());
+			SVNURL url = SVNURL.parseURIEncoded(path);
 			repository = SVNRepositoryFactory.create(url);
 
 			authenticateIfNecessary(repository);
@@ -299,7 +367,7 @@ public class SubversionRepository implements SCM {
 			SVNClientManager ourClientManager = SVNClientManager.newInstance(null, repository.getAuthenticationManager());
 			SVNUpdateClient updateClient = ourClientManager.getUpdateClient();
 			updateClient.setIgnoreExternals(false);
-			updateClient.doCheckout(url, new File(config.getWorkingCopyPath()), revision, revision, SVNDepth.INFINITY, true);
+			updateClient.doCheckout(url, new File(workingCopyPath), revision, revision, SVNDepth.INFINITY, true);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		} finally {
@@ -308,10 +376,18 @@ public class SubversionRepository implements SCM {
 		}
 	}
 
+	private void clearWorkingCopy() {
+		try {
+			FileUtils.cleanDirectory(new File(workingCopyPath));
+		} catch (IOException e) {
+			throw new RuntimeException("Unable to clean working copy path", e);
+		}
+	}
+
 	@Override
 	public String blame(String file, String currentCommit, Integer line) {
 		try {
-			SVNURL url = SVNURL.parseURIEncoded(config.getRepositoryPath() + File.separator + file);
+			SVNURL url = SVNURL.parseURIEncoded(path + File.separator + file);
 
 			ISVNAuthenticationManager authManager = getAuthenticationManager();
 
@@ -336,10 +412,27 @@ public class SubversionRepository implements SCM {
 	}
 
 	private BasicAuthenticationManager getAuthenticationManager() {
-		if (config.getSubversionAuth() != null) {
-			return BasicAuthenticationManager.newInstance(config.getUsername(), config.getPassword().toCharArray());
+		if (username != null && password != null) {
+			return BasicAuthenticationManager.newInstance(username, password.toCharArray());
 		}
 		return null;
+	}
+
+	private String createWorkingCopy() {
+		String tmpDirPath = System.getProperty("java.io.tmpdir");
+		File tmpDir = new File(tmpDirPath + File.separator + "metricminer");
+		if (!tmpDir.exists()) {
+			boolean created = tmpDir.mkdirs();
+			if (!created) {
+				throw new RuntimeException("Unable to create temporary folder for working copy in " + tmpDir);
+			}
+		}
+
+		return tmpDir.getPath();
+	}
+
+	public String getPath() {
+		return path;
 	}
 
 }
