@@ -55,48 +55,34 @@ import br.com.metricminer2.domain.ChangeSet;
 import br.com.metricminer2.domain.Commit;
 import br.com.metricminer2.domain.Developer;
 import br.com.metricminer2.domain.ModificationType;
+import br.com.metricminer2.util.FileUtils;
 
 public class GitRepository implements SCM {
 
 	private static final int MAX_SIZE_OF_A_DIFF = 100000;
 	private static final int MAX_NUMBER_OF_FILES_IN_A_COMMIT = 50;
 	private String path;
-	
+
 	private static Logger log = Logger.getLogger(GitRepository.class);
 
 	public GitRepository(String path) {
 		this.path = path;
 	}
-	
+
 	public static SCMRepository singleProject(String path) {
 		return new GitRepository(path).info();
 	}
-	
+
 	public static SCMRepository[] allProjectsIn(String path) {
 		List<SCMRepository> repos = new ArrayList<SCMRepository>();
-		
-		for(String dir : getAllDirsIn(path)) {
+
+		for (String dir : FileUtils.getAllDirsIn(path)) {
 			repos.add(singleProject(dir));
 		}
-		
+
 		return repos.toArray(new SCMRepository[repos.size()]);
 	}
 
-	private static List<String> getAllDirsIn(String path) {
-		File dir = new File(path);
-		String[] files = dir.list();
-		
-		List<String> projects = new ArrayList<String>();
-		for(String file : files) {
-			File possibleDir = new File(dir, file);
-			if(possibleDir.isDirectory()) {
-				projects.add(possibleDir.getAbsolutePath());
-			}
-		}
-
-		return projects;
-	}
-	
 	public SCMRepository info() {
 		RevWalk rw = null;
 		Git git = null;
@@ -109,15 +95,17 @@ public class GitRepository implements SCM {
 			rw.sort(RevSort.REVERSE);
 			rw.markStart(root);
 			RevCommit lastCommit = rw.next();
-			
+
 			String origin = git.getRepository().getConfig().getString("remote", "origin", "url");
 
 			return new SCMRepository(this, origin, path, headId.getName(), lastCommit.getName());
 		} catch (Exception e) {
 			throw new RuntimeException("error when info " + path, e);
 		} finally {
-			if(rw!=null) rw.release();
-			if(git!=null) git.close();
+			if (rw != null)
+				rw.release();
+			if (git != null)
+				git.close();
 		}
 
 	}
@@ -127,19 +115,20 @@ public class GitRepository implements SCM {
 		try {
 			git = Git.open(new File(path));
 			ObjectId head = git.getRepository().resolve(Constants.HEAD);
-			
+
 			RevWalk revWalk = new RevWalk(git.getRepository());
-	        RevCommit r = revWalk.parseCommit(head);
-	        return new ChangeSet(r.getName(), convertToDate(r));
-			
+			RevCommit r = revWalk.parseCommit(head);
+			return new ChangeSet(r.getName(), convertToDate(r));
+
 		} catch (Exception e) {
 			throw new RuntimeException("error in getHead() for " + path, e);
 		} finally {
-			if(git!=null) git.close();
+			if (git != null)
+				git.close();
 		}
-		
-		
+
 	}
+
 	@Override
 	public List<ChangeSet> getChangeSets() {
 		Git git = null;
@@ -159,7 +148,8 @@ public class GitRepository implements SCM {
 		} catch (Exception e) {
 			throw new RuntimeException("error in getChangeSets for " + path, e);
 		} finally {
-			if(git!=null) git.close();
+			if (git != null)
+				git.close();
 		}
 	}
 
@@ -191,19 +181,19 @@ public class GitRepository implements SCM {
 
 				GregorianCalendar date = new GregorianCalendar();
 				date.setTime(new Date(epoch * 1000L));
-				
+
 				theCommit = new Commit(hash, author, committer, date, msg, parent);
 
 				List<DiffEntry> diffsForTheCommit = diffsForTheCommit(repo, jgitCommit);
-				if(diffsForTheCommit.size() > MAX_NUMBER_OF_FILES_IN_A_COMMIT) {
+				if (diffsForTheCommit.size() > MAX_NUMBER_OF_FILES_IN_A_COMMIT) {
 					log.error("commit " + id + " has more than files than the limit");
 					throw new RuntimeException("commit " + id + " too big, sorry");
 				}
-				
+
 				for (DiffEntry diff : diffsForTheCommit) {
-					
+
 					ModificationType change = Enum.valueOf(ModificationType.class, diff.getChangeType().toString());
-					
+
 					String oldPath = diff.getOldPath();
 					String newPath = diff.getNewPath();
 
@@ -214,11 +204,11 @@ public class GitRepository implements SCM {
 						sc = getSourceCode(repo, diff);
 					}
 
-					if(diffText.length() > MAX_SIZE_OF_A_DIFF) {
+					if (diffText.length() > MAX_SIZE_OF_A_DIFF) {
 						log.error("diff for " + newPath + " too big");
 						diffText = "-- TOO BIG --";
 					}
-					
+
 					theCommit.addModification(oldPath, newPath, change, diffText, sc);
 
 				}
@@ -230,12 +220,13 @@ public class GitRepository implements SCM {
 		} catch (Exception e) {
 			throw new RuntimeException("error detailing " + id + " in " + path, e);
 		} finally {
-			if(git!=null) git.close();
+			if (git != null)
+				git.close();
 		}
 	}
 
-	private List<DiffEntry> diffsForTheCommit(Repository repo, RevCommit commit) throws IOException,
-			AmbiguousObjectException, IncorrectObjectTypeException {
+	private List<DiffEntry> diffsForTheCommit(Repository repo, RevCommit commit) throws IOException, AmbiguousObjectException,
+			IncorrectObjectTypeException {
 
 		AnyObjectId currentCommit = repo.resolve(commit.getName());
 		AnyObjectId parentCommit = commit.getParentCount() > 0 ? repo.resolve(commit.getParent(0).getName()) : null;
@@ -254,14 +245,13 @@ public class GitRepository implements SCM {
 		} else {
 			diffs = df.scan(parentCommit, currentCommit);
 		}
-		
+
 		df.release();
-		
+
 		return diffs;
 	}
 
-	private String getSourceCode(Repository repo, DiffEntry diff) throws MissingObjectException, IOException,
-			UnsupportedEncodingException {
+	private String getSourceCode(Repository repo, DiffEntry diff) throws MissingObjectException, IOException, UnsupportedEncodingException {
 
 		try {
 			ObjectReader reader = repo.newObjectReader();
@@ -273,7 +263,7 @@ public class GitRepository implements SCM {
 	}
 
 	private String getDiffText(Repository repo, DiffEntry diff) throws IOException, UnsupportedEncodingException {
-		DiffFormatter df2= null;
+		DiffFormatter df2 = null;
 		try {
 			String diffText;
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -285,7 +275,8 @@ public class GitRepository implements SCM {
 		} catch (Throwable e) {
 			return "";
 		} finally {
-			if(df2!=null) df2.release();
+			if (df2 != null)
+				df2.release();
 		}
 	}
 
@@ -299,62 +290,54 @@ public class GitRepository implements SCM {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		} finally {
-			if(git!=null) git.close();
+			if (git != null)
+				git.close();
 		}
 	}
 
 	private void deleteMMBranch(Git git) throws GitAPIException, NotMergedException, CannotDeleteCurrentBranchException {
 		List<Ref> refs = git.branchList().call();
-		for(Ref r : refs) {
-			if(r.getName().endsWith("mm")) {
+		for (Ref r : refs) {
+			if (r.getName().endsWith("mm")) {
 				git.branchDelete().setBranchNames("mm").setForce(true).call();
 				break;
 			}
 		}
 	}
-	
+
 	public List<RepositoryFile> files() {
 		List<RepositoryFile> all = new ArrayList<RepositoryFile>();
-		for(File f : getAllFilesInPath()) {
-			if(isNotAnImportantFile(f)) continue;
+		for (File f : getAllFilesInPath()) {
+			if (isNotAnImportantFile(f))
+				continue;
 			all.add(new RepositoryFile(f));
 		}
-		
+
 		return all;
 	}
 
 	private boolean isNotAnImportantFile(File f) {
 		return f.getName().equals(".DS_Store");
 	}
-	
+
 	public void reset() {
 		Git git = null;
 		try {
 			git = Git.open(new File(path));
-			
+
 			git.checkout().setName("master").setForce(true).call();
 			git.branchDelete().setBranchNames("mm").setForce(true).call();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		} finally {
-			if(git!=null) git.close();
+			if (git != null)
+				git.close();
 		}
-		
+
 	}
 
 	private List<File> getAllFilesInPath() {
-		return getAllFilesInPath(path, new ArrayList<File>());
-	}
-	private List<File> getAllFilesInPath(String pathToLook, List<File> arquivos) {
-		for(File f : new File(pathToLook).listFiles()) {
-			if(f.isFile()) arquivos.add(f);
-			if(isAProjectSubdirectory(f)) getAllFilesInPath(f.getAbsolutePath(), arquivos);
-		}
-		return arquivos;
-	}
-
-	private boolean isAProjectSubdirectory(File f) {
-		return f.isDirectory() && !f.getName().equals(".git");
+		return FileUtils.getAllFilesInPath(path, new ArrayList<File>());
 	}
 
 	@Override
@@ -367,18 +350,19 @@ public class GitRepository implements SCM {
 		Git git = null;
 		try {
 			git = Git.open(new File(path));
-			
+
 			Iterable<RevCommit> commits = git.log().add(git.getRepository().resolve(currentCommit)).call();
 			ObjectId prior = commits.iterator().next().getParent(0).getId();
-			
+
 			BlameResult blameResult = git.blame().setFilePath(file).setStartCommit(prior).setFollowFileRenames(true).call();
 
 			return blameResult.getSourceCommit(line).getId().getName();
-			
+
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		} finally {
-			if(git!=null) git.close();
+			if (git != null)
+				git.close();
 		}
 
 	}
