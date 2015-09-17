@@ -12,7 +12,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.tmatesoft.svn.core.SVNDepth;
 import org.tmatesoft.svn.core.SVNDirEntry;
@@ -35,6 +34,7 @@ import br.com.metricminer2.domain.Commit;
 import br.com.metricminer2.domain.Developer;
 import br.com.metricminer2.domain.Modification;
 import br.com.metricminer2.domain.ModificationType;
+import br.com.metricminer2.util.FileUtils;
 
 /**
  * @author Juliano Silva
@@ -70,26 +70,11 @@ public class SubversionRepository implements SCM {
 	public static SCMRepository[] allProjectsIn(String path) {
 		List<SCMRepository> repos = new ArrayList<SCMRepository>();
 
-		for (String dir : getAllDirsIn(path)) {
+		for (String dir : FileUtils.getAllDirsIn(path)) {
 			repos.add(singleProject(dir));
 		}
 
 		return repos.toArray(new SCMRepository[repos.size()]);
-	}
-
-	private static List<String> getAllDirsIn(String path) {
-		File dir = new File(path);
-		String[] files = dir.list();
-
-		List<String> projects = new ArrayList<String>();
-		for (String file : files) {
-			File possibleDir = new File(dir, file);
-			if (possibleDir.isDirectory()) {
-				projects.add(possibleDir.getAbsolutePath());
-			}
-		}
-
-		return projects;
 	}
 
 	public SCMRepository info() {
@@ -302,21 +287,7 @@ public class SubversionRepository implements SCM {
 	}
 
 	private List<File> getAllFilesInPath() {
-		return getAllFilesInPath(workingCopyPath, new ArrayList<File>());
-	}
-
-	private List<File> getAllFilesInPath(String pathToLook, List<File> arquivos) {
-		for (File f : new File(pathToLook).listFiles()) {
-			if (f.isFile())
-				arquivos.add(f);
-			if (isAProjectSubdirectory(f))
-				getAllFilesInPath(f.getAbsolutePath(), arquivos);
-		}
-		return arquivos;
-	}
-
-	private boolean isAProjectSubdirectory(File f) {
-		return f.isDirectory() && !f.getName().equals(".svn");
+		return FileUtils.getAllFilesInPath(workingCopyPath, new ArrayList<File>());
 	}
 
 	private boolean isNotAnImportantFile(File f) {
@@ -378,7 +349,7 @@ public class SubversionRepository implements SCM {
 
 	private void clearWorkingCopy() {
 		try {
-			FileUtils.cleanDirectory(new File(workingCopyPath));
+			org.apache.commons.io.FileUtils.cleanDirectory(new File(workingCopyPath));
 		} catch (IOException e) {
 			throw new RuntimeException("Unable to clean working copy path", e);
 		}
