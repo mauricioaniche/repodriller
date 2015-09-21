@@ -32,6 +32,7 @@ import com.google.common.collect.Lists;
 
 import br.com.metricminer2.domain.ChangeSet;
 import br.com.metricminer2.domain.Commit;
+import br.com.metricminer2.persistence.NoPersistence;
 import br.com.metricminer2.persistence.PersistenceMechanism;
 import br.com.metricminer2.scm.CommitVisitor;
 import br.com.metricminer2.scm.SCMRepository;
@@ -65,6 +66,10 @@ public class RepositoryMining {
 	public RepositoryMining process(CommitVisitor visitor, PersistenceMechanism writer) {
 		visitors.put(visitor, writer);
 		return this;
+	}
+
+	public RepositoryMining process(CommitVisitor visitor) {
+		return process(visitor, new NoPersistence());
 	}
 	
 	public void mine() {
