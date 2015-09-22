@@ -68,6 +68,10 @@ public class Commit {
 		
 	}
 	
+	public void addModifications(List<Modification> modifications) {
+		this.modifications.addAll(modifications);
+	}
+	
 	public List<Modification> getModifications() {
 		return Collections.unmodifiableList(modifications);
 	}

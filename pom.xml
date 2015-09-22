@@ -143,7 +143,11 @@
 			<artifactId>org.eclipse.core.resources</artifactId>
 			<version>3.7.100</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.tmatesoft.svnkit</groupId>
+			<artifactId>svnkit</artifactId>
+			<version>1.8.10</version>
+		</dependency>
 
 	</dependencies>
 
