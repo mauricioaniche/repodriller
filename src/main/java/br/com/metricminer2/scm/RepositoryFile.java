@@ -2,6 +2,8 @@ package br.com.metricminer2.scm;
 
 import java.io.File;
 
+import br.com.metricminer2.util.FileUtils;
+
 public class RepositoryFile {
 
 	private File file;
@@ -28,6 +30,10 @@ public class RepositoryFile {
 
 	public boolean fileNameContains(String text) {
 		return file.getName().toLowerCase().contains(text);
+	}
+	
+	public String getSourceCode() {
+		return FileUtils.readFile(getFile());
 	}
 	
 	@Override
