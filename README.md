@@ -20,7 +20,7 @@ Then, you can:
 
 # Creating a Study
 
-See www.metricminer.org.br/documentation.
+See www.metricminer.org.br/documentation.php.
 
 # License
 
