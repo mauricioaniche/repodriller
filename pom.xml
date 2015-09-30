@@ -30,10 +30,9 @@
 	</developers>
 
 	<scm>
-		<url>http://github.com/metricminer-msr/metricminer2</url>
-		<connection>scm:git:git://github.com/metricminer-msr/metricminer2</connection>
-		<developerConnection>scm:git:git@github.com:metricminer-msr/metricminer2.git</developerConnection>
-		<tag>metricminer-2.0.1</tag>
+		<url>http://github.com/mauricioaniche/metricminer2</url>
+		<connection>scm:git:git://github.com/mauricioaniche/metricminer2</connection>
+		<developerConnection>scm:git:git@github.com:mauricioaniche/metricminer2.git</developerConnection>
 	</scm>
 
 	<repositories>
