@@ -27,6 +27,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.ResetCommand.ResetType;
 import org.eclipse.jgit.api.errors.CannotDeleteCurrentBranchException;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.NotMergedException;
@@ -284,8 +285,10 @@ public class GitRepository implements SCM {
 		Git git = null;
 		try {
 			git = Git.open(new File(path));
+			git.reset().setMode(ResetType.HARD).call();
+			git.checkout().setName("master").call();
 			deleteMMBranch(git);
-			git.checkout().setCreateBranch(true).setName("mm").setStartPoint(hash).setForce(true).call();
+			git.checkout().setCreateBranch(true).setName("mm").setStartPoint(hash).setForce(true).setOrphan(true).call();
 
 		} catch (Exception e) {
 			throw new RuntimeException(e);
