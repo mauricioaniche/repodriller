@@ -19,6 +19,7 @@ package br.com.metricminer2;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +47,7 @@ public class RepositoryMining {
 	private static Logger log = Logger.getLogger(RepositoryMining.class);
 	private CommitRange range;
 	private int threads;
+	private boolean fromTheBeggining;
 	
 	public RepositoryMining() {
 		repos = new ArrayList<SCMRepository>();
@@ -67,6 +69,11 @@ public class RepositoryMining {
 		visitors.put(visitor, writer);
 		return this;
 	}
+	
+	public RepositoryMining startingFromTheBeginning() {
+		fromTheBeggining = true;
+		return this;
+	}
 
 	public RepositoryMining process(CommitVisitor visitor) {
 		return process(visitor, new NoPersistence());
@@ -78,6 +85,8 @@ public class RepositoryMining {
 			log.info("Git repository in " + repo.getPath());
 			
 			List<ChangeSet> allCs = range.get(repo.getScm());
+			if(fromTheBeggining) Collections.reverse(allCs);
+			
 			log.info("Total of commits: " + allCs.size());
 			
 			log.info("Starting threads: " + threads);
