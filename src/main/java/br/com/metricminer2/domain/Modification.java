@@ -25,6 +25,8 @@ public class Modification {
 	private ModificationType type;
 	private String diff;
 	private String sourceCode;
+	private int added;
+	private int removed;
 
 	public Modification(String oldPath, String newPath, ModificationType type, String diff, String sourceCode) {
 		this.oldPath = oldPath;
@@ -32,6 +34,12 @@ public class Modification {
 		this.type = type;
 		this.diff = diff;
 		this.sourceCode = sourceCode;
+		
+		for(String line : diff.replace("\r", "").split("\n")) {
+			if(line.startsWith("+") && !line.startsWith("+++")) added++;
+			if(line.startsWith("-") && !line.startsWith("---")) removed++;
+		}
+		
 	}
 
 	public String getOldPath() {
@@ -79,7 +87,14 @@ public class Modification {
 		return fileName[fileName.length-1];
 	}
 	
+
+	public int getAdded() {
+		return added;
+	}
 	
+	public int getRemoved() {
+		return removed;
+	}
 
 	
 }

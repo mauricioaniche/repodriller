@@ -209,7 +209,7 @@ public class GitRepository implements SCM {
 						log.error("diff for " + newPath + " too big");
 						diffText = "-- TOO BIG --";
 					}
-
+					
 					theCommit.addModification(oldPath, newPath, change, diffText, sc);
 
 				}

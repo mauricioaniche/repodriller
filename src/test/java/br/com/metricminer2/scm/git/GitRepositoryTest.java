@@ -24,7 +24,6 @@ import java.util.Scanner;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import br.com.metricminer2.domain.ChangeSet;
@@ -34,7 +33,6 @@ import br.com.metricminer2.scm.GitRepository;
 import br.com.metricminer2.scm.RepositoryFile;
 import br.com.metricminer2.scm.SCMRepository;
 
-@Ignore
 public class GitRepositoryTest {
 
 	private GitRepository git;
@@ -109,6 +107,21 @@ public class GitRepositoryTest {
 		Assert.assertEquals("Matricula.java", commit.getModifications().get(0).getNewPath());
 		Assert.assertTrue(commit.getModifications().get(0).getDiff().startsWith("diff --git a/Matricula.java b/Matricula.java"));
 		Assert.assertTrue(commit.getModifications().get(0).getSourceCode().startsWith("package model;"));
+		
+	}
+
+	@Test 
+	public void shouldGetNumberOfModifications() {
+		
+		Commit commit = git.getCommit("866e997a9e44cb4ddd9e00efe49361420aff2559");
+		
+		Assert.assertEquals(62, commit.getModifications().get(0).getAdded());
+		Assert.assertEquals(0, commit.getModifications().get(0).getRemoved());
+
+		commit = git.getCommit("d11dd6734ff4e60cac3a7b58d9267f138c9e05c7");
+		
+		Assert.assertEquals(1, commit.getModifications().get(0).getAdded());
+		Assert.assertEquals(1, commit.getModifications().get(0).getRemoved());
 		
 	}
 	
