@@ -61,7 +61,7 @@ import br.com.metricminer2.util.FileUtils;
 public class GitRepository implements SCM {
 
 	private static final int MAX_SIZE_OF_A_DIFF = 100000;
-	private static final int MAX_NUMBER_OF_FILES_IN_A_COMMIT = 50;
+	private static final int MAX_NUMBER_OF_FILES_IN_A_COMMIT = 200;
 	private String path;
 
 	private static Logger log = Logger.getLogger(GitRepository.class);
