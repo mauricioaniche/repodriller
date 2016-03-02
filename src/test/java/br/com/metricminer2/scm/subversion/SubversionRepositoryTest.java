@@ -1,14 +1,12 @@
 package br.com.metricminer2.scm.subversion;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
-import java.util.Scanner;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.tmatesoft.svn.core.SVNException;
 
@@ -23,19 +21,15 @@ import br.com.metricminer2.scm.SubversionRepository;
  * @author Juliano Silva
  *
  */
-@Ignore
 public class SubversionRepositoryTest {
 
 	private SubversionRepository svn;
 	private static String path;
 
 	@BeforeClass
-	public static void readPath() throws FileNotFoundException, SVNException {
-		String cfgFile = SubversionRepositoryTest.class.getResource("/repo-2.txt").getPath();
-		Scanner sc = new java.util.Scanner(new File(cfgFile));
-		path = "file:///" + sc.nextLine();
-		sc.close();
-
+	public static void readPath() throws SVNException, IOException {
+		String file = SubversionRepositoryTest.class.getResource("/").getPath() + "../../test-repos/svn-1";
+		path = "file:///" + new File(file).getCanonicalPath();
 	}
 
 	@Before

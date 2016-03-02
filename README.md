@@ -4,11 +4,6 @@ Required: Git, Maven.
 
 ```
 git clone https://github.com/mauricioaniche/metricminer2.git
-cd metricminer2/src/test/resources
-unzip repo-1.zip
-echo "path to the repo-1/ dir you just unzipped" > repo-1.txt
-unzip repo-2.zip
-echo "path to the repo-2/ dir you just unzipped" > repo-2.txt
 ```
 
 Then, you can:

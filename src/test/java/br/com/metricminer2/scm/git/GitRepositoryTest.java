@@ -16,10 +16,8 @@
 
 package br.com.metricminer2.scm.git;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
-import java.util.Scanner;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -32,6 +30,7 @@ import br.com.metricminer2.domain.ModificationType;
 import br.com.metricminer2.scm.GitRepository;
 import br.com.metricminer2.scm.RepositoryFile;
 import br.com.metricminer2.scm.SCMRepository;
+import br.com.metricminer2.scm.subversion.SubversionRepositoryTest;
 
 public class GitRepositoryTest {
 
@@ -40,10 +39,7 @@ public class GitRepositoryTest {
 
 	@BeforeClass
 	public static void readPath() throws FileNotFoundException {
-		String cfgFile = GitRepositoryTest.class.getResource("/repo-1.txt").getPath();
-		Scanner sc = new java.util.Scanner(new File(cfgFile));
-		path = sc.nextLine();
-		sc.close();
+		path = SubversionRepositoryTest.class.getResource("/").getPath() + "../../test-repos/git-1";
 	}
 	
 	@Before
