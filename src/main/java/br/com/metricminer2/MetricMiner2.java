@@ -42,7 +42,11 @@ public class MetricMiner2 {
 			log.info("# -------------------------------------------------- #");
 			log.info("Starting engine: " + new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").format(startDate.getTime()));
 			
-			study.execute();
+			try {
+				study.execute();
+			} catch (Throwable t) {
+				log.error("some study error came to me", t);
+			}
 			
 			Calendar finishDate = Calendar.getInstance();
 			log.info("Finished: " + new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").format(finishDate.getTime()));
