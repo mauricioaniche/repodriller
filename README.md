@@ -4,6 +4,8 @@ Required: Git, Maven.
 
 ```
 git clone https://github.com/mauricioaniche/metricminer2.git
+cd metricminer2/test-repos
+unzip *.zip
 ```
 
 Then, you can:
