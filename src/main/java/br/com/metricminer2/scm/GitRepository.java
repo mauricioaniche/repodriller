@@ -57,6 +57,7 @@ import br.com.metricminer2.domain.Commit;
 import br.com.metricminer2.domain.Developer;
 import br.com.metricminer2.domain.ModificationType;
 import br.com.metricminer2.util.FileUtils;
+import br.com.metricminer2.util.SimpleCommandExecutor;
 
 public class GitRepository implements SCM {
 
@@ -184,6 +185,8 @@ public class GitRepository implements SCM {
 				date.setTime(new Date(epoch * 1000L));
 
 				theCommit = new Commit(hash, author, committer, date, msg, parent);
+				
+				setBranches(theCommit);
 
 				List<DiffEntry> diffsForTheCommit = diffsForTheCommit(repo, jgitCommit);
 				if (diffsForTheCommit.size() > MAX_NUMBER_OF_FILES_IN_A_COMMIT) {
@@ -223,6 +226,16 @@ public class GitRepository implements SCM {
 		} finally {
 			if (git != null)
 				git.close();
+		}
+	}
+
+
+	private void setBranches(Commit theCommit) {
+		// JGit doesn't support it, so we need to do it manually...
+		String result = new SimpleCommandExecutor().execute("git branch --contains " + theCommit.getHash(), path);
+		String[] lines = result.split("\n");
+		for(String line : lines) {
+			theCommit.addBranch(line.replace("*", "").trim());
 		}
 	}
 

@@ -31,6 +31,7 @@ public class Commit {
 	private List<Modification> modifications;
 	private String parent;
 	private Calendar date;
+	private List<String> branches;
 
 	public Commit(String hash, Developer author, Developer committer, Calendar date, String msg, String parent) {
 		this.hash = hash;
@@ -40,6 +41,7 @@ public class Commit {
 		this.msg = msg;
 		this.parent = parent;
 		this.modifications = new ArrayList<Modification>();
+		this.branches = new ArrayList<String>();
 	}
 
 	public String getHash() {
@@ -85,6 +87,13 @@ public class Commit {
 	public Calendar getDate() {
 		return date;
 	}
-	
+
+	public void addBranch(String branch) {
+		branches.add(branch);
+	}
+
+	public List<String> getBranches() {
+		return Collections.unmodifiableList(branches);
+	}
 
 }

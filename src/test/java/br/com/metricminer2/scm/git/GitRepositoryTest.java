@@ -30,7 +30,6 @@ import br.com.metricminer2.domain.ModificationType;
 import br.com.metricminer2.scm.GitRepository;
 import br.com.metricminer2.scm.RepositoryFile;
 import br.com.metricminer2.scm.SCMRepository;
-import br.com.metricminer2.scm.subversion.SubversionRepositoryTest;
 
 public class GitRepositoryTest {
 
@@ -39,7 +38,7 @@ public class GitRepositoryTest {
 
 	@BeforeClass
 	public static void readPath() throws FileNotFoundException {
-		path = SubversionRepositoryTest.class.getResource("/").getPath() + "../../test-repos/git-1";
+		path = GitRepositoryTest.class.getResource("/").getPath() + "../../test-repos/git-1";
 	}
 	
 	@Before
@@ -84,9 +83,21 @@ public class GitRepositoryTest {
 	public void shouldGetAllCommits() {
 		List<ChangeSet> cs = git.getChangeSets();
 		
-		Assert.assertEquals(13, cs.size());
-		Assert.assertEquals("e7d13b0511f8a176284ce4f92ed8c6e8d09c77f2", cs.get(0).getId());
-		Assert.assertEquals("866e997a9e44cb4ddd9e00efe49361420aff2559", cs.get(12).getId());
+		Assert.assertEquals(14, cs.size());
+		Assert.assertEquals("a997e9d400f742003dea601bb05a9315d14d1124", cs.get(0).getId());
+		Assert.assertEquals("866e997a9e44cb4ddd9e00efe49361420aff2559", cs.get(13).getId());
+	}
+	
+	@Test
+	public void getBranchesFromCommit() {
+		Commit commit = git.getCommit("a997e9d400f742003dea601bb05a9315d14d1124");
+		Assert.assertEquals(1, commit.getBranches().size());
+		Assert.assertEquals("b2", commit.getBranches().get(0));
+
+		commit = git.getCommit("866e997a9e44cb4ddd9e00efe49361420aff2559");
+		Assert.assertEquals(2, commit.getBranches().size());
+		Assert.assertTrue(commit.getBranches().contains("master"));
+		Assert.assertTrue(commit.getBranches().contains("b2"));
 	}
 	
 	@Test 
