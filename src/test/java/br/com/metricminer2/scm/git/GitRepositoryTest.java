@@ -92,7 +92,7 @@ public class GitRepositoryTest {
 	public void getBranchesFromCommit() {
 		Commit commit = git.getCommit("a997e9d400f742003dea601bb05a9315d14d1124");
 		Assert.assertEquals(1, commit.getBranches().size());
-		Assert.assertEquals("b2", commit.getBranches().get(0));
+		Assert.assertTrue(commit.getBranches().contains("b2"));
 
 		commit = git.getCommit("866e997a9e44cb4ddd9e00efe49361420aff2559");
 		Assert.assertEquals(2, commit.getBranches().size());

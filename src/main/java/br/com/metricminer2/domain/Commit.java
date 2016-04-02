@@ -19,7 +19,9 @@ package br.com.metricminer2.domain;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 public class Commit {
@@ -31,7 +33,7 @@ public class Commit {
 	private List<Modification> modifications;
 	private String parent;
 	private Calendar date;
-	private List<String> branches;
+	private Set<String> branches;
 
 	public Commit(String hash, Developer author, Developer committer, Calendar date, String msg, String parent) {
 		this.hash = hash;
@@ -41,7 +43,7 @@ public class Commit {
 		this.msg = msg;
 		this.parent = parent;
 		this.modifications = new ArrayList<Modification>();
-		this.branches = new ArrayList<String>();
+		this.branches = new HashSet<String>();
 	}
 
 	public String getHash() {
@@ -92,8 +94,8 @@ public class Commit {
 		branches.add(branch);
 	}
 
-	public List<String> getBranches() {
-		return Collections.unmodifiableList(branches);
+	public Set<String> getBranches() {
+		return Collections.unmodifiableSet(branches);
 	}
 
 }
