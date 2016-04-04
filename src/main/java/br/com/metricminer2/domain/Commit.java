@@ -34,18 +34,28 @@ public class Commit {
 	private String parent;
 	private Calendar date;
 	private Set<String> branches;
+	private boolean merge;
 
 	public Commit(String hash, Developer author, Developer committer, Calendar date, String msg, String parent) {
+		this(hash, author, committer, date, msg, parent, false);
+	}
+
+	public Commit(String hash, Developer author, Developer committer, Calendar date, String msg, String parent, boolean merge) {
 		this.hash = hash;
 		this.author = author;
 		this.committer = committer;
 		this.date = date;
 		this.msg = msg;
 		this.parent = parent;
+		this.merge = merge;
 		this.modifications = new ArrayList<Modification>();
 		this.branches = new HashSet<String>();
 	}
 
+	public boolean isMerge() {
+		return merge;
+	}
+	
 	public String getHash() {
 		return hash;
 	}

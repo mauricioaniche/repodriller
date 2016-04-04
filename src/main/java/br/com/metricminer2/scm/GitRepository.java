@@ -184,7 +184,9 @@ public class GitRepository implements SCM {
 				GregorianCalendar date = new GregorianCalendar();
 				date.setTime(new Date(epoch * 1000L));
 
-				theCommit = new Commit(hash, author, committer, date, msg, parent);
+				boolean merge = false;
+				if(jgitCommit.getParentCount() > 1) merge = true;
+				theCommit = new Commit(hash, author, committer, date, msg, parent, merge);
 				
 				setBranches(theCommit);
 
