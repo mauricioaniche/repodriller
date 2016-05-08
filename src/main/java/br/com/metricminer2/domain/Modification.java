@@ -81,9 +81,10 @@ public class Modification {
 	}
 
 	public String getFileName() {
-		if(!newPath.contains(File.separator)) return newPath;
+		String thePath = newPath!=null && !newPath.equals("/dev/null") ? newPath : oldPath;
+		if(!thePath.contains(File.separator)) return thePath;
 		
-		String[] fileName = newPath.split(File.separator);
+		String[] fileName = thePath.split(File.separator);
 		return fileName[fileName.length-1];
 	}
 	
