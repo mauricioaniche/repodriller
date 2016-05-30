@@ -2,6 +2,8 @@
 
 MetricMiner is a Java framework that helps developers on mining software repositories. With it, you can easily extract information from any Git repository, such as commits, developers, modifications, diffs, and source codes, and quickly export CSV files.
 
+Take a look at our documentation, or [our many examples](https://github.com/mauricioaniche/metricminer2-tutorial). Or talk to us.
+
 # Documentation
 
 ## Getting Started
@@ -32,7 +34,7 @@ Let's start with something simple: we will print the name of the developers for 
 
 In practice, MetricMiner will open the Git repository and will extract all information that is inside. Then, the framework will pass each commit to all processors. Let's write our first _DevelopersProcessor_. It is fairly simple. All we will do is to implement _CommitVisitor_. And, inside of _process()_, we print the commit hash and the name of the developer. MetricMiner gives us nice objects to play with all the data:
 
-That's it, we are ready to go! If we execute it, we will have the CSV printed into "/Users/mauricioaniche/Desktop/devs.csv". [Take a look](download/devs.csv).
+That's it, we are ready to go! If we execute it, we will have the CSV printed into "/Users/mauricioaniche/Desktop/devs.csv". [Take a look](https://gist.github.com/mauricioaniche/e0d2f8d4c09ef15d17fad25ec582c706).
 
 **I bet you never found a framework simple as this one!**
 
@@ -126,6 +128,10 @@ pages={142--146}, year={2013},
 organization={IEEE}  
 }  
 ```
+
+# How can I discuss about it?
+
+You can subscribe to our mailing list: https://groups.google.com/forum/#!forum/metricminer.
 
 # How to Contribute
 
