@@ -2,7 +2,7 @@
 
 MetricMiner is a Java framework that helps developers on mining software repositories. With it, you can easily extract information from any Git repository, such as commits, developers, modifications, diffs, and source codes, and quickly export CSV files.
 
-Take a look at our documentation, or [our many examples](https://github.com/mauricioaniche/metricminer2-tutorial). Or talk to us.
+Take a look at our documentation and [our many examples](https://github.com/mauricioaniche/metricminer2-tutorial). Or talk to us.
 
 # Documentation
 
