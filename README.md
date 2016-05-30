@@ -1,7 +1,5 @@
 # MetricMiner 2
 
-## Are you looking for a help with your empirical study?
-
 MetricMiner is a Java framework that helps developers on mining software repositories. With it, you can easily extract information from any Git repository, such as commits, developers, modifications, diffs, and source codes, and quickly export CSV files.
 
 # Documentation
@@ -106,16 +104,28 @@ You have a bunch of CSV files. Do whatever you want with them. We usually upload
 
 You can play with the [project here](https://www.getdatajoy.com/project/55e36c0e3b765b3001b99476).
 
-## Advanced Configurations
-
-### Creating your own CommitRange
+## Creating your own CommitRange
 
 (not written yet)
 
-### Creating your own PersistenceMechanism
+## Creating your own PersistenceMechanism
 
 (not written yet)
 
+
+# How do I cite MetricMiner?
+
+_Sokol, Francisco Zigmund, Mauricio Finavaro Aniche, and Marco Gerosa. "MetricMiner: Supporting researchers in mining software repositories." Source Code Analysis and Manipulation (SCAM), 2013 IEEE 13th International Working Conference on. IEEE, 2013._
+
+```
+@inproceedings{sokol2013metricminer,  
+title={MetricMiner: Supporting researchers in mining software repositories},  
+author={Sokol, Francisco Zigmund and Finavaro Aniche, Mauricio and Gerosa, Marco and others},  
+booktitle={Source Code Analysis and Manipulation (SCAM), 2013 IEEE 13th International Working Conference on},  
+pages={142--146}, year={2013},  
+organization={IEEE}  
+}  
+```
 
 # How to Contribute
 
