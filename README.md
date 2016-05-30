@@ -6,7 +6,7 @@ MetricMiner is a Java framework that helps developers on mining software reposit
 
 ## Getting Started
 
-You simply have to start a Java Project in Eclipse. MetricMiner is on Maven, so you can download all its dependencies by only adding this to your pom.xml. Or, if you want, you can download a [skeleton project](download/metricminer2-skeleton.zip):
+You simply have to start a Java Project in Eclipse. MetricMiner is on Maven, so you can download all its dependencies by only adding this to your pom.xml. Or, if you want, you can see [an example](github.com/mauricioaniche/change-metrics):
 
 ```
 <dependency>
