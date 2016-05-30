@@ -22,7 +22,7 @@ Always use the latest version in Maven. You can see them here: [http://www.mvnre
 
 MetricMiner needs a _Study_. The interface is quite simple: a single _execute()_ method:
 
-```
+```java
 import br.com.metricminer2.MetricMiner2;
 import br.com.metricminer2.Study;
 
@@ -41,7 +41,7 @@ public class MyStudy implements Study {
 
 All the magic goes inside this method. In there, you will have to configure your study, projects to analyze, metrics to be executed, and output files. Take a look in the example. That's what we have to configure:
 
-```
+```java
 public void execute() {
 	new RepositoryMining()
 		.in(<LIST OF PROJECTS>)
@@ -59,7 +59,7 @@ Let's start with something simple: we will print the name of the developers for 
 *   process(): Visitors that will pass in each commit.
 *   mine(): The magic starts!
 
-```
+```java
 public void execute() {
 	new RepositoryMining()
 		.in(GitRepository.singleProject("/Users/mauricioaniche/workspace/metricminer2"))
@@ -72,7 +72,7 @@ public void execute() {
 
 In practice, MetricMiner will open the Git repository and will extract all information that is inside. Then, the framework will pass each commit to all processors. Let's write our first _DevelopersProcessor_. It is fairly simple. All we will do is to implement _CommitVisitor_. And, inside of _process()_, we print the commit hash and the name of the developer. MetricMiner gives us nice objects to play with all the data:
 
-```
+```java
 import br.com.metricminer2.domain.Commit;
 import br.com.metricminer2.persistence.PersistenceMechanism;
 import br.com.metricminer2.scm.CommitVisitor;
@@ -113,7 +113,7 @@ The first thing you configure in MetricMiner is the project you want to analyze.
 
 MetricMiner uses log4j to print useful information about its execution. We recommend tou to have a log4.xml:
 
-```
+```xml
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 
@@ -155,7 +155,7 @@ One interesting thing about MetricMiner is that is avoids huge commits. When a c
 
 You can get the list of modified files, as well as their diffs and current source code. To that, all you have to do is to get the list of _Modification_s that exists inside _Commit_. A _Commit_ contains a hash, a committer (name and email), an author (name, and email) a message, the date, its parent hash, and the list of modification.
 
-```
+```java
 @Override
 public void process(SCMRepository repo, Commit commit, PersistenceMechanism writer) {
 	
@@ -186,7 +186,7 @@ Note about the implementation: This is not supported by JGit, so it makes use of
 
 If you need to, you can store state in your visitors. As an example, if you do not want to process a huge CSV, you can pre-process something before. As an example, if you want to count the total number of modified files per developer, you can either output all developers and the quantity of modifications, and then sum it later using your favorite database, or do the math in the visitor. If you decide to do it, it will be your responsibility to save the results afterwards.
 
-```
+```java
 import java.util.HashMap;
 import java.util.Map;
 
@@ -228,7 +228,7 @@ You have entire source code of the repository. You may want to analyze it. Metri
 
 Let's say we decide to count the quantity of methods in each modified file. All we have to do is to create a _CommitVisitor_, the way we are used to. This visitor will use our _JDTRunner_ to invoke a JDT visitor (yes, JDT uses visitors as well). Notice that we executed the JDT visitor, and then wrote the result.
 
-```
+```java
 import java.io.ByteArrayInputStream;
 
 import br.com.metricminer2.domain.Commit;
@@ -273,7 +273,7 @@ public class JavaParserVisitor implements CommitVisitor {
 
 The visitor is quite simple. It has methods for all different nodes in the file. All you have to do is to visit the right node. As an example, we will visit _MethodDeclaration_ and count the number of times it is invoked (one per each method in this file). 
 
-```
+```java
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 
@@ -302,7 +302,7 @@ If you need more than just the metadata from the commit, you may also check out 
 
 To that, we will _checkout()_ the revision, and get all _files()_. It returns the list of all files in the project at that moment. Then, it is up to you to do whatever you want. In here, we will use our _NumberOfMethodsVisitor_ to count the number of files in all Java files. Please, remember to _reset()_ as soon as you finish playing with the files.
 
-```
+```java
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -379,7 +379,7 @@ How good is your machine? MetricMiner can execute the visitor over many threads.
 
 We suggest you to use threads unless your project _checkout_ revisions. The checkout operation in Git changes the disk, so you can't actually parallelize the work.
 
-```
+```java
 @Override
 public void execute() {
 	new RepositoryMining()
