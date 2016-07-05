@@ -16,6 +16,7 @@
 
 package br.com.metricminer2.persistence.csv;
 
+import java.io.FileOutputStream;
 import java.io.PrintStream;
 
 import br.com.metricminer2.persistence.PersistenceMechanism;
@@ -25,15 +26,23 @@ public class CSVFile implements PersistenceMechanism {
 	private PrintStream ps;
 
 	public CSVFile(String fileName) {
+		this(fileName, false);
+	}
+
+	public CSVFile(String fileName, boolean append) {
 		try {
-			ps = new PrintStream(fileName);
+			ps = new PrintStream(new FileOutputStream(fileName, true));
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
 	
 	public CSVFile(String path, String name) {
-		this(path + name);
+		this(path, name, false);
+	}
+
+	public CSVFile(String path, String name, boolean append) {
+		this(path + name, append);
 	}
 
 	@Override
