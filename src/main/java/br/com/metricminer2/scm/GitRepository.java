@@ -296,7 +296,7 @@ public class GitRepository implements SCM {
 		}
 	}
 
-	public void checkout(String hash) {
+	public synchronized void checkout(String hash) {
 		Git git = null;
 		try {
 			git = Git.open(new File(path));
@@ -313,7 +313,7 @@ public class GitRepository implements SCM {
 		}
 	}
 
-	private void deleteMMBranch(Git git) throws GitAPIException, NotMergedException, CannotDeleteCurrentBranchException {
+	private synchronized void deleteMMBranch(Git git) throws GitAPIException, NotMergedException, CannotDeleteCurrentBranchException {
 		List<Ref> refs = git.branchList().call();
 		for (Ref r : refs) {
 			if (r.getName().endsWith("mm")) {
@@ -338,7 +338,7 @@ public class GitRepository implements SCM {
 		return f.getName().equals(".DS_Store");
 	}
 
-	public void reset() {
+	public synchronized void reset() {
 		Git git = null;
 		try {
 			git = Git.open(new File(path));
