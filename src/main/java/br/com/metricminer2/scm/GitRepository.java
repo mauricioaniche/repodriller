@@ -57,7 +57,6 @@ import br.com.metricminer2.domain.Commit;
 import br.com.metricminer2.domain.Developer;
 import br.com.metricminer2.domain.ModificationType;
 import br.com.metricminer2.util.FileUtils;
-import br.com.metricminer2.util.SimpleCommandExecutor;
 
 public class GitRepository implements SCM {
 
@@ -89,7 +88,7 @@ public class GitRepository implements SCM {
 		RevWalk rw = null;
 		Git git = null;
 		try {
-			git = Git.open(new File(path));
+			git = openRepository();
 			AnyObjectId headId = git.getRepository().resolve(Constants.HEAD);
 
 			rw = new RevWalk(git.getRepository());
@@ -112,10 +111,14 @@ public class GitRepository implements SCM {
 
 	}
 
+	protected Git openRepository() throws IOException {
+		return Git.open(new File(path));
+	}
+
 	public ChangeSet getHead() {
 		Git git = null;
 		try {
-			git = Git.open(new File(path));
+			git = openRepository();
 			ObjectId head = git.getRepository().resolve(Constants.HEAD);
 
 			RevWalk revWalk = new RevWalk(git.getRepository());
@@ -135,7 +138,7 @@ public class GitRepository implements SCM {
 	public List<ChangeSet> getChangeSets() {
 		Git git = null;
 		try {
-			git = Git.open(new File(path));
+			git = openRepository();
 
 			List<ChangeSet> allCs = new ArrayList<ChangeSet>();
 
@@ -165,7 +168,7 @@ public class GitRepository implements SCM {
 	public Commit getCommit(String id) {
 		Git git = null;
 		try {
-			git = Git.open(new File(path));
+			git = openRepository();
 			Repository repo = git.getRepository();
 
 			Iterable<RevCommit> commits = git.log().add(repo.resolve(id)).call();
@@ -188,7 +191,7 @@ public class GitRepository implements SCM {
 				if(jgitCommit.getParentCount() > 1) merge = true;
 				theCommit = new Commit(hash, author, committer, date, msg, parent, merge);
 				
-				setBranches(theCommit);
+				setBranches(git, theCommit);
 
 				List<DiffEntry> diffsForTheCommit = diffsForTheCommit(repo, jgitCommit);
 				if (diffsForTheCommit.size() > MAX_NUMBER_OF_FILES_IN_A_COMMIT) {
@@ -232,13 +235,15 @@ public class GitRepository implements SCM {
 	}
 
 
-	private void setBranches(Commit theCommit) {
-		// JGit doesn't support it, so we need to do it manually...
-		String result = new SimpleCommandExecutor().execute("git branch --contains " + theCommit.getHash(), path);
-		String[] lines = result.split("\n");
-		for(String line : lines) {
-			theCommit.addBranch(line.replace("*", "").trim());
-		}
+	private void setBranches(Git git, Commit theCommit) throws GitAPIException {
+		git.branchList().setContains(theCommit.getHash()).call()
+			.forEach((branch) -> 
+				{
+					String name = branch.getName();
+					theCommit.addBranch(name.substring(name.lastIndexOf("/")+1));
+				}
+			);
+		
 	}
 
 	private List<DiffEntry> diffsForTheCommit(Repository repo, RevCommit commit) throws IOException, AmbiguousObjectException,
@@ -296,10 +301,10 @@ public class GitRepository implements SCM {
 		}
 	}
 
-	public void checkout(String hash) {
+	public synchronized void checkout(String hash) {
 		Git git = null;
 		try {
-			git = Git.open(new File(path));
+			git = openRepository();
 			git.reset().setMode(ResetType.HARD).call();
 			git.checkout().setName("master").call();
 			deleteMMBranch(git);
@@ -313,7 +318,7 @@ public class GitRepository implements SCM {
 		}
 	}
 
-	private void deleteMMBranch(Git git) throws GitAPIException, NotMergedException, CannotDeleteCurrentBranchException {
+	private synchronized void deleteMMBranch(Git git) throws GitAPIException, NotMergedException, CannotDeleteCurrentBranchException {
 		List<Ref> refs = git.branchList().call();
 		for (Ref r : refs) {
 			if (r.getName().endsWith("mm")) {
@@ -338,10 +343,10 @@ public class GitRepository implements SCM {
 		return f.getName().equals(".DS_Store");
 	}
 
-	public void reset() {
+	public synchronized void reset() {
 		Git git = null;
 		try {
-			git = Git.open(new File(path));
+			git = openRepository();
 
 			git.checkout().setName("master").setForce(true).call();
 			git.branchDelete().setBranchNames("mm").setForce(true).call();
@@ -367,14 +372,18 @@ public class GitRepository implements SCM {
 	public String blame(String file, String currentCommit, Integer line) {
 		Git git = null;
 		try {
-			git = Git.open(new File(path));
+			git = openRepository();
 
 			Iterable<RevCommit> commits = git.log().add(git.getRepository().resolve(currentCommit)).call();
 			ObjectId prior = commits.iterator().next().getParent(0).getId();
 
 			BlameResult blameResult = git.blame().setFilePath(file).setStartCommit(prior).setFollowFileRenames(true).call();
-
-			return blameResult.getSourceCommit(line).getId().getName();
+			
+			if(blameResult != null) {
+				return blameResult.getSourceCommit(line).getId().getName();
+			} else {
+				throw new RuntimeException("BlameResult not found.");
+			}
 
 		} catch (Exception e) {
 			throw new RuntimeException(e);
