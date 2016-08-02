@@ -31,5 +31,6 @@ public interface SCM {
 	void reset();
 	void checkout(String id);
 	String blame(String file, String currentCommit, Integer line);
+	SCMRepository info();
 
 }
