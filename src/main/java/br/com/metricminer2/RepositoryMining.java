@@ -23,8 +23,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
@@ -81,49 +83,64 @@ public class RepositoryMining {
 	
 	public void mine() {
 		
-		for(SCMRepository repo : repos) {
-			log.info("Git repository in " + repo.getPath());
+		try {
 			
-			List<ChangeSet> allCs = range.get(repo.getScm());
-			if(fromTheBeggining) Collections.reverse(allCs);
-			
-			log.info("Total of commits: " + allCs.size());
-			
-			log.info("Starting threads: " + threads);
-			ExecutorService exec = Executors.newFixedThreadPool(threads);
-			List<List<ChangeSet>> partitions = Lists.partition(allCs, threads);
-			for(List<ChangeSet> partition : partitions) {
-				
-				exec.submit(() -> {
-						for(ChangeSet cs : partition) {
-							try {
-								processEverythingOnChangeSet(repo, cs);
-							} catch (OutOfMemoryError e) {
-								System.err.println("Commit " + cs.getId() + " in " + repo.getLastDir() + " caused OOME");
-								e.printStackTrace();
-								System.err.println("goodbye :/");
-								
-								log.fatal("Commit " + cs.getId() + " in " + repo.getLastDir() + " caused OOME", e);
-								log.fatal("Goodbye! ;/");
-								System.exit(-1);
-							} catch(Throwable t) {
-								log.error(t);
-							}
-						}
-				});
+			ExecutorService execRepos = Executors.newFixedThreadPool(repos.size());
+			List<Future<?>> futures = new ArrayList<Future<?>>();
+			for(SCMRepository repo : repos) {
+				futures.add(execRepos.submit(() -> 
+					processRepos(repo)));
 			}
-			
-			try {
-				exec.shutdown();
-				exec.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
-			} catch (InterruptedException e) {
-				log.error("error waiting for threads to terminate in " + repo.getLastDir(), e);
-			}
+		
+			waitAllThreadsToFinish(futures);
+
+		} catch (Throwable t) {
+			log.error(t);
+		} finally {
+			closeAllPersistence();
+			printScript();
 		}
 		
-		closeAllPersistence();
-		printScript();
+	}
+
+	private void processRepos(SCMRepository repo) {
+		log.info("Git repository in " + repo.getPath());
 		
+		List<ChangeSet> allCs = range.get(repo.getScm());
+		if(fromTheBeggining) Collections.reverse(allCs);
+		
+		log.info("Total of commits: " + allCs.size());
+		
+		log.info("Starting threads: " + threads);
+		ExecutorService exec = Executors.newFixedThreadPool(threads);
+		List<List<ChangeSet>> partitions = Lists.partition(allCs, threads);
+		for(List<ChangeSet> partition : partitions) {
+			
+			exec.submit(() -> {
+					for(ChangeSet cs : partition) {
+						try {
+							processEverythingOnChangeSet(repo, cs);
+						} catch (OutOfMemoryError e) {
+							System.err.println("Commit " + cs.getId() + " in " + repo.getLastDir() + " caused OOME");
+							e.printStackTrace();
+							System.err.println("goodbye :/");
+							
+							log.fatal("Commit " + cs.getId() + " in " + repo.getLastDir() + " caused OOME", e);
+							log.fatal("Goodbye! ;/");
+							System.exit(-1);
+						} catch(Throwable t) {
+							log.error(t);
+						}
+					}
+			});
+		}
+		
+		try {
+			exec.shutdown();
+			exec.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
+		} catch (InterruptedException e) {
+			log.error("error waiting for threads to terminate in " + repo.getLastDir(), e);
+		}
 	}
 
 	private void printScript() {
@@ -144,6 +161,12 @@ public class RepositoryMining {
 	private void closeAllPersistence() {
 		for(PersistenceMechanism persist : visitors.values()) {
 			persist.close();
+		}
+	}
+	
+	private void waitAllThreadsToFinish(List<Future<?>> futures) throws InterruptedException, ExecutionException {
+		for (Future<?> future : futures) {
+			future.get();
 		}
 	}
 
