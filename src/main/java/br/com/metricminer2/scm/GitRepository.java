@@ -39,6 +39,7 @@ import org.eclipse.jgit.diff.RawTextComparator;
 import org.eclipse.jgit.errors.AmbiguousObjectException;
 import org.eclipse.jgit.errors.IncorrectObjectTypeException;
 import org.eclipse.jgit.errors.MissingObjectException;
+import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.eclipse.jgit.lib.AnyObjectId;
 import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.ObjectId;
@@ -100,6 +101,9 @@ public class GitRepository implements SCM {
 			String origin = git.getRepository().getConfig().getString("remote", "origin", "url");
 
 			return new SCMRepository(this, origin, path, headId.getName(), lastCommit.getName());
+		} catch (RepositoryNotFoundException rnfe) {
+			log.error(rnfe.getMessage());
+			return null;
 		} catch (Exception e) {
 			throw new RuntimeException("error when info " + path, e);
 		} finally {
