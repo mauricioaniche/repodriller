@@ -23,10 +23,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
@@ -86,16 +84,16 @@ public class RepositoryMining {
 		try {
 			
 			ExecutorService execRepos = Executors.newFixedThreadPool(repos.size());
-			List<Future<?>> futures = new ArrayList<Future<?>>();
 			for(SCMRepository repo : repos) {
-				futures.add(execRepos.submit(() -> 
-					processRepos(repo)));
+				execRepos.submit(() -> 
+					processRepos(repo));
 			}
 		
-			waitAllThreadsToFinish(futures);
-
-		} catch (Throwable t) {
-			log.error(t);
+			execRepos.shutdown();
+			execRepos.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
+		
+		} catch (InterruptedException e) {
+			log.error("Error waiting for threads to terminate in outter repositories.", e);
 		} finally {
 			closeAllPersistence();
 			printScript();
@@ -164,12 +162,6 @@ public class RepositoryMining {
 		}
 	}
 	
-	private void waitAllThreadsToFinish(List<Future<?>> futures) throws InterruptedException, ExecutionException {
-		for (Future<?> future : futures) {
-			future.get();
-		}
-	}
-
 	private void processEverythingOnChangeSet(SCMRepository repo, ChangeSet cs) {
 		Commit commit = repo.getScm().getCommit(cs.getId());
 		log.info(
