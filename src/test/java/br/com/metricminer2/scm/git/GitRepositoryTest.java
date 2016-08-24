@@ -80,7 +80,7 @@ public class GitRepositoryTest {
 	public void shouldGetHead() {
 		ChangeSet head = git1.getHead();
 		
-		Assert.assertEquals("e7d13b0511f8a176284ce4f92ed8c6e8d09c77f2", head.getId());
+		Assert.assertEquals("a997e9d400f742003dea601bb05a9315d14d1124", head.getId());
 	}
 	
 	@Test 
@@ -184,6 +184,6 @@ public class GitRepositoryTest {
 		
 		Assert.assertEquals(path1, repo.getPath());
 		Assert.assertEquals("866e997a9e44cb4ddd9e00efe49361420aff2559", repo.getFirstCommit());
-		Assert.assertEquals("e7d13b0511f8a176284ce4f92ed8c6e8d09c77f2", repo.getHeadCommit());
+		Assert.assertEquals("a997e9d400f742003dea601bb05a9315d14d1124", repo.getHeadCommit());
 	}
 }

@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jgit.api.Git;
@@ -63,7 +64,11 @@ public class GitRepository implements SCM {
 
 	private static final int MAX_SIZE_OF_A_DIFF = 100000;
 	private static final int MAX_NUMBER_OF_FILES_IN_A_COMMIT = 200;
+	private static final String DEFAUT_MASTER_BRANCH_NAME = "master";
+	private static final String BRANCH_MM = "mm";
+
 	private String path;
+	private String masterBranchName;
 
 	private static Logger log = Logger.getLogger(GitRepository.class);
 
@@ -115,8 +120,17 @@ public class GitRepository implements SCM {
 
 	}
 
-	protected Git openRepository() throws IOException {
-		return Git.open(new File(path));
+	protected Git openRepository() throws IOException, GitAPIException {
+		Git git = Git.open(new File(path));
+		if(this.masterBranchName == null) {
+			List<String> branches = git.branchList().call().stream().map(b -> b.getName()).collect(Collectors.toList());
+			if(branches.contains(DEFAUT_MASTER_BRANCH_NAME)) {
+				this.masterBranchName = DEFAUT_MASTER_BRANCH_NAME;
+			} else {
+				this.masterBranchName = branches.get(0);
+			}
+		}
+		return git;
 	}
 
 	public ChangeSet getHead() {
@@ -310,9 +324,9 @@ public class GitRepository implements SCM {
 		try {
 			git = openRepository();
 			git.reset().setMode(ResetType.HARD).call();
-			git.checkout().setName("master").call();
+			git.checkout().setName(masterBranchName).call();
 			deleteMMBranch(git);
-			git.checkout().setCreateBranch(true).setName("mm").setStartPoint(hash).setForce(true).setOrphan(true).call();
+			git.checkout().setCreateBranch(true).setName(BRANCH_MM).setStartPoint(hash).setForce(true).setOrphan(true).call();
 
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -325,8 +339,8 @@ public class GitRepository implements SCM {
 	private synchronized void deleteMMBranch(Git git) throws GitAPIException, NotMergedException, CannotDeleteCurrentBranchException {
 		List<Ref> refs = git.branchList().call();
 		for (Ref r : refs) {
-			if (r.getName().endsWith("mm")) {
-				git.branchDelete().setBranchNames("mm").setForce(true).call();
+			if (r.getName().endsWith(BRANCH_MM)) {
+				git.branchDelete().setBranchNames(BRANCH_MM).setForce(true).call();
 				break;
 			}
 		}
@@ -352,8 +366,8 @@ public class GitRepository implements SCM {
 		try {
 			git = openRepository();
 
-			git.checkout().setName("master").setForce(true).call();
-			git.branchDelete().setBranchNames("mm").setForce(true).call();
+			git.checkout().setName(masterBranchName).setForce(true).call();
+			git.branchDelete().setBranchNames(BRANCH_MM).setForce(true).call();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		} finally {
