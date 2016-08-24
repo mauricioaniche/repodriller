@@ -1,9 +1,11 @@
 package br.com.metricminer2.scm;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -92,6 +94,21 @@ public class GitRemoteRepository implements SCM {
 		}
 
 		return repos.toArray(new SCMRepository[repos.size()]);
+	}
+	
+	/**
+	 *  Can be hooked to a JVM shutdown method, eg.:
+		Runtime.getRuntime().addShutdownHook(new Thread( () -> {
+			try {
+				git.deleteTempGitPath();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+	 * @throws IOException
+	 */
+	public void deleteTempGitPath() throws IOException {
+		FileUtils.deleteDirectory(new File(this.tempGitPath));
 	}
 
 	@Override

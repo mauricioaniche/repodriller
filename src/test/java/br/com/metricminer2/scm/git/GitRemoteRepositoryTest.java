@@ -22,8 +22,8 @@ import java.util.List;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.InvalidRemoteException;
 import org.eclipse.jgit.api.errors.TransportException;
+import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -38,23 +38,19 @@ import br.com.metricminer2.scm.SCMRepository;
 
 public class GitRemoteRepositoryTest {
 
-	private GitRemoteRepository git1;
+	private static GitRemoteRepository git1;
 	private static String path1;
 
-	private GitRemoteRepository git2;
+	private static GitRemoteRepository git2;
 	
 	@BeforeClass
-	public static void readPath() {
+	public static void readPath() throws InvalidRemoteException, TransportException, GitAPIException, IOException {
 //		path1 = "https://github.com/mauricioaniche/metricminer2";
 		path1 = "https://github.com/avjinder/Minimal-Todo.git";
-	}
-
-	@Before
-	public void setUp() throws InvalidRemoteException, TransportException, GitAPIException, IOException {
 		git1 = new GitRemoteRepository(path1);
 		git2 = new GitRemoteRepository(path1);
 	}
-	
+
 	@Test
 	@Ignore
 	public void blame() {
@@ -199,4 +195,11 @@ public class GitRemoteRepositoryTest {
 		Assert.assertEquals("f97a8b469b1f0eab3c5268d772abf323bf9b9598", repo.getFirstCommit());
 		Assert.assertEquals("e379ea037d4dd71104d94bd90c84e0bc5cdd00d2", repo.getHeadCommit());
 	}
+	
+	@AfterClass
+	public static void deleteTempResource() throws IOException {
+		git1.deleteTempGitPath();
+		git2.deleteTempGitPath();
+	}
+	
 }
