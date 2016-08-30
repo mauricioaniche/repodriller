@@ -31,6 +31,7 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ResetCommand.ResetType;
 import org.eclipse.jgit.api.errors.CannotDeleteCurrentBranchException;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.api.errors.NoHeadException;
 import org.eclipse.jgit.api.errors.NotMergedException;
 import org.eclipse.jgit.blame.BlameResult;
 import org.eclipse.jgit.diff.DiffEntry;
@@ -127,7 +128,13 @@ public class GitRepository implements SCM {
 			if(branches.contains(DEFAUT_MASTER_BRANCH_NAME)) {
 				this.masterBranchName = DEFAUT_MASTER_BRANCH_NAME;
 			} else {
-				this.masterBranchName = branches.get(0);
+				if(!branches.isEmpty()) {
+					this.masterBranchName = branches.get(0);
+				} else {
+					throw new NoHeadException("Repository "
+							+ this.path
+							+ " does not have any branch to checkout.");
+				}
 			}
 		}
 		return git;
