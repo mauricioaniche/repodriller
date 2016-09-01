@@ -64,7 +64,7 @@ import br.com.metricminer2.util.FileUtils;
 public class GitRepository implements SCM {
 
 	private static final int MAX_SIZE_OF_A_DIFF = 100000;
-	private static final int MAX_NUMBER_OF_FILES_IN_A_COMMIT = 200;
+	private static final int MAX_NUMBER_OF_FILES_IN_A_COMMIT = 2000;
 	private static final String DEFAUT_MASTER_BRANCH_NAME = "master";
 	private static final String BRANCH_MM = "mm";
 
