@@ -32,16 +32,24 @@ public class GitRemoteRepository implements SCM {
 	public GitRemoteRepository(String url, String rootTempGitPath) throws InvalidRemoteException, TransportException, GitAPIException {
 		this.remoteRepositoryUrl = url;
 		this.tempGitPath = gitRemoteRepositoryTempDir(url, rootTempGitPath);
-		this.initTempGitRepository();
+		this.initTempGitRepository(false);
 		this.tempGitRepository = new GitRepository(tempGitPath);
 	}
 	
-	protected void initTempGitRepository() throws InvalidRemoteException, TransportException, GitAPIException {
+	public GitRemoteRepository(String url, String rootTempGitPath, boolean bare) throws InvalidRemoteException, TransportException, GitAPIException {
+		this.remoteRepositoryUrl = url;
+		this.tempGitPath = gitRemoteRepositoryTempDir(url, rootTempGitPath);
+		this.initTempGitRepository(bare);
+		this.tempGitRepository = new GitRepository(tempGitPath);
+	}
+	
+	protected void initTempGitRepository(boolean bare) throws InvalidRemoteException, TransportException, GitAPIException {
 		File directory = new File(this.tempGitPath);
 		if(!directory.exists()) {
 			log.info("Cloning Remote Repository " + this.remoteRepositoryUrl + " into " + this.tempGitPath);
 			Git.cloneRepository()
 					.setURI(this.remoteRepositoryUrl)
+					.setBare(bare)
 					.setDirectory(directory)
 					.setCloneAllBranches(true)
 					.setNoCheckout(false)
@@ -51,7 +59,7 @@ public class GitRemoteRepository implements SCM {
 	}
 
 	protected static String gitSystemTempDir() {
-		return System.getProperty("java.io.tmpdir");
+		return FileUtils.getTempDirectory().getAbsolutePath();
 	}
 	
 	protected static String gitRemoteRepositoryTempDir(String remoteRepositoryUrl, String rootTempDir) {
@@ -71,8 +79,12 @@ public class GitRemoteRepository implements SCM {
 	}
 	
 	public static SCMRepository singleProject(String url, String rootTempGitPath) {
+		return singleProject(url, rootTempGitPath, false);
+	}
+	
+	public static SCMRepository singleProject(String url, String rootTempGitPath, boolean bare) {
 		try {
-			return new GitRemoteRepository(url, rootTempGitPath).info();
+			return new GitRemoteRepository(url, rootTempGitPath, bare).info();
 		} catch (GitAPIException e) {
 			throw new RuntimeException(e.getMessage(), e);
 		}
