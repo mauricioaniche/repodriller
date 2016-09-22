@@ -148,6 +148,7 @@ MetricMiner allows you to select the range of commits to be processed. The class
 *   _monthly(months)_: It selects one commit per month, from the beginning to the end of the repo.
 *   _list(commits...)_: The list of commits to be processed.
 *   _range(start,end)_: The range of commits, starting at "start" hash, ending at "end" hash.
+*   _betweenDates(from,to)_: The range of commits, starting at "from" timestamp, ending at "to" timestamp.
 
 One interesting thing about MetricMiner is that is avoids huge commits. When a commit contains too many files (> 50), it will be ignored.
 

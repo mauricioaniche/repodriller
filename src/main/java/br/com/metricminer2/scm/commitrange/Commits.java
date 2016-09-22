@@ -1,5 +1,6 @@
 package br.com.metricminer2.scm.commitrange;
 
+import java.util.Calendar;
 import java.util.List;
 
 public class Commits {
@@ -18,6 +19,10 @@ public class Commits {
 
 	public static CommitRange monthly(int months) {
 		return new MonthlyCommits(months);
+	}
+
+	public static CommitRange betweenDates(Calendar from, Calendar to) {
+		return new BetweenDates(from, to);
 	}
 	
 	public static CommitRange list(List<String> commits) {
