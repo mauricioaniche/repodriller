@@ -182,6 +182,16 @@ The _Commit_ class contains the _getBranches()_ method. It returns the list of b
 
 Note about the implementation: This is not supported by JGit, so it makes use of Git directly.
 
+## Blame
+
+The _SCM_ class contains a blame() method, which allows you to blame a file in a specific commit:
+
+`List<BlamedLine> blame(String file, String commitToBeBlamed, boolean priorCommit)`
+
+You should pass the file name (relative path), the commit which the file should be blamed, and a boolean
+informing whether you want the file to be blamed _before_ (priorCommit=true) or _after_ (priorCommit=false)
+the changes of that particular commit.
+
 ## Managing State in the Visitor
 
 If you need to, you can store state in your visitors. As an example, if you do not want to process a huge CSV, you can pre-process something before. As an example, if you want to count the total number of modified files per developer, you can either output all developers and the quantity of modifications, and then sum it later using your favorite database, or do the math in the visitor. If you decide to do it, it will be your responsibility to save the results afterwards.

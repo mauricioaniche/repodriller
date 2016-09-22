@@ -27,6 +27,7 @@ import org.junit.Test;
 import br.com.metricminer2.domain.ChangeSet;
 import br.com.metricminer2.domain.Commit;
 import br.com.metricminer2.domain.ModificationType;
+import br.com.metricminer2.scm.BlamedLine;
 import br.com.metricminer2.scm.GitRepository;
 import br.com.metricminer2.scm.RepositoryFile;
 import br.com.metricminer2.scm.SCMRepository;
@@ -35,26 +36,71 @@ public class GitRepositoryTest {
 
 	private GitRepository git1;
 	private GitRepository git2;
+	private GitRepository git3;
 	private static String path1;
 	private static String path2;
+	private static String path3;
 
 	@BeforeClass
 	public static void readPath() throws FileNotFoundException {
 		path1 = GitRepositoryTest.class.getResource("/").getPath() + "../../test-repos/git-1";
 		path2 = GitRepositoryTest.class.getResource("/").getPath() + "../../test-repos/git-2";
+		path3 = GitRepositoryTest.class.getResource("/").getPath() + "../../test-repos/git-3";
 	}
 	
 	@Before
 	public void setUp() {
 		git1 = new GitRepository(path1);
 		git2 = new GitRepository(path2);
+		git3 = new GitRepository(path3);
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Test
-	public void blame() {
+	public void deprecatedBlame() {
 		String hash = git1.blame("Arquivo.java", "e7d13b0511f8a176284ce4f92ed8c6e8d09c77f2", 3);
 		
 		Assert.assertEquals("a4ece0762e797d2e2dcbd471115108dd6e05ff58", hash);
+	}
+
+	@Test
+	public void blameFullFile() {
+		List<BlamedLine> blame = git3.blame("Arquivo.java", "112fd6787a9b0ffedab5e36fbbd6f014859a9d6d", false);
+		
+		Assert.assertEquals(
+				new BlamedLine(0, "Arquivo.java", "Maurício Aniche", "Maurício Aniche", "a4ece0762e797d2e2dcbd471115108dd6e05ff58"),
+				blame.get(0));
+		Assert.assertEquals(
+				new BlamedLine(1, "Arquivo.java", "Maurício Aniche", "Maurício Aniche", "a4ece0762e797d2e2dcbd471115108dd6e05ff58"),
+				blame.get(1));
+		Assert.assertEquals(
+				new BlamedLine(2, "Arquivo.java", "Maurício Aniche", "Maurício Aniche", "e7d13b0511f8a176284ce4f92ed8c6e8d09c77f2"),
+				blame.get(2));
+		Assert.assertEquals(
+				new BlamedLine(3, "Arquivo.java", "John Doe", "Maurício Aniche", "112fd6787a9b0ffedab5e36fbbd6f014859a9d6d"),
+				blame.get(3));
+		Assert.assertEquals(
+				new BlamedLine(4, "Arquivo.java", "John Doe", "Maurício Aniche", "112fd6787a9b0ffedab5e36fbbd6f014859a9d6d"),
+				blame.get(4));
+		Assert.assertEquals(
+				new BlamedLine(5, "Arquivo.java", "Maurício Aniche", "Maurício Aniche", "a4ece0762e797d2e2dcbd471115108dd6e05ff58"),
+				blame.get(5));
+		Assert.assertEquals(
+				new BlamedLine(6, "Arquivo.java", "John Doe", "Maurício Aniche", "112fd6787a9b0ffedab5e36fbbd6f014859a9d6d"),
+				blame.get(6));
+		Assert.assertEquals(
+				new BlamedLine(7, "Arquivo.java", "Maurício Aniche", "Maurício Aniche", "a4ece0762e797d2e2dcbd471115108dd6e05ff58"),
+				blame.get(7));
+		Assert.assertEquals(
+				new BlamedLine(8, "Arquivo.java", "Maurício Aniche", "Maurício Aniche", "a4ece0762e797d2e2dcbd471115108dd6e05ff58"),
+				blame.get(8));
+				
+
+		List<BlamedLine> blame2 = git3.blame("Arquivo.java", "e7d13b0511f8a176284ce4f92ed8c6e8d09c77f2", false);
+		List<BlamedLine> blame3 = git3.blame("Arquivo.java", "112fd6787a9b0ffedab5e36fbbd6f014859a9d6d", true);
+		
+		Assert.assertEquals(blame2, blame3);
+		
 	}
 	
 	@Test 

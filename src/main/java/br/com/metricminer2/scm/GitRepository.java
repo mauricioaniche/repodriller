@@ -363,18 +363,41 @@ public class GitRepository implements SCM {
 	}
 
 	@Override
-	public String blame(String file, String currentCommit, Integer line) {
+	@Deprecated
+	public String blame(String file, String commitToBeBlamed, Integer line) {
+		return blame(file,commitToBeBlamed).get(line).getCommit();
+	}
+	
+	public List<BlamedLine> blame(String file, String commitToBeBlamed) {
+		return blame(file, commitToBeBlamed, true);
+	}
+	
+	public List<BlamedLine> blame(String file, String commitToBeBlamed, boolean priorCommit) {
 		Git git = null;
 		try {
 			git = openRepository();
 
-			Iterable<RevCommit> commits = git.log().add(git.getRepository().resolve(currentCommit)).call();
-			ObjectId prior = commits.iterator().next().getParent(0).getId();
+			ObjectId gitCommitToBeBlamed;
+			if(priorCommit) {
+				Iterable<RevCommit> commits = git.log().add(git.getRepository().resolve(commitToBeBlamed)).call();
+				gitCommitToBeBlamed = commits.iterator().next().getParent(0).getId();
+			} else {
+				gitCommitToBeBlamed = git.getRepository().resolve(commitToBeBlamed); 
+			}
 
-			BlameResult blameResult = git.blame().setFilePath(file).setStartCommit(prior).setFollowFileRenames(true).call();
-			
+			BlameResult blameResult = git.blame().setFilePath(file).setStartCommit(gitCommitToBeBlamed).setFollowFileRenames(true).call();
 			if(blameResult != null) {
-				return blameResult.getSourceCommit(line).getId().getName();
+				int rows = blameResult.getResultContents().size();
+				List<BlamedLine> result = new ArrayList<>();
+				for(int i = 0; i < rows; i++) {
+					result.add(new BlamedLine(i, 
+							blameResult.getSourcePath(i), 
+							blameResult.getSourceAuthor(i).getName(), 
+							blameResult.getSourceCommitter(i).getName(), 
+							blameResult.getSourceCommit(i).getId().getName()));
+				}
+				
+				return result;
 			} else {
 				throw new RuntimeException("BlameResult not found.");
 			}
@@ -385,7 +408,6 @@ public class GitRepository implements SCM {
 			if (git != null)
 				git.close();
 		}
-
 	}
 
 }

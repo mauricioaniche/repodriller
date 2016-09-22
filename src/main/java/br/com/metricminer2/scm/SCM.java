@@ -30,6 +30,8 @@ public interface SCM {
 	long totalCommits();
 	void reset();
 	void checkout(String id);
+	@Deprecated
 	String blame(String file, String currentCommit, Integer line);
+	List<BlamedLine> blame(String file, String commitToBeBlamed, boolean priorCommit);
 
 }

@@ -35,6 +35,7 @@ import br.com.metricminer2.domain.Developer;
 import br.com.metricminer2.domain.Modification;
 import br.com.metricminer2.domain.ModificationType;
 import br.com.metricminer2.util.FileUtils;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * @author Juliano Silva
@@ -356,6 +357,7 @@ public class SubversionRepository implements SCM {
 	}
 
 	@Override
+	@Deprecated
 	public String blame(String file, String currentCommit, Integer line) {
 		try {
 			SVNURL url = SVNURL.parseURIEncoded(path + File.separator + file);
@@ -405,5 +407,12 @@ public class SubversionRepository implements SCM {
 	public String getPath() {
 		return path;
 	}
+
+	@Override
+	public List<BlamedLine> blame(String file, String currentCommit, boolean priorCommit) {
+		// pull request me!
+		throw new NotImplementedException();
+	}
+
 
 }
