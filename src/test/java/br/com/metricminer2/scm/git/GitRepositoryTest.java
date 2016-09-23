@@ -104,6 +104,23 @@ public class GitRepositoryTest {
 		Assert.assertTrue(commit.getBranches().contains("b2"));
 	}
 	
+	@Test
+	public void isCommitInMasterBranch() {
+		Assert.assertEquals("29e929fbc5dc6a2e9c620069b24e2a143af4285f", git2.getHead().getId());
+
+		git2.checkout("8986af2a679759e5a15794f6d56e6d46c3f302f1");
+		GitRepository git3 = new GitRepository(path2);
+
+		Commit commit = git3.getCommit("8169f76a3d7add54b4fc7bca7160d1f1eede6eda");
+		Assert.assertFalse(commit.isInMasterBranch());
+
+		commit = git3.getCommit("168b3aab057ed61a769acf336a4ef5e64f76c9fd");
+		Assert.assertTrue(commit.isInMasterBranch());
+		
+		git2.reset();
+		Assert.assertEquals("29e929fbc5dc6a2e9c620069b24e2a143af4285f", git2.getHead().getId());
+	}
+	
 	@Test 
 	public void shouldDetailACommit() {
 		

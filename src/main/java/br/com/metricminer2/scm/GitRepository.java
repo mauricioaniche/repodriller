@@ -24,14 +24,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ResetCommand.ResetType;
 import org.eclipse.jgit.api.errors.CannotDeleteCurrentBranchException;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.api.errors.NoHeadException;
 import org.eclipse.jgit.api.errors.NotMergedException;
 import org.eclipse.jgit.blame.BlameResult;
 import org.eclipse.jgit.diff.DiffEntry;
@@ -65,7 +63,6 @@ public class GitRepository implements SCM {
 
 	private static final int MAX_SIZE_OF_A_DIFF = 100000;
 	private static final int MAX_NUMBER_OF_FILES_IN_A_COMMIT = 2000;
-	private static final String DEFAUT_MASTER_BRANCH_NAME = "master";
 	private static final String BRANCH_MM = "mm";
 
 	private String path;
@@ -124,18 +121,7 @@ public class GitRepository implements SCM {
 	protected Git openRepository() throws IOException, GitAPIException {
 		Git git = Git.open(new File(path));
 		if(this.masterBranchName == null) {
-			List<String> branches = git.branchList().call().stream().map(b -> b.getName()).collect(Collectors.toList());
-			if(branches.contains(DEFAUT_MASTER_BRANCH_NAME)) {
-				this.masterBranchName = DEFAUT_MASTER_BRANCH_NAME;
-			} else {
-				if(!branches.isEmpty()) {
-					this.masterBranchName = branches.get(0);
-				} else {
-					throw new NoHeadException("Repository "
-							+ this.path
-							+ " does not have any branch to checkout.");
-				}
-			}
+			this.masterBranchName = git.getRepository().getBranch();
 		}
 		return git;
 	}
@@ -265,7 +251,7 @@ public class GitRepository implements SCM {
 			.forEach((branch) -> 
 				{
 					String name = branch.getName();
-					theCommit.addBranch(name.substring(name.lastIndexOf("/")+1));
+					theCommit.addBranch(name.substring(name.lastIndexOf("/")+1), masterBranchName);
 				}
 			);
 		
