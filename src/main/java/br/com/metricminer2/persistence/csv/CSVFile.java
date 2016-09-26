@@ -31,7 +31,7 @@ public class CSVFile implements PersistenceMechanism {
 
 	public CSVFile(String fileName, boolean append) {
 		try {
-			ps = new PrintStream(new FileOutputStream(fileName, true));
+			ps = new PrintStream(new FileOutputStream(fileName, append));
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
