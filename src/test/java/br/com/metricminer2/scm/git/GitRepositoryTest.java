@@ -126,7 +126,7 @@ public class GitRepositoryTest {
 	public void shouldGetHead() {
 		ChangeSet head = git1.getHead();
 		
-		Assert.assertEquals("a997e9d400f742003dea601bb05a9315d14d1124", head.getId());
+		Assert.assertEquals("e7d13b0511f8a176284ce4f92ed8c6e8d09c77f2", head.getId());
 	}
 	
 	@Test 
@@ -155,29 +155,12 @@ public class GitRepositoryTest {
 		Assert.assertEquals("29e929fbc5dc6a2e9c620069b24e2a143af4285f", git2.getHead().getId());
 
 		git2.checkout("8986af2a679759e5a15794f6d56e6d46c3f302f1");
-		GitRepository git3 = new GitRepository(path2);
+		GitRepository gitToChangeHead = new GitRepository(path2);
 
-		Commit commit = git3.getCommit("8169f76a3d7add54b4fc7bca7160d1f1eede6eda");
+		Commit commit = gitToChangeHead.getCommit("8169f76a3d7add54b4fc7bca7160d1f1eede6eda");
 		Assert.assertFalse(commit.isInMasterBranch());
 
-		commit = git3.getCommit("168b3aab057ed61a769acf336a4ef5e64f76c9fd");
-		Assert.assertTrue(commit.isInMasterBranch());
-		
-		git2.reset();
-		Assert.assertEquals("29e929fbc5dc6a2e9c620069b24e2a143af4285f", git2.getHead().getId());
-	}
-	
-	@Test
-	public void isCommitInMasterBranch() {
-		Assert.assertEquals("29e929fbc5dc6a2e9c620069b24e2a143af4285f", git2.getHead().getId());
-
-		git2.checkout("8986af2a679759e5a15794f6d56e6d46c3f302f1");
-		GitRepository git3 = new GitRepository(path2);
-
-		Commit commit = git3.getCommit("8169f76a3d7add54b4fc7bca7160d1f1eede6eda");
-		Assert.assertFalse(commit.isInMasterBranch());
-
-		commit = git3.getCommit("168b3aab057ed61a769acf336a4ef5e64f76c9fd");
+		commit = gitToChangeHead.getCommit("168b3aab057ed61a769acf336a4ef5e64f76c9fd");
 		Assert.assertTrue(commit.isInMasterBranch());
 		
 		git2.reset();
@@ -264,6 +247,6 @@ public class GitRepositoryTest {
 		
 		Assert.assertEquals(path1, repo.getPath());
 		Assert.assertEquals("866e997a9e44cb4ddd9e00efe49361420aff2559", repo.getFirstCommit());
-		Assert.assertEquals("a997e9d400f742003dea601bb05a9315d14d1124", repo.getHeadCommit());
+		Assert.assertEquals("e7d13b0511f8a176284ce4f92ed8c6e8d09c77f2", repo.getHeadCommit());
 	}
 }

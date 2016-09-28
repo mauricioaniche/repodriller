@@ -164,8 +164,14 @@ public class GitRemoteRepository implements SCM {
 	}
 
 	@Override
+	@Deprecated
 	public String blame(String file, String currentCommit, Integer line) {
 		return tempGitRepository.blame(file, currentCommit, line);
+	}
+
+	@Override
+	public List<BlamedLine> blame(String file, String commitToBeBlamed, boolean priorCommit) {
+		return tempGitRepository.blame(file, commitToBeBlamed, priorCommit);
 	}
 	
 }
