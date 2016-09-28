@@ -95,6 +95,18 @@ public class Commit {
 		return "Commit [hash=" + hash + ", parent=" + parent + ", author=" + author + ", msg=" + msg + ", modifications="
 				+ modifications + "]";
 	}
+
+	@Override
+	public boolean equals(Object other) {
+		if (other == null || !(other instanceof Commit)) {
+			return false;
+		} else if (other == this) {
+			return true;
+		} else {
+			Commit c = (Commit) other;
+			return this.getHash().equals(c.getHash());
+		}
+	}
 	
 	public Calendar getDate() {
 		return date;
