@@ -44,13 +44,14 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 public class SubversionRepository implements SCM {
 
 	private static final int MAX_SIZE_OF_A_DIFF = 100000;
-	private static final int MAX_NUMBER_OF_FILES_IN_A_COMMIT = 50;
+	private static final int DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT = 50;
 
 	private static Logger log = Logger.getLogger(SubversionRepository.class);
 	private String path;
 	private String username;
 	private String password;
 	private String workingCopyPath;
+	private Integer maxNumberFilesInACommit;
 
 	public SubversionRepository(String path, String username, String password) {
 		this.path = path;
@@ -156,7 +157,7 @@ public class SubversionRepository implements SCM {
 
 				List<Modification> modifications = getModifications(repository, url, revision, logEntry);
 
-				if (modifications.size() > MAX_NUMBER_OF_FILES_IN_A_COMMIT) {
+				if (modifications.size() > this.getMaxNumberFilesInACommit()) {
 					log.error("commit " + id + " has more than files than the limit");
 					throw new RuntimeException("commit " + id + " too big, sorry");
 				}
@@ -413,6 +414,22 @@ public class SubversionRepository implements SCM {
 		// pull request me!
 		throw new NotImplementedException();
 	}
+	
+	public int getMaxNumberFilesInACommit() {
+		if(this.maxNumberFilesInACommit == null){
+			return DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT;
+		} else {
+			return this.maxNumberFilesInACommit;
+		}
+	}
 
+	@Override
+	public void setMaxNumberFilesInACommit(int maxNumber) {
+		if(maxNumber <= 0){
+			throw new IllegalArgumentException("Max number of files in a commit should be 0 or greater."
+					+ "Default value is " + DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT);
+		}
+		this.maxNumberFilesInACommit = maxNumber;
+	}
 
 }

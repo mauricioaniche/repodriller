@@ -249,4 +249,36 @@ public class GitRepositoryTest {
 		Assert.assertEquals("866e997a9e44cb4ddd9e00efe49361420aff2559", repo.getFirstCommit());
 		Assert.assertEquals("e7d13b0511f8a176284ce4f92ed8c6e8d09c77f2", repo.getHeadCommit());
 	}
+	
+	@Test 
+	public void testMaxNumberOfFilesInACommit() {
+		int expectedDefaultValue = 200;
+		Assert.assertEquals(expectedDefaultValue, git1.getMaxNumberFilesInACommit());
+		
+		int newExpectedMaxNumber = 2000;
+		git1.setMaxNumberFilesInACommit(newExpectedMaxNumber);
+		Assert.assertEquals(newExpectedMaxNumber, git1.getMaxNumberFilesInACommit());
+	}
+	
+	@Test 
+	public void invalidMaxNumberOfFilesInACommit() {
+		try {
+			int newExpectedMaxNumber = 0;
+			git1.setMaxNumberFilesInACommit(newExpectedMaxNumber);
+			Assert.fail("Should not set maxNumberOfFilesInACommit");
+		} catch (IllegalArgumentException e) {
+			int expectedDefaultValue = 200;
+			Assert.assertEquals(expectedDefaultValue, git1.getMaxNumberFilesInACommit());
+		}
+
+		try {
+			int newExpectedMaxNumber = -1;
+			git1.setMaxNumberFilesInACommit(newExpectedMaxNumber);
+			Assert.fail("Should not set maxNumberOfFilesInACommit");
+		} catch (IllegalArgumentException e) {
+			int expectedDefaultValue = 200;
+			Assert.assertEquals(expectedDefaultValue, git1.getMaxNumberFilesInACommit());
+		}
+	}
+	
 }

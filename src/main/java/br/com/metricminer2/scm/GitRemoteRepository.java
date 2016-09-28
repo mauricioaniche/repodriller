@@ -174,4 +174,9 @@ public class GitRemoteRepository implements SCM {
 		return tempGitRepository.blame(file, commitToBeBlamed, priorCommit);
 	}
 	
+	@Override
+	public void setMaxNumberFilesInACommit(int maxNumber) {
+		this.tempGitRepository.setMaxNumberFilesInACommit(maxNumber);
+	}
+	
 }

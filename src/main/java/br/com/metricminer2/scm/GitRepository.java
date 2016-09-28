@@ -62,11 +62,12 @@ import br.com.metricminer2.util.FileUtils;
 public class GitRepository implements SCM {
 
 	private static final int MAX_SIZE_OF_A_DIFF = 100000;
-	private static final int MAX_NUMBER_OF_FILES_IN_A_COMMIT = 2000;
+	private static final int DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT = 200;
 	private static final String BRANCH_MM = "mm";
 
 	private String path;
 	private String masterBranchName;
+	private Integer maxNumberFilesInACommit;
 
 	private static Logger log = Logger.getLogger(GitRepository.class);
 
@@ -205,7 +206,7 @@ public class GitRepository implements SCM {
 				setBranches(git, theCommit);
 
 				List<DiffEntry> diffsForTheCommit = diffsForTheCommit(repo, jgitCommit);
-				if (diffsForTheCommit.size() > MAX_NUMBER_OF_FILES_IN_A_COMMIT) {
+				if (diffsForTheCommit.size() > this.getMaxNumberFilesInACommit()) {
 					log.error("commit " + id + " has more than files than the limit");
 					throw new RuntimeException("commit " + id + " too big, sorry");
 				}
@@ -419,6 +420,23 @@ public class GitRepository implements SCM {
 			if (git != null)
 				git.close();
 		}
+	}
+
+	public int getMaxNumberFilesInACommit() {
+		if(this.maxNumberFilesInACommit == null){
+			return DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT;
+		} else {
+			return this.maxNumberFilesInACommit;
+		}
+	}
+
+	@Override
+	public void setMaxNumberFilesInACommit(int maxNumber) {
+		if(maxNumber <= 0){
+			throw new IllegalArgumentException("Max number of files in a commit should be 0 or greater."
+					+ "Default value is " + DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT);
+		}
+		this.maxNumberFilesInACommit = maxNumber;
 	}
 
 }
