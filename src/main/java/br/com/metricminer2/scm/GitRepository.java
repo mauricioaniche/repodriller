@@ -39,6 +39,7 @@ import org.eclipse.jgit.diff.RawTextComparator;
 import org.eclipse.jgit.errors.AmbiguousObjectException;
 import org.eclipse.jgit.errors.IncorrectObjectTypeException;
 import org.eclipse.jgit.errors.MissingObjectException;
+import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.eclipse.jgit.lib.AnyObjectId;
 import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.ObjectId;
@@ -61,8 +62,11 @@ import br.com.metricminer2.util.FileUtils;
 public class GitRepository implements SCM {
 
 	private static final int MAX_SIZE_OF_A_DIFF = 100000;
-	private static final int MAX_NUMBER_OF_FILES_IN_A_COMMIT = 200;
+	private static final int MAX_NUMBER_OF_FILES_IN_A_COMMIT = 2000;
+	private static final String BRANCH_MM = "mm";
+
 	private String path;
+	private String masterBranchName;
 
 	private static Logger log = Logger.getLogger(GitRepository.class);
 
@@ -100,6 +104,9 @@ public class GitRepository implements SCM {
 			String origin = git.getRepository().getConfig().getString("remote", "origin", "url");
 
 			return new SCMRepository(this, origin, path, headId.getName(), lastCommit.getName());
+		} catch (RepositoryNotFoundException rnfe) {
+			log.error(rnfe.getMessage());
+			return null;
 		} catch (Exception e) {
 			throw new RuntimeException("error when info " + path, e);
 		} finally {
@@ -111,8 +118,12 @@ public class GitRepository implements SCM {
 
 	}
 
-	protected Git openRepository() throws IOException {
-		return Git.open(new File(path));
+	protected Git openRepository() throws IOException, GitAPIException {
+		Git git = Git.open(new File(path));
+		if(this.masterBranchName == null) {
+			this.masterBranchName = git.getRepository().getBranch();
+		}
+		return git;
 	}
 
 	public ChangeSet getHead() {
@@ -240,7 +251,7 @@ public class GitRepository implements SCM {
 			.forEach((branch) -> 
 				{
 					String name = branch.getName();
-					theCommit.addBranch(name.substring(name.lastIndexOf("/")+1));
+					theCommit.addBranch(name.substring(name.lastIndexOf("/")+1), masterBranchName);
 				}
 			);
 		
@@ -306,9 +317,9 @@ public class GitRepository implements SCM {
 		try {
 			git = openRepository();
 			git.reset().setMode(ResetType.HARD).call();
-			git.checkout().setName("master").call();
+			git.checkout().setName(masterBranchName).call();
 			deleteMMBranch(git);
-			git.checkout().setCreateBranch(true).setName("mm").setStartPoint(hash).setForce(true).setOrphan(true).call();
+			git.checkout().setCreateBranch(true).setName(BRANCH_MM).setStartPoint(hash).setForce(true).setOrphan(true).call();
 
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -321,8 +332,8 @@ public class GitRepository implements SCM {
 	private synchronized void deleteMMBranch(Git git) throws GitAPIException, NotMergedException, CannotDeleteCurrentBranchException {
 		List<Ref> refs = git.branchList().call();
 		for (Ref r : refs) {
-			if (r.getName().endsWith("mm")) {
-				git.branchDelete().setBranchNames("mm").setForce(true).call();
+			if (r.getName().endsWith(BRANCH_MM)) {
+				git.branchDelete().setBranchNames(BRANCH_MM).setForce(true).call();
 				break;
 			}
 		}
@@ -342,8 +353,8 @@ public class GitRepository implements SCM {
 		try {
 			git = openRepository();
 
-			git.checkout().setName("master").setForce(true).call();
-			git.branchDelete().setBranchNames("mm").setForce(true).call();
+			git.checkout().setName(masterBranchName).setForce(true).call();
+			git.branchDelete().setBranchNames(BRANCH_MM).setForce(true).call();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		} finally {

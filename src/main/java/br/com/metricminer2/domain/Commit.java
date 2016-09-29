@@ -35,6 +35,7 @@ public class Commit {
 	private Calendar date;
 	private Set<String> branches;
 	private boolean merge;
+	private boolean inMasterBranch;
 
 	public Commit(String hash, Developer author, Developer committer, Calendar date, String msg, String parent) {
 		this(hash, author, committer, date, msg, parent, false);
@@ -112,12 +113,17 @@ public class Commit {
 		return date;
 	}
 
-	public void addBranch(String branch) {
+	public void addBranch(String branch, String masterBranch) {
 		branches.add(branch);
+		this.inMasterBranch = this.branches.contains(masterBranch);
 	}
 
 	public Set<String> getBranches() {
 		return Collections.unmodifiableSet(branches);
+	}
+	
+	public boolean isInMasterBranch() {
+		return inMasterBranch;
 	}
 
 }
