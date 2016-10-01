@@ -40,8 +40,7 @@ public class GitRemoteRepositoryTest {
 	public static void readPath() throws InvalidRemoteException, TransportException, GitAPIException, IOException {
 		url = "https://github.com/mauricioaniche/metricminer2";
 		git1 = new GitRemoteRepository(url);
-		boolean isbareRepository = true;
-		git2 = new GitRemoteRepository(url, REMOTE_GIT_TEMP_DIR, isbareRepository);
+		git2 = GitRemoteRepository.hostedOn(url).inTempDir(REMOTE_GIT_TEMP_DIR).asBareRepos().build();
 	}
 
 	@Test

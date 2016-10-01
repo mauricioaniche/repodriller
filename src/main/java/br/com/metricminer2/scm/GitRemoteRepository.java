@@ -9,8 +9,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.api.errors.InvalidRemoteException;
-import org.eclipse.jgit.api.errors.TransportException;
 
 import br.com.metricminer2.domain.ChangeSet;
 import br.com.metricminer2.domain.Commit;
@@ -18,32 +16,26 @@ import br.com.metricminer2.domain.Commit;
 public class GitRemoteRepository implements SCM {
 	
 	private GitRepository tempGitRepository;
-	
 	private String remoteRepositoryUrl;
-
 	private String tempGitPath;
 
 	private static Logger log = Logger.getLogger(GitRemoteRepository.class);
 	
-	public GitRemoteRepository(String url) throws InvalidRemoteException, TransportException, GitAPIException {
-		this(url, gitSystemTempDir());
+	public GitRemoteRepository(String url) throws GitAPIException {
+		this(url, gitSystemTempDir(), false, GitRepository.DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT);
 	}
 	
-	public GitRemoteRepository(String url, String rootTempGitPath) throws InvalidRemoteException, TransportException, GitAPIException {
+	public GitRemoteRepository(String url, String rootTempGitPath, boolean bare, Integer maxNumberFilesInACommit) throws GitAPIException {
 		this.remoteRepositoryUrl = url;
-		this.tempGitPath = gitRemoteRepositoryTempDir(url, rootTempGitPath);
-		this.initTempGitRepository(false);
-		this.tempGitRepository = new GitRepository(tempGitPath);
-	}
-	
-	public GitRemoteRepository(String url, String rootTempGitPath, boolean bare) throws InvalidRemoteException, TransportException, GitAPIException {
-		this.remoteRepositoryUrl = url;
+		if(rootTempGitPath == null) {
+			rootTempGitPath = gitSystemTempDir();
+		}
 		this.tempGitPath = gitRemoteRepositoryTempDir(url, rootTempGitPath);
 		this.initTempGitRepository(bare);
-		this.tempGitRepository = new GitRepository(tempGitPath);
+		this.tempGitRepository = new GitRepository(tempGitPath, maxNumberFilesInACommit);
 	}
 	
-	protected void initTempGitRepository(boolean bare) throws InvalidRemoteException, TransportException, GitAPIException {
+	protected void initTempGitRepository(boolean bare) throws GitAPIException {
 		File directory = new File(this.tempGitPath);
 		if(!directory.exists()) {
 			log.info("Cloning Remote Repository " + this.remoteRepositoryUrl + " into " + this.tempGitPath);
@@ -55,7 +47,6 @@ public class GitRemoteRepository implements SCM {
 					.setNoCheckout(false)
 					.call();
 		}
-		directory.deleteOnExit();
 	}
 
 	protected static String gitSystemTempDir() {
@@ -75,36 +66,53 @@ public class GitRemoteRepository implements SCM {
 	}
 	
 	public static SCMRepository singleProject(String url) {
-		return singleProject(url, gitSystemTempDir());
+		return singleProject(url, gitSystemTempDir(), false, GitRepository.DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT);
 	}
 	
-	public static SCMRepository singleProject(String url, String rootTempGitPath) {
-		return singleProject(url, rootTempGitPath, false);
-	}
-	
-	public static SCMRepository singleProject(String url, String rootTempGitPath, boolean bare) {
+	/**
+	 * Used only by Builder. Eg.: GitRemoteRepository
+					.hostedOn(gitUrl)
+					.inTempDir(rootTempGitPath)
+					.asBareRepos()
+					.withMaxNumberOfFilesInACommit(2000)
+					.buildAsSCMRepository()
+	 * @param url
+	 * @param rootTempGitPath
+	 * @param bare
+	 * @param maxNumberFilesInACommit
+	 * @return
+	 */
+	protected static SCMRepository singleProject(String url, String rootTempGitPath, boolean bare, Integer maxNumberFilesInACommit) {
 		try {
-			return new GitRemoteRepository(url, rootTempGitPath, bare).info();
+			return new GitRemoteRepository(url, rootTempGitPath, bare, maxNumberFilesInACommit).info();
 		} catch (GitAPIException e) {
 			throw new RuntimeException(e.getMessage(), e);
 		}
 	}
 	
-	public static SCMRepository[] allProjectsIn(List<String> urls, String rootTempGitPath) {
-		List<SCMRepository> repos = new ArrayList<SCMRepository>();
-		for (String url : urls) {
-			repos.add(singleProject(url, rootTempGitPath));
-		}
-
-		return repos.toArray(new SCMRepository[repos.size()]);
-	}
-
 	public static SCMRepository[] allProjectsIn(List<String> urls) {
+		return allProjectsIn(urls, gitSystemTempDir(), false, GitRepository.DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT);
+	}
+	
+	/**
+	 * Used only by Builder. Eg.: GitRemoteRepository
+					.hostedOn(listGitUrls)
+					.inTempDir(rootTempGitPath)
+					.asBareRepos()
+					.withMaxNumberOfFilesInACommit(2000)
+					.buildAsSCMRepositories()
+	 * @param url
+	 * @param rootTempGitPath
+	 * @param bare
+	 * @param maxNumberFilesInACommit
+	 * @return
+	 */
+	protected static SCMRepository[] allProjectsIn(List<String> urls, String rootTempGitPath, boolean bare, Integer maxNumberFilesInACommit) {
 		List<SCMRepository> repos = new ArrayList<SCMRepository>();
 		for (String url : urls) {
-			repos.add(singleProject(url, gitSystemTempDir()));
+			repos.add(singleProject(url, rootTempGitPath, bare, maxNumberFilesInACommit));
 		}
-
+		
 		return repos.toArray(new SCMRepository[repos.size()]);
 	}
 	
@@ -174,9 +182,12 @@ public class GitRemoteRepository implements SCM {
 		return tempGitRepository.blame(file, commitToBeBlamed, priorCommit);
 	}
 	
-	@Override
-	public void setMaxNumberFilesInACommit(int maxNumber) {
-		this.tempGitRepository.setMaxNumberFilesInACommit(maxNumber);
+	public static SingleGitRemoteRepositoryBuilder hostedOn(String gitUrl) {
+		return new SingleGitRemoteRepositoryBuilder(gitUrl);
+	}
+
+	public static MultipleGitRemoteRepositoryBuilder hostedOn(List<String> gitUrls) {
+		return new MultipleGitRemoteRepositoryBuilder(gitUrls);
 	}
 	
 }

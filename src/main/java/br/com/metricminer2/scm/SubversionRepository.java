@@ -54,26 +54,55 @@ public class SubversionRepository implements SCM {
 	private Integer maxNumberFilesInACommit;
 
 	public SubversionRepository(String path, String username, String password) {
+		this(path, username, password, DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT);
+	}
+
+	public SubversionRepository(String path, String username, String password, Integer maxNumberOfFilesInACommit) {
 		this.path = path;
 		this.username = username;
 		this.password = password;
+		maxNumberOfFilesInACommit = checkMaxNumber(maxNumberOfFilesInACommit);
+		this.maxNumberFilesInACommit = maxNumberOfFilesInACommit;
 
 		workingCopyPath = createWorkingCopy();
 	}
 
+	private Integer checkMaxNumber(Integer maxNumberOfFilesInACommit) {
+		if(maxNumberOfFilesInACommit == null) {
+			maxNumberOfFilesInACommit = DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT;
+		}
+		if(maxNumberOfFilesInACommit <= 0){
+			throw new IllegalArgumentException("Max number of files in a commit should be 0 or greater."
+					+ "Default value is " + DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT);
+		}
+		return maxNumberOfFilesInACommit;
+	}
+
 	public SubversionRepository(String repositoryPath) {
-		this(repositoryPath, null, null);
+		this(repositoryPath, null, null, DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT);
+	}
+
+	public SubversionRepository(String repositoryPath, Integer maxNumberOfFilesInACommit) {
+		this(repositoryPath, null, null, maxNumberOfFilesInACommit);
 	}
 
 	public static SCMRepository singleProject(String path) {
-		return new SubversionRepository(path).info();
+		return singleProject(path, DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT);
+	}
+
+	public static SCMRepository singleProject(String path, Integer maxNumberOfFilesInACommit) {
+		return new SubversionRepository(path, maxNumberOfFilesInACommit).info();
 	}
 
 	public static SCMRepository[] allProjectsIn(String path) {
+		return allProjectsIn(path, DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT);
+	}
+
+	public static SCMRepository[] allProjectsIn(String path, Integer maxNumberOfFilesInACommit) {
 		List<SCMRepository> repos = new ArrayList<SCMRepository>();
 
 		for (String dir : FileUtils.getAllDirsIn(path)) {
-			repos.add(singleProject(dir));
+			repos.add(singleProject(dir, maxNumberOfFilesInACommit));
 		}
 
 		return repos.toArray(new SCMRepository[repos.size()]);
@@ -157,7 +186,7 @@ public class SubversionRepository implements SCM {
 
 				List<Modification> modifications = getModifications(repository, url, revision, logEntry);
 
-				if (modifications.size() > this.getMaxNumberFilesInACommit()) {
+				if (modifications.size() > this.maxNumberFilesInACommit) {
 					log.error("commit " + id + " has more than files than the limit");
 					throw new RuntimeException("commit " + id + " too big, sorry");
 				}
@@ -415,21 +444,8 @@ public class SubversionRepository implements SCM {
 		throw new NotImplementedException();
 	}
 	
-	public int getMaxNumberFilesInACommit() {
-		if(this.maxNumberFilesInACommit == null){
-			return DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT;
-		} else {
-			return this.maxNumberFilesInACommit;
-		}
+	public Integer getMaxNumberFilesInACommit() {
+		return maxNumberFilesInACommit;
 	}
-
-	@Override
-	public void setMaxNumberFilesInACommit(int maxNumber) {
-		if(maxNumber <= 0){
-			throw new IllegalArgumentException("Max number of files in a commit should be 0 or greater."
-					+ "Default value is " + DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT);
-		}
-		this.maxNumberFilesInACommit = maxNumber;
-	}
-
+	
 }

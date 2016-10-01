@@ -38,10 +38,10 @@ public class Commit {
 	private boolean inMasterBranch;
 
 	public Commit(String hash, Developer author, Developer committer, Calendar date, String msg, String parent) {
-		this(hash, author, committer, date, msg, parent, false);
+		this(hash, author, committer, date, msg, parent, false, new HashSet<>(), false);
 	}
 
-	public Commit(String hash, Developer author, Developer committer, Calendar date, String msg, String parent, boolean merge) {
+	public Commit(String hash, Developer author, Developer committer, Calendar date, String msg, String parent, boolean merge, Set<String> branches, boolean isCommitInMasterBranch) {
 		this.hash = hash;
 		this.author = author;
 		this.committer = committer;
@@ -50,7 +50,8 @@ public class Commit {
 		this.parent = parent;
 		this.merge = merge;
 		this.modifications = new ArrayList<Modification>();
-		this.branches = new HashSet<String>();
+		this.branches = branches;
+		this.inMasterBranch = isCommitInMasterBranch;
 	}
 
 	public boolean isMerge() {
@@ -99,11 +100,6 @@ public class Commit {
 	
 	public Calendar getDate() {
 		return date;
-	}
-
-	public void addBranch(String branch, String masterBranch) {
-		branches.add(branch);
-		this.inMasterBranch = this.branches.contains(masterBranch);
 	}
 
 	public Set<String> getBranches() {

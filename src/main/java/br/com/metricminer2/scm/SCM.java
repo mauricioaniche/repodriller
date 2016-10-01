@@ -34,6 +34,5 @@ public interface SCM {
 	String blame(String file, String currentCommit, Integer line);
 	List<BlamedLine> blame(String file, String commitToBeBlamed, boolean priorCommit);
 	SCMRepository info();
-	void setMaxNumberFilesInACommit(int maxNumber);
 
 }

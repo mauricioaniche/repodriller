@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jgit.api.Git;
@@ -39,7 +41,6 @@ import org.eclipse.jgit.diff.RawTextComparator;
 import org.eclipse.jgit.errors.AmbiguousObjectException;
 import org.eclipse.jgit.errors.IncorrectObjectTypeException;
 import org.eclipse.jgit.errors.MissingObjectException;
-import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.eclipse.jgit.lib.AnyObjectId;
 import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.ObjectId;
@@ -62,7 +63,7 @@ import br.com.metricminer2.util.FileUtils;
 public class GitRepository implements SCM {
 
 	private static final int MAX_SIZE_OF_A_DIFF = 100000;
-	private static final int DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT = 200;
+	protected static final int DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT = 200;
 	private static final String BRANCH_MM = "mm";
 
 	private String path;
@@ -72,18 +73,43 @@ public class GitRepository implements SCM {
 	private static Logger log = Logger.getLogger(GitRepository.class);
 
 	public GitRepository(String path) {
+		this(path, DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT);
+	}
+
+	public GitRepository(String path, Integer maxNumberOfFilesInACommit) {
 		this.path = path;
+		maxNumberOfFilesInACommit = checkMaxNumber(maxNumberOfFilesInACommit);
+		this.maxNumberFilesInACommit = maxNumberOfFilesInACommit;
+	}
+
+	private Integer checkMaxNumber(Integer maxNumberOfFilesInACommit) {
+		if(maxNumberOfFilesInACommit == null) {
+			maxNumberOfFilesInACommit = DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT;
+		}
+		if(maxNumberOfFilesInACommit <= 0){
+			throw new IllegalArgumentException("Max number of files in a commit should be 0 or greater."
+					+ "Default value is " + DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT);
+		}
+		return maxNumberOfFilesInACommit;
 	}
 
 	public static SCMRepository singleProject(String path) {
+		return singleProject(path, DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT);
+	}
+
+	public static SCMRepository singleProject(String path, Integer maxNumberOfFilesInACommit) {
 		return new GitRepository(path).info();
 	}
 
 	public static SCMRepository[] allProjectsIn(String path) {
+		return allProjectsIn(path, DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT);
+	}
+
+	public static SCMRepository[] allProjectsIn(String path, Integer maxNumberOfFilesInACommit) {
 		List<SCMRepository> repos = new ArrayList<SCMRepository>();
 
 		for (String dir : FileUtils.getAllDirsIn(path)) {
-			repos.add(singleProject(dir));
+			repos.add(singleProject(dir, maxNumberOfFilesInACommit));
 		}
 
 		return repos.toArray(new SCMRepository[repos.size()]);
@@ -105,9 +131,6 @@ public class GitRepository implements SCM {
 			String origin = git.getRepository().getConfig().getString("remote", "origin", "url");
 
 			return new SCMRepository(this, origin, path, headId.getName(), lastCommit.getName());
-		} catch (RepositoryNotFoundException rnfe) {
-			log.error(rnfe.getMessage());
-			return null;
 		} catch (Exception e) {
 			throw new RuntimeException("error when info " + path, e);
 		} finally {
@@ -122,9 +145,13 @@ public class GitRepository implements SCM {
 	protected Git openRepository() throws IOException, GitAPIException {
 		Git git = Git.open(new File(path));
 		if(this.masterBranchName == null) {
-			this.masterBranchName = git.getRepository().getBranch();
+			this.masterBranchName = discoverMasterBranchName(git);
 		}
 		return git;
+	}
+
+	private String discoverMasterBranchName(Git git) throws IOException {
+		return git.getRepository().getBranch();
 	}
 
 	public ChangeSet getHead() {
@@ -201,9 +228,9 @@ public class GitRepository implements SCM {
 
 				boolean merge = false;
 				if(jgitCommit.getParentCount() > 1) merge = true;
-				theCommit = new Commit(hash, author, committer, date, msg, parent, merge);
-				
-				setBranches(git, theCommit);
+				Set<String> branches = getBranches(git, hash);
+				boolean isCommitInMasterBranch = branches.contains(this.masterBranchName);
+				theCommit = new Commit(hash, author, committer, date, msg, parent, merge, branches, isCommitInMasterBranch);
 
 				List<DiffEntry> diffsForTheCommit = diffsForTheCommit(repo, jgitCommit);
 				if (diffsForTheCommit.size() > this.getMaxNumberFilesInACommit()) {
@@ -247,15 +274,13 @@ public class GitRepository implements SCM {
 	}
 
 
-	private void setBranches(Git git, Commit theCommit) throws GitAPIException {
-		git.branchList().setContains(theCommit.getHash()).call()
-			.forEach((branch) -> 
-				{
-					String name = branch.getName();
-					theCommit.addBranch(name.substring(name.lastIndexOf("/")+1), masterBranchName);
-				}
-			);
-		
+	private Set<String> getBranches(Git git, String hash) throws GitAPIException {
+		List<Ref> gitBranches = git.branchList().setContains(hash).call();
+		Set<String> mappedBranches = gitBranches.stream()
+				.map(
+					(ref) -> ref.getName().substring(ref.getName().lastIndexOf("/")+1))
+				.collect(Collectors.toSet());
+		return mappedBranches;
 	}
 
 	private List<DiffEntry> diffsForTheCommit(Repository repo, RevCommit commit) throws IOException, AmbiguousObjectException,
@@ -421,22 +446,9 @@ public class GitRepository implements SCM {
 				git.close();
 		}
 	}
-
-	public int getMaxNumberFilesInACommit() {
-		if(this.maxNumberFilesInACommit == null){
-			return DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT;
-		} else {
-			return this.maxNumberFilesInACommit;
-		}
-	}
-
-	@Override
-	public void setMaxNumberFilesInACommit(int maxNumber) {
-		if(maxNumber <= 0){
-			throw new IllegalArgumentException("Max number of files in a commit should be 0 or greater."
-					+ "Default value is " + DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT);
-		}
-		this.maxNumberFilesInACommit = maxNumber;
+	
+	public Integer getMaxNumberFilesInACommit() {
+		return maxNumberFilesInACommit;
 	}
 
 }

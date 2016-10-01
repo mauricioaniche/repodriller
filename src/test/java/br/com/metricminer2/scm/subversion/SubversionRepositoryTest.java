@@ -175,32 +175,29 @@ public class SubversionRepositoryTest {
 	
 	@Test 
 	public void testMaxNumberOfFilesInACommit() {
-		int expectedDefaultValue = 50;
+		Integer expectedDefaultValue = 50;
 		Assert.assertEquals(expectedDefaultValue, svn.getMaxNumberFilesInACommit());
 		
-		int newExpectedMaxNumber = 2000;
-		svn.setMaxNumberFilesInACommit(newExpectedMaxNumber);
-		Assert.assertEquals(newExpectedMaxNumber, svn.getMaxNumberFilesInACommit());
+		Integer newExpectedMaxNumber = 2000;
+		SubversionRepository subversionRepository = new SubversionRepository(path, newExpectedMaxNumber);
+		Assert.assertEquals(newExpectedMaxNumber, subversionRepository.getMaxNumberFilesInACommit());
 	}
 
 	@Test 
 	public void invalidMaxNumberOfFilesInACommit() {
+		SubversionRepository subversionRepository = null;
 		try {
-			int newExpectedMaxNumber = 0;
-			svn.setMaxNumberFilesInACommit(newExpectedMaxNumber);
-			Assert.fail("Should not set maxNumberOfFilesInACommit");
+			subversionRepository = new SubversionRepository(path, 0);
+			Assert.fail("Should not init repository with invalid maxNumberOfFilesInACommit");
 		} catch (IllegalArgumentException e) {
-			int expectedDefaultValue = 50;
-			Assert.assertEquals(expectedDefaultValue, svn.getMaxNumberFilesInACommit());
+			Assert.assertNull(subversionRepository);
 		}
 
 		try {
-			int newExpectedMaxNumber = -1;
-			svn.setMaxNumberFilesInACommit(newExpectedMaxNumber);
-			Assert.fail("Should not set maxNumberOfFilesInACommit");
+			subversionRepository = new SubversionRepository(path, -1);
+			Assert.fail("Should not init repository with invalid maxNumberOfFilesInACommit");
 		} catch (IllegalArgumentException e) {
-			int expectedDefaultValue = 50;
-			Assert.assertEquals(expectedDefaultValue, svn.getMaxNumberFilesInACommit());
+			Assert.assertNull(subversionRepository);
 		}
 	}
 	
