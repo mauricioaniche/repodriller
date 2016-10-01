@@ -22,11 +22,21 @@ public class Range implements CommitRange {
 
 		List<ChangeSet> filtered = new ArrayList<ChangeSet>();
 		boolean started = false;
+		String firstFound = null;
+		
 		for(ChangeSet cs : all) {
-			if(cs.getId().equals(last)) started = true;
+			if(!started && cs.getId().equals(last)) {
+				started = true;
+				firstFound = last;
+			}
+			if(!started && cs.getId().equals(first)) {
+				started = true;
+				firstFound = first;
+			}
 			
 			if(started) filtered.add(cs);
-			if(started && cs.getId().equals(first)) break;
+			if(started && firstFound.equals(last) && cs.getId().equals(first)) break;
+			if(started && firstFound.equals(first) && cs.getId().equals(last)) break;
 		}
 		
 		return filtered;
