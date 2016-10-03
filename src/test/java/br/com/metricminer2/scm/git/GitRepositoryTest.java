@@ -158,10 +158,10 @@ public class GitRepositoryTest {
 		GitRepository gitToChangeHead = new GitRepository(path2);
 
 		Commit commit = gitToChangeHead.getCommit("8169f76a3d7add54b4fc7bca7160d1f1eede6eda");
-		Assert.assertFalse(commit.isInMasterBranch());
+		Assert.assertFalse(commit.isInMainBranch());
 
 		commit = gitToChangeHead.getCommit("168b3aab057ed61a769acf336a4ef5e64f76c9fd");
-		Assert.assertTrue(commit.isInMasterBranch());
+		Assert.assertTrue(commit.isInMainBranch());
 		
 		git2.reset();
 		Assert.assertEquals("29e929fbc5dc6a2e9c620069b24e2a143af4285f", git2.getHead().getId());

@@ -67,7 +67,7 @@ public class GitRepository implements SCM {
 	private static final String BRANCH_MM = "mm";
 
 	private String path;
-	private String masterBranchName;
+	private String mainBranchName;
 	private Integer maxNumberFilesInACommit;
 
 	private static Logger log = Logger.getLogger(GitRepository.class);
@@ -144,13 +144,13 @@ public class GitRepository implements SCM {
 
 	protected Git openRepository() throws IOException, GitAPIException {
 		Git git = Git.open(new File(path));
-		if(this.masterBranchName == null) {
-			this.masterBranchName = discoverMasterBranchName(git);
+		if(this.mainBranchName == null) {
+			this.mainBranchName = discoverMainBranchName(git);
 		}
 		return git;
 	}
 
-	private String discoverMasterBranchName(Git git) throws IOException {
+	private String discoverMainBranchName(Git git) throws IOException {
 		return git.getRepository().getBranch();
 	}
 
@@ -229,8 +229,8 @@ public class GitRepository implements SCM {
 				boolean merge = false;
 				if(jgitCommit.getParentCount() > 1) merge = true;
 				Set<String> branches = getBranches(git, hash);
-				boolean isCommitInMasterBranch = branches.contains(this.masterBranchName);
-				theCommit = new Commit(hash, author, committer, date, msg, parent, merge, branches, isCommitInMasterBranch);
+				boolean isCommitInMainBranch = branches.contains(this.mainBranchName);
+				theCommit = new Commit(hash, author, committer, date, msg, parent, merge, branches, isCommitInMainBranch);
 
 				List<DiffEntry> diffsForTheCommit = diffsForTheCommit(repo, jgitCommit);
 				if (diffsForTheCommit.size() > this.getMaxNumberFilesInACommit()) {
@@ -343,7 +343,7 @@ public class GitRepository implements SCM {
 		try {
 			git = openRepository();
 			git.reset().setMode(ResetType.HARD).call();
-			git.checkout().setName(masterBranchName).call();
+			git.checkout().setName(mainBranchName).call();
 			deleteMMBranch(git);
 			git.checkout().setCreateBranch(true).setName(BRANCH_MM).setStartPoint(hash).setForce(true).setOrphan(true).call();
 
@@ -379,7 +379,7 @@ public class GitRepository implements SCM {
 		try {
 			git = openRepository();
 
-			git.checkout().setName(masterBranchName).setForce(true).call();
+			git.checkout().setName(mainBranchName).setForce(true).call();
 			git.branchDelete().setBranchNames(BRANCH_MM).setForce(true).call();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
