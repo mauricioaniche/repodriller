@@ -104,10 +104,24 @@ That's it, we are ready to go! If we execute it, we will have the CSV printed in
 
 ## Configuring the project
 
-The first thing you configure in MetricMiner is the project you want to analyze. MetricMiner currently only suports Git repositories. The _GitRepository_ class contains two factory methods to that:
+The first thing you configure in MetricMiner is the project you want to analyze. MetricMiner currently suports Subversion and Git repositories. The _SubversionRepository_ and _GitRepository_ classes contains two factory methods to that:
 
 *   _singleProject(path)_: When you want to analyze a single repository.
 *   _allProjectsIn(path)_: When you want to analyze many repositories. In this case, you should pass a path to which all projects are sub-directories of it. Each directory will be considered as a project to MetricMiner.
+
+You can also initialize git repositories with their remote HTTP URLs. In this case, MetricMiner will clone the remote repository in order to manipulate the repository history. The _GitRemoteRepository_ class contains the same factory methods of _GitRepository_, but you can also configure it, using a sintaxe such as:
+
+
+```
+	GitRemoteRepository
+		.hostedOn(gitUrl)							// URL like: https://github.com/mauricioaniche/metricminer2.git
+		.inTempDir(tempDir)							// <Optional>
+		.asBareRepos()								// <Optional> (1)
+		.withMaxNumberOfFilesInACommit(2000)		// <Optional>
+		.buildAsSCMRepository())
+```
+
+(1) You can clone as bare repository, if your study will work only with repository metadata (commit history info, modifications, etc.) and won't need to checkout/reset files.
 
 ## Logging
 

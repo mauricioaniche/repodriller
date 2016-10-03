@@ -172,4 +172,33 @@ public class SubversionRepositoryTest {
 		Assert.assertEquals("/Matricula.javax", commit.getModifications().get(1).getNewPath());
 
 	}
+	
+	@Test 
+	public void testMaxNumberOfFilesInACommit() {
+		Integer expectedDefaultValue = 50;
+		Assert.assertEquals(expectedDefaultValue, svn.getMaxNumberFilesInACommit());
+		
+		Integer newExpectedMaxNumber = 2000;
+		SubversionRepository subversionRepository = new SubversionRepository(path, newExpectedMaxNumber);
+		Assert.assertEquals(newExpectedMaxNumber, subversionRepository.getMaxNumberFilesInACommit());
+	}
+
+	@Test 
+	public void invalidMaxNumberOfFilesInACommit() {
+		SubversionRepository subversionRepository = null;
+		try {
+			subversionRepository = new SubversionRepository(path, 0);
+			Assert.fail("Should not init repository with invalid maxNumberOfFilesInACommit");
+		} catch (IllegalArgumentException e) {
+			Assert.assertNull(subversionRepository);
+		}
+
+		try {
+			subversionRepository = new SubversionRepository(path, -1);
+			Assert.fail("Should not init repository with invalid maxNumberOfFilesInACommit");
+		} catch (IllegalArgumentException e) {
+			Assert.assertNull(subversionRepository);
+		}
+	}
+	
 }

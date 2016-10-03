@@ -51,7 +51,7 @@ public class GitRepositoryTest {
 	@Before
 	public void setUp() {
 		git1 = new GitRepository(path1);
-		git2 = new GitRepository(path2);
+		git2 = new GitRepository(path2, 2000);
 		git3 = new GitRepository(path3);
 	}
 	
@@ -150,6 +150,23 @@ public class GitRepositoryTest {
 		Assert.assertTrue(commit.getBranches().contains("b2"));
 	}
 	
+	@Test
+	public void isCommitInMasterBranch() {
+		Assert.assertEquals("29e929fbc5dc6a2e9c620069b24e2a143af4285f", git2.getHead().getId());
+
+		git2.checkout("8986af2a679759e5a15794f6d56e6d46c3f302f1");
+		GitRepository gitToChangeHead = new GitRepository(path2);
+
+		Commit commit = gitToChangeHead.getCommit("8169f76a3d7add54b4fc7bca7160d1f1eede6eda");
+		Assert.assertFalse(commit.isInMainBranch());
+
+		commit = gitToChangeHead.getCommit("168b3aab057ed61a769acf336a4ef5e64f76c9fd");
+		Assert.assertTrue(commit.isInMainBranch());
+		
+		git2.reset();
+		Assert.assertEquals("29e929fbc5dc6a2e9c620069b24e2a143af4285f", git2.getHead().getId());
+	}
+	
 	@Test 
 	public void shouldDetailACommit() {
 		
@@ -232,4 +249,32 @@ public class GitRepositoryTest {
 		Assert.assertEquals("866e997a9e44cb4ddd9e00efe49361420aff2559", repo.getFirstCommit());
 		Assert.assertEquals("e7d13b0511f8a176284ce4f92ed8c6e8d09c77f2", repo.getHeadCommit());
 	}
+	
+	@Test 
+	public void testMaxNumberOfFilesInACommit() {
+		Integer expectedDefaultValue = 200;
+		Assert.assertEquals(expectedDefaultValue, git1.getMaxNumberFilesInACommit());
+		
+		Integer expectedNewMaxNumber = 2000;
+		Assert.assertEquals(expectedNewMaxNumber, git2.getMaxNumberFilesInACommit());
+	}
+	
+	@Test
+	public void invalidMaxNumberOfFilesInACommit() {
+		GitRepository invalidRepository = null;
+		try {
+			invalidRepository = new GitRepository(path1, 0);
+			Assert.fail("Should not init repository with invalid maxNumberOfFilesInACommit");
+		} catch (Exception e) {
+			Assert.assertNull(invalidRepository);
+		}
+
+		try {
+			invalidRepository = new GitRepository(path1, -1);
+			Assert.fail("Should not init repository with invalid maxNumberOfFilesInACommit");
+		} catch (Exception e) {
+			Assert.assertNull(invalidRepository);
+		}
+	}
+	
 }

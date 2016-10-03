@@ -35,12 +35,13 @@ public class Commit {
 	private Calendar date;
 	private Set<String> branches;
 	private boolean merge;
+	private boolean inMainBranch;
 
 	public Commit(String hash, Developer author, Developer committer, Calendar date, String msg, String parent) {
-		this(hash, author, committer, date, msg, parent, false);
+		this(hash, author, committer, date, msg, parent, false, new HashSet<>(), false);
 	}
 
-	public Commit(String hash, Developer author, Developer committer, Calendar date, String msg, String parent, boolean merge) {
+	public Commit(String hash, Developer author, Developer committer, Calendar date, String msg, String parent, boolean merge, Set<String> branches, boolean isCommitInMainBranch) {
 		this.hash = hash;
 		this.author = author;
 		this.committer = committer;
@@ -49,7 +50,8 @@ public class Commit {
 		this.parent = parent;
 		this.merge = merge;
 		this.modifications = new ArrayList<Modification>();
-		this.branches = new HashSet<String>();
+		this.branches = branches;
+		this.inMainBranch = isCommitInMainBranch;
 	}
 
 	public boolean isMerge() {
@@ -112,12 +114,12 @@ public class Commit {
 		return date;
 	}
 
-	public void addBranch(String branch) {
-		branches.add(branch);
-	}
-
 	public Set<String> getBranches() {
 		return Collections.unmodifiableSet(branches);
+	}
+	
+	public boolean isInMainBranch() {
+		return inMainBranch;
 	}
 
 }

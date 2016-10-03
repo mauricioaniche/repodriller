@@ -33,5 +33,6 @@ public interface SCM {
 	@Deprecated
 	String blame(String file, String currentCommit, Integer line);
 	List<BlamedLine> blame(String file, String commitToBeBlamed, boolean priorCommit);
+	SCMRepository info();
 
 }
