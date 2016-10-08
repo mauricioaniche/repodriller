@@ -33,6 +33,7 @@ import com.google.common.collect.Lists;
 
 import br.com.metricminer2.domain.ChangeSet;
 import br.com.metricminer2.domain.Commit;
+import br.com.metricminer2.filter.commit.CommitFilter;
 import br.com.metricminer2.filter.range.CommitRange;
 import br.com.metricminer2.persistence.NoPersistence;
 import br.com.metricminer2.persistence.PersistenceMechanism;
@@ -48,6 +49,7 @@ public class RepositoryMining {
 	private CommitRange range;
 	private int threads;
 	private boolean fromTheBeggining;
+	private CommitFilter filter;
 	
 	public RepositoryMining() {
 		repos = new ArrayList<SCMRepository>();
@@ -67,6 +69,11 @@ public class RepositoryMining {
 	
 	public RepositoryMining process(CommitVisitor visitor, PersistenceMechanism writer) {
 		visitors.put(visitor, writer);
+		return this;
+	}
+	
+	public RepositoryMining withCommits(CommitFilter filter) {
+		this.filter = filter;
 		return this;
 	}
 	
@@ -117,7 +124,7 @@ public class RepositoryMining {
 			exec.submit(() -> {
 					for(ChangeSet cs : partition) {
 						try {
-							processEverythingOnChangeSet(repo, cs);
+							processChangeSet(repo, cs);
 						} catch (OutOfMemoryError e) {
 							System.err.println("Commit " + cs.getId() + " in " + repo.getLastDir() + " caused OOME");
 							e.printStackTrace();
@@ -162,7 +169,7 @@ public class RepositoryMining {
 		}
 	}
 	
-	private void processEverythingOnChangeSet(SCMRepository repo, ChangeSet cs) {
+	private void processChangeSet(SCMRepository repo, ChangeSet cs) {
 		Commit commit = repo.getScm().getCommit(cs.getId());
 		log.info(
 				"Commit #" + commit.getHash() + 
@@ -170,6 +177,11 @@ public class RepositoryMining {
 				" from " + commit.getAuthor().getName() + 
 				" with " + commit.getModifications().size() + " modifications");
 
+		if(!filter.accept(commit)) {
+			log.info("-> Filtered");
+			return;
+		}
+		
 		for(Map.Entry<CommitVisitor, PersistenceMechanism> entry : visitors.entrySet()) {
 			CommitVisitor visitor = entry.getKey();
 			PersistenceMechanism writer = entry.getValue();
