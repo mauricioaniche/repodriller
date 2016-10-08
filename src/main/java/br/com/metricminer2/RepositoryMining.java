@@ -34,6 +34,7 @@ import com.google.common.collect.Lists;
 import br.com.metricminer2.domain.ChangeSet;
 import br.com.metricminer2.domain.Commit;
 import br.com.metricminer2.filter.commit.CommitFilter;
+import br.com.metricminer2.filter.commit.NoFilter;
 import br.com.metricminer2.filter.range.CommitRange;
 import br.com.metricminer2.persistence.NoPersistence;
 import br.com.metricminer2.persistence.PersistenceMechanism;
@@ -54,6 +55,7 @@ public class RepositoryMining {
 	public RepositoryMining() {
 		repos = new ArrayList<SCMRepository>();
 		visitors = new HashMap<CommitVisitor, PersistenceMechanism>();
+		filter = new NoFilter();
 		this.threads = 1;
 	}
 	
