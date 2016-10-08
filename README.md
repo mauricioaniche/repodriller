@@ -55,6 +55,7 @@ Let's start with something simple: we will print the name of the developers for 
 
 *   in(): We use to configure the project (or projects) that will be analyzed.
 *   through(): The list of commits to analyze. We want all of them.
+*   withCommits(): Possible filters to commits, e.g., only commits in a certain branch 
 *   fromTheBeginning(): Commits will be analysed from the first commit in history to the most recent. Default is the opposite.
 *   process(): Visitors that will pass in each commit.
 *   mine(): The magic starts!
@@ -165,6 +166,27 @@ MetricMiner allows you to select the range of commits to be processed. The class
 *   _betweenDates(from,to)_: The range of commits, starting at "from" timestamp, ending at "to" timestamp.
 
 One interesting thing about MetricMiner is that is avoids huge commits. When a commit contains too many files (> 50), it will be ignored.
+
+## Filtering commits
+
+MetricMiner comes with a set of common filters that you can apply. As an example, the `OnlyInBranches` filter makes sure
+that your Study will only visit commits which exist in specific branches.
+
+* _OnlyInBranches_: Only visits commits that belong to certain branches. 
+* _OnlyInMainBranch_: Only visits commits that belong to the main branch of the repository.
+* _OnlyModificationsWithFileTypes_: Only visits commits in which at least one modification was done in that file type, e.g., 
+if you pass ".java", then, the study will visit only commits in which at least one Java file was modified; clearly, it will skip
+other commits.
+
+You can choose more than one filter as you can be decorated. A working example is:
+
+```
+.withCommits(
+	new OnlyModificationsWithFileTypes(Arrays.asList(".java", ".xml"),
+	new OnlyInBranches(Arrays.asList("master"), 
+	new OnlyInMainBranch()))
+);
+```  
 
 ## Getting Modifications
 
