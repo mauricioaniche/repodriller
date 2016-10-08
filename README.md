@@ -186,7 +186,10 @@ You can choose more than one filter as you can be decorated. A working example i
 	new OnlyInBranches(Arrays.asList("master"), 
 	new OnlyInMainBranch()))
 );
-```  
+```
+
+Also, you can create your own filter. All you have to do is to extend `CommitFilter` and implement
+the `shouldAccept()` method. This method should return **false** if the commit _should not_ be visted.  
 
 ## Getting Modifications
 
