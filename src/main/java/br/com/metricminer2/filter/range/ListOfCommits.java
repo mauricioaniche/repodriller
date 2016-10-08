@@ -1,4 +1,4 @@
-package br.com.metricminer2.scm.commitrange;
+package br.com.metricminer2.filter.range;
 
 import java.util.ArrayList;
 import java.util.List;

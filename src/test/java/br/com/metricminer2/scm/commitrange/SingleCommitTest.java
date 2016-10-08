@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import br.com.metricminer2.domain.ChangeSet;
+import br.com.metricminer2.filter.range.SingleCommit;
 import br.com.metricminer2.scm.SCM;
 
 public class SingleCommitTest {

@@ -33,11 +33,11 @@ import com.google.common.collect.Lists;
 
 import br.com.metricminer2.domain.ChangeSet;
 import br.com.metricminer2.domain.Commit;
+import br.com.metricminer2.filter.range.CommitRange;
 import br.com.metricminer2.persistence.NoPersistence;
 import br.com.metricminer2.persistence.PersistenceMechanism;
 import br.com.metricminer2.scm.CommitVisitor;
 import br.com.metricminer2.scm.SCMRepository;
-import br.com.metricminer2.scm.commitrange.CommitRange;
 
 public class RepositoryMining {
 

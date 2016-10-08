@@ -10,8 +10,9 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import br.com.metricminer2.domain.ChangeSet;
+import br.com.metricminer2.filter.range.LastMonths;
 import br.com.metricminer2.scm.SCM;
-import br.com.metricminer2.scm.commitrange.LastMonths;
+
 import org.junit.Assert;
 
 public class LastMonthsTest {

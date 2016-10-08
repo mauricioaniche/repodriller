@@ -1,4 +1,4 @@
-package br.com.metricminer2.scm.commitrange;
+package br.com.metricminer2.filter.range;
 
 import br.com.metricminer2.domain.ChangeSet;
 import br.com.metricminer2.scm.SCM;

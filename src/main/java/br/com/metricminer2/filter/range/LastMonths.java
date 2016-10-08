@@ -1,4 +1,4 @@
-package br.com.metricminer2.scm.commitrange;
+package br.com.metricminer2.filter.range;
 
 import java.util.Calendar;
 import java.util.LinkedList;
