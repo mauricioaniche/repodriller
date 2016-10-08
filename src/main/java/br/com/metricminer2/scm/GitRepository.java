@@ -428,7 +428,7 @@ public class GitRepository implements SCM {
 				List<BlamedLine> result = new ArrayList<>();
 				for(int i = 0; i < rows; i++) {
 					result.add(new BlamedLine(i, 
-							blameResult.getSourcePath(i), 
+							blameResult.getResultContents().getString(i), 
 							blameResult.getSourceAuthor(i).getName(), 
 							blameResult.getSourceCommitter(i).getName(), 
 							blameResult.getSourceCommit(i).getId().getName()));

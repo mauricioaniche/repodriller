@@ -68,31 +68,31 @@ public class GitRepositoryTest {
 		List<BlamedLine> blame = git3.blame("Arquivo.java", "112fd6787a9b0ffedab5e36fbbd6f014859a9d6d", false);
 		
 		Assert.assertEquals(
-				new BlamedLine(0, "Arquivo.java", "Maurício Aniche", "Maurício Aniche", "a4ece0762e797d2e2dcbd471115108dd6e05ff58"),
+				new BlamedLine(0, "class Arquivo {", "Maurício Aniche", "Maurício Aniche", "a4ece0762e797d2e2dcbd471115108dd6e05ff58"),
 				blame.get(0));
 		Assert.assertEquals(
-				new BlamedLine(1, "Arquivo.java", "Maurício Aniche", "Maurício Aniche", "a4ece0762e797d2e2dcbd471115108dd6e05ff58"),
+				new BlamedLine(1, "  void a() {", "Maurício Aniche", "Maurício Aniche", "a4ece0762e797d2e2dcbd471115108dd6e05ff58"),
 				blame.get(1));
 		Assert.assertEquals(
-				new BlamedLine(2, "Arquivo.java", "Maurício Aniche", "Maurício Aniche", "e7d13b0511f8a176284ce4f92ed8c6e8d09c77f2"),
+				new BlamedLine(2, "   b();", "Maurício Aniche", "Maurício Aniche", "e7d13b0511f8a176284ce4f92ed8c6e8d09c77f2"),
 				blame.get(2));
 		Assert.assertEquals(
-				new BlamedLine(3, "Arquivo.java", "John Doe", "Maurício Aniche", "112fd6787a9b0ffedab5e36fbbd6f014859a9d6d"),
+				new BlamedLine(3, "   c();", "John Doe", "Maurício Aniche", "112fd6787a9b0ffedab5e36fbbd6f014859a9d6d"),
 				blame.get(3));
 		Assert.assertEquals(
-				new BlamedLine(4, "Arquivo.java", "John Doe", "Maurício Aniche", "112fd6787a9b0ffedab5e36fbbd6f014859a9d6d"),
+				new BlamedLine(4, "   d();", "John Doe", "Maurício Aniche", "112fd6787a9b0ffedab5e36fbbd6f014859a9d6d"),
 				blame.get(4));
 		Assert.assertEquals(
-				new BlamedLine(5, "Arquivo.java", "Maurício Aniche", "Maurício Aniche", "a4ece0762e797d2e2dcbd471115108dd6e05ff58"),
+				new BlamedLine(5, "  }", "Maurício Aniche", "Maurício Aniche", "a4ece0762e797d2e2dcbd471115108dd6e05ff58"),
 				blame.get(5));
 		Assert.assertEquals(
-				new BlamedLine(6, "Arquivo.java", "John Doe", "Maurício Aniche", "112fd6787a9b0ffedab5e36fbbd6f014859a9d6d"),
+				new BlamedLine(6, "   int a;", "John Doe", "Maurício Aniche", "112fd6787a9b0ffedab5e36fbbd6f014859a9d6d"),
 				blame.get(6));
 		Assert.assertEquals(
-				new BlamedLine(7, "Arquivo.java", "Maurício Aniche", "Maurício Aniche", "a4ece0762e797d2e2dcbd471115108dd6e05ff58"),
+				new BlamedLine(7, "", "Maurício Aniche", "Maurício Aniche", "a4ece0762e797d2e2dcbd471115108dd6e05ff58"),
 				blame.get(7));
 		Assert.assertEquals(
-				new BlamedLine(8, "Arquivo.java", "Maurício Aniche", "Maurício Aniche", "a4ece0762e797d2e2dcbd471115108dd6e05ff58"),
+				new BlamedLine(8, "}", "Maurício Aniche", "Maurício Aniche", "a4ece0762e797d2e2dcbd471115108dd6e05ff58"),
 				blame.get(8));
 				
 
