@@ -3,7 +3,7 @@
 	<groupId>br.usp</groupId>
 	<artifactId>metricminer</artifactId>
 	<packaging>jar</packaging>
-	<version>2.6.0</version>
+	<version>2.6.0-SNAPSHOT</version>
 	<name>metricminer2</name>
 	<url>http://github.com/mauricioaniche/metricminer2</url>
 	<description>Framework for researchers in MSR</description>
@@ -33,7 +33,7 @@
 		<url>http://github.com/mauricioaniche/metricminer2</url>
 		<connection>scm:git:git://github.com/mauricioaniche/metricminer2</connection>
 		<developerConnection>scm:git:git@github.com:mauricioaniche/metricminer2.git</developerConnection>
-	  <tag>metricminer-2.6.0</tag>
+	  <tag>HEAD</tag>
   </scm>
 
 	<repositories>
