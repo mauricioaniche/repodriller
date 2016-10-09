@@ -69,19 +69,6 @@ public class GitRemoteRepository implements SCM {
 		return singleProject(url, gitSystemTempDir(), false, GitRepository.DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT);
 	}
 	
-	/**
-	 * Used only by Builder. Eg.: GitRemoteRepository
-					.hostedOn(gitUrl)
-					.inTempDir(rootTempGitPath)
-					.asBareRepos()
-					.withMaxNumberOfFilesInACommit(2000)
-					.buildAsSCMRepository()
-	 * @param url
-	 * @param rootTempGitPath
-	 * @param bare
-	 * @param maxNumberFilesInACommit
-	 * @return
-	 */
 	protected static SCMRepository singleProject(String url, String rootTempGitPath, boolean bare, Integer maxNumberFilesInACommit) {
 		try {
 			return new GitRemoteRepository(url, rootTempGitPath, bare, maxNumberFilesInACommit).info();
@@ -94,19 +81,6 @@ public class GitRemoteRepository implements SCM {
 		return allProjectsIn(urls, gitSystemTempDir(), false, GitRepository.DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT);
 	}
 	
-	/**
-	 * Used only by Builder. Eg.: GitRemoteRepository
-					.hostedOn(listGitUrls)
-					.inTempDir(rootTempGitPath)
-					.asBareRepos()
-					.withMaxNumberOfFilesInACommit(2000)
-					.buildAsSCMRepositories()
-	 * @param url
-	 * @param rootTempGitPath
-	 * @param bare
-	 * @param maxNumberFilesInACommit
-	 * @return
-	 */
 	protected static SCMRepository[] allProjectsIn(List<String> urls, String rootTempGitPath, boolean bare, Integer maxNumberFilesInACommit) {
 		List<SCMRepository> repos = new ArrayList<SCMRepository>();
 		for (String url : urls) {
@@ -116,17 +90,6 @@ public class GitRemoteRepository implements SCM {
 		return repos.toArray(new SCMRepository[repos.size()]);
 	}
 	
-	/**
-	 *  Can be hooked to a JVM shutdown method, eg.:
-		Runtime.getRuntime().addShutdownHook(new Thread( () -> {
-			try {
-				git.deleteTempGitPath();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}));
-	 * @throws IOException
-	 */
 	public void deleteTempGitPath() throws IOException {
 		FileUtils.deleteDirectory(new File(this.tempGitPath));
 	}
