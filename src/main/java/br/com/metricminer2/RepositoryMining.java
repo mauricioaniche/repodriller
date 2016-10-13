@@ -90,23 +90,11 @@ public class RepositoryMining {
 	
 	public void mine() {
 		
-		try {
-			
-			ExecutorService execRepos = Executors.newFixedThreadPool(repos.size());
-			for(SCMRepository repo : repos) {
-				execRepos.submit(() -> 
-					processRepos(repo));
-			}
-		
-			execRepos.shutdown();
-			execRepos.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
-		
-		} catch (InterruptedException e) {
-			log.error("Error waiting for threads to terminate in outter repositories.", e);
-		} finally {
-			closeAllPersistence();
-			printScript();
+		for(SCMRepository repo : repos) {
+			processRepos(repo);
 		}
+		closeAllPersistence();
+		printScript();
 		
 	}
 
