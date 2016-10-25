@@ -174,6 +174,7 @@ that your Study will only visit commits which exist in specific branches.
 
 * _OnlyInBranches_: Only visits commits that belong to certain branches. 
 * _OnlyInMainBranch_: Only visits commits that belong to the main branch of the repository.
+* _OnlyNoMerge_: Only visits commits that are not merge commits.
 * _OnlyModificationsWithFileTypes_: Only visits commits in which at least one modification was done in that file type, e.g., 
 if you pass ".java", then, the study will visit only commits in which at least one Java file was modified; clearly, it will skip
 other commits.
@@ -184,6 +185,7 @@ You can choose more than one filter as you can be decorated. A working example i
 .withCommits(
 	new OnlyModificationsWithFileTypes(Arrays.asList(".java", ".xml"),
 	new OnlyInBranches(Arrays.asList("master"), 
+	new OnlyNoMerge(), 
 	new OnlyInMainBranch()))
 );
 ```
