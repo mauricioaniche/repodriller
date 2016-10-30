@@ -1,35 +1,35 @@
-# MetricMiner 2
+# RepoDriller
 
-MetricMiner is a Java framework that helps developers on mining software repositories. With it, you can easily extract information from any Git repository, such as commits, developers, modifications, diffs, and source codes, and quickly export CSV files.
+RepoDriller is a Java framework that helps developers on mining software repositories. With it, you can easily extract information from any Git repository, such as commits, developers, modifications, diffs, and source codes, and quickly export CSV files.
 
-Take a look at our documentation and [our many examples](https://github.com/mauricioaniche/metricminer2-tutorial). Or talk to us.
+Take a look at our documentation and [our many examples](https://github.com/mauricioaniche/repodriller-tutorial). Or talk to us.
 
 # Documentation
 
 ## Getting Started
 
-You simply have to start a Java Project in Eclipse. MetricMiner is on Maven, so you can download all its dependencies by only adding this to your pom.xml. Or, if you want, you can see [an example](github.com/mauricioaniche/change-metrics):
+You simply have to start a Java Project in Eclipse. RepoDriller is on Maven, so you can download all its dependencies by only adding this to your pom.xml. Or, if you want, you can see [an example](github.com/mauricioaniche/change-metrics):
 
 ```
 <dependency>
-	<groupid>br.usp</groupid>
-	<artifactid>metricminer</artifactid>
-	<version>2.1.0</version>
+	<groupid>org.repodriller</groupid>
+	<artifactid>repodriller</artifactid>
+	<version>1.0.0</version>
 </dependency> 
 ```
 
-Always use the latest version in Maven. You can see them here: [http://www.mvnrepository.com/artifact/br.usp/metricminer](http://www.mvnrepository.com/artifact/br.usp/metricminer) . You can also see a [fully function pom.xml example](https://gist.github.com/mauricioaniche/3eba747930aea97e4adb).
+Always use the latest version in Maven. You can see them here: [http://www.mvnrepository.com/artifact/org.repodriller/repodriller](http://www.mvnrepository.com/artifact/org.repodriller/repodriller) . You can also see a [fully function pom.xml example](https://gist.github.com/mauricioaniche/3eba747930aea97e4adb).
 
-MetricMiner needs a _Study_. The interface is quite simple: a single _execute()_ method:
+RepoDriller needs a _Study_. The interface is quite simple: a single _execute()_ method:
 
 ```java
-import br.com.metricminer2.MetricMiner2;
-import br.com.metricminer2.Study;
+import org.repodriller.RepoDriller;
+import org.repodriller.Study;
 
 public class MyStudy implements Study {
 
 	public static void main(String[] args) {
-		new MetricMiner2().start(new MyStudy());
+		new RepoDriller().start(new MyStudy());
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public void execute() {
 }
 ```
 
-Let's start with something simple: we will print the name of the developers for each commit. For now, you should not care about all possible configurations. We will analyze all commits in the project at "/Users/mauricioaniche/workspace/metricminer2", outputing _DevelopersVisitor_ to "/Users/mauricioaniche/Desktop/devs.csv".
+Let's start with something simple: we will print the name of the developers for each commit. For now, you should not care about all possible configurations. We will analyze all commits in the project at "/Users/mauricioaniche/workspace/repodriller", outputing _DevelopersVisitor_ to "/Users/mauricioaniche/Desktop/devs.csv".
 
 *   in(): We use to configure the project (or projects) that will be analyzed.
 *   through(): The list of commits to analyze. We want all of them.
@@ -63,7 +63,7 @@ Let's start with something simple: we will print the name of the developers for 
 ```java
 public void execute() {
 	new RepositoryMining()
-		.in(GitRepository.singleProject("/Users/mauricioaniche/workspace/metricminer2"))
+		.in(GitRepository.singleProject("/Users/mauricioaniche/workspace/repodriller"))
 		.through(Commits.all())
 		.process(new DevelopersVisitor(), new CSVFile("/Users/mauricioaniche/Desktop/devs.csv"))
 		.mine();
@@ -71,13 +71,13 @@ public void execute() {
 ```
 
 
-In practice, MetricMiner will open the Git repository and will extract all information that is inside. Then, the framework will pass each commit to all processors. Let's write our first _DevelopersProcessor_. It is fairly simple. All we will do is to implement _CommitVisitor_. And, inside of _process()_, we print the commit hash and the name of the developer. MetricMiner gives us nice objects to play with all the data:
+In practice, RepoDriller will open the Git repository and will extract all information that is inside. Then, the framework will pass each commit to all processors. Let's write our first _DevelopersProcessor_. It is fairly simple. All we will do is to implement _CommitVisitor_. And, inside of _process()_, we print the commit hash and the name of the developer. RepoDriller gives us nice objects to play with all the data:
 
 ```java
-import br.com.metricminer2.domain.Commit;
-import br.com.metricminer2.persistence.PersistenceMechanism;
-import br.com.metricminer2.scm.CommitVisitor;
-import br.com.metricminer2.scm.SCMRepository;
+import org.repodriller.domain.Commit;
+import org.repodriller.persistence.PersistenceMechanism;
+import org.repodriller.scm.CommitVisitor;
+import org.repodriller.scm.SCMRepository;
 
 public class DevelopersVisitor implements CommitVisitor {
 
@@ -105,17 +105,17 @@ That's it, we are ready to go! If we execute it, we will have the CSV printed in
 
 ## Configuring the project
 
-The first thing you configure in MetricMiner is the project you want to analyze. MetricMiner currently suports Subversion and Git repositories. The _SubversionRepository_ and _GitRepository_ classes contains two factory methods to that:
+The first thing you configure in RepoDriller is the project you want to analyze. RepoDriller currently suports Subversion and Git repositories. The _SubversionRepository_ and _GitRepository_ classes contains two factory methods to that:
 
 *   _singleProject(path)_: When you want to analyze a single repository.
-*   _allProjectsIn(path)_: When you want to analyze many repositories. In this case, you should pass a path to which all projects are sub-directories of it. Each directory will be considered as a project to MetricMiner.
+*   _allProjectsIn(path)_: When you want to analyze many repositories. In this case, you should pass a path to which all projects are sub-directories of it. Each directory will be considered as a project to RepoDriller.
 
-You can also initialize git repositories with their remote HTTP URLs. In this case, MetricMiner will clone the remote repository in order to manipulate the repository history. The _GitRemoteRepository_ class contains the same factory methods of _GitRepository_, but you can also configure it, using a sintaxe such as:
+You can also initialize git repositories with their remote HTTP URLs. In this case, RepoDriller will clone the remote repository in order to manipulate the repository history. The _GitRemoteRepository_ class contains the same factory methods of _GitRepository_, but you can also configure it, using a sintaxe such as:
 
 
 ```
 	GitRemoteRepository
-		.hostedOn(gitUrl)							// URL like: https://github.com/mauricioaniche/metricminer2.git
+		.hostedOn(gitUrl)							// URL like: https://github.com/mauricioaniche/repodriller.git
 		.inTempDir(tempDir)							// <Optional>
 		.asBareRepos()								// <Optional> (1)
 		.withMaxNumberOfFilesInACommit(2000)		// <Optional>
@@ -126,7 +126,7 @@ You can also initialize git repositories with their remote HTTP URLs. In this ca
 
 ## Logging
 
-MetricMiner uses log4j to print useful information about its execution. We recommend tou to have a log4.xml:
+RepoDriller uses log4j to print useful information about its execution. We recommend tou to have a log4.xml:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
@@ -140,7 +140,7 @@ MetricMiner uses log4j to print useful information about its execution. We recom
         </layout>
     </appender>
 
-    <category name="br.com.metricminer2">
+    <category name="org.repodriller">
         <priority value="INFO"/>
         <appender-ref ref="main"/>
     </category>
@@ -155,7 +155,7 @@ MetricMiner uses log4j to print useful information about its execution. We recom
 
 ## Selecting the Commit Range
 
-MetricMiner allows you to select the range of commits to be processed. The class _Commits_ contains different methods to that:
+RepoDriller allows you to select the range of commits to be processed. The class _Commits_ contains different methods to that:
 
 *   _all()_: All commits. From the first to the last.
 *   _onlyInHead()_: It only analyzes the most recent commit.
@@ -165,11 +165,11 @@ MetricMiner allows you to select the range of commits to be processed. The class
 *   _range(start,end)_: The range of commits, starting at "start" hash, ending at "end" hash.
 *   _betweenDates(from,to)_: The range of commits, starting at "from" timestamp, ending at "to" timestamp.
 
-One interesting thing about MetricMiner is that is avoids huge commits. When a commit contains too many files (> 50), it will be ignored.
+One interesting thing about RepoDriller is that is avoids huge commits. When a commit contains too many files (> 50), it will be ignored.
 
 ## Filtering commits
 
-MetricMiner comes with a set of common filters that you can apply. As an example, the `OnlyInBranches` filter makes sure
+RepoDriller comes with a set of common filters that you can apply. As an example, the `OnlyInBranches` filter makes sure
 that your Study will only visit commits which exist in specific branches.
 
 * _OnlyInBranches_: Only visits commits that belong to certain branches. 
@@ -218,7 +218,7 @@ A _Modification_ contains a type (ADD, COPY, RENAME, DELETE, MODIFY), a diff (wi
 
 ## Branches
 
-MetricMiner puts all commits from all branches in a single sentence. It means that different commits from different branches will appear. It is your responsibility to filter the branches in your _CommitVisitor_.
+RepoDriller puts all commits from all branches in a single sentence. It means that different commits from different branches will appear. It is your responsibility to filter the branches in your _CommitVisitor_.
 
 The _Commit_ class contains the _getBranches()_ method. It returns the list of branches in which a commit belongs to. If you want to use only commits in the master branch, you can simply check whether 'master' in inside this set.
 
@@ -242,10 +242,10 @@ If you need to, you can store state in your visitors. As an example, if you do n
 import java.util.HashMap;
 import java.util.Map;
 
-import br.com.metricminer2.domain.Commit;
-import br.com.metricminer2.persistence.PersistenceMechanism;
-import br.com.metricminer2.scm.CommitVisitor;
-import br.com.metricminer2.scm.SCMRepository;
+import org.repodriller.domain.Commit;
+import org.repodriller.persistence.PersistenceMechanism;
+import org.repodriller.scm.CommitVisitor;
+import org.repodriller.scm.SCMRepository;
 
 public class ModificationsVisitor implements CommitVisitor {
 
@@ -276,19 +276,19 @@ public class ModificationsVisitor implements CommitVisitor {
 
 ## Parsing Code
 
-You have entire source code of the repository. You may want to analyze it. MetricMiner comes with JDT and ANTLR bundled. JDT is the Eclipse internal parser, so you will not regret to use it.
+You have entire source code of the repository. You may want to analyze it. RepoDriller comes with JDT and ANTLR bundled. JDT is the Eclipse internal parser, so you will not regret to use it.
 
 Let's say we decide to count the quantity of methods in each modified file. All we have to do is to create a _CommitVisitor_, the way we are used to. This visitor will use our _JDTRunner_ to invoke a JDT visitor (yes, JDT uses visitors as well). Notice that we executed the JDT visitor, and then wrote the result.
 
 ```java
 import java.io.ByteArrayInputStream;
 
-import br.com.metricminer2.domain.Commit;
-import br.com.metricminer2.domain.Modification;
-import br.com.metricminer2.parser.jdt.JDTRunner;
-import br.com.metricminer2.persistence.PersistenceMechanism;
-import br.com.metricminer2.scm.CommitVisitor;
-import br.com.metricminer2.scm.SCMRepository;
+import org.repodriller.domain.Commit;
+import org.repodriller.domain.Modification;
+import org.repodriller.parser.jdt.JDTRunner;
+import org.repodriller.persistence.PersistenceMechanism;
+import org.repodriller.scm.CommitVisitor;
+import org.repodriller.scm.SCMRepository;
 
 
 public class JavaParserVisitor implements CommitVisitor {
@@ -364,12 +364,12 @@ import org.apache.commons.io.IOUtils;
 
 import com.mystudy.example4.NumberOfMethodsVisitor;
 
-import br.com.metricminer2.domain.Commit;
-import br.com.metricminer2.parser.jdt.JDTRunner;
-import br.com.metricminer2.persistence.PersistenceMechanism;
-import br.com.metricminer2.scm.CommitVisitor;
-import br.com.metricminer2.scm.RepositoryFile;
-import br.com.metricminer2.scm.SCMRepository;
+import org.repodriller.domain.Commit;
+import org.repodriller.parser.jdt.JDTRunner;
+import org.repodriller.persistence.PersistenceMechanism;
+import org.repodriller.scm.CommitVisitor;
+import org.repodriller.scm.RepositoryFile;
+import org.repodriller.scm.SCMRepository;
 
 public class JavaParserVisitor implements CommitVisitor {
 
@@ -427,7 +427,7 @@ public class JavaParserVisitor implements CommitVisitor {
 
 ## Dealing with Threads
 
-How good is your machine? MetricMiner can execute the visitor over many threads. This is just another configuration you set in _RepositoryMining_. The _withThreads()_ lets you configure the number of threads the framework will use to process everything.
+How good is your machine? RepoDriller can execute the visitor over many threads. This is just another configuration you set in _RepositoryMining_. The _withThreads()_ lets you configure the number of threads the framework will use to process everything.
 
 We suggest you to use threads unless your project _checkout_ revisions. The checkout operation in Git changes the disk, so you can't actually parallelize the work.
 
@@ -435,25 +435,13 @@ We suggest you to use threads unless your project _checkout_ revisions. The chec
 @Override
 public void execute() {
 	new RepositoryMining()
-		.in(GitRepository.singleProject("/Users/mauricioaniche/workspace/metricminer2"))
+		.in(GitRepository.singleProject("/Users/mauricioaniche/workspace/repodriller"))
 		.through(Commits.all())
 		.withThreads(3)
 		.process(new JavaParserVisitor(), new CSVFile("/Users/mauricioaniche/Desktop/devs.csv"))
 		.mine();
 }
 ```
-
-## Using DataJoy
-
-You have a bunch of CSV files. Do whatever you want with them. We usually upload it to a MySQL file or play it with R. If you haven't tried DataJoy yet, you should. It allows you to upload a CSV file and manipulate.
-
-```
-file <- read.csv("methods.csv", header=FALSE)
-
-hist(file$V3)
-```
-
-You can play with the [project here](https://www.getdatajoy.com/project/55e36c0e3b765b3001b99476).
 
 ## Creating your own CommitRange
 
@@ -464,31 +452,21 @@ You can play with the [project here](https://www.getdatajoy.com/project/55e36c0e
 (not written yet)
 
 
-# How do I cite MetricMiner?
+# How do I cite RepoDriller?
 
-_Sokol, Francisco Zigmund, Mauricio Finavaro Aniche, and Marco Gerosa. "MetricMiner: Supporting researchers in mining software repositories." Source Code Analysis and Manipulation (SCAM), 2013 IEEE 13th International Working Conference on. IEEE, 2013._
-
-```
-@inproceedings{sokol2013metricminer,  
-title={MetricMiner: Supporting researchers in mining software repositories},  
-author={Sokol, Francisco Zigmund and Finavaro Aniche, Mauricio and Gerosa, Marco and others},  
-booktitle={Source Code Analysis and Manipulation (SCAM), 2013 IEEE 13th International Working Conference on},  
-pages={142--146}, year={2013},  
-organization={IEEE}  
-}  
-```
+For now, cite the repository. 
 
 # How can I discuss about it?
 
-You can subscribe to our mailing list: https://groups.google.com/forum/#!forum/metricminer.
+You can subscribe to our mailing list: https://groups.google.com/forum/#!forum/repodriller.
 
 # How to Contribute
 
 Required: Git, Maven.
 
 ```
-git clone https://github.com/mauricioaniche/metricminer2.git
-cd metricminer2/test-repos
+git clone https://github.com/mauricioaniche/repodriller.git
+cd repodriller/test-repos
 unzip *.zip
 ```
 

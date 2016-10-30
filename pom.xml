@@ -1,11 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>br.usp</groupId>
-	<artifactId>metricminer</artifactId>
+	<groupId>org.repodriller</groupId>
+	<artifactId>repodriller</artifactId>
 	<packaging>jar</packaging>
-	<version>2.6.1-SNAPSHOT</version>
-	<name>metricminer2</name>
-	<url>http://github.com/mauricioaniche/metricminer2</url>
+	<version>1.0.0-SNAPSHOT</version>
+	<name>repodriller</name>
+	<url>http://github.com/mauricioaniche/repodriller</url>
 	<description>Framework for researchers in MSR</description>
 
 	<licenses>
@@ -30,9 +30,9 @@
 	</developers>
 
 	<scm>
-		<url>http://github.com/mauricioaniche/metricminer2</url>
-		<connection>scm:git:git://github.com/mauricioaniche/metricminer2</connection>
-		<developerConnection>scm:git:git@github.com:mauricioaniche/metricminer2.git</developerConnection>
+		<url>http://github.com/mauricioaniche/repodriller</url>
+		<connection>scm:git:git://github.com/mauricioaniche/repodriller</connection>
+		<developerConnection>scm:git:git@github.com:mauricioaniche/repodriller.git</developerConnection>
 	  <tag>HEAD</tag>
   </scm>
 
@@ -164,7 +164,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>br.com.metricminer2.MetricMiner2</mainClass>
+							<mainClass>org.repodriller.RepoDriller</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>
