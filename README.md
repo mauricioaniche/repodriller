@@ -481,7 +481,7 @@ Required: Git, Maven.
 ```
 git clone https://github.com/mauricioaniche/repodriller.git
 cd repodriller/test-repos
-unzip *.zip
+unzip \*.zip
 ```
 
 Then, you can:
