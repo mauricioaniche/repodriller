@@ -163,6 +163,7 @@ RepoDriller allows you to select the range of commits to be processed. The class
 *   _list(commits...)_: The list of commits to be processed.
 *   _range(start,end)_: The range of commits, starting at "start" hash, ending at "end" hash.
 *   _betweenDates(from,to)_: The range of commits, starting at "from" timestamp, ending at "to" timestamp.
+*   _since(date)_: All commits that appear after a certain timestamp.
 
 One interesting thing about RepoDriller is that is avoids huge commits. When a commit contains too many files (> 50), it will be ignored.
 

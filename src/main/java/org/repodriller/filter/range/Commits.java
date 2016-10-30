@@ -17,6 +17,10 @@ public class Commits {
 		return new SingleCommit(commit);
 	}
 
+	public static CommitRange since(Calendar date) {
+		return new SinceCommit(date);
+	}
+
 	public static CommitRange monthly(int months) {
 		return new MonthlyCommits(months);
 	}
