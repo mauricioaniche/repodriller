@@ -37,7 +37,7 @@ public class GitRemoteRepositoryTest {
 
 	@BeforeClass()
 	public static void readPath() throws InvalidRemoteException, TransportException, GitAPIException, IOException {
-		url = "https://github.com/mauricioaniche/metricminer2";
+		url = "https://github.com/mauricioaniche/repodriller";
 		git1 = new GitRemoteRepository(url);
 		git2 = GitRemoteRepository.hostedOn(url).inTempDir(REMOTE_GIT_TEMP_DIR).asBareRepos().build();
 	}
@@ -57,7 +57,7 @@ public class GitRemoteRepositoryTest {
 	
 	@Test
 	public void shouldInitWithGivenTempDir() {
-		String expectedRepoTempDirectory = REMOTE_GIT_TEMP_DIR + File.separator + "metricminer2";
+		String expectedRepoTempDirectory = REMOTE_GIT_TEMP_DIR + File.separator + "repodriller";
 		Assert.assertEquals(expectedRepoTempDirectory, git2.info().getPath());
 		
 		File bareRepositoryRefDir = new File(expectedRepoTempDirectory + File.separator + "refs");

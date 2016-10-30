@@ -31,9 +31,9 @@ public class CommitFilterIntegrationTest {
 			.process(visitor)
 			.mine();
 		
-		Assert.assertEquals(2, visitor.getVisitedCommits().size());
-		Assert.assertTrue(visitor.getVisitedCommits().get(0).equals("b8c2be250786975f1c6f47e96922096f1bb25e39"));
-		Assert.assertTrue(visitor.getVisitedCommits().get(1).equals("a1b6136f978644ff1d89816bc0f2bd86f6d9d7f5"));
+		Assert.assertEquals(2, visitor.getVisitedHashes().size());
+		Assert.assertTrue(visitor.getVisitedHashes().get(0).equals("a1b6136f978644ff1d89816bc0f2bd86f6d9d7f5"));
+		Assert.assertTrue(visitor.getVisitedHashes().get(1).equals("b8c2be250786975f1c6f47e96922096f1bb25e39"));
 	}
 
 	@Test
@@ -47,10 +47,10 @@ public class CommitFilterIntegrationTest {
 		.process(visitor)
 		.mine();
 		
-		Assert.assertEquals(3, visitor.getVisitedCommits().size());
-		Assert.assertTrue(visitor.getVisitedCommits().get(0).equals("b8c2be250786975f1c6f47e96922096f1bb25e39"));
-		Assert.assertTrue(visitor.getVisitedCommits().get(1).equals("375de7a8275ecdc0b28dc8de2568f47241f443e9"));
-		Assert.assertTrue(visitor.getVisitedCommits().get(2).equals("a1b6136f978644ff1d89816bc0f2bd86f6d9d7f5"));
+		Assert.assertEquals(3, visitor.getVisitedHashes().size());
+		Assert.assertTrue(visitor.getVisitedHashes().get(0).equals("a1b6136f978644ff1d89816bc0f2bd86f6d9d7f5"));
+		Assert.assertTrue(visitor.getVisitedHashes().get(1).equals("375de7a8275ecdc0b28dc8de2568f47241f443e9"));
+		Assert.assertTrue(visitor.getVisitedHashes().get(2).equals("b8c2be250786975f1c6f47e96922096f1bb25e39"));
 	}
 	
 }

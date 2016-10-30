@@ -21,10 +21,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
@@ -198,7 +198,9 @@ public class GitRepository implements SCM {
 
 	private GregorianCalendar convertToDate(RevCommit revCommit) {
 		GregorianCalendar date = new GregorianCalendar();
-		date.setTime(new Date(revCommit.getCommitTime() * 1000L));
+		date.setTimeZone(revCommit.getAuthorIdent().getTimeZone());
+		date.setTime(revCommit.getAuthorIdent().getWhen());
+		
 		return date;
 	}
 
@@ -217,19 +219,26 @@ public class GitRepository implements SCM {
 				Developer author = new Developer(jgitCommit.getAuthorIdent().getName(), jgitCommit.getAuthorIdent().getEmailAddress());
 				Developer committer = new Developer(jgitCommit.getCommitterIdent().getName(), jgitCommit.getCommitterIdent().getEmailAddress());
 
+				TimeZone authorTimeZone = jgitCommit.getAuthorIdent().getTimeZone();
+				TimeZone committerTimeZone = jgitCommit.getCommitterIdent().getTimeZone();
+				
 				String msg = jgitCommit.getFullMessage().trim();
 				String hash = jgitCommit.getName().toString();
-				long epoch = jgitCommit.getCommitTime();
 				String parent = (jgitCommit.getParentCount() > 0) ? jgitCommit.getParent(0).getName().toString() : "";
 
-				GregorianCalendar date = new GregorianCalendar();
-				date.setTime(new Date(epoch * 1000L));
+				GregorianCalendar authorDate = new GregorianCalendar();
+				authorDate.setTime(jgitCommit.getAuthorIdent().getWhen());
+				authorDate.setTimeZone(jgitCommit.getAuthorIdent().getTimeZone());
 
+				GregorianCalendar committerDate = new GregorianCalendar();
+				committerDate.setTime(jgitCommit.getCommitterIdent().getWhen());
+				committerDate.setTimeZone(jgitCommit.getCommitterIdent().getTimeZone());
+				
 				boolean merge = false;
 				if(jgitCommit.getParentCount() > 1) merge = true;
 				Set<String> branches = getBranches(git, hash);
 				boolean isCommitInMainBranch = branches.contains(this.mainBranchName);
-				theCommit = new Commit(hash, author, committer, date, msg, parent, merge, branches, isCommitInMainBranch);
+				theCommit = new Commit(hash, author, committer, authorDate, authorTimeZone, committerDate, committerTimeZone, msg, parent, merge, branches, isCommitInMainBranch);
 
 				List<DiffEntry> diffsForTheCommit = diffsForTheCommit(repo, jgitCommit);
 				if (diffsForTheCommit.size() > this.getMaxNumberFilesInACommit()) {

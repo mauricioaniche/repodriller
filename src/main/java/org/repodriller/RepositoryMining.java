@@ -48,7 +48,7 @@ public class RepositoryMining {
 	private static Logger log = Logger.getLogger(RepositoryMining.class);
 	private CommitRange range;
 	private int threads;
-	private boolean fromTheBeggining;
+	private boolean reverseOrder;
 	private CommitFilter filter;
 	
 	public RepositoryMining() {
@@ -78,8 +78,8 @@ public class RepositoryMining {
 		return this;
 	}
 	
-	public RepositoryMining startingFromTheBeginning() {
-		fromTheBeggining = true;
+	public RepositoryMining reverseOrder() {
+		reverseOrder = true;
 		return this;
 	}
 
@@ -101,7 +101,7 @@ public class RepositoryMining {
 		log.info("Git repository in " + repo.getPath());
 		
 		List<ChangeSet> allCs = range.get(repo.getScm());
-		if(fromTheBeggining) Collections.reverse(allCs);
+		if(!reverseOrder) Collections.reverse(allCs);
 		
 		log.info("Total of commits: " + allCs.size());
 		

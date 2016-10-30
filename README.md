@@ -56,7 +56,7 @@ Let's start with something simple: we will print the name of the developers for 
 *   in(): We use to configure the project (or projects) that will be analyzed.
 *   through(): The list of commits to analyze. We want all of them.
 *   withCommits(): Possible filters to commits, e.g., only commits in a certain branch 
-*   fromTheBeginning(): Commits will be analysed from the first commit in history to the most recent. Default is the opposite.
+*   reverseOrder(): Commits will be analysed in reverse order. Default starts from the first commit to the latest one.
 *   process(): Visitors that will pass in each commit.
 *   mine(): The magic starts!
 

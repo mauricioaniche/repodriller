@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -207,7 +208,8 @@ public class SubversionRepository implements SCM {
 
 	private Commit createCommit(SVNLogEntry logEntry) {
 		Developer committer = new Developer(logEntry.getAuthor(), null);
-		Commit commit = new Commit(String.valueOf(logEntry.getRevision()), null, committer, convertToCalendar(logEntry.getDate()), logEntry.getMessage(),
+		Calendar date = convertToCalendar(logEntry.getDate());
+		Commit commit = new Commit(String.valueOf(logEntry.getRevision()), null, committer, date, date, logEntry.getMessage(),
 				"");
 		return commit;
 	}

@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TimeZone;
 
 
 public class Commit {
@@ -36,19 +37,25 @@ public class Commit {
 	private Set<String> branches;
 	private boolean merge;
 	private boolean inMainBranch;
+	private TimeZone authorTimeZone;
+	private TimeZone committerTimeZone;
+	private Calendar committerDate;
 
-	public Commit(String hash, Developer author, Developer committer, Calendar date, String msg, String parent) {
-		this(hash, author, committer, date, msg, parent, false, new HashSet<>(), false);
+	public Commit(String hash, Developer author, Developer committer, Calendar authorDate, Calendar committerDate, String msg, String parent) {
+		this(hash, author, committer, authorDate, TimeZone.getDefault(), committerDate, TimeZone.getDefault(), msg, parent, false, new HashSet<>(), false);
 	}
 
-	public Commit(String hash, Developer author, Developer committer, Calendar date, String msg, String parent, boolean merge, Set<String> branches, boolean isCommitInMainBranch) {
+	public Commit(String hash, Developer author, Developer committer, Calendar authorDate, TimeZone authorTimeZone, Calendar committerDate, TimeZone committerTimeZone, String msg, String parent, boolean merge, Set<String> branches, boolean isCommitInMainBranch) {
 		this.hash = hash;
 		this.author = author;
 		this.committer = committer;
-		this.date = date;
+		this.date = authorDate;
+		this.committerDate = committerDate;
 		this.msg = msg;
 		this.parent = parent;
 		this.merge = merge;
+		this.authorTimeZone = authorTimeZone;
+		this.committerTimeZone = committerTimeZone;
 		this.modifications = new ArrayList<Modification>();
 		this.branches = branches;
 		this.inMainBranch = isCommitInMainBranch;
@@ -91,11 +98,23 @@ public class Commit {
 	public List<Modification> getModifications() {
 		return Collections.unmodifiableList(modifications);
 	}
+	
+	public Calendar getCommitterDate() {
+		return committerDate;
+	}
 
 	@Override
 	public String toString() {
 		return "Commit [hash=" + hash + ", parent=" + parent + ", author=" + author + ", msg=" + msg + ", modifications="
 				+ modifications + "]";
+	}
+	
+	public TimeZone getAuthorTimeZone() {
+		return authorTimeZone;
+	}
+	
+	public TimeZone getCommitterTimeZone() {
+		return committerTimeZone;
 	}
 
 	@Override

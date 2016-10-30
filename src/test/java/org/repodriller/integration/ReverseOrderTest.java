@@ -7,7 +7,7 @@ import org.repodriller.RepositoryMining;
 import org.repodriller.filter.range.Commits;
 import org.repodriller.scm.GitRepository;
 
-public class FromTheBeginningTest {
+public class ReverseOrderTest {
 
 	private String path;
 
@@ -23,14 +23,13 @@ public class FromTheBeginningTest {
 		new RepositoryMining()
 		.in(GitRepository.singleProject(path))
 		.through(Commits.all())
-		.startingFromTheBeginning()
 		.process(visitor)
 		.mine();
 		
-		Assert.assertEquals(3, visitor.getVisitedCommits().size());
-		Assert.assertTrue(visitor.getVisitedCommits().get(2).equals("b8c2be250786975f1c6f47e96922096f1bb25e39"));
-		Assert.assertTrue(visitor.getVisitedCommits().get(1).equals("375de7a8275ecdc0b28dc8de2568f47241f443e9"));
-		Assert.assertTrue(visitor.getVisitedCommits().get(0).equals("a1b6136f978644ff1d89816bc0f2bd86f6d9d7f5"));
+		Assert.assertEquals(3, visitor.getVisitedHashes().size());
+		Assert.assertTrue(visitor.getVisitedHashes().get(2).equals("b8c2be250786975f1c6f47e96922096f1bb25e39"));
+		Assert.assertTrue(visitor.getVisitedHashes().get(1).equals("375de7a8275ecdc0b28dc8de2568f47241f443e9"));
+		Assert.assertTrue(visitor.getVisitedHashes().get(0).equals("a1b6136f978644ff1d89816bc0f2bd86f6d9d7f5"));
 	}
 	
 	@Test
@@ -40,14 +39,16 @@ public class FromTheBeginningTest {
 		new RepositoryMining()
 		.in(GitRepository.singleProject(path))
 		.through(Commits.all())
+		.reverseOrder()
 		.process(visitor)
 		.mine();
 		
-		Assert.assertEquals(3, visitor.getVisitedCommits().size());
-		Assert.assertTrue(visitor.getVisitedCommits().get(0).equals("b8c2be250786975f1c6f47e96922096f1bb25e39"));
-		Assert.assertTrue(visitor.getVisitedCommits().get(1).equals("375de7a8275ecdc0b28dc8de2568f47241f443e9"));
-		Assert.assertTrue(visitor.getVisitedCommits().get(2).equals("a1b6136f978644ff1d89816bc0f2bd86f6d9d7f5"));
+		Assert.assertEquals(3, visitor.getVisitedHashes().size());
+		Assert.assertTrue(visitor.getVisitedHashes().get(0).equals("b8c2be250786975f1c6f47e96922096f1bb25e39"));
+		Assert.assertTrue(visitor.getVisitedHashes().get(1).equals("375de7a8275ecdc0b28dc8de2568f47241f443e9"));
+		Assert.assertTrue(visitor.getVisitedHashes().get(2).equals("a1b6136f978644ff1d89816bc0f2bd86f6d9d7f5"));
 	}
 	
+
 	
 }
