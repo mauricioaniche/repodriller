@@ -21,17 +21,17 @@ public class GitRemoteRepository implements SCM {
 	private static Logger log = Logger.getLogger(GitRemoteRepository.class);
 	
 	public GitRemoteRepository(String url) throws GitAPIException {
-		this(url, gitSystemTempDir(), false, GitRepository.DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT);
+		this(url, gitSystemTempDir(), false);
 	}
 	
-	public GitRemoteRepository(String url, String rootTempGitPath, boolean bare, Integer maxNumberFilesInACommit) throws GitAPIException {
+	public GitRemoteRepository(String url, String rootTempGitPath, boolean bare) throws GitAPIException {
 		this.remoteRepositoryUrl = url;
 		if(rootTempGitPath == null) {
 			rootTempGitPath = gitSystemTempDir();
 		}
 		this.tempGitPath = gitRemoteRepositoryTempDir(url, rootTempGitPath);
 		this.initTempGitRepository(bare);
-		this.tempGitRepository = new GitRepository(tempGitPath, maxNumberFilesInACommit);
+		this.tempGitRepository = new GitRepository(tempGitPath);
 	}
 	
 	protected void initTempGitRepository(boolean bare) throws GitAPIException {
@@ -65,25 +65,25 @@ public class GitRemoteRepository implements SCM {
 	}
 	
 	public static SCMRepository singleProject(String url) {
-		return singleProject(url, gitSystemTempDir(), false, GitRepository.DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT);
+		return singleProject(url, gitSystemTempDir(), false);
 	}
 	
-	protected static SCMRepository singleProject(String url, String rootTempGitPath, boolean bare, Integer maxNumberFilesInACommit) {
+	protected static SCMRepository singleProject(String url, String rootTempGitPath, boolean bare) {
 		try {
-			return new GitRemoteRepository(url, rootTempGitPath, bare, maxNumberFilesInACommit).info();
+			return new GitRemoteRepository(url, rootTempGitPath, bare).info();
 		} catch (GitAPIException e) {
 			throw new RuntimeException(e.getMessage(), e);
 		}
 	}
 	
 	public static SCMRepository[] allProjectsIn(List<String> urls) {
-		return allProjectsIn(urls, gitSystemTempDir(), false, GitRepository.DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT);
+		return allProjectsIn(urls, gitSystemTempDir(), false);
 	}
 	
-	protected static SCMRepository[] allProjectsIn(List<String> urls, String rootTempGitPath, boolean bare, Integer maxNumberFilesInACommit) {
+	protected static SCMRepository[] allProjectsIn(List<String> urls, String rootTempGitPath, boolean bare) {
 		List<SCMRepository> repos = new ArrayList<SCMRepository>();
 		for (String url : urls) {
-			repos.add(singleProject(url, rootTempGitPath, bare, maxNumberFilesInACommit));
+			repos.add(singleProject(url, rootTempGitPath, bare));
 		}
 		
 		return repos.toArray(new SCMRepository[repos.size()]);

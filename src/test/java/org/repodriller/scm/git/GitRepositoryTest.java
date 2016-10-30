@@ -50,7 +50,7 @@ public class GitRepositoryTest {
 	@Before
 	public void setUp() {
 		git1 = new GitRepository(path1);
-		git2 = new GitRepository(path2, 2000);
+		git2 = new GitRepository(path2);
 		git3 = new GitRepository(path3);
 	}
 	
@@ -258,22 +258,5 @@ public class GitRepositoryTest {
 		Assert.assertEquals(expectedNewMaxNumber, git2.getMaxNumberFilesInACommit());
 	}
 	
-	@Test
-	public void invalidMaxNumberOfFilesInACommit() {
-		GitRepository invalidRepository = null;
-		try {
-			invalidRepository = new GitRepository(path1, 0);
-			Assert.fail("Should not init repository with invalid maxNumberOfFilesInACommit");
-		} catch (Exception e) {
-			Assert.assertNull(invalidRepository);
-		}
 
-		try {
-			invalidRepository = new GitRepository(path1, -1);
-			Assert.fail("Should not init repository with invalid maxNumberOfFilesInACommit");
-		} catch (Exception e) {
-			Assert.assertNull(invalidRepository);
-		}
-	}
-	
 }

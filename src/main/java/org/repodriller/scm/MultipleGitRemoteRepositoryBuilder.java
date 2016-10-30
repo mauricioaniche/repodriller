@@ -20,13 +20,8 @@ public class MultipleGitRemoteRepositoryBuilder extends GitRemoteRepositoryBuild
 		return this;
 	}
 
-	public MultipleGitRemoteRepositoryBuilder withMaxNumberOfFilesInACommit(Integer maxNumber) {
-		super.maxNumberFilesInACommit = maxNumber;
-		return this;
-	}
-
 	public SCMRepository[] buildAsSCMRepositories() {
-		return GitRemoteRepository.allProjectsIn(this.gitUrls, this.tempDir, this.bare, this.maxNumberFilesInACommit);
+		return GitRemoteRepository.allProjectsIn(this.gitUrls, this.tempDir, this.bare);
 	}
 
 }

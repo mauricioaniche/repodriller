@@ -62,34 +62,36 @@ import org.repodriller.util.FileUtils;
 public class GitRepository implements SCM {
 
 	private static final int MAX_SIZE_OF_A_DIFF = 100000;
-	protected static final int DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT = 200;
+	private static final int DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT = 200;
 	private static final String BRANCH_MM = "mm";
 
 	private String path;
 	private String mainBranchName;
-	private Integer maxNumberFilesInACommit;
+	private int maxNumberFilesInACommit;
+	private int maxSizeOfDiff;
 
 	private static Logger log = Logger.getLogger(GitRepository.class);
 
 	public GitRepository(String path) {
-		this(path, DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT);
-	}
-
-	public GitRepository(String path, Integer maxNumberOfFilesInACommit) {
 		this.path = path;
-		maxNumberOfFilesInACommit = checkMaxNumber(maxNumberOfFilesInACommit);
-		this.maxNumberFilesInACommit = maxNumberOfFilesInACommit;
+		this.maxNumberFilesInACommit = checkMaxNumberOfFiles();
+		this.maxSizeOfDiff = checkMaxSizeOfDiff();
 	}
 
-	private Integer checkMaxNumber(Integer maxNumberOfFilesInACommit) {
-		if(maxNumberOfFilesInACommit == null) {
-			maxNumberOfFilesInACommit = DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT;
+	private int checkMaxNumberOfFiles() {
+		String prop = System.getProperty("git.maxfiles");
+		if(prop == null) {
+			return DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT;
 		}
-		if(maxNumberOfFilesInACommit <= 0){
-			throw new IllegalArgumentException("Max number of files in a commit should be 0 or greater."
-					+ "Default value is " + DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT);
+		return Integer.parseInt(prop);
+	}
+
+	private int checkMaxSizeOfDiff() {
+		String prop = System.getProperty("git.maxdiff");
+		if(prop == null) {
+			return MAX_SIZE_OF_A_DIFF;
 		}
-		return maxNumberOfFilesInACommit;
+		return Integer.parseInt(prop);
 	}
 
 	public static SCMRepository singleProject(String path) {
@@ -260,7 +262,7 @@ public class GitRepository implements SCM {
 						sc = getSourceCode(repo, diff);
 					}
 
-					if (diffText.length() > MAX_SIZE_OF_A_DIFF) {
+					if (diffText.length() > maxSizeOfDiff) {
 						log.error("diff for " + newPath + " too big");
 						diffText = "-- TOO BIG --";
 					}
@@ -302,6 +304,8 @@ public class GitRepository implements SCM {
 		df.setRepository(repo);
 		df.setDiffComparator(RawTextComparator.DEFAULT);
 		df.setDetectRenames(true);
+		setContext(df);
+		
 		List<DiffEntry> diffs = null;
 
 		if (parentCommit == null) {
@@ -315,6 +319,12 @@ public class GitRepository implements SCM {
 		df.release();
 
 		return diffs;
+	}
+
+	private void setContext(DiffFormatter df) {
+		String context = System.getProperty("git.diffcontext");
+		if(context==null) return;
+		df.setContext(Integer.parseInt(System.getProperty("git.diffcontext")));
 	}
 
 	private String getSourceCode(Repository repo, DiffEntry diff) throws MissingObjectException, IOException, UnsupportedEncodingException {

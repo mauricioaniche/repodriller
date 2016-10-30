@@ -26,11 +26,11 @@ public class SingleGitRemoteRepositoryBuilder extends GitRemoteRepositoryBuilder
 	}
 
 	public GitRemoteRepository build() throws GitAPIException {
-		return new GitRemoteRepository(this.gitUrl, this.tempDir, this.bare, this.maxNumberFilesInACommit);
+		return new GitRemoteRepository(this.gitUrl, this.tempDir, this.bare);
 	}
 
 	public SCMRepository buildAsSCMRepository() {
-		return GitRemoteRepository.singleProject(this.gitUrl, this.tempDir, this.bare, this.maxNumberFilesInACommit);
+		return GitRemoteRepository.singleProject(this.gitUrl, this.tempDir, this.bare);
 	}
 
 }

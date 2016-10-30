@@ -118,7 +118,6 @@ You can also initialize git repositories with their remote HTTP URLs. In this ca
 		.hostedOn(gitUrl)							// URL like: https://github.com/mauricioaniche/repodriller.git
 		.inTempDir(tempDir)							// <Optional>
 		.asBareRepos()								// <Optional> (1)
-		.withMaxNumberOfFilesInACommit(2000)		// <Optional>
 		.buildAsSCMRepository())
 ```
 
@@ -442,6 +441,20 @@ public void execute() {
 		.mine();
 }
 ```
+
+## Configuring Git options
+
+RepoDriller takes a few decisions on the Git configuration. You can change them by passing
+a system property. Example: `java -Dgit.maxfiles=2000 -jar ...`.
+
+Existing variables:
+
+- *git.maxfiles*: The max quantity of files in a single commit. Commits with more files than this constant
+are ignored. Default is 200.
+  
+- *git.maxdiff*: The max number of lines in a diff. Diffs higher than that are ignored. Default is 100000.
+
+- *git.diffcontext*: The size of the content that is used by the diff algorithm. Default is git default.
 
 ## Creating your own CommitRange
 
