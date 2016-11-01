@@ -58,7 +58,7 @@ public class DiffParserTest {
 	}
 
 	@Test
-	public void simpleAddition() {
+	public void onlyAdditions() {
 		
 		String diff =
 				"diff --git a/A b/A\r\n"+
@@ -92,6 +92,43 @@ public class DiffParserTest {
 		Assert.assertTrue(newLines.contains(new DiffLine(6, "dd")));
 		Assert.assertTrue(newLines.contains(new DiffLine(7, "ee")));
 		Assert.assertTrue(newLines.contains(new DiffLine(8, "ff")));
+	}
+
+	@Test
+	public void onlyDeletions() {
+		
+		String diff =
+				"diff --git a/A b/A\r\n"+
+						"index 5ae30ef..04b86b0 100644\r\n"+
+						"--- a/A\r\n"+
+						"+++ b/A\r\n"+
+						"@@ -2,7 +2,6 @@ aa\r\n"+
+						" bb\r\n"+
+						" cc\r\n"+
+						" log.info(\"aa\")\r\n"+
+						"-log.debug(\"b\")\r\n"+
+						" dd\r\n"+
+						" ee\r\n"+
+						" ff";
+		
+		DiffParser parsedDiff = new DiffParser(diff);
+		
+		List<DiffLine> oldLines = parsedDiff.getLinesInOldFile();
+		Assert.assertTrue(oldLines.contains(new DiffLine(2, "bb")));
+		Assert.assertTrue(oldLines.contains(new DiffLine(3, "cc")));
+		Assert.assertTrue(oldLines.contains(new DiffLine(4, "log.info(\"aa\")")));
+		Assert.assertTrue(oldLines.contains(new DiffLine(5, "log.debug(\"b\")")));
+		Assert.assertTrue(oldLines.contains(new DiffLine(6, "dd")));
+		Assert.assertTrue(oldLines.contains(new DiffLine(7, "ee")));
+		Assert.assertTrue(oldLines.contains(new DiffLine(8, "ff")));
+		
+		List<DiffLine> newLines = parsedDiff.getLinesInNewFile();
+		Assert.assertTrue(newLines.contains(new DiffLine(2, "bb")));
+		Assert.assertTrue(newLines.contains(new DiffLine(3, "cc")));
+		Assert.assertTrue(newLines.contains(new DiffLine(4, "log.info(\"aa\")")));
+		Assert.assertTrue(newLines.contains(new DiffLine(5, "dd")));
+		Assert.assertTrue(newLines.contains(new DiffLine(6, "ee")));
+		Assert.assertTrue(newLines.contains(new DiffLine(7, "ff")));
 	}
 
 	@Test
