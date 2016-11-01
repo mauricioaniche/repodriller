@@ -224,6 +224,46 @@ The _Commit_ class contains the _getBranches()_ method. It returns the list of b
 
 Note about the implementation: This is not supported by JGit, so it makes use of Git directly.
 
+## Diffs
+
+Modifications contains _diffs_ from the current version and the last one. This diff is extracted
+directly from Git output. A common example of the output can be seen below.
+Diffs have their own format (the @@ indicates how you should read it).
+
+```
+diff --git a/GitRepository.java b/GitRepository.java
+index f38a97d..2b96b0e 100644
+--- a/GitRepository.java
++++ b/GitRepository.java
+@@ -72,7 +72,7 @@ public class GitRepository implements SCM {
+ 
+        private static Logger log = Logger.getLogger(GitRepository.class);
+ 
+-       public GitRepository(String path) {
++       public GitRepository2(String path) {
+                this.path = path;
+                this.maxNumberFilesInACommit = checkMaxNumberOfFiles();
+                this.maxSizeOfDiff = checkMaxSizeOfDiff();
+```
+
+To facilitate the parsing, RepoDriller offers `DiffParser` class. This utility class parses
+the diff and returns two separate lists: lines (number and content) from the previous version and lines 
+from the new version. As one diff may contain different blocks of diffs (happens when the file
+was modified in two parts that are far from each other), the parser returns 1 or more diff blocks.
+
+```
+// parse the diff
+DiffParser parsedDiff = new DiffParser(diff);
+
+// return all the lines in the old file
+List<DiffLine> oldLines = parsedDiff.getBlocks().get(0).getLinesInOldFile();
+// return all the lines in the new file
+List<DiffLine> oldLines = parsedDiff.getBlocks().get(0).getLinesInNewFile();
+```
+
+You may configure the context of the algorithm. Check section _Configuring Git options_
+in this documentation.
+
 ## Blame
 
 The _SCM_ class contains a blame() method, which allows you to blame a file in a specific commit:
