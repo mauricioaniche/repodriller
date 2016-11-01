@@ -2,6 +2,7 @@ package org.repodriller.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -48,7 +49,7 @@ public class DiffBlock {
 		int counter = start; 
 		for(String line : lines) {
 			if(line.startsWith(ch) || line.startsWith(" ")) {
-				oldLines.add(new DiffLine(counter, line.substring(1)));
+				oldLines.add(new DiffLine(counter, line.substring(1), typeOf(line)));
 				counter++;
 			}
 		}
@@ -58,8 +59,23 @@ public class DiffBlock {
 		
 	}
 	
+	private DiffLineType typeOf(String line) {
+		if(line.startsWith(" ")) return DiffLineType.KEPT;
+		if(line.startsWith("+")) return DiffLineType.ADDED;
+		if(line.startsWith("-")) return DiffLineType.REMOVED;
+		throw new RepoDrillerException("type of diff line not recognized: " + line);
+	}
+
 	public List<DiffLine> getLinesInOldFile() {
 		return getLines(d1, d2, "-");
+	}
+	
+	public Optional<DiffLine> getLineInOldFile(int line) {
+		return getLinesInOldFile().stream().filter(x -> x.getLineNumber() == line).findFirst();
+	}
+
+	public Optional<DiffLine> getLineInNewFile(int line) {
+		return getLinesInNewFile().stream().filter(x -> x.getLineNumber() == line).findFirst();
 	}
 
 	public List<DiffLine> getLinesInNewFile() {

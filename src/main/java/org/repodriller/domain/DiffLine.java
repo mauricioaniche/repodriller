@@ -4,10 +4,12 @@ public class DiffLine {
 
 	private final int lineNumber;
 	private final String line;
+	private DiffLineType type;
 	
-	public DiffLine(int lineNumber, String line) {
+	public DiffLine(int lineNumber, String line, DiffLineType type) {
 		this.lineNumber = lineNumber;
 		this.line = line;
+		this.type = type;
 	}
 
 	public int getLineNumber() {
@@ -17,10 +19,14 @@ public class DiffLine {
 	public String getLine() {
 		return line;
 	}
+	
+	public DiffLineType getType() {
+		return type;
+	}
 
 	@Override
 	public String toString() {
-		return "DiffLine [lineNumber=" + lineNumber + ", line=" + line + "]";
+		return "DiffLine [lineNumber=" + lineNumber + ", line=" + line + ", type=" + type + "]";
 	}
 
 	@Override
@@ -29,6 +35,7 @@ public class DiffLine {
 		int result = 1;
 		result = prime * result + ((line == null) ? 0 : line.hashCode());
 		result = prime * result + lineNumber;
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		return result;
 	}
 
@@ -48,11 +55,9 @@ public class DiffLine {
 			return false;
 		if (lineNumber != other.lineNumber)
 			return false;
+		if (type != other.type)
+			return false;
 		return true;
 	}
-	
-	
-	
-	
-	
+
 }

@@ -36,25 +36,25 @@ public class DiffParserTest {
 		
 		List<DiffLine> oldLines = parsedDiff.getBlocks().get(0).getLinesInOldFile();
 
-		Assert.assertTrue(oldLines.contains(new DiffLine(1, "a")));
-		Assert.assertTrue(oldLines.contains(new DiffLine(2, "b")));
-		Assert.assertTrue(oldLines.contains(new DiffLine(3, "c")));
-		Assert.assertTrue(oldLines.contains(new DiffLine(4, "log.info(\"a\")")));
-		Assert.assertTrue(oldLines.contains(new DiffLine(5, "d")));
-		Assert.assertTrue(oldLines.contains(new DiffLine(6, "e")));
-		Assert.assertTrue(oldLines.contains(new DiffLine(7, "f")));
-		Assert.assertTrue(oldLines.contains(new DiffLine(8, "")));
+		Assert.assertTrue(oldLines.contains(new DiffLine(1, "a", DiffLineType.REMOVED)));
+		Assert.assertTrue(oldLines.contains(new DiffLine(2, "b", DiffLineType.REMOVED)));
+		Assert.assertTrue(oldLines.contains(new DiffLine(3, "c", DiffLineType.REMOVED)));
+		Assert.assertTrue(oldLines.contains(new DiffLine(4, "log.info(\"a\")", DiffLineType.REMOVED)));
+		Assert.assertTrue(oldLines.contains(new DiffLine(5, "d", DiffLineType.REMOVED)));
+		Assert.assertTrue(oldLines.contains(new DiffLine(6, "e", DiffLineType.REMOVED)));
+		Assert.assertTrue(oldLines.contains(new DiffLine(7, "f", DiffLineType.REMOVED)));
+		Assert.assertTrue(oldLines.contains(new DiffLine(8, "", DiffLineType.KEPT)));
 
 		List<DiffLine> newLines = parsedDiff.getBlocks().get(0).getLinesInNewFile();
 		
-		Assert.assertTrue(newLines.contains(new DiffLine(1, "aa")));
-		Assert.assertTrue(newLines.contains(new DiffLine(2, "bb")));
-		Assert.assertTrue(newLines.contains(new DiffLine(3, "cc")));
-		Assert.assertTrue(newLines.contains(new DiffLine(4, "log.info(\"aa\")")));
-		Assert.assertTrue(newLines.contains(new DiffLine(5, "dd")));
-		Assert.assertTrue(newLines.contains(new DiffLine(6, "ee")));
-		Assert.assertTrue(newLines.contains(new DiffLine(7, "ff")));
-		Assert.assertTrue(newLines.contains(new DiffLine(8, "")));
+		Assert.assertTrue(newLines.contains(new DiffLine(1, "aa", DiffLineType.ADDED)));
+		Assert.assertTrue(newLines.contains(new DiffLine(2, "bb", DiffLineType.ADDED)));
+		Assert.assertTrue(newLines.contains(new DiffLine(3, "cc", DiffLineType.ADDED)));
+		Assert.assertTrue(newLines.contains(new DiffLine(4, "log.info(\"aa\")", DiffLineType.ADDED)));
+		Assert.assertTrue(newLines.contains(new DiffLine(5, "dd", DiffLineType.ADDED)));
+		Assert.assertTrue(newLines.contains(new DiffLine(6, "ee", DiffLineType.ADDED)));
+		Assert.assertTrue(newLines.contains(new DiffLine(7, "ff", DiffLineType.ADDED)));
+		Assert.assertTrue(newLines.contains(new DiffLine(8, "", DiffLineType.KEPT)));
 	}
 
 	@Test
@@ -77,21 +77,21 @@ public class DiffParserTest {
 		DiffParser parsedDiff = new DiffParser(diff);
 		
 		List<DiffLine> oldLines = parsedDiff.getBlocks().get(0).getLinesInOldFile();
-		Assert.assertTrue(oldLines.contains(new DiffLine(2, "bb")));
-		Assert.assertTrue(oldLines.contains(new DiffLine(3, "cc")));
-		Assert.assertTrue(oldLines.contains(new DiffLine(4, "log.info(\"aa\")")));
-		Assert.assertTrue(oldLines.contains(new DiffLine(5, "dd")));
-		Assert.assertTrue(oldLines.contains(new DiffLine(6, "ee")));
-		Assert.assertTrue(oldLines.contains(new DiffLine(7, "ff")));
+		Assert.assertTrue(oldLines.contains(new DiffLine(2, "bb", DiffLineType.KEPT)));
+		Assert.assertTrue(oldLines.contains(new DiffLine(3, "cc", DiffLineType.KEPT)));
+		Assert.assertTrue(oldLines.contains(new DiffLine(4, "log.info(\"aa\")", DiffLineType.KEPT)));
+		Assert.assertTrue(oldLines.contains(new DiffLine(5, "dd", DiffLineType.KEPT)));
+		Assert.assertTrue(oldLines.contains(new DiffLine(6, "ee", DiffLineType.KEPT)));
+		Assert.assertTrue(oldLines.contains(new DiffLine(7, "ff", DiffLineType.KEPT)));
 
 		List<DiffLine> newLines = parsedDiff.getBlocks().get(0).getLinesInNewFile();
-		Assert.assertTrue(newLines.contains(new DiffLine(2, "bb")));
-		Assert.assertTrue(newLines.contains(new DiffLine(3, "cc")));
-		Assert.assertTrue(newLines.contains(new DiffLine(4, "log.info(\"aa\")")));
-		Assert.assertTrue(newLines.contains(new DiffLine(5, "log.debug(\"b\")")));
-		Assert.assertTrue(newLines.contains(new DiffLine(6, "dd")));
-		Assert.assertTrue(newLines.contains(new DiffLine(7, "ee")));
-		Assert.assertTrue(newLines.contains(new DiffLine(8, "ff")));
+		Assert.assertTrue(newLines.contains(new DiffLine(2, "bb", DiffLineType.KEPT)));
+		Assert.assertTrue(newLines.contains(new DiffLine(3, "cc", DiffLineType.KEPT)));
+		Assert.assertTrue(newLines.contains(new DiffLine(4, "log.info(\"aa\")", DiffLineType.KEPT)));
+		Assert.assertTrue(newLines.contains(new DiffLine(5, "log.debug(\"b\")", DiffLineType.ADDED)));
+		Assert.assertTrue(newLines.contains(new DiffLine(6, "dd", DiffLineType.KEPT)));
+		Assert.assertTrue(newLines.contains(new DiffLine(7, "ee", DiffLineType.KEPT)));
+		Assert.assertTrue(newLines.contains(new DiffLine(8, "ff", DiffLineType.KEPT)));
 	}
 
 	@Test
@@ -114,21 +114,21 @@ public class DiffParserTest {
 		DiffParser parsedDiff = new DiffParser(diff);
 		
 		List<DiffLine> oldLines = parsedDiff.getBlocks().get(0).getLinesInOldFile();
-		Assert.assertTrue(oldLines.contains(new DiffLine(2, "bb")));
-		Assert.assertTrue(oldLines.contains(new DiffLine(3, "cc")));
-		Assert.assertTrue(oldLines.contains(new DiffLine(4, "log.info(\"aa\")")));
-		Assert.assertTrue(oldLines.contains(new DiffLine(5, "log.debug(\"b\")")));
-		Assert.assertTrue(oldLines.contains(new DiffLine(6, "dd")));
-		Assert.assertTrue(oldLines.contains(new DiffLine(7, "ee")));
-		Assert.assertTrue(oldLines.contains(new DiffLine(8, "ff")));
+		Assert.assertTrue(oldLines.contains(new DiffLine(2, "bb", DiffLineType.KEPT)));
+		Assert.assertTrue(oldLines.contains(new DiffLine(3, "cc", DiffLineType.KEPT)));
+		Assert.assertTrue(oldLines.contains(new DiffLine(4, "log.info(\"aa\")", DiffLineType.KEPT)));
+		Assert.assertTrue(oldLines.contains(new DiffLine(5, "log.debug(\"b\")", DiffLineType.REMOVED)));
+		Assert.assertTrue(oldLines.contains(new DiffLine(6, "dd", DiffLineType.KEPT)));
+		Assert.assertTrue(oldLines.contains(new DiffLine(7, "ee", DiffLineType.KEPT)));
+		Assert.assertTrue(oldLines.contains(new DiffLine(8, "ff", DiffLineType.KEPT)));
 		
 		List<DiffLine> newLines = parsedDiff.getBlocks().get(0).getLinesInNewFile();
-		Assert.assertTrue(newLines.contains(new DiffLine(2, "bb")));
-		Assert.assertTrue(newLines.contains(new DiffLine(3, "cc")));
-		Assert.assertTrue(newLines.contains(new DiffLine(4, "log.info(\"aa\")")));
-		Assert.assertTrue(newLines.contains(new DiffLine(5, "dd")));
-		Assert.assertTrue(newLines.contains(new DiffLine(6, "ee")));
-		Assert.assertTrue(newLines.contains(new DiffLine(7, "ff")));
+		Assert.assertTrue(newLines.contains(new DiffLine(2, "bb", DiffLineType.KEPT)));
+		Assert.assertTrue(newLines.contains(new DiffLine(3, "cc", DiffLineType.KEPT)));
+		Assert.assertTrue(newLines.contains(new DiffLine(4, "log.info(\"aa\")", DiffLineType.KEPT)));
+		Assert.assertTrue(newLines.contains(new DiffLine(5, "dd", DiffLineType.KEPT)));
+		Assert.assertTrue(newLines.contains(new DiffLine(6, "ee", DiffLineType.KEPT)));
+		Assert.assertTrue(newLines.contains(new DiffLine(7, "ff", DiffLineType.KEPT)));
 	}
 
 	@Test
@@ -155,28 +155,28 @@ public class DiffParserTest {
 		DiffParser parsedDiff = new DiffParser(diff);
 		
 		List<DiffLine> oldLines = parsedDiff.getBlocks().get(0).getLinesInOldFile();
-		Assert.assertTrue(oldLines.contains(new DiffLine(1, "aa")));
-		Assert.assertTrue(oldLines.contains(new DiffLine(2, "aaa")));
-		Assert.assertTrue(oldLines.contains(new DiffLine(3, "bb")));
-		Assert.assertTrue(oldLines.contains(new DiffLine(4, "cc")));
-		Assert.assertTrue(oldLines.contains(new DiffLine(5, "log.info(\"aa\")")));
-		Assert.assertTrue(oldLines.contains(new DiffLine(6, "log.debug(\"b\")")));
-		Assert.assertTrue(oldLines.contains(new DiffLine(7, "dd")));
-		Assert.assertTrue(oldLines.contains(new DiffLine(8, "ee")));
-		Assert.assertTrue(oldLines.contains(new DiffLine(9, "log.trace()")));
-		Assert.assertTrue(oldLines.contains(new DiffLine(10, "ff")));
+		Assert.assertTrue(oldLines.contains(new DiffLine(1, "aa", DiffLineType.KEPT)));
+		Assert.assertTrue(oldLines.contains(new DiffLine(2, "aaa", DiffLineType.KEPT)));
+		Assert.assertTrue(oldLines.contains(new DiffLine(3, "bb", DiffLineType.KEPT)));
+		Assert.assertTrue(oldLines.contains(new DiffLine(4, "cc", DiffLineType.KEPT)));
+		Assert.assertTrue(oldLines.contains(new DiffLine(5, "log.info(\"aa\")", DiffLineType.KEPT)));
+		Assert.assertTrue(oldLines.contains(new DiffLine(6, "log.debug(\"b\")", DiffLineType.KEPT)));
+		Assert.assertTrue(oldLines.contains(new DiffLine(7, "dd", DiffLineType.KEPT)));
+		Assert.assertTrue(oldLines.contains(new DiffLine(8, "ee", DiffLineType.KEPT)));
+		Assert.assertTrue(oldLines.contains(new DiffLine(9, "log.trace()", DiffLineType.REMOVED)));
+		Assert.assertTrue(oldLines.contains(new DiffLine(10, "ff", DiffLineType.KEPT)));
 		
 		List<DiffLine> newLines = parsedDiff.getBlocks().get(0).getLinesInNewFile();
-		Assert.assertTrue(newLines.contains(new DiffLine(1, "aa")));
-		Assert.assertTrue(newLines.contains(new DiffLine(2, "aaa")));
-		Assert.assertTrue(newLines.contains(new DiffLine(3, "xxx")));
-		Assert.assertTrue(newLines.contains(new DiffLine(4, "bb")));
-		Assert.assertTrue(newLines.contains(new DiffLine(5, "cc")));
-		Assert.assertTrue(newLines.contains(new DiffLine(6, "log.info(\"aa\")")));
-		Assert.assertTrue(newLines.contains(new DiffLine(7, "log.debug(\"b\")")));
-		Assert.assertTrue(newLines.contains(new DiffLine(8, "dd")));
-		Assert.assertTrue(newLines.contains(new DiffLine(9, "ee")));
-		Assert.assertTrue(newLines.contains(new DiffLine(10, "ff")));
+		Assert.assertTrue(newLines.contains(new DiffLine(1, "aa", DiffLineType.KEPT)));
+		Assert.assertTrue(newLines.contains(new DiffLine(2, "aaa", DiffLineType.KEPT)));
+		Assert.assertTrue(newLines.contains(new DiffLine(3, "xxx", DiffLineType.ADDED)));
+		Assert.assertTrue(newLines.contains(new DiffLine(4, "bb", DiffLineType.KEPT)));
+		Assert.assertTrue(newLines.contains(new DiffLine(5, "cc", DiffLineType.KEPT)));
+		Assert.assertTrue(newLines.contains(new DiffLine(6, "log.info(\"aa\")", DiffLineType.KEPT)));
+		Assert.assertTrue(newLines.contains(new DiffLine(7, "log.debug(\"b\")", DiffLineType.KEPT)));
+		Assert.assertTrue(newLines.contains(new DiffLine(8, "dd", DiffLineType.KEPT)));
+		Assert.assertTrue(newLines.contains(new DiffLine(9, "ee", DiffLineType.KEPT)));
+		Assert.assertTrue(newLines.contains(new DiffLine(10, "ff", DiffLineType.KEPT)));
 
 	}
 	
@@ -210,28 +210,29 @@ public class DiffParserTest {
 		DiffParser parsedDiff = new DiffParser(diff);
 		
 		List<DiffLine> oldLines = parsedDiff.getBlocks().get(0).getLinesInOldFile();
-		Assert.assertTrue(oldLines.contains(new DiffLine(1, "a")));
-		Assert.assertTrue(oldLines.contains(new DiffLine(2, "b")));
-		Assert.assertTrue(oldLines.contains(new DiffLine(3, "c")));
-		Assert.assertTrue(oldLines.contains(new DiffLine(4, "")));
+		Assert.assertTrue(oldLines.contains(new DiffLine(1, "a", DiffLineType.KEPT)));
+		Assert.assertTrue(oldLines.contains(new DiffLine(2, "b", DiffLineType.KEPT)));
+		Assert.assertTrue(oldLines.contains(new DiffLine(3, "c", DiffLineType.REMOVED)));
+		Assert.assertTrue(oldLines.contains(new DiffLine(4, "", DiffLineType.KEPT)));
 		
 		List<DiffLine> newLines = parsedDiff.getBlocks().get(0).getLinesInNewFile();
-		Assert.assertTrue(newLines.contains(new DiffLine(1, "a")));
-		Assert.assertTrue(newLines.contains(new DiffLine(2, "b")));
-		Assert.assertTrue(newLines.contains(new DiffLine(3, "\td")));
-		Assert.assertTrue(newLines.contains(new DiffLine(4, "cc")));
-		Assert.assertTrue(newLines.contains(new DiffLine(5, "")));
-		Assert.assertTrue(newLines.contains(new DiffLine(6, "")));
-		Assert.assertTrue(newLines.contains(new DiffLine(7, "")));
-		Assert.assertTrue(newLines.contains(new DiffLine(8, "")));
-		Assert.assertTrue(newLines.contains(new DiffLine(9, "")));
-		Assert.assertTrue(newLines.contains(new DiffLine(10, "")));
-		Assert.assertTrue(newLines.contains(new DiffLine(11, "")));
-		Assert.assertTrue(newLines.contains(new DiffLine(12, "")));
-		Assert.assertTrue(newLines.contains(new DiffLine(13, "")));
-		Assert.assertTrue(newLines.contains(new DiffLine(14, "\tg")));
-		Assert.assertTrue(newLines.contains(new DiffLine(15, "")));
-		Assert.assertTrue(newLines.contains(new DiffLine(16, "j")));
+		Assert.assertTrue(newLines.contains(new DiffLine(1, "a", DiffLineType.KEPT)));
+		Assert.assertTrue(newLines.contains(new DiffLine(2, "b", DiffLineType.KEPT)));
+		Assert.assertTrue(newLines.contains(new DiffLine(3, "\td", DiffLineType.ADDED)));
+		Assert.assertTrue(newLines.contains(new DiffLine(4, "cc", DiffLineType.ADDED)));
+		Assert.assertTrue(newLines.contains(new DiffLine(5, "", DiffLineType.ADDED)));
+		Assert.assertTrue(newLines.contains(new DiffLine(6, "", DiffLineType.ADDED)));
+		Assert.assertTrue(newLines.contains(new DiffLine(7, "", DiffLineType.ADDED)));
+		Assert.assertTrue(newLines.contains(new DiffLine(8, "", DiffLineType.ADDED)));
+		Assert.assertTrue(newLines.contains(new DiffLine(9, "", DiffLineType.ADDED)));
+		Assert.assertTrue(newLines.contains(new DiffLine(10, "", DiffLineType.ADDED)));
+		Assert.assertTrue(newLines.contains(new DiffLine(11, "", DiffLineType.ADDED)));
+		Assert.assertTrue(newLines.contains(new DiffLine(12, "", DiffLineType.ADDED)));
+		Assert.assertTrue(newLines.contains(new DiffLine(13, "", DiffLineType.ADDED)));
+		Assert.assertTrue(newLines.contains(new DiffLine(14, "\tg", DiffLineType.ADDED)));
+		Assert.assertTrue(newLines.contains(new DiffLine(15, "", DiffLineType.ADDED)));
+		Assert.assertTrue(newLines.contains(new DiffLine(16, "j", DiffLineType.ADDED)));
+		Assert.assertTrue(newLines.contains(new DiffLine(17, "", DiffLineType.KEPT)));
 	}
 	
 	@Test
@@ -271,58 +272,58 @@ public class DiffParserTest {
 		DiffParser parsedDiff = new DiffParser(diff);
 		
 		List<DiffLine> oldLinesBlock1 = parsedDiff.getBlocks().get(0).getLinesInOldFile();
-		Assert.assertTrue(oldLinesBlock1.contains(new DiffLine(72, "")));
-		Assert.assertTrue(oldLinesBlock1.contains(new DiffLine(73, "       private static Logger log = Logger.getLogger(GitRepository.class);")));
-		Assert.assertTrue(oldLinesBlock1.contains(new DiffLine(74, "")));
-		Assert.assertTrue(oldLinesBlock1.contains(new DiffLine(75, "       public GitRepository(String path) {")));
-		Assert.assertTrue(oldLinesBlock1.contains(new DiffLine(76, "               this.path = path;")));
-		Assert.assertTrue(oldLinesBlock1.contains(new DiffLine(77, "               this.maxNumberFilesInACommit = checkMaxNumberOfFiles();")));
-		Assert.assertTrue(oldLinesBlock1.contains(new DiffLine(78, "               this.maxSizeOfDiff = checkMaxSizeOfDiff();")));
+		Assert.assertTrue(oldLinesBlock1.contains(new DiffLine(72, "", DiffLineType.KEPT)));
+		Assert.assertTrue(oldLinesBlock1.contains(new DiffLine(73, "       private static Logger log = Logger.getLogger(GitRepository.class);", DiffLineType.KEPT)));
+		Assert.assertTrue(oldLinesBlock1.contains(new DiffLine(74, "", DiffLineType.KEPT)));
+		Assert.assertTrue(oldLinesBlock1.contains(new DiffLine(75, "       public GitRepository(String path) {", DiffLineType.REMOVED)));
+		Assert.assertTrue(oldLinesBlock1.contains(new DiffLine(76, "               this.path = path;", DiffLineType.KEPT)));
+		Assert.assertTrue(oldLinesBlock1.contains(new DiffLine(77, "               this.maxNumberFilesInACommit = checkMaxNumberOfFiles();", DiffLineType.KEPT)));
+		Assert.assertTrue(oldLinesBlock1.contains(new DiffLine(78, "               this.maxSizeOfDiff = checkMaxSizeOfDiff();", DiffLineType.KEPT)));
 
 		List<DiffLine> newLinesBlock1 = parsedDiff.getBlocks().get(0).getLinesInNewFile();
-		Assert.assertTrue(newLinesBlock1.contains(new DiffLine(72, "")));
-		Assert.assertTrue(newLinesBlock1.contains(new DiffLine(73, "       private static Logger log = Logger.getLogger(GitRepository.class);")));
-		Assert.assertTrue(newLinesBlock1.contains(new DiffLine(74, "")));
-		Assert.assertTrue(newLinesBlock1.contains(new DiffLine(75, "       public GitRepository2(String path) {")));
-		Assert.assertTrue(newLinesBlock1.contains(new DiffLine(76, "               this.path = path;")));
-		Assert.assertTrue(newLinesBlock1.contains(new DiffLine(77, "               this.maxNumberFilesInACommit = checkMaxNumberOfFiles();")));
-		Assert.assertTrue(newLinesBlock1.contains(new DiffLine(78, "               this.maxSizeOfDiff = checkMaxSizeOfDiff();")));
+		Assert.assertTrue(newLinesBlock1.contains(new DiffLine(72, "", DiffLineType.KEPT)));
+		Assert.assertTrue(newLinesBlock1.contains(new DiffLine(73, "       private static Logger log = Logger.getLogger(GitRepository.class);", DiffLineType.KEPT)));
+		Assert.assertTrue(newLinesBlock1.contains(new DiffLine(74, "", DiffLineType.KEPT)));
+		Assert.assertTrue(newLinesBlock1.contains(new DiffLine(75, "       public GitRepository2(String path) {", DiffLineType.ADDED)));
+		Assert.assertTrue(newLinesBlock1.contains(new DiffLine(76, "               this.path = path;", DiffLineType.KEPT)));
+		Assert.assertTrue(newLinesBlock1.contains(new DiffLine(77, "               this.maxNumberFilesInACommit = checkMaxNumberOfFiles();", DiffLineType.KEPT)));
+		Assert.assertTrue(newLinesBlock1.contains(new DiffLine(78, "               this.maxSizeOfDiff = checkMaxSizeOfDiff();", DiffLineType.KEPT)));
 
 		List<DiffLine> oldLinesBlock2 = parsedDiff.getBlocks().get(1).getLinesInOldFile();
-		Assert.assertTrue(oldLinesBlock2.contains(new DiffLine(155, "               return git.getRepository().getBranch();")));
-		Assert.assertTrue(oldLinesBlock2.contains(new DiffLine(156, "       }")));
-		Assert.assertTrue(oldLinesBlock2.contains(new DiffLine(157, "")));
-		Assert.assertTrue(oldLinesBlock2.contains(new DiffLine(158, "       public ChangeSet getHead() {")));
-		Assert.assertTrue(oldLinesBlock2.contains(new DiffLine(159, "               Git git = null;")));
-		Assert.assertTrue(oldLinesBlock2.contains(new DiffLine(160, "               try {")));
-		Assert.assertTrue(oldLinesBlock2.contains(new DiffLine(161, "                       git = openRepository();")));
+		Assert.assertTrue(oldLinesBlock2.contains(new DiffLine(155, "               return git.getRepository().getBranch();", DiffLineType.KEPT)));
+		Assert.assertTrue(oldLinesBlock2.contains(new DiffLine(156, "       }", DiffLineType.KEPT)));
+		Assert.assertTrue(oldLinesBlock2.contains(new DiffLine(157, "", DiffLineType.KEPT)));
+		Assert.assertTrue(oldLinesBlock2.contains(new DiffLine(158, "       public ChangeSet getHead() {", DiffLineType.REMOVED)));
+		Assert.assertTrue(oldLinesBlock2.contains(new DiffLine(159, "               Git git = null;", DiffLineType.KEPT)));
+		Assert.assertTrue(oldLinesBlock2.contains(new DiffLine(160, "               try {", DiffLineType.KEPT)));
+		Assert.assertTrue(oldLinesBlock2.contains(new DiffLine(161, "                       git = openRepository();", DiffLineType.KEPT)));
 
 		List<DiffLine> newLinesBlock2 = parsedDiff.getBlocks().get(1).getLinesInNewFile();
-		Assert.assertTrue(newLinesBlock2.contains(new DiffLine(155, "               return git.getRepository().getBranch();")));
-		Assert.assertTrue(newLinesBlock2.contains(new DiffLine(156, "       }")));
-		Assert.assertTrue(newLinesBlock2.contains(new DiffLine(157, "")));
-		Assert.assertTrue(newLinesBlock2.contains(new DiffLine(158, "       public ChangeSet getHead2() {")));
-		Assert.assertTrue(newLinesBlock2.contains(new DiffLine(159, "               Git git = null;")));
-		Assert.assertTrue(newLinesBlock2.contains(new DiffLine(160, "               try {")));
-		Assert.assertTrue(newLinesBlock2.contains(new DiffLine(161, "                       git = openRepository();")));
+		Assert.assertTrue(newLinesBlock2.contains(new DiffLine(155, "               return git.getRepository().getBranch();", DiffLineType.KEPT)));
+		Assert.assertTrue(newLinesBlock2.contains(new DiffLine(156, "       }", DiffLineType.KEPT)));
+		Assert.assertTrue(newLinesBlock2.contains(new DiffLine(157, "", DiffLineType.KEPT)));
+		Assert.assertTrue(newLinesBlock2.contains(new DiffLine(158, "       public ChangeSet getHead2() {", DiffLineType.ADDED)));
+		Assert.assertTrue(newLinesBlock2.contains(new DiffLine(159, "               Git git = null;", DiffLineType.KEPT)));
+		Assert.assertTrue(newLinesBlock2.contains(new DiffLine(160, "               try {", DiffLineType.KEPT)));
+		Assert.assertTrue(newLinesBlock2.contains(new DiffLine(161, "                       git = openRepository();", DiffLineType.KEPT)));
 		
 		List<DiffLine> oldLinesBlock3 = parsedDiff.getBlocks().get(2).getLinesInOldFile();
-		Assert.assertTrue(oldLinesBlock3.contains(new DiffLine(320, "")));
-		Assert.assertTrue(oldLinesBlock3.contains(new DiffLine(321, "               return diffs;")));
-		Assert.assertTrue(oldLinesBlock3.contains(new DiffLine(322, "       }")));
-		Assert.assertTrue(oldLinesBlock3.contains(new DiffLine(323, "")));
-		Assert.assertTrue(oldLinesBlock3.contains(new DiffLine(324, "       private void setContext(DiffFormatter df) {")));
-		Assert.assertTrue(oldLinesBlock3.contains(new DiffLine(325, "               String context = System.getProperty(\"git.diffcontext\");")));
+		Assert.assertTrue(oldLinesBlock3.contains(new DiffLine(320, "", DiffLineType.KEPT)));
+		Assert.assertTrue(oldLinesBlock3.contains(new DiffLine(321, "               return diffs;", DiffLineType.KEPT)));
+		Assert.assertTrue(oldLinesBlock3.contains(new DiffLine(322, "       }", DiffLineType.KEPT)));
+		Assert.assertTrue(oldLinesBlock3.contains(new DiffLine(323, "", DiffLineType.KEPT)));
+		Assert.assertTrue(oldLinesBlock3.contains(new DiffLine(324, "       private void setContext(DiffFormatter df) {", DiffLineType.KEPT)));
+		Assert.assertTrue(oldLinesBlock3.contains(new DiffLine(325, "               String context = System.getProperty(\"git.diffcontext\");", DiffLineType.KEPT)));
 
 		
 		List<DiffLine> newLinesBlock3 = parsedDiff.getBlocks().get(2).getLinesInNewFile();
-		Assert.assertTrue(newLinesBlock3.contains(new DiffLine(320, "")));
-		Assert.assertTrue(newLinesBlock3.contains(new DiffLine(321, "               return diffs;")));
-		Assert.assertTrue(newLinesBlock3.contains(new DiffLine(322, "       }")));
-		Assert.assertTrue(newLinesBlock3.contains(new DiffLine(323, "       newline")));
-		Assert.assertTrue(newLinesBlock3.contains(new DiffLine(324, "")));
-		Assert.assertTrue(newLinesBlock3.contains(new DiffLine(325, "       private void setContext(DiffFormatter df) {")));
-		Assert.assertTrue(newLinesBlock3.contains(new DiffLine(326, "               String context = System.getProperty(\"git.diffcontext\");")));
+		Assert.assertTrue(newLinesBlock3.contains(new DiffLine(320, "", DiffLineType.KEPT)));
+		Assert.assertTrue(newLinesBlock3.contains(new DiffLine(321, "               return diffs;", DiffLineType.KEPT)));
+		Assert.assertTrue(newLinesBlock3.contains(new DiffLine(322, "       }", DiffLineType.KEPT)));
+		Assert.assertTrue(newLinesBlock3.contains(new DiffLine(323, "       newline", DiffLineType.ADDED)));
+		Assert.assertTrue(newLinesBlock3.contains(new DiffLine(324, "", DiffLineType.KEPT)));
+		Assert.assertTrue(newLinesBlock3.contains(new DiffLine(325, "       private void setContext(DiffFormatter df) {", DiffLineType.KEPT)));
+		Assert.assertTrue(newLinesBlock3.contains(new DiffLine(326, "               String context = System.getProperty(\"git.diffcontext\");", DiffLineType.KEPT)));
 		
 	}
 }
