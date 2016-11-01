@@ -3,67 +3,51 @@ package org.repodriller.domain;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.repodriller.RepoDrillerException;
 
 public class DiffParser {
 
-	private String diff;
-	private int d1;
-	private int d2;
-	private int d3;
-	private int d4;
+	private List<DiffBlock> diffBlocks;
 
-	String[] lines;
+	private String fullDiff;
 	
-	public DiffParser(String diff) {
-		this.diff = diff;
-		this.lines = diff.replace("\r", "").split("\n");
-		getLinePositions();
+	public DiffParser(String fullDiff) {
+		this.fullDiff = fullDiff;
+		diffBlocks = new ArrayList<>();
+		
+		extractDiffBlocks();
 	}
 
-	private List<DiffLine> getLines(int start, int qtyLines, String ch) {
-		List<DiffLine> oldLines = new ArrayList<>();
-		int counter = start; 
-		for(String line : diffLines()) {
-			if(line.startsWith(ch) || line.startsWith(" ")) {
-				oldLines.add(new DiffLine(counter, line.substring(1)));
-				counter++;
+	private void extractDiffBlocks() {
+		String[] lines = fullDiff.replace("\r", "").split("\n");
+		String[] linesNoHeader = Arrays.copyOfRange(lines, 4, lines.length);
+
+		StringBuilder currentDiff = new StringBuilder();
+		boolean currentInADiff = false;
+		
+		for(int i = 0; i < linesNoHeader.length; i++) {
+			String currentLine = linesNoHeader[i];
+			if(currentLine.startsWith("@@ -") && !currentInADiff) {
+				currentInADiff = true;
 			}
-		}
-		if(counter!=start+qtyLines) throw new RepoDrillerException("malformed diff");
-		
-		return oldLines;
-		
-	}
-	public List<DiffLine> getLinesInOldFile() {
-		return getLines(d1, d2, "-");
-	}
+			else if(currentLine.startsWith("@@ -") && currentInADiff) {
+				diffBlocks.add(new DiffBlock(currentDiff.toString()));
+				currentDiff = new StringBuilder();
+				currentInADiff = false;
+				i--;
+			}
 
-	public List<DiffLine> getLinesInNewFile() {
-		return getLines(d3, d4, "+");
+			if(currentInADiff) currentDiff.append(currentLine + "\n");
+		}
+		diffBlocks.add(new DiffBlock(currentDiff.toString()));
+
 	}
 	
-	private String[] diffLines() {
-		return Arrays.copyOfRange(lines, 5, lines.length);
+	public List<DiffBlock> getBlocks() {
+		return diffBlocks;
 	}
 
-	private void getLinePositions() {
-		String positions = lines[4];
-		Pattern p = Pattern.compile("@@ -(\\d*),(\\d*) \\+(\\d*),(\\d*) @@.*");
-		Matcher matcher = p.matcher(positions);
-		
-		if(matcher.matches()) {
-			d1 = Integer.parseInt(matcher.group(1));
-			d2 = Integer.parseInt(matcher.group(2));
-			d3 = Integer.parseInt(matcher.group(3));
-			d4 = Integer.parseInt(matcher.group(4));
-		} else {
-			throw new RepoDrillerException("Impossible to get line positions in this diff: " + diff);
-		}
+	public String getFullDiff() {
+		return fullDiff;
 	}
-
 
 }
