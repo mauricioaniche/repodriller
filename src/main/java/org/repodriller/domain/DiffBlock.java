@@ -66,5 +66,9 @@ public class DiffBlock {
 		return getLines(d3, d4, "+");
 	}
 	
+	public String getDiffBlock() {
+		return diffBlock;
+	}
+	
 	
 }
