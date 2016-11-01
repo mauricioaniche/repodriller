@@ -3,7 +3,7 @@
 	<groupId>org.repodriller</groupId>
 	<artifactId>repodriller</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0.1-SNAPSHOT</version>
+	<version>1.1.0-SNAPSHOT</version>
 	<name>repodriller</name>
 	<url>http://github.com/mauricioaniche/repodriller</url>
 	<description>Framework for researchers in MSR</description>
