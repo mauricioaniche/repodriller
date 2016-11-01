@@ -249,14 +249,6 @@ public class GitRepositoryTest {
 		Assert.assertEquals("e7d13b0511f8a176284ce4f92ed8c6e8d09c77f2", repo.getHeadCommit());
 	}
 	
-	@Test 
-	public void testMaxNumberOfFilesInACommit() {
-		Integer expectedDefaultValue = 200;
-		Assert.assertEquals(expectedDefaultValue, git1.getMaxNumberFilesInACommit());
-		
-		Integer expectedNewMaxNumber = 2000;
-		Assert.assertEquals(expectedNewMaxNumber, git2.getMaxNumberFilesInACommit());
-	}
 	
 
 }
