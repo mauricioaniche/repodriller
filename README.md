@@ -182,11 +182,11 @@ other commits.
 You can choose more than one filter as you can be decorated. A working example is:
 
 ```
-.withCommits(
-	new OnlyModificationsWithFileTypes(Arrays.asList(".java", ".xml"),
-	new OnlyInBranches(Arrays.asList("master"), 
+.filters(
+	new OnlyModificationsWithFileTypes(Arrays.asList(".java", ".xml")),
+	new OnlyInBranches(Arrays.asList("master")), 
 	new OnlyNoMerge(), 
-	new OnlyInMainBranch()))
+	new OnlyInMainBranch()
 );
 ```
 
