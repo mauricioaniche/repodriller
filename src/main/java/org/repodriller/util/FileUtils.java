@@ -23,15 +23,18 @@ public class FileUtils {
 
 		return projects;
 	}
+	public static List<File> getAllFilesInPath(String pathToLook) {
+		return getAllFilesInPath(pathToLook, new ArrayList<>());
+	}
 
-	public static List<File> getAllFilesInPath(String pathToLook, List<File> arquivos) {
+	private static List<File> getAllFilesInPath(String pathToLook, List<File> files) {
 		for (File f : new File(pathToLook).listFiles()) {
 			if (f.isFile())
-				arquivos.add(f);
+				files.add(f);
 			if (isAProjectSubdirectory(f))
-				getAllFilesInPath(f.getAbsolutePath(), arquivos);
+				getAllFilesInPath(f.getAbsolutePath(), files);
 		}
-		return arquivos;
+		return files;
 	}
 	
 

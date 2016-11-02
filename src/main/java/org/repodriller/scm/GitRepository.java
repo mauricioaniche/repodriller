@@ -409,7 +409,7 @@ public class GitRepository implements SCM {
 	}
 
 	private List<File> getAllFilesInPath() {
-		return FileUtils.getAllFilesInPath(path, new ArrayList<File>());
+		return FileUtils.getAllFilesInPath(path);
 	}
 
 	@Override

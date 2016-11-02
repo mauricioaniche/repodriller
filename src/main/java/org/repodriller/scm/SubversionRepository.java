@@ -320,7 +320,7 @@ public class SubversionRepository implements SCM {
 	}
 
 	private List<File> getAllFilesInPath() {
-		return FileUtils.getAllFilesInPath(workingCopyPath, new ArrayList<File>());
+		return FileUtils.getAllFilesInPath(workingCopyPath);
 	}
 
 	private boolean isNotAnImportantFile(File f) {
