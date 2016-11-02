@@ -36,9 +36,9 @@ public class RepoDriller {
 			Calendar startDate = Calendar.getInstance();
 			
 			log.info("# -------------------------------------------------- #");
-			log.info("#                   MetricMiner                      #");
-			log.info("#                      v2.0                          #");
-			log.info("#             www.metricminer.org.br                 #");
+			log.info("#                   RepoDriller                      #");
+			log.info("#                     v1.1.0                         #");
+			log.info("#               www.repodriller.org                  #");
 			log.info("# -------------------------------------------------- #");
 			log.info("Starting engine: " + new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").format(startDate.getTime()));
 			
@@ -52,7 +52,7 @@ public class RepoDriller {
 			log.info("Finished: " + new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").format(finishDate.getTime()));
 			long seconds = (finishDate.getTimeInMillis() - startDate.getTimeInMillis())/1000;
 			log.info("It took " + seconds + " seconds (~" + seconds/60 + " minutes).");
-			log.info("Brought to you by MetricMiner2 (metricminer.org.br)");
+			log.info("Brought to you by RepoDriller (repodriller.org.br)");
 			log.info("# -------------------------------------------------- #");
 			
 		} catch(Throwable ex) {
