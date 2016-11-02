@@ -36,9 +36,9 @@ public class RepoDriller {
 			Calendar startDate = Calendar.getInstance();
 			
 			log.info("# -------------------------------------------------- #");
-			log.info("#                   MetricMiner                      #");
-			log.info("#                      v2.0                          #");
-			log.info("#             www.metricminer.org.br                 #");
+			log.info("#                   RepoDriller                      #");
+			log.info("#                     v1.1.0                         #");
+			log.info("#               www.repodriller.org                  #");
 			log.info("# -------------------------------------------------- #");
 			log.info("Starting engine: " + new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").format(startDate.getTime()));
 			
