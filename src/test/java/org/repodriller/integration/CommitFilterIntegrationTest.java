@@ -6,17 +6,21 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.repodriller.RepositoryMining;
+import org.repodriller.filter.commit.OnlyInMainBranch;
 import org.repodriller.filter.commit.OnlyModificationsWithFileTypes;
+import org.repodriller.filter.commit.OnlyNoMerge;
 import org.repodriller.filter.range.Commits;
 import org.repodriller.scm.GitRepository;
 
 public class CommitFilterIntegrationTest {
 
-	private String path;
+	private String pathToRepo4;
+	private String pathToRepo5;
 
 	@Before
 	public void setUp() {
-		this.path = this.getClass().getResource("/").getPath() + "../../test-repos/git-4";
+		this.pathToRepo4 = this.getClass().getResource("/").getPath() + "../../test-repos/git-4";
+		this.pathToRepo5 = this.getClass().getResource("/").getPath() + "../../test-repos/git-5";
 	}
 	
 	@Test
@@ -25,9 +29,9 @@ public class CommitFilterIntegrationTest {
 		TestVisitor visitor = new TestVisitor();
 		
 		new RepositoryMining()
-			.in(GitRepository.singleProject(path))
+			.in(GitRepository.singleProject(pathToRepo4))
 			.through(Commits.all())
-			.withCommits(new OnlyModificationsWithFileTypes(Arrays.asList("java")))
+			.filters(new OnlyModificationsWithFileTypes(Arrays.asList("java")))
 			.process(visitor)
 			.mine();
 		
@@ -37,12 +41,46 @@ public class CommitFilterIntegrationTest {
 	}
 
 	@Test
+	public void shouldFilterCommitsUsingManyFilters() {
+		
+		TestVisitor visitor = new TestVisitor();
+		
+		new RepositoryMining()
+		.in(GitRepository.singleProject(pathToRepo5))
+		.through(Commits.all())
+		.filters(new OnlyInMainBranch())
+		.process(visitor)
+		.mine();
+		
+		Assert.assertEquals(5, visitor.getVisitedHashes().size());
+		Assert.assertTrue(visitor.getVisitedHashes().get(0).equals("4a17f31c0d1285477a3a467d0bc3cb38e775097d"));
+		Assert.assertTrue(visitor.getVisitedHashes().get(1).equals("ff663cf1931a67d5e47b75fc77dcea432c728052"));
+		Assert.assertTrue(visitor.getVisitedHashes().get(2).equals("fa8217c324e7fb46c80e1ddf907f4e141449637e"));
+		Assert.assertTrue(visitor.getVisitedHashes().get(3).equals("5d9d79607d7e82b6f236aa29be4ba89a28fb4f15"));
+		Assert.assertTrue(visitor.getVisitedHashes().get(4).equals("377e0f474d70f6205784d0150ee0069a050c29ed"));
+
+		visitor = new TestVisitor();
+		new RepositoryMining()
+		.in(GitRepository.singleProject(pathToRepo5))
+		.through(Commits.all())
+		.filters(new OnlyInMainBranch(), new OnlyNoMerge())
+		.process(visitor)
+		.mine();
+		
+		Assert.assertEquals(4, visitor.getVisitedHashes().size());
+		Assert.assertTrue(visitor.getVisitedHashes().get(0).equals("4a17f31c0d1285477a3a467d0bc3cb38e775097d"));
+		Assert.assertTrue(visitor.getVisitedHashes().get(1).equals("ff663cf1931a67d5e47b75fc77dcea432c728052"));
+		Assert.assertTrue(visitor.getVisitedHashes().get(2).equals("fa8217c324e7fb46c80e1ddf907f4e141449637e"));
+		Assert.assertTrue(visitor.getVisitedHashes().get(3).equals("377e0f474d70f6205784d0150ee0069a050c29ed"));
+	}
+
+	@Test
 	public void shouldVisitAllIfNoFilter() {
 		
 		TestVisitor visitor = new TestVisitor();
 
 		new RepositoryMining()
-		.in(GitRepository.singleProject(path))
+		.in(GitRepository.singleProject(pathToRepo4))
 		.through(Commits.all())
 		.process(visitor)
 		.mine();

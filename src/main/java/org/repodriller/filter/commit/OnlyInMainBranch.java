@@ -2,18 +2,9 @@ package org.repodriller.filter.commit;
 
 import org.repodriller.domain.Commit;
 
-public class OnlyInMainBranch extends CommitFilter{
+public class OnlyInMainBranch implements CommitFilter {
 
-	public OnlyInMainBranch() {
-		super();
-	}
-
-	public OnlyInMainBranch(CommitFilter filter) {
-		super(filter);
-	}
-	
-	@Override
-	protected boolean shouldAccept(Commit commit) {
+	public boolean accept(Commit commit) {
 		return commit.isInMainBranch();
 	}
 

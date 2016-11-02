@@ -2,10 +2,9 @@ package org.repodriller.filter.commit;
 
 import org.repodriller.domain.Commit;
 
-public class NoFilter extends CommitFilter{
+public class NoFilter implements CommitFilter{
 
-	@Override
-	protected boolean shouldAccept(Commit commit) {
+	public boolean accept(Commit commit) {
 		return true;
 	}
 

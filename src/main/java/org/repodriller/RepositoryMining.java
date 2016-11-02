@@ -49,12 +49,12 @@ public class RepositoryMining {
 	private CommitRange range;
 	private int threads;
 	private boolean reverseOrder;
-	private CommitFilter filter;
+	private List<CommitFilter> filters;
 	
 	public RepositoryMining() {
 		repos = new ArrayList<SCMRepository>();
 		visitors = new HashMap<CommitVisitor, PersistenceMechanism>();
-		filter = new NoFilter();
+		filters = Arrays.asList((CommitFilter) new NoFilter());
 		this.threads = 1;
 	}
 	
@@ -73,8 +73,8 @@ public class RepositoryMining {
 		return this;
 	}
 	
-	public RepositoryMining withCommits(CommitFilter filter) {
-		this.filter = filter;
+	public RepositoryMining filters(CommitFilter... filters) {
+		this.filters = Arrays.asList(filters);
 		return this;
 	}
 	
@@ -166,7 +166,7 @@ public class RepositoryMining {
 				" from " + commit.getAuthor().getName() + 
 				" with " + commit.getModifications().size() + " modifications");
 
-		if(!filter.accept(commit)) {
+		if(!filtersAccept(commit)) {
 			log.info("-> Filtered");
 			return;
 		}
@@ -184,6 +184,13 @@ public class RepositoryMining {
 			}
 		}
 		
+	}
+
+	private boolean filtersAccept(Commit commit) {
+		for(CommitFilter filter : filters) {
+			if(!filter.accept(commit)) return false;
+		}
+		return true;
 	}
 
 	public RepositoryMining withThreads(int n) {

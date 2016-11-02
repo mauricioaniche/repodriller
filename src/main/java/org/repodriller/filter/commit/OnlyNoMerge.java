@@ -2,18 +2,9 @@ package org.repodriller.filter.commit;
 
 import org.repodriller.domain.Commit;
 
-public class OnlyNoMerge extends CommitFilter{
+public class OnlyNoMerge implements CommitFilter{
 
-	public OnlyNoMerge() {
-		super();
-	}
-
-	public OnlyNoMerge(CommitFilter filter) {
-		super(filter);
-	}
-	
-	@Override
-	protected boolean shouldAccept(Commit commit) {
+	public boolean accept(Commit commit) {
 		return !commit.isMerge();
 	}
 
