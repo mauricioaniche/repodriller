@@ -95,22 +95,14 @@ public class GitRepository implements SCM {
 	}
 
 	public static SCMRepository singleProject(String path) {
-		return singleProject(path, DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT);
-	}
-
-	public static SCMRepository singleProject(String path, Integer maxNumberOfFilesInACommit) {
 		return new GitRepository(path).info();
 	}
 
 	public static SCMRepository[] allProjectsIn(String path) {
-		return allProjectsIn(path, DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT);
-	}
-
-	public static SCMRepository[] allProjectsIn(String path, Integer maxNumberOfFilesInACommit) {
 		List<SCMRepository> repos = new ArrayList<SCMRepository>();
 
 		for (String dir : FileUtils.getAllDirsIn(path)) {
-			repos.add(singleProject(dir, maxNumberOfFilesInACommit));
+			repos.add(singleProject(dir));
 		}
 
 		return repos.toArray(new SCMRepository[repos.size()]);

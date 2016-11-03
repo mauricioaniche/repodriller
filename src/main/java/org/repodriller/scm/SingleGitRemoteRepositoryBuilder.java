@@ -20,11 +20,6 @@ public class SingleGitRemoteRepositoryBuilder extends GitRemoteRepositoryBuilder
 		return this;
 	}
 
-	public SingleGitRemoteRepositoryBuilder withMaxNumberOfFilesInACommit(Integer maxNumber) {
-		super.maxNumberFilesInACommit = maxNumber;
-		return this;
-	}
-
 	public GitRemoteRepository build() throws GitAPIException {
 		return new GitRemoteRepository(this.gitUrl, this.tempDir, this.bare);
 	}
