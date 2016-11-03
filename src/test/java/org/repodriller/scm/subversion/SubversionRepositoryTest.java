@@ -136,6 +136,8 @@ public class SubversionRepositoryTest {
 
 		Assert.assertEquals("Alterando conteúdo do arquivo Matricula.java", commit.getMsg());
 		Assert.assertEquals(1, commit.getModifications().size());
+		Assert.assertEquals(4, commit.getCommitPosition());
+		Assert.assertEquals(80f, commit.getPercentRegardRepository(), 1f);
 
 		Assert.assertEquals("/Matricula.java", commit.getModifications().get(0).getNewPath());
 		Assert.assertTrue(commit.getModifications().get(0).getDiff().contains("-if(x) a++;"));
