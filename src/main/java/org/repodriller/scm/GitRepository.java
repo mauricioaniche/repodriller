@@ -281,7 +281,11 @@ public class GitRepository implements SCM {
 				if(jgitCommit.getParentCount() > 1) merge = true;
 				Set<String> branches = getBranches(git, hash);
 				boolean isCommitInMainBranch = branches.contains(this.mainBranchName);
-				theCommit = new Commit(hash, author, committer, authorDate, authorTimeZone, committerDate, committerTimeZone, msg, parent, merge, branches, isCommitInMainBranch);
+				List<ChangeSet> changeSets = getChangeSets();
+				int totalCommits = changeSets.size();
+				long commitPosition = totalCommits - changeSets.stream().map((cs)->cs.getId()).collect(Collectors.toList()).indexOf(hash);
+				float percentRegardRepository = commitPosition * 100 / (float) totalCommits;
+				theCommit = new Commit(hash, author, committer, authorDate, authorTimeZone, committerDate, committerTimeZone, msg, parent, merge, branches, isCommitInMainBranch, commitPosition, percentRegardRepository);
 
 				List<DiffEntry> diffsForTheCommit = diffsForTheCommit(repo, jgitCommit);
 				if (diffsForTheCommit.size() > this.getMaxNumberFilesInACommit()) {
