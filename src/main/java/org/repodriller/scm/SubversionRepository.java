@@ -112,14 +112,11 @@ public class SubversionRepository implements SCM {
 	public SCMRepository info() {
 		SVNRepository repository = null;
 		try {
-			SVNURL url = SVNURL.parseURIEncoded(path);
-			repository = SVNRepositoryFactory.create(url);
-
-			authenticateIfNecessary(repository);
+			repository = openSVNRepository();
 
 			SVNDirEntry firstRevision = repository.info("/", 0);
 			SVNDirEntry lastRevision = repository.info("/", SVNRevision.HEAD.getNumber());
-
+			
 			return new SCMRepository(this, lastRevision.getURL().getPath(), path, String.valueOf(lastRevision.getRevision()), String.valueOf(firstRevision
 					.getRevision()));
 
@@ -132,22 +129,27 @@ public class SubversionRepository implements SCM {
 
 	}
 
+	private SVNRepository openSVNRepository() throws SVNException {
+		SVNRepository repository;
+		SVNURL url = SVNURL.parseURIEncoded(path);
+		repository = SVNRepositoryFactory.create(url);
+
+		authenticateIfNecessary(repository);
+		
+		return repository;
+	}
+
 	@SuppressWarnings("rawtypes")
 	@Override
 	public List<ChangeSet> getChangeSets() {
 		SVNRepository repository = null;
 
 		try {
-			SVNURL url = SVNURL.parseURIEncoded(path);
-			repository = SVNRepositoryFactory.create(url);
-
-			authenticateIfNecessary(repository);
+			repository = openSVNRepository();
 
 			List<ChangeSet> allCs = new ArrayList<ChangeSet>();
 
-			long startRevision = 0;
-			long endRevision = -1; // HEAD (the latest) revision
-			Collection log = repository.log(new String[] { "" }, null, startRevision, endRevision, true, true);
+			Collection log = svnLog(repository);
 			for (Iterator iterator = log.iterator(); iterator.hasNext();) {
 				SVNLogEntry entry = (SVNLogEntry) iterator.next();
 				allCs.add(new ChangeSet(String.valueOf(entry.getRevision()), convertToCalendar(entry.getDate())));
@@ -164,27 +166,39 @@ public class SubversionRepository implements SCM {
 	}
 
 	@SuppressWarnings("rawtypes")
+	private Collection svnLog(SVNRepository repository) throws SVNException {
+		long startRevision = 0;
+		long endRevision = -1; // HEAD (the latest) revision
+		Collection log = svnLogCommand(repository, startRevision, endRevision);
+		return log;
+	}
+
+	@SuppressWarnings("rawtypes")
+	private Collection svnLogCommand(SVNRepository repository, long startRevision, long endRevision) throws SVNException {
+		Collection log = repository.log(new String[] { "" }, null, startRevision, endRevision, true, true);
+		return log;
+	}
+
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Commit getCommit(String id) {
 		SVNRepository repository = null;
 
 		try {
-			SVNURL url = SVNURL.parseURIEncoded(path);
-			repository = SVNRepositoryFactory.create(url);
-
-			authenticateIfNecessary(repository);
+			repository = openSVNRepository();
 
 			long revision = Long.parseLong(id);
 			long startRevision = revision;
 			long endRevision = revision;
 
-			Collection repositoryLog = repository.log(new String[] { "" }, null, startRevision, endRevision, true, true);
+			Collection repositoryLog = svnLogCommand(repository, startRevision, endRevision);
 
 			for (Iterator iterator = repositoryLog.iterator(); iterator.hasNext();) {
 				SVNLogEntry logEntry = (SVNLogEntry) iterator.next();
 
 				Commit commit = createCommit(logEntry);
 
+				SVNURL url = SVNURL.parseURIEncoded(path);
 				List<Modification> modifications = getModifications(repository, url, revision, logEntry);
 
 				if (modifications.size() > this.maxNumberFilesInACommit) {
@@ -209,8 +223,10 @@ public class SubversionRepository implements SCM {
 	private Commit createCommit(SVNLogEntry logEntry) {
 		Developer committer = new Developer(logEntry.getAuthor(), null);
 		Calendar date = convertToCalendar(logEntry.getDate());
-		Commit commit = new Commit(String.valueOf(logEntry.getRevision()), null, committer, date, date, logEntry.getMessage(),
-				"");
+		long revision = logEntry.getRevision();
+		float percentRegardRepository = revision * 100 / (float) getChangeSets().size();
+		Commit commit = new Commit(String.valueOf(revision), null, committer, date, date, logEntry.getMessage(),
+				"", revision, percentRegardRepository);
 		return commit;
 	}
 
@@ -285,10 +301,7 @@ public class SubversionRepository implements SCM {
 		SVNRepository repository = null;
 
 		try {
-			SVNURL url = SVNURL.parseURIEncoded(path);
-			repository = SVNRepositoryFactory.create(url);
-
-			authenticateIfNecessary(repository);
+			repository = openSVNRepository();
 
 			SVNDirEntry entry = repository.info("/", -1);
 			return new ChangeSet(String.valueOf(entry.getRevision()), convertToCalendar(entry.getDate()));
@@ -337,11 +350,9 @@ public class SubversionRepository implements SCM {
 		SVNRepository repository = null;
 		try {
 			SVNRevision revision = SVNRevision.HEAD;
-
 			SVNURL url = SVNURL.parseURIEncoded(path);
-			repository = SVNRepositoryFactory.create(url);
 
-			authenticateIfNecessary(repository);
+			repository = openSVNRepository();
 
 			SVNClientManager ourClientManager = SVNClientManager.newInstance(null, repository.getAuthenticationManager());
 			SVNUpdateClient updateClient = ourClientManager.getUpdateClient();
@@ -362,11 +373,9 @@ public class SubversionRepository implements SCM {
 			clearWorkingCopy();
 
 			SVNRevision revision = SVNRevision.create(Integer.parseInt(id));
-
 			SVNURL url = SVNURL.parseURIEncoded(path);
-			repository = SVNRepositoryFactory.create(url);
 
-			authenticateIfNecessary(repository);
+			repository = openSVNRepository();
 
 			SVNClientManager ourClientManager = SVNClientManager.newInstance(null, repository.getAuthenticationManager());
 			SVNUpdateClient updateClient = ourClientManager.getUpdateClient();
