@@ -16,12 +16,15 @@
 
 package org.repodriller;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -42,6 +45,9 @@ import com.google.common.collect.Lists;
 
 public class RepositoryMining {
 
+	private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+	private static final DecimalFormat PERCENT_FORMAT = new DecimalFormat("0.00", DecimalFormatSymbols.getInstance(Locale.US));
+	
 	private List<SCMRepository> repos;
 	private Map<CommitVisitor, PersistenceMechanism> visitors;
 	
@@ -162,7 +168,9 @@ public class RepositoryMining {
 		Commit commit = repo.getScm().getCommit(cs.getId());
 		log.info(
 				"Commit #" + commit.getHash() + 
-				" in " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(commit.getDate().getTime()) +
+				" @" + repo.getLastDir() + 
+				" (" + PERCENT_FORMAT.format(commit.getPercentRegardRepository()) +  
+				"%) in " + SIMPLE_DATE_FORMAT.format(commit.getDate().getTime()) +
 				" from " + commit.getAuthor().getName() + 
 				" with " + commit.getModifications().size() + " modifications");
 
