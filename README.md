@@ -14,7 +14,7 @@ You simply have to start a Java Project in Eclipse. RepoDriller is on Maven, so 
 <dependency>
 	<groupid>org.repodriller</groupid>
 	<artifactid>repodriller</artifactid>
-	<version>1.0.0</version>
+	<version>1.1.0</version>
 </dependency> 
 ```
 
