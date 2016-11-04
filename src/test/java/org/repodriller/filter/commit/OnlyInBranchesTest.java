@@ -19,8 +19,8 @@ public class OnlyInBranchesTest {
 		branches.add("b1");
 		
 		Calendar d = Calendar.getInstance();
-		Commit commitInMain = new Commit("123", new Developer("Mau", "mau@mau.com"), new Developer("Mau", "mau@mau.com"), d, TimeZone.getDefault(), d, TimeZone.getDefault(),"x", null, false, branches, true);
-		Commit commitNotInMain = new Commit("123", new Developer("Mau", "mau@mau.com"), new Developer("Mau", "mau@mau.com"), d, TimeZone.getDefault(), d, TimeZone.getDefault(), "x", null, false, branches, false);
+		Commit commitInMain = new Commit("123", new Developer("Mau", "mau@mau.com"), new Developer("Mau", "mau@mau.com"), d, TimeZone.getDefault(), d, TimeZone.getDefault(),"x", null, false, branches, true, 0, 0f);
+		Commit commitNotInMain = new Commit("123", new Developer("Mau", "mau@mau.com"), new Developer("Mau", "mau@mau.com"), d, TimeZone.getDefault(), d, TimeZone.getDefault(), "x", null, false, branches, false, 0, 0f);
 
 		Assert.assertTrue(new OnlyInMainBranch().accept(commitInMain));
 		Assert.assertFalse(new OnlyInMainBranch().accept(commitNotInMain));

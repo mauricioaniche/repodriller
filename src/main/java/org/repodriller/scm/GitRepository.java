@@ -70,6 +70,9 @@ public class GitRepository implements SCM {
 	private int maxNumberFilesInACommit;
 	private int maxSizeOfDiff;
 
+	private List<String> hashes;
+	private long totalCommits; 
+
 	private static Logger log = Logger.getLogger(GitRepository.class);
 
 	public GitRepository(String path) {
@@ -139,8 +142,21 @@ public class GitRepository implements SCM {
 		Git git = Git.open(new File(path));
 		if(this.mainBranchName == null) {
 			this.mainBranchName = discoverMainBranchName(git);
+			initHashes(git);
 		}
 		return git;
+	}
+
+	private void initHashes(Git git) {
+		try {
+			this.hashes = new ArrayList<>();
+			for (RevCommit r : git.log().all().call()) {
+				this.hashes.add(r.getName());
+			}
+			this.totalCommits = this.hashes.size();
+		} catch (GitAPIException | IOException e) {
+			throw new RuntimeException("error in initHashes for " + path, e);
+		}
 	}
 
 	private String discoverMainBranchName(Git git) throws IOException {
@@ -232,7 +248,9 @@ public class GitRepository implements SCM {
 				if(jgitCommit.getParentCount() > 1) merge = true;
 				Set<String> branches = getBranches(git, hash);
 				boolean isCommitInMainBranch = branches.contains(this.mainBranchName);
-				theCommit = new Commit(hash, author, committer, authorDate, authorTimeZone, committerDate, committerTimeZone, msg, parent, merge, branches, isCommitInMainBranch);
+				long commitPosition = this.totalCommits - this.hashes.indexOf(hash);
+				float percentRegardRepository = commitPosition * 100 / (float) this.totalCommits;
+				theCommit = new Commit(hash, author, committer, authorDate, authorTimeZone, committerDate, committerTimeZone, msg, parent, merge, branches, isCommitInMainBranch, commitPosition, percentRegardRepository);
 
 				List<DiffEntry> diffsForTheCommit = diffsForTheCommit(repo, jgitCommit);
 				if (diffsForTheCommit.size() > this.getMaxNumberFilesInACommit()) {
@@ -406,7 +424,7 @@ public class GitRepository implements SCM {
 
 	@Override
 	public long totalCommits() {
-		return getChangeSets().size();
+		return this.totalCommits;
 	}
 
 	@Override
