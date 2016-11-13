@@ -87,15 +87,8 @@ public class Commit {
 	
 	public void addModification(String oldPath, String newPath, ModificationType change, String diff, String sc) {
 		Modification m = new Modification(oldPath, newPath, change, diff, sc);
-		switch (change) {
-			case RENAME:	
-				newPath = m.getOldPath();
-				m.setNewPath(newPath);
-				modifications.add(m);
-				break;
-			default:
-			    modifications.add(m);
-		}	
+		modifications.add(m);
+		
 	}
 	
 	public void addModifications(List<Modification> modifications) {
@@ -147,5 +140,5 @@ public class Commit {
 	public boolean isInMainBranch() {
 		return inMainBranch;
 	}
-	
+
 }

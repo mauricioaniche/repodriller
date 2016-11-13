@@ -49,10 +49,6 @@ public class Modification {
 	public String getNewPath() {
 		return newPath;
 	}
-	
-	public void setNewPath (String newPath) {
-		this.newPath = newPath;
-	}
 
 	public ModificationType getType() {
 		return type;
