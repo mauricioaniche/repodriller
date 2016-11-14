@@ -42,7 +42,7 @@ public class CSVFile implements PersistenceMechanism {
 	}
 
 	public CSVFile(String path, String name, boolean append) {
-		this(path + name, append);
+		this(verifyPath(path) + name, append);
 	}
 
 	@Override
@@ -63,5 +63,11 @@ public class CSVFile implements PersistenceMechanism {
 	public void close() {
 		ps.close();
 	}
-
+	private static String verifyPath(String path) {
+		char lastchar = path.charAt(path.length()-1);
+		if (lastchar != '/')
+			path = path+'/';
+		return path;
+		
+	}
 }
