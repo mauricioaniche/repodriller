@@ -48,11 +48,10 @@ public class CSVFile implements PersistenceMechanism {
 
 	@Override
 	public synchronized void write(Object... line) {
-		String field;
 		boolean first = true;
 		for(Object o : line) {
 			if(!first) ps.print(",");
-			field = o.toString();
+			String field = o.toString();
 			field = StringEscapeUtils.escapeCsv(field);
 			ps.print(field);
 			first=false;
