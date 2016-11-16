@@ -262,6 +262,15 @@ public class GitRepositoryTest {
 		Assert.assertTrue(changeSets.stream().anyMatch(x -> x.getId().equals("ca4a534368fd04f8de76dcfbb1fa6a1b50a63887")));
 		Assert.assertTrue(changeSets.stream().anyMatch(x -> x.getId().equals("80c6a1123d60a021c41d2581f8fbf6cfc2e38977")));
 		Assert.assertTrue(changeSets.stream().anyMatch(x -> x.getId().equals("7a58b021f41b96a73d1383bb5e4e0feab1861327")));
+		
+		git6 = new GitRepository(path6, false);
+		changeSets = git6.getChangeSets();
+		
+		Assert.assertEquals(4, changeSets.size());
+		Assert.assertTrue(changeSets.stream().anyMatch(x -> x.getId().equals("ca4a534368fd04f8de76dcfbb1fa6a1b50a63887")));
+		Assert.assertTrue(changeSets.stream().anyMatch(x -> x.getId().equals("80c6a1123d60a021c41d2581f8fbf6cfc2e38977")));
+		Assert.assertTrue(changeSets.stream().anyMatch(x -> x.getId().equals("7a58b021f41b96a73d1383bb5e4e0feab1861327")));
+		Assert.assertTrue(changeSets.stream().anyMatch(x -> x.getId().equals("933b2c6a6be916546d13b684d3201de6d3bc4058")));
 	}
 	
 }
