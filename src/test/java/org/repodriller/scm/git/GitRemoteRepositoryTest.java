@@ -19,6 +19,7 @@ package org.repodriller.scm.git;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.InvalidRemoteException;
 import org.eclipse.jgit.api.errors.TransportException;
@@ -38,7 +39,12 @@ public class GitRemoteRepositoryTest {
 	@BeforeClass()
 	public static void readPath() throws InvalidRemoteException, TransportException, GitAPIException, IOException {
 		url = "https://github.com/mauricioaniche/repodriller";
+		
+		String toDel = FileUtils.getTempDirectory().getAbsolutePath() + File.separator + "repodriller";
+		FileUtils.deleteDirectory(new File(toDel));
 		git1 = new GitRemoteRepository(url);
+		
+		FileUtils.deleteDirectory(new File(REMOTE_GIT_TEMP_DIR + File.separator + "repodriller"));
 		git2 = GitRemoteRepository.hostedOn(url).inTempDir(REMOTE_GIT_TEMP_DIR).asBareRepos().build();
 	}
 
@@ -57,7 +63,7 @@ public class GitRemoteRepositoryTest {
 	
 	@Test
 	public void shouldInitWithGivenTempDir() {
-		String expectedRepoTempDirectory = REMOTE_GIT_TEMP_DIR + File.separator + "repodriller";
+		String expectedRepoTempDirectory = new File(REMOTE_GIT_TEMP_DIR + File.separator + "repodriller").getAbsolutePath();
 		Assert.assertEquals(expectedRepoTempDirectory, git2.info().getPath());
 		
 		File bareRepositoryRefDir = new File(expectedRepoTempDirectory + File.separator + "refs");

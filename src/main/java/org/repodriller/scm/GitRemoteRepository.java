@@ -20,22 +20,29 @@ public class GitRemoteRepository implements SCM {
 
 	private static Logger log = Logger.getLogger(GitRemoteRepository.class);
 	
-	public GitRemoteRepository(String url) throws GitAPIException {
+	public GitRemoteRepository(String url) {
 		this(url, gitSystemTempDir(), false);
 	}
 	
-	public GitRemoteRepository(String url, String rootTempGitPath, boolean bare) throws GitAPIException {
-		this.remoteRepositoryUrl = url;
-		if(rootTempGitPath == null) {
-			rootTempGitPath = gitSystemTempDir();
+	public GitRemoteRepository(String url, String rootTempGitPath, boolean bare) {
+		try {
+			this.remoteRepositoryUrl = url;
+			if(rootTempGitPath == null) {
+				rootTempGitPath = gitSystemTempDir();
+			}
+			this.tempGitPath = gitRemoteRepositoryTempDir(url, rootTempGitPath);
+			this.initTempGitRepository(bare);
+			this.tempGitRepository = new GitRepository(new File(tempGitPath).getCanonicalPath());
+		} catch (Exception e) {
+			log.error("Git remote repository initialization", e);
+			throw new RuntimeException(e);
 		}
-		this.tempGitPath = gitRemoteRepositoryTempDir(url, rootTempGitPath);
-		this.initTempGitRepository(bare);
-		this.tempGitRepository = new GitRepository(tempGitPath);
 	}
 	
 	protected void initTempGitRepository(boolean bare) throws GitAPIException {
 		File directory = new File(this.tempGitPath);
+		System.out.println("oi " + this.tempGitPath + " " + directory.exists());
+		
 		if(!directory.exists()) {
 			log.info("Cloning Remote Repository " + this.remoteRepositoryUrl + " into " + this.tempGitPath);
 			Git.cloneRepository()
@@ -69,11 +76,7 @@ public class GitRemoteRepository implements SCM {
 	}
 	
 	protected static SCMRepository singleProject(String url, String rootTempGitPath, boolean bare) {
-		try {
-			return new GitRemoteRepository(url, rootTempGitPath, bare).info();
-		} catch (GitAPIException e) {
-			throw new RuntimeException(e.getMessage(), e);
-		}
+		return new GitRemoteRepository(url, rootTempGitPath, bare).info();
 	}
 	
 	public static SCMRepository[] allProjectsIn(List<String> urls) {

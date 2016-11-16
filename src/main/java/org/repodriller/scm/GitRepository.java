@@ -32,6 +32,7 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ResetCommand.ResetType;
 import org.eclipse.jgit.api.errors.CannotDeleteCurrentBranchException;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.api.errors.NoHeadException;
 import org.eclipse.jgit.api.errors.NotMergedException;
 import org.eclipse.jgit.blame.BlameResult;
 import org.eclipse.jgit.diff.DiffEntry;
@@ -71,11 +72,17 @@ public class GitRepository implements SCM {
 	private int maxSizeOfDiff;
 
 	private static Logger log = Logger.getLogger(GitRepository.class);
+	private boolean firstParentOnly;
 
-	public GitRepository(String path) {
+	public GitRepository(String path, boolean firstParentOnly) {
 		this.path = path;
+		this.firstParentOnly = firstParentOnly;
 		this.maxNumberFilesInACommit = checkMaxNumberOfFiles();
 		this.maxSizeOfDiff = checkMaxSizeOfDiff();
+	}
+
+	public GitRepository(String path) {
+		this(path, false);
 	}
 
 	private int checkMaxNumberOfFiles() {
@@ -98,11 +105,19 @@ public class GitRepository implements SCM {
 		return new GitRepository(path).info();
 	}
 
+	public static SCMRepository singleProject(String path, boolean singleParentOnly) {
+		return new GitRepository(path, singleParentOnly).info();
+	}
+
 	public static SCMRepository[] allProjectsIn(String path) {
+		return allProjectsIn(path, false);
+	}
+	
+	public static SCMRepository[] allProjectsIn(String path, boolean singleParentOnly) {
 		List<SCMRepository> repos = new ArrayList<SCMRepository>();
 
 		for (String dir : FileUtils.getAllDirsIn(path)) {
-			repos.add(singleProject(dir));
+			repos.add(singleProject(dir, singleParentOnly));
 		}
 
 		return repos.toArray(new SCMRepository[repos.size()]);
@@ -172,14 +187,9 @@ public class GitRepository implements SCM {
 		try {
 			git = openRepository();
 
-			List<ChangeSet> allCs = new ArrayList<ChangeSet>();
-
-			for (RevCommit r : git.log().all().call()) {
-				String hash = r.getName();
-				GregorianCalendar date = convertToDate(r);
-
-				allCs.add(new ChangeSet(hash, date));
-			}
+			List<ChangeSet> allCs;
+			if(!firstParentOnly) allCs = getAllCommits(git);
+			else allCs = firstParentsOnly(git);
 
 			return allCs;
 		} catch (Exception e) {
@@ -188,6 +198,45 @@ public class GitRepository implements SCM {
 			if (git != null)
 				git.close();
 		}
+	}
+
+	private List<ChangeSet> firstParentsOnly(Git git) {
+		
+		try {
+			List<ChangeSet> allCs = new ArrayList<ChangeSet>();
+			
+			RevWalk revWalk = new RevWalk(git.getRepository());
+			revWalk.setRevFilter(new FirstParentFilter());
+			revWalk.sort(RevSort.TOPO);
+			Ref headRef = git.getRepository().getRef(Constants.HEAD);
+			RevCommit headCommit = revWalk.parseCommit(headRef.getObjectId());
+			revWalk.markStart( headCommit );
+			for(RevCommit revCommit : revWalk) {
+				allCs.add(extractChangeSet(revCommit));
+			}
+			
+			return allCs;
+			
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private List<ChangeSet> getAllCommits(Git git) throws GitAPIException, NoHeadException, IOException {
+		List<ChangeSet> allCs = new ArrayList<ChangeSet>();
+
+		for (RevCommit r : git.log().all().call()) {
+			allCs.add(extractChangeSet(r));
+		}
+		return allCs;
+	}
+
+	private ChangeSet extractChangeSet(RevCommit r) {
+		String hash = r.getName();
+		GregorianCalendar date = convertToDate(r);
+
+		ChangeSet cs = new ChangeSet(hash, date);
+		return cs;
 	}
 
 	private GregorianCalendar convertToDate(RevCommit revCommit) {

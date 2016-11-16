@@ -123,6 +123,13 @@ You can also initialize git repositories with their remote HTTP URLs. In this ca
 
 (1) You can clone as bare repository, if your study will work only with repository metadata (commit history info, modifications, etc.) and won't need to checkout/reset files.
 
+Git offers the `first-parent` filter, which can also be used in RepoDriller. To that end, just
+pass a flag to the factory:
+
+```
+GitRepository.single("/your/project", true);
+``` 
+
 ## Logging
 
 RepoDriller uses log4j to print useful information about its execution. We recommend tou to have a log4.xml:

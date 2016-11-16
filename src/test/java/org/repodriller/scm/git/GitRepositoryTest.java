@@ -36,15 +36,18 @@ public class GitRepositoryTest {
 	private GitRepository git1;
 	private GitRepository git2;
 	private GitRepository git3;
+	private GitRepository git6;
 	private static String path1;
 	private static String path2;
 	private static String path3;
+	private static String path6;
 
 	@BeforeClass
 	public static void readPath() throws FileNotFoundException {
 		path1 = GitRepositoryTest.class.getResource("/").getPath() + "../../test-repos/git-1";
 		path2 = GitRepositoryTest.class.getResource("/").getPath() + "../../test-repos/git-2";
 		path3 = GitRepositoryTest.class.getResource("/").getPath() + "../../test-repos/git-3";
+		path6 = GitRepositoryTest.class.getResource("/").getPath() + "../../test-repos/git-6";
 	}
 	
 	@Before
@@ -52,6 +55,7 @@ public class GitRepositoryTest {
 		git1 = new GitRepository(path1);
 		git2 = new GitRepository(path2);
 		git3 = new GitRepository(path3);
+		git6 = new GitRepository(path6, true);
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -249,6 +253,15 @@ public class GitRepositoryTest {
 		Assert.assertEquals("e7d13b0511f8a176284ce4f92ed8c6e8d09c77f2", repo.getHeadCommit());
 	}
 	
+	@Test 
+	public void firstParentOnly() {
+		
+		List<ChangeSet> changeSets = git6.getChangeSets();
+		
+		Assert.assertEquals(3, changeSets.size());
+		Assert.assertTrue(changeSets.stream().anyMatch(x -> x.getId().equals("ca4a534368fd04f8de76dcfbb1fa6a1b50a63887")));
+		Assert.assertTrue(changeSets.stream().anyMatch(x -> x.getId().equals("80c6a1123d60a021c41d2581f8fbf6cfc2e38977")));
+		Assert.assertTrue(changeSets.stream().anyMatch(x -> x.getId().equals("7a58b021f41b96a73d1383bb5e4e0feab1861327")));
+	}
 	
-
 }
