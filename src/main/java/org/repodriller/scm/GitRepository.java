@@ -62,7 +62,7 @@ import org.repodriller.util.FileUtils;
 public class GitRepository implements SCM {
 
 	private static final int MAX_SIZE_OF_A_DIFF = 100000;
-	private static final int DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT = 200;
+	private static final int DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT = 5000;
 	private static final String BRANCH_MM = "mm";
 
 	private String path;
