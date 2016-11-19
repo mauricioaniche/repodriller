@@ -90,11 +90,43 @@ public class RepositoryMining {
 	public void mine() {
 		
 		for(SCMRepository repo : repos) {
+			initializeVisitors(repo);
 			processRepos(repo);
+			finalizeVisitors(repo);
 		}
 		closeAllPersistence();
 		printScript();
 		
+	}
+
+	private void initializeVisitors(SCMRepository repo) {
+		for(Map.Entry<CommitVisitor, PersistenceMechanism> entry : visitors.entrySet()) {
+			CommitVisitor visitor = entry.getKey();
+			PersistenceMechanism writer = entry.getValue();
+
+			try {
+				log.info("-> Initializing visitor " + visitor.name());
+				visitor.initialize(repo, writer);
+			} catch (Exception e) {
+				log.error("error in " + repo.getPath() + 
+						"when initializing " + visitor.name() + ", error=" + e.getMessage(), e);
+			}
+		}
+	}
+
+	private void finalizeVisitors(SCMRepository repo) {
+		for(Map.Entry<CommitVisitor, PersistenceMechanism> entry : visitors.entrySet()) {
+			CommitVisitor visitor = entry.getKey();
+			PersistenceMechanism writer = entry.getValue();
+
+			try {
+				log.info("-> Finalizing visitor " + visitor.name());
+				visitor.finalize(repo, writer);
+			} catch (Exception e) {
+				log.error("error in " + repo.getPath() + 
+						"when finalizing " + visitor.name() + ", error=" + e.getMessage(), e);
+			}
+		}
 	}
 
 	private void processRepos(SCMRepository repo) {
