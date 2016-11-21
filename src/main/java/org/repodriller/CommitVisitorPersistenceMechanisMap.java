@@ -20,7 +20,10 @@ public class CommitVisitorPersistenceMechanisMap {
 	}
 
 	void initializeVisitors(SCMRepository repo) {
-		visitors.forEach((visitor,writer) -> {
+		for(Map.Entry<CommitVisitor, PersistenceMechanism> entry : visitors.entrySet()) {
+			CommitVisitor visitor = entry.getKey();
+			PersistenceMechanism writer = entry.getValue();
+
 			try {
 				log.info("-> Initializing visitor " + visitor.name());
 				visitor.initialize(repo, writer);
@@ -28,11 +31,14 @@ public class CommitVisitorPersistenceMechanisMap {
 				log.error("error in " + repo.getPath() + 
 						"when initializing " + visitor.name() + ", error=" + e.getMessage(), e);
 			}
-		});
+		}
 	}
 
 	void processCommit(SCMRepository repo, Commit commit) {
-		visitors.forEach((visitor,writer) -> {
+		for(Map.Entry<CommitVisitor, PersistenceMechanism> entry : visitors.entrySet()) {
+			CommitVisitor visitor = entry.getKey();
+			PersistenceMechanism writer = entry.getValue();
+
 			try {
 				log.info("-> Processing " + commit.getHash() + " with " + visitor.name());
 				visitor.process(repo, commit, writer);
@@ -40,11 +46,14 @@ public class CommitVisitorPersistenceMechanisMap {
 				log.error("error processing #" + commit.getHash() + " in " + repo.getPath() + 
 						", processor=" + visitor.name() + ", error=" + e.getMessage(), e);
 			}
-		});
+		}
 	}
 	
 	void finalizeVisitors(SCMRepository repo) {
-		visitors.forEach((visitor,writer) -> {
+		for(Map.Entry<CommitVisitor, PersistenceMechanism> entry : visitors.entrySet()) {
+			CommitVisitor visitor = entry.getKey();
+			PersistenceMechanism writer = entry.getValue();
+
 			try {
 				log.info("-> Finalizing visitor " + visitor.name());
 				visitor.finalize(repo, writer);
@@ -52,7 +61,7 @@ public class CommitVisitorPersistenceMechanisMap {
 				log.error("error in " + repo.getPath() + 
 						"when finalizing " + visitor.name() + ", error=" + e.getMessage(), e);
 			}
-		});
+		}
 	}
 	
 	void closeAllPersistence() {
