@@ -20,9 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -42,10 +40,11 @@ import com.google.common.collect.Lists;
 
 public class RepositoryMining {
 
-	private List<SCMRepository> repos;
-	private Map<CommitVisitor, PersistenceMechanism> visitors;
-	
+	private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 	private static Logger log = Logger.getLogger(RepositoryMining.class);
+
+	private List<SCMRepository> repos;
+	private CommitVisitorPersistenceMechanisMap visitors;
 	private CommitRange range;
 	private int threads;
 	private boolean reverseOrder;
@@ -53,7 +52,7 @@ public class RepositoryMining {
 	
 	public RepositoryMining() {
 		repos = new ArrayList<SCMRepository>();
-		visitors = new HashMap<CommitVisitor, PersistenceMechanism>();
+		visitors = new CommitVisitorPersistenceMechanisMap(log);
 		filters = Arrays.asList((CommitFilter) new NoFilter());
 		this.threads = 1;
 	}
@@ -90,43 +89,13 @@ public class RepositoryMining {
 	public void mine() {
 		
 		for(SCMRepository repo : repos) {
-			initializeVisitors(repo);
+			visitors.initializeVisitors(repo);
 			processRepos(repo);
-			finalizeVisitors(repo);
+			visitors.finalizeVisitors(repo);
 		}
-		closeAllPersistence();
+		visitors.closeAllPersistence();
 		printScript();
 		
-	}
-
-	private void initializeVisitors(SCMRepository repo) {
-		for(Map.Entry<CommitVisitor, PersistenceMechanism> entry : visitors.entrySet()) {
-			CommitVisitor visitor = entry.getKey();
-			PersistenceMechanism writer = entry.getValue();
-
-			try {
-				log.info("-> Initializing visitor " + visitor.name());
-				visitor.initialize(repo, writer);
-			} catch (Exception e) {
-				log.error("error in " + repo.getPath() + 
-						"when initializing " + visitor.name() + ", error=" + e.getMessage(), e);
-			}
-		}
-	}
-
-	private void finalizeVisitors(SCMRepository repo) {
-		for(Map.Entry<CommitVisitor, PersistenceMechanism> entry : visitors.entrySet()) {
-			CommitVisitor visitor = entry.getKey();
-			PersistenceMechanism writer = entry.getValue();
-
-			try {
-				log.info("-> Finalizing visitor " + visitor.name());
-				visitor.finalize(repo, writer);
-			} catch (Exception e) {
-				log.error("error in " + repo.getPath() + 
-						"when finalizing " + visitor.name() + ", error=" + e.getMessage(), e);
-			}
-		}
 	}
 
 	private void processRepos(SCMRepository repo) {
@@ -178,23 +147,15 @@ public class RepositoryMining {
 		
 		log.info("The following processors were executed:");
 		
-		for(CommitVisitor visitor : visitors.keySet()) {
-			log.info("- " + visitor.name() + " (" + visitor.getClass().getName() + ")");
-		}
-		
+		visitors.printScript();
 	}
 
-	private void closeAllPersistence() {
-		for(PersistenceMechanism persist : visitors.values()) {
-			persist.close();
-		}
-	}
-	
 	private void processChangeSet(SCMRepository repo, ChangeSet cs) {
 		Commit commit = repo.getScm().getCommit(cs.getId());
 		log.info(
 				"Commit #" + commit.getHash() + 
-				" in " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(commit.getDate().getTime()) +
+				" @ " + repo.getLastDir() +
+				" in " + SIMPLE_DATE_FORMAT.format(commit.getDate().getTime()) +
 				" from " + commit.getAuthor().getName() + 
 				" with " + commit.getModifications().size() + " modifications");
 
@@ -203,18 +164,7 @@ public class RepositoryMining {
 			return;
 		}
 		
-		for(Map.Entry<CommitVisitor, PersistenceMechanism> entry : visitors.entrySet()) {
-			CommitVisitor visitor = entry.getKey();
-			PersistenceMechanism writer = entry.getValue();
-
-			try {
-				log.info("-> Processing " + commit.getHash() + " with " + visitor.name());
-				visitor.process(repo, commit, writer);
-			} catch (Exception e) {
-				log.error("error processing #" + commit.getHash() + " in " + repo.getPath() + 
-						", processor=" + visitor.name() + ", error=" + e.getMessage(), e);
-			}
-		}
+		visitors.processCommit(repo, commit);
 		
 	}
 
