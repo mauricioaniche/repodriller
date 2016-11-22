@@ -178,8 +178,8 @@ public class RepositoryMining {
 			PersistenceMechanism writer = entry.getValue();
 
 			try {
+					log.info("-> Processing " + commit.getHash() + " with " + visitor.name());	
 					visitor.process(repo, commit, writer);
-					log.info("-> Processing " + commit.getHash() + " with " + visitor.name());				
 			} catch (CSVFileFormatException e) {
 					log.fatal(e);
 					System.exit(-1);				
