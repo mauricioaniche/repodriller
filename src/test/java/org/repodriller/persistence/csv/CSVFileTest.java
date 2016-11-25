@@ -25,6 +25,19 @@ public class CSVFileTest {
 	}
 
 	@Test
+	public void singleColumn() throws IOException {
+		CSVFile file = new CSVFile(System.getProperty("java.io.tmpdir"), "test.csv");
+		
+		file.write("1");
+		file.write("4");
+		
+		String text = new String(Files.readAllBytes(Paths.get(System.getProperty("java.io.tmpdir") + "test.csv")), StandardCharsets.UTF_8);
+		String[] lines = text.split("\n");
+		Assert.assertEquals("1", lines[0]);
+		Assert.assertEquals("4", lines[1]);
+	}
+
+	@Test
 	public void printNulls() throws IOException {
 		CSVFile file = new CSVFile(System.getProperty("java.io.tmpdir"), "test.csv");
 		
