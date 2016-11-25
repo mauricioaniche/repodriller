@@ -41,7 +41,6 @@ public class GitRemoteRepository implements SCM {
 	
 	protected void initTempGitRepository(boolean bare) throws GitAPIException {
 		File directory = new File(this.tempGitPath);
-		System.out.println("oi " + this.tempGitPath + " " + directory.exists());
 		
 		if(!directory.exists()) {
 			log.info("Cloning Remote Repository " + this.remoteRepositoryUrl + " into " + this.tempGitPath);
