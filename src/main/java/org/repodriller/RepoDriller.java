@@ -37,7 +37,7 @@ public class RepoDriller {
 			
 			log.info("# -------------------------------------------------- #");
 			log.info("#                   RepoDriller                      #");
-			log.info("#                     v1.1.0                         #");
+			log.info("#                     v1.3.0                         #");
 			log.info("#               www.repodriller.org                  #");
 			log.info("# -------------------------------------------------- #");
 			log.info("Starting engine: " + new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").format(startDate.getTime()));
