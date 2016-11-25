@@ -51,9 +51,13 @@ public class CSVFile implements PersistenceMechanism {
 		boolean first = true;
 		for(Object o : line) {
 			if(!first) ps.print(",");
-			String field = o.toString();
-			field = StringEscapeUtils.escapeCsv(field);
-			ps.print(field);
+
+			if(o==null) ps.print("null");
+			else {
+				String field = o.toString();
+				field = StringEscapeUtils.escapeCsv(field);
+				ps.print(field);
+			}
 			first=false;
 		}
 		
