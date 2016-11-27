@@ -16,7 +16,6 @@
 
 package org.repodriller;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -25,6 +24,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.log4j.Logger;
 import org.repodriller.domain.ChangeSet;
 import org.repodriller.domain.Commit;
@@ -40,7 +40,7 @@ import com.google.common.collect.Lists;
 
 public class RepositoryMining {
 
-	private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+	private static final String DATE_FORMAT = "dd/MM/yyyy HH:mm:ss";
 	private static final Logger log = Logger.getLogger(RepositoryMining.class);
 
 	private List<SCMRepository> repos;
@@ -155,7 +155,7 @@ public class RepositoryMining {
 		log.info(
 				"Commit #" + commit.getHash() + 
 				" @ " + repo.getLastDir() +
-				" in " + SIMPLE_DATE_FORMAT.format(commit.getDate().getTime()) +
+				" in " + DateFormatUtils.format(commit.getDate().getTime(), DATE_FORMAT) +
 				" from " + commit.getAuthor().getName() + 
 				" with " + commit.getModifications().size() + " modifications");
 
