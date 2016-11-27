@@ -180,6 +180,8 @@ public class GitRepositoryTest {
 		
 		Assert.assertEquals("Matricula adicionada", commit.getMsg());
 		Assert.assertEquals(1, commit.getModifications().size());
+		Assert.assertEquals(1, commit.getCommitPosition());
+		Assert.assertEquals(7f, commit.getPercentRegardRepository(), 1f);
 		
 		Assert.assertEquals("Matricula.java", commit.getModifications().get(0).getNewPath());
 		Assert.assertTrue(commit.getModifications().get(0).getDiff().startsWith("diff --git a/Matricula.java b/Matricula.java"));
