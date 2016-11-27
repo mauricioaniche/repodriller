@@ -16,6 +16,7 @@
 
 package org.repodriller.persistence.csv;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -72,8 +73,8 @@ public class CSVFile implements PersistenceMechanism {
 	
 	private static String verifyPath(String path) {
 		char lastchar = path.charAt(path.length()-1);
-		if (lastchar != '/')
-			path = path + '/';
+		if (lastchar != File.separatorChar)
+			path = path + File.separator;
 		return path;		
 	}
 }
