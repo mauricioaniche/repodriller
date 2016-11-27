@@ -41,10 +41,10 @@ import com.google.common.collect.Lists;
 public class RepositoryMining {
 
 	private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-	private static Logger log = Logger.getLogger(RepositoryMining.class);
+	private static final Logger log = Logger.getLogger(RepositoryMining.class);
 
 	private List<SCMRepository> repos;
-	private CommitVisitorPersistenceMechanisMap visitors;
+	private CommitVisitorIterator visitors;
 	private CommitRange range;
 	private int threads;
 	private boolean reverseOrder;
@@ -52,7 +52,7 @@ public class RepositoryMining {
 	
 	public RepositoryMining() {
 		repos = new ArrayList<SCMRepository>();
-		visitors = new CommitVisitorPersistenceMechanisMap(log);
+		visitors = new CommitVisitorIterator(log);
 		filters = Arrays.asList((CommitFilter) new NoFilter());
 		this.threads = 1;
 	}

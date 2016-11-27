@@ -7,14 +7,15 @@ import org.apache.log4j.Logger;
 import org.repodriller.domain.Commit;
 import org.repodriller.persistence.PersistenceMechanism;
 import org.repodriller.scm.CommitVisitor;
+import org.repodriller.scm.RequiresCommitCounter;
 import org.repodriller.scm.SCMRepository;
 
-public class CommitVisitorPersistenceMechanisMap {
+public class CommitVisitorIterator {
 
 	private Map<CommitVisitor, PersistenceMechanism> visitors;
 	private Logger log;
 	
-	public CommitVisitorPersistenceMechanisMap(Logger log) {
+	public CommitVisitorIterator(Logger log) {
 		this.log = log;
 		visitors = new HashMap<CommitVisitor, PersistenceMechanism>();
 	}
@@ -41,6 +42,9 @@ public class CommitVisitorPersistenceMechanisMap {
 
 			try {
 				log.info("-> Processing " + commit.getHash() + " with " + visitor.name());
+				if (visitor instanceof RequiresCommitCounter) {
+					((RequiresCommitCounter) visitor).count(commit);
+				}
 				visitor.process(repo, commit, writer);
 			} catch (Exception e) {
 				log.error("error processing #" + commit.getHash() + " in " + repo.getPath() + 
