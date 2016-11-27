@@ -40,14 +40,12 @@ public class Commit {
 	private TimeZone authorTimeZone;
 	private TimeZone committerTimeZone;
 	private Calendar committerDate;
-	private long commitPosition;
-	private float percentRegardRepository;
 
-	public Commit(String hash, Developer author, Developer committer, Calendar authorDate, Calendar committerDate, String msg, String parent, long revision, float percentRegardRepository) {
-		this(hash, author, committer, authorDate, TimeZone.getDefault(), committerDate, TimeZone.getDefault(), msg, parent, false, new HashSet<>(), false, revision, percentRegardRepository);
+	public Commit(String hash, Developer author, Developer committer, Calendar authorDate, Calendar committerDate, String msg, String parent) {
+		this(hash, author, committer, authorDate, TimeZone.getDefault(), committerDate, TimeZone.getDefault(), msg, parent, false, new HashSet<>(), false);
 	}
 
-	public Commit(String hash, Developer author, Developer committer, Calendar authorDate, TimeZone authorTimeZone, Calendar committerDate, TimeZone committerTimeZone, String msg, String parent, boolean merge, Set<String> branches, boolean isCommitInMainBranch, long commitPosition, float percentRegardRepository) {
+	public Commit(String hash, Developer author, Developer committer, Calendar authorDate, TimeZone authorTimeZone, Calendar committerDate, TimeZone committerTimeZone, String msg, String parent, boolean merge, Set<String> branches, boolean isCommitInMainBranch) {
 		this.hash = hash;
 		this.author = author;
 		this.committer = committer;
@@ -61,8 +59,6 @@ public class Commit {
 		this.modifications = new ArrayList<Modification>();
 		this.branches = branches;
 		this.inMainBranch = isCommitInMainBranch;
-		this.commitPosition = commitPosition;
-		this.percentRegardRepository = percentRegardRepository;
 	}
 
 	public boolean isMerge() {
@@ -145,12 +141,4 @@ public class Commit {
 		return inMainBranch;
 	}
 	
-	public long getCommitPosition() {
-		return commitPosition;
-	}
-	
-	public float getPercentRegardRepository() {
-		return percentRegardRepository;
-	}
-
 }

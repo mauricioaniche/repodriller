@@ -18,8 +18,8 @@ public class OnlyNoMergeTest {
 		branches.add("master");
 		
 		Calendar d = Calendar.getInstance();
-		Commit regularCommit = new Commit("123", new Developer("Mau", "mau@mau.com"), new Developer("Mau", "mau@mau.com"), d,TimeZone.getDefault(), d, TimeZone.getDefault(), "x", null, false, branches, true, 0, 0f);
-		Commit mergeCommit = new Commit("123", new Developer("Mau", "mau@mau.com"), new Developer("Mau", "mau@mau.com"), d, TimeZone.getDefault(), d, TimeZone.getDefault(), "x", null, true, branches, true, 0, 0f);
+		Commit regularCommit = new Commit("123", new Developer("Mau", "mau@mau.com"), new Developer("Mau", "mau@mau.com"), d,TimeZone.getDefault(), d, TimeZone.getDefault(), "x", null, false, branches, true);
+		Commit mergeCommit = new Commit("123", new Developer("Mau", "mau@mau.com"), new Developer("Mau", "mau@mau.com"), d, TimeZone.getDefault(), d, TimeZone.getDefault(), "x", null, true, branches, true);
 
 		Assert.assertTrue(new OnlyNoMerge().accept(regularCommit));
 		Assert.assertFalse(new OnlyNoMerge().accept(mergeCommit));
