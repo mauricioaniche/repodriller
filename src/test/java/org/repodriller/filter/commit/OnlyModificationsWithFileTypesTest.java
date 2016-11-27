@@ -11,7 +11,6 @@ import org.junit.Test;
 import org.repodriller.domain.Commit;
 import org.repodriller.domain.Developer;
 import org.repodriller.domain.ModificationType;
-import org.repodriller.filter.commit.OnlyModificationsWithFileTypes;
 
 public class OnlyModificationsWithFileTypesTest {
 

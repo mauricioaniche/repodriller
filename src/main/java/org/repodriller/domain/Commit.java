@@ -140,5 +140,5 @@ public class Commit {
 	public boolean isInMainBranch() {
 		return inMainBranch;
 	}
-
+	
 }

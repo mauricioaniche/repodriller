@@ -9,7 +9,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.repodriller.domain.Commit;
 import org.repodriller.domain.Developer;
-import org.repodriller.filter.commit.OnlyNoMerge;
 
 public class OnlyNoMergeTest {
 
