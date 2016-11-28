@@ -33,6 +33,7 @@ import org.repodriller.filter.commit.NoFilter;
 import org.repodriller.filter.range.CommitRange;
 import org.repodriller.persistence.NoPersistence;
 import org.repodriller.persistence.PersistenceMechanism;
+import org.repodriller.persistence.csv.CSVFileFormatException;
 import org.repodriller.scm.CommitVisitor;
 import org.repodriller.scm.SCMRepository;
 
@@ -152,19 +153,38 @@ public class RepositoryMining {
 
 	private void processChangeSet(SCMRepository repo, ChangeSet cs) {
 		Commit commit = repo.getScm().getCommit(cs.getId());
+		
 		log.info(
 				"Commit #" + commit.getHash() + 
 				" @ " + repo.getLastDir() +
 				" in " + DateFormatUtils.format(commit.getDate().getTime(), DATE_FORMAT) +
 				" from " + commit.getAuthor().getName() + 
 				" with " + commit.getModifications().size() + " modifications");
-
+		
 		if(!filtersAccept(commit)) {
 			log.info("-> Filtered");
-			return;
-		}
+				return;
+			}		
 		
+<<<<<<< HEAD
+		for(Map.Entry<CommitVisitor, PersistenceMechanism> entry : visitors.entrySet()) {
+			CommitVisitor visitor = entry.getKey();
+			PersistenceMechanism writer = entry.getValue();
+
+			try {
+					log.info("-> Processing " + commit.getHash() + " with " + visitor.name());	
+					visitor.process(repo, commit, writer);
+			} catch (CSVFileFormatException e) {
+					log.fatal(e);
+					System.exit(-1);				
+			} catch (Exception e) {				
+					log.error("error processing #" + commit.getHash() + " in " + repo.getPath() + 
+						", processor=" + visitor.name() + ", error=" + e.getMessage(), e);
+			}
+		}
+=======
 		visitors.processCommit(repo, commit);
+>>>>>>> c96d1d7cb19b9bf3df99d1bf079f2129dfc2fcbc
 		
 	}
 
