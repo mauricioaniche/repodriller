@@ -1,6 +1,6 @@
 language: java
 before_install:
- - cd test-repos && unzip \*.zip
+ - cd test-repos && unzip \*.zip && cd ..
 jdk:
   - oraclejdk8
 
