@@ -1,7 +1,7 @@
 language: java
 before_install:
- - chmod +x ./test-repos/unpack.sh
+ - chmod +x ./test-repos/unpack-travis.sh
 jdk:
   - oraclejdk8
-script: ./test-repos/unpack.sh
+script: ./test-repos/unpack-travis.sh
 
