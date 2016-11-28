@@ -16,17 +16,15 @@
 
 package org.repodriller;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.log4j.Logger;
 import org.repodriller.domain.ChangeSet;
 import org.repodriller.domain.Commit;
@@ -43,10 +41,11 @@ import com.google.common.collect.Lists;
 
 public class RepositoryMining {
 
+	private static final String DATE_FORMAT = "dd/MM/yyyy HH:mm:ss";
+	private static final Logger log = Logger.getLogger(RepositoryMining.class);
+
 	private List<SCMRepository> repos;
-	private Map<CommitVisitor, PersistenceMechanism> visitors;
-	
-	private static Logger log = Logger.getLogger(RepositoryMining.class);
+	private CommitVisitorIterator visitors;
 	private CommitRange range;
 	private int threads;
 	private boolean reverseOrder;
@@ -54,7 +53,7 @@ public class RepositoryMining {
 	
 	public RepositoryMining() {
 		repos = new ArrayList<SCMRepository>();
-		visitors = new HashMap<CommitVisitor, PersistenceMechanism>();
+		visitors = new CommitVisitorIterator(log);
 		filters = Arrays.asList((CommitFilter) new NoFilter());
 		this.threads = 1;
 	}
@@ -91,9 +90,11 @@ public class RepositoryMining {
 	public void mine() {
 		
 		for(SCMRepository repo : repos) {
+			visitors.initializeVisitors(repo);
 			processRepos(repo);
+			visitors.finalizeVisitors(repo);
 		}
-		closeAllPersistence();
+		visitors.closeAllPersistence();
 		printScript();
 		
 	}
@@ -147,24 +148,16 @@ public class RepositoryMining {
 		
 		log.info("The following processors were executed:");
 		
-		for(CommitVisitor visitor : visitors.keySet()) {
-			log.info("- " + visitor.name() + " (" + visitor.getClass().getName() + ")");
-		}
-		
+		visitors.printScript();
 	}
 
-	private void closeAllPersistence() {
-		for(PersistenceMechanism persist : visitors.values()) {
-			persist.close();
-		}
-	}
-	
 	private void processChangeSet(SCMRepository repo, ChangeSet cs) {
 		Commit commit = repo.getScm().getCommit(cs.getId());
 		
 		log.info(
 				"Commit #" + commit.getHash() + 
-				" in " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(commit.getDate().getTime()) +
+				" @ " + repo.getLastDir() +
+				" in " + DateFormatUtils.format(commit.getDate().getTime(), DATE_FORMAT) +
 				" from " + commit.getAuthor().getName() + 
 				" with " + commit.getModifications().size() + " modifications");
 		
@@ -173,6 +166,7 @@ public class RepositoryMining {
 				return;
 			}		
 		
+<<<<<<< HEAD
 		for(Map.Entry<CommitVisitor, PersistenceMechanism> entry : visitors.entrySet()) {
 			CommitVisitor visitor = entry.getKey();
 			PersistenceMechanism writer = entry.getValue();
@@ -188,6 +182,9 @@ public class RepositoryMining {
 						", processor=" + visitor.name() + ", error=" + e.getMessage(), e);
 			}
 		}
+=======
+		visitors.processCommit(repo, commit);
+>>>>>>> c96d1d7cb19b9bf3df99d1bf079f2129dfc2fcbc
 		
 	}
 
