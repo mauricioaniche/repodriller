@@ -23,8 +23,8 @@ public class BetweenDatesTest {
 	public void shouldFilterByDatesInAscedentOrder() {
 		TestVisitor visitor = new TestVisitor();
 		
-		Calendar from = new GregorianCalendar(2016, Calendar.OCTOBER, 8, 23,0,0);
-		Calendar to = new GregorianCalendar(2016, Calendar.OCTOBER, 8, 23,59,0);
+		Calendar from = new GregorianCalendar(2016, Calendar.OCTOBER, 7, 23,0,0);
+		Calendar to = new GregorianCalendar(2016, Calendar.OCTOBER, 9, 23,59,0);
 		new RepositoryMining()
 		.in(GitRepository.singleProject(path))
 		.through(Commits.betweenDates(from, to))
@@ -40,8 +40,8 @@ public class BetweenDatesTest {
 	public void shouldFilterByDatesInReverseOrder() {
 		TestVisitor visitor = new TestVisitor();
 		
-		Calendar from = new GregorianCalendar(2016, Calendar.OCTOBER, 8, 23,0,0);
-		Calendar to = new GregorianCalendar(2016, Calendar.OCTOBER, 8, 23,59,0);
+		Calendar from = new GregorianCalendar(2016, Calendar.OCTOBER, 7, 23,0,0);
+		Calendar to = new GregorianCalendar(2016, Calendar.OCTOBER, 9, 23,59,0);
 		new RepositoryMining()
 		.in(GitRepository.singleProject(path))
 		.through(Commits.betweenDates(from, to))
