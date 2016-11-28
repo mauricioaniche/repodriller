@@ -1,0 +1,7 @@
+language: java
+
+before_install:
+- sudo apt-get git
+
+script: ./test-repos/unpack.sh
+
