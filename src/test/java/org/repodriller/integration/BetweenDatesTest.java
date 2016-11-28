@@ -1,7 +1,11 @@
 package org.repodriller.integration;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -13,18 +17,30 @@ import org.repodriller.scm.GitRepository;
 public class BetweenDatesTest {
 
 	private String path;
+	private Calendar from;
+	private Calendar to;
 
 	@Before
-	public void setUp() {
+	public void setUp() throws ParseException {
 		this.path = this.getClass().getResource("/").getPath() + "../../test-repos/git-4";
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		sdf.setTimeZone(TimeZone.getTimeZone("GMT-4"));
+		
+		Date d1 = sdf.parse("2016-10-08 17:00:00");
+		from = Calendar.getInstance();
+		from.setTime(d1);
+		
+		Date d2 = sdf.parse("2016-10-08 17:59:00");
+		to = Calendar.getInstance();
+		to.setTime(d2);
 	}
 	
 	@Test
 	public void shouldFilterByDatesInAscedentOrder() {
 		TestVisitor visitor = new TestVisitor();
 		
-		Calendar from = new GregorianCalendar(2016, Calendar.OCTOBER, 7, 23,0,0);
-		Calendar to = new GregorianCalendar(2016, Calendar.OCTOBER, 9, 23,59,0);
+		
 		new RepositoryMining()
 		.in(GitRepository.singleProject(path))
 		.through(Commits.betweenDates(from, to))
@@ -40,8 +56,6 @@ public class BetweenDatesTest {
 	public void shouldFilterByDatesInReverseOrder() {
 		TestVisitor visitor = new TestVisitor();
 		
-		Calendar from = new GregorianCalendar(2016, Calendar.OCTOBER, 7, 23,0,0);
-		Calendar to = new GregorianCalendar(2016, Calendar.OCTOBER, 9, 23,59,0);
 		new RepositoryMining()
 		.in(GitRepository.singleProject(path))
 		.through(Commits.betweenDates(from, to))
