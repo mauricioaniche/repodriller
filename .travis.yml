@@ -1,7 +1,6 @@
 language: java
 before_install:
- - chmod +x test-repos/unpack-travis.sh
+ - cd test-repos && unzip \*.zip
 jdk:
   - oraclejdk8
-script: test-repos/unpack-travis.sh
 
