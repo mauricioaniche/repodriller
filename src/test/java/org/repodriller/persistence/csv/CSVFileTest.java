@@ -29,7 +29,7 @@ public class CSVFileTest {
 		file.write("4", "5", "6");
 		
 		String text = new String(Files.readAllBytes(Paths.get(tmpPath)), StandardCharsets.UTF_8);
-		String[] lines = text.split("\n");
+		String[] lines = text.split(System.getProperty("line.separator"));
 		Assert.assertEquals("1,2,3", lines[0]);
 		Assert.assertEquals("4,5,6", lines[1]);
 	}
@@ -42,7 +42,7 @@ public class CSVFileTest {
 		file.write("4");
 		
 		String text = new String(Files.readAllBytes(Paths.get(tmpPath)), StandardCharsets.UTF_8);
-		String[] lines = text.split("\n");
+		String[] lines = text.split(System.getProperty("line.separator"));
 		Assert.assertEquals("1", lines[0]);
 		Assert.assertEquals("4", lines[1]);
 	}
@@ -55,7 +55,7 @@ public class CSVFileTest {
 		file.write("4", "5", "6");
 		
 		String text = new String(Files.readAllBytes(Paths.get(tmpPath)), StandardCharsets.UTF_8);
-		String[] lines = text.split("\n");
+		String[] lines = text.split(System.getProperty("line.separator"));
 		Assert.assertEquals("1,null,3", lines[0]);
 		Assert.assertEquals("4,5,6", lines[1]);
 	}
@@ -68,7 +68,7 @@ public class CSVFileTest {
 		file.write(4.55, "mauricio", "'hey'");
 		
 		String text = new String(Files.readAllBytes(Paths.get(tmpPath)), StandardCharsets.UTF_8);
-		String[] lines = text.split("\n");
+		String[] lines = text.split(System.getProperty("line.separator"));
 		Assert.assertEquals("1,null,true", lines[0]);
 		Assert.assertEquals("4.55,mauricio,'hey'", lines[1]);
 	}
@@ -80,7 +80,40 @@ public class CSVFileTest {
 		file.write(1, "my name is \"repodriller\", man", "fim");
 		
 		String text = new String(Files.readAllBytes(Paths.get(tmpPath)), StandardCharsets.UTF_8);
-		String[] lines = text.split("\n");
+		String[] lines = text.split(System.getProperty("line.separator"));
 		Assert.assertEquals("1,\"my name is \"\"repodriller\"\", man\",fim", lines[0]);
+	}
+	
+	@Test
+	public void nullHeader() throws IOException {
+		CSVFile file = new CSVFile(System.getProperty("java.io.tmpdir"), "test.csv", null);
+		
+		file.write("0", 10.3, "1");
+		
+		String text = new String(Files.readAllBytes(Paths.get(tmpPath)), StandardCharsets.UTF_8);
+		String[] lines = text.split(System.getProperty("line.separator"));
+		Assert.assertEquals("0,10.3,1", lines[0]);
+	}
+	
+	@Test
+	public void valuesMatchHeaders() throws IOException {
+		String[] header = new String[] {"column1","column2","column3"};
+		CSVFile file = new CSVFile(System.getProperty("java.io.tmpdir"), "test.csv", header);
+		
+		file.write("just","another",1);		
+
+		String text = new String(Files.readAllBytes(Paths.get(tmpPath)), StandardCharsets.UTF_8);
+		String[] lines = text.split(System.getProperty("line.separator"));
+		Assert.assertEquals("column1, column2, column3", lines[0]);
+		Assert.assertEquals("just,another,1", lines[1]);		
+	}
+
+	@Test (expected= CSVFileFormatException.class)
+	public void valuesDoNotMatchHeaders() throws IOException {
+		String[] header = new String[] {"column1","column2"};
+		CSVFile file = new CSVFile(System.getProperty("java.io.tmpdir"), "test.csv", header);
+		
+		file.write("value1");
+		
 	}
 }
