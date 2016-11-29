@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.repodriller.domain.Commit;
 import org.repodriller.persistence.PersistenceMechanism;
+import org.repodriller.persistence.csv.CSVFileFormatException;
 import org.repodriller.scm.CommitVisitor;
 import org.repodriller.scm.SCMRepository;
 
@@ -42,6 +43,9 @@ public class CommitVisitorIterator {
 			try {
 				log.info("-> Processing " + commit.getHash() + " with " + visitor.name());
 				visitor.process(repo, commit, writer);
+			} catch (CSVFileFormatException e) {
+				log.fatal(e);
+				System.exit(-1);
 			} catch (Exception e) {
 				log.error("error processing #" + commit.getHash() + " in " + repo.getPath() + 
 						", processor=" + visitor.name() + ", error=" + e.getMessage(), e);
