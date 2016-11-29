@@ -63,12 +63,10 @@ public class CSVFile implements PersistenceMechanism {
 	public CSVFile(String fileName, String[] header, boolean append ){
 		this.header = header;
 		try {
-			if (header == null)
-				ps = new PrintStream(new FileOutputStream(fileName, append));
-			else {
-				ps = new PrintStream(new FileOutputStream(fileName, append));
-				String headers=Arrays.toString(header);
-				headers=headers.substring(1, headers.length()-1);
+			ps = new PrintStream(new FileOutputStream(fileName, append));
+			if (header != null)	{
+				String headers = Arrays.toString(header);
+				headers = headers.substring(1, headers.length()-1);
 				ps.println(headers);	
 			}
 		} catch (Exception e) {
