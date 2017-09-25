@@ -188,7 +188,7 @@ that your Study will only visit commits which exist in specific branches.
 if you pass ".java", then, the study will visit only commits in which at least one Java file was modified; clearly, it will skip
 other commits.
 
-You can choose more than one filter as you can be decorated. A working example is:
+You can choose more than one filter as they can be decorated. A working example is:
 
 ```
 .filters(
