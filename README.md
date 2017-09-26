@@ -112,7 +112,7 @@ The first thing you configure in RepoDriller is the project you want to analyze.
 *   _singleProject(path)_: When you want to analyze a single repository.
 *   _allProjectsIn(path)_: When you want to analyze many repositories. In this case, you should pass a path to which all projects are sub-directories of it. Each directory will be considered as a project to RepoDriller.
 
-You can also initialize git repositories with their remote HTTP URLs. In this case, RepoDriller will clone the remote repository in order to manipulate the repository history. The _GitRemoteRepository_ class contains the same factory methods of _GitRepository_, but you can also configure it, using a sintaxe such as:
+You can also initialize git repositories with their remote HTTP URLs. In this case, RepoDriller will clone the remote repository in order to manipulate the repository history. The _GitRemoteRepository_ class contains the same factory methods of _GitRepository_, but you can also configure it, like this:
 
 
 ```
@@ -123,7 +123,7 @@ You can also initialize git repositories with their remote HTTP URLs. In this ca
 		.buildAsSCMRepository())
 ```
 
-(1) You can clone as bare repository, if your study will work only with repository metadata (commit history info, modifications, etc.) and won't need to checkout/reset files.
+(1) You can clone as a bare repository, if your study will work only with repository metadata (commit history info, modifications, etc.) and won't need to checkout/reset files.
 
 Git offers the `first-parent` filter, which can also be used in RepoDriller. To that end, just
 pass a flag to the factory:
@@ -134,7 +134,7 @@ GitRepository.single("/your/project", true);
 
 ## Logging
 
-RepoDriller uses log4j to print useful information about its execution. We recommend tou to have a log4.xml:
+RepoDriller uses log4j to print useful information about its execution. We recommend you have a log4.xml:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
@@ -174,7 +174,7 @@ RepoDriller allows you to select the range of commits to be processed. The class
 *   _betweenDates(from,to)_: The range of commits, starting at "from" timestamp, ending at "to" timestamp.
 *   _since(date)_: All commits that appear after a certain timestamp.
 
-One interesting thing about RepoDriller is that is avoids huge commits. When a commit contains too many files (> 50), it will be ignored.
+One interesting thing about RepoDriller is that it avoids huge commits. When a commit contains too many files (> 50), it will be ignored.
 
 ## Filtering commits
 
@@ -200,7 +200,7 @@ You can choose more than one filter as they can be decorated. A working example 
 ```
 
 Also, you can create your own filter. All you have to do is to extend `CommitFilter` and implement
-the `shouldAccept()` method. This method should return **false** if the commit _should not_ be visited.  
+the `shouldAccept()` method. This method should only return **true** if the commit _should_ be visited, else it should return **false**.
 
 ## Getting Modifications
 
@@ -325,7 +325,7 @@ public class ModificationsVisitor implements CommitVisitor {
 
 ## Parsing Code
 
-You have entire source code of the repository. You may want to analyze it. RepoDriller comes with JDT and ANTLR bundled. JDT is the Eclipse internal parser, so you will not regret to use it.
+You have the entire source code of the repository. You may want to analyze it. RepoDriller comes with JDT and ANTLR bundled. JDT is the Eclipse internal parser.
 
 Let's say we decide to count the quantity of methods in each modified file. All we have to do is to create a _CommitVisitor_, the way we are used to. This visitor will use our _JDTRunner_ to invoke a JDT visitor (yes, JDT uses visitors as well). Notice that we executed the JDT visitor, and then wrote the result.
 
@@ -476,9 +476,9 @@ public class JavaParserVisitor implements CommitVisitor {
 
 ## Dealing with Threads
 
-How good is your machine? RepoDriller can execute the visitor over many threads. This is just another configuration you set in _RepositoryMining_. The _withThreads()_ lets you configure the number of threads the framework will use to process everything.
+If your machine has multiple cores, RepoDriller can execute the commit visitor over many threads. This is just another configuration you set in _RepositoryMining_. The _withThreads()_ lets you configure the number of threads the framework will use to process everything.
 
-We suggest you to use threads unless your project _checkout_ revisions. The checkout operation in Git changes the disk, so you can't actually parallelize the work.
+We suggest you use threads unless your workflow must _checkout_ revisions. We only keep one copy of the repository on disk, so two threads would conflict if they both ran _checkout_.
 
 ```java
 @Override
