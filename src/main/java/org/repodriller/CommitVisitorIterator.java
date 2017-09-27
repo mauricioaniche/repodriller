@@ -13,7 +13,7 @@ import org.repodriller.scm.SCMRepository;
 public class CommitVisitorIterator {
 
 	private Map<CommitVisitor, PersistenceMechanism> visitors;
-	private Logger log = Logger.getLogger(CommitVisitorIterator.class);
+	private static final Logger log = Logger.getLogger(CommitVisitorIterator.class);
 	
 	public CommitVisitorIterator() {
 		visitors = new HashMap<CommitVisitor, PersistenceMechanism>();
