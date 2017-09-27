@@ -56,7 +56,7 @@ public void execute() {
 Let's start with something simple: we will print the name of the developers for each commit. For now, you should not care about all possible configurations. We will analyze all commits in the project at "/Users/mauricioaniche/workspace/repodriller", outputing _DevelopersVisitor_ to "/Users/mauricioaniche/Desktop/devs.csv".
 
 *   in(): We use to configure the project (or projects) that will be analyzed.
-*   through(): The list of commits to analyze. We want all of them.
+*   through(): The list of commits to analyze. We want all of them. See `Commits` class for a list of available options.
 *   filters(): Possible filters to commits, e.g., only commits in a certain branch 
 *   reverseOrder(): Commits will be analysed in reverse order. Default starts from the first commit to the latest one.
 *   process(): Visitors that will pass in each commit.

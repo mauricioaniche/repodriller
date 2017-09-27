@@ -25,6 +25,7 @@ public interface SCM {
 
 	List<ChangeSet> getChangeSets();
 	Commit getCommit(String id);
+	String getCommitFromTag(String tag);
 	ChangeSet getHead();
 	List<RepositoryFile> files();
 	long totalCommits();

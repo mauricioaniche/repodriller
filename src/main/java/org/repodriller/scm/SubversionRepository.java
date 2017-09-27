@@ -447,5 +447,11 @@ public class SubversionRepository implements SCM {
 	public Integer getMaxNumberFilesInACommit() {
 		return maxNumberFilesInACommit;
 	}
+
+	@Override
+	public String getCommitFromTag(String tag) {
+		// pull request me!
+		throw new RuntimeException("implement me!");
+	}
 	
 }
