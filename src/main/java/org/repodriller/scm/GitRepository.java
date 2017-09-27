@@ -461,9 +461,7 @@ public class GitRepository implements SCM {
 	@Override
 	public String getCommitFromTag(String tag) {
 
-		Git git = null;
-		try {
-			git = openRepository();
+		try (Git git = openRepository()) {
 			Repository repo = git.getRepository();
 
 			Iterable<RevCommit> commits = git.log().add(repo.resolve(tag)).call();
@@ -476,9 +474,6 @@ public class GitRepository implements SCM {
 
 		} catch (Exception e) {
 			throw new RuntimeException("Failed for tag " + tag, e);
-		} finally {
-			if (git != null)
-				git.close();
 		}
 	}
 
