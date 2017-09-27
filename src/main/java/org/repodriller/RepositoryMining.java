@@ -52,7 +52,7 @@ public class RepositoryMining {
 	
 	public RepositoryMining() {
 		repos = new ArrayList<SCMRepository>();
-		visitors = new CommitVisitorIterator(log);
+		visitors = new CommitVisitorIterator();
 		filters = Arrays.asList((CommitFilter) new NoFilter());
 		this.threads = 1;
 	}
