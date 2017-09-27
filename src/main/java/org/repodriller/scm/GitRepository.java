@@ -124,13 +124,9 @@ public class GitRepository implements SCM {
 	}
 
 	public SCMRepository info() {
-		RevWalk rw = null;
-		Git git = null;
-		try {
-			git = openRepository();
-			AnyObjectId headId = git.getRepository().resolve(Constants.HEAD);
-
-			rw = new RevWalk(git.getRepository());
+		try (Git git = openRepository(); RevWalk rw = new RevWalk(git.getRepository())) {
+            AnyObjectId headId = git.getRepository().resolve(Constants.HEAD);
+            
 			RevCommit root = rw.parseCommit(headId);
 			rw.sort(RevSort.REVERSE);
 			rw.markStart(root);
@@ -141,13 +137,7 @@ public class GitRepository implements SCM {
 			return new SCMRepository(this, origin, path, headId.getName(), lastCommit.getName());
 		} catch (Exception e) {
 			throw new RuntimeException("error when info " + path, e);
-		} finally {
-			if (rw != null)
-				rw.release();
-			if (git != null)
-				git.close();
 		}
-
 	}
 
 	protected Git openRepository() throws IOException, GitAPIException {
@@ -163,9 +153,7 @@ public class GitRepository implements SCM {
 	}
 
 	public ChangeSet getHead() {
-		Git git = null;
-		try {
-			git = openRepository();
+        try (Git git = openRepository()) {
 			ObjectId head = git.getRepository().resolve(Constants.HEAD);
 
 			RevWalk revWalk = new RevWalk(git.getRepository());
@@ -174,34 +162,23 @@ public class GitRepository implements SCM {
 
 		} catch (Exception e) {
 			throw new RuntimeException("error in getHead() for " + path, e);
-		} finally {
-			if (git != null)
-				git.close();
 		}
-
 	}
 
 	@Override
 	public List<ChangeSet> getChangeSets() {
-		Git git = null;
-		try {
-			git = openRepository();
-
-			List<ChangeSet> allCs;
+        try (Git git = openRepository()) {
+            List<ChangeSet> allCs;
 			if(!firstParentOnly) allCs = getAllCommits(git);
 			else allCs = firstParentsOnly(git);
 
 			return allCs;
 		} catch (Exception e) {
-			throw new RuntimeException("error in getChangeSets for " + path, e);
-		} finally {
-			if (git != null)
-				git.close();
-		}
+            throw new RuntimeException("error in getChangeSets for " + path, e);
+        }
 	}
 
 	private List<ChangeSet> firstParentsOnly(Git git) {
-		
 		try {
 			List<ChangeSet> allCs = new ArrayList<ChangeSet>();
 			
@@ -249,9 +226,7 @@ public class GitRepository implements SCM {
 
 	@Override
 	public Commit getCommit(String id) {
-		Git git = null;
-		try {
-			git = openRepository();
+        try (Git git = openRepository()) {
 			Repository repo = git.getRepository();
 
 			Iterable<RevCommit> commits = git.log().add(repo.resolve(id)).call();
@@ -318,9 +293,6 @@ public class GitRepository implements SCM {
 			return theCommit;
 		} catch (Exception e) {
 			throw new RuntimeException("error detailing " + id + " in " + path, e);
-		} finally {
-			if (git != null)
-				git.close();
 		}
 	}
 
@@ -339,27 +311,26 @@ public class GitRepository implements SCM {
 
 		AnyObjectId currentCommit = repo.resolve(commit.getName());
 		AnyObjectId parentCommit = commit.getParentCount() > 0 ? repo.resolve(commit.getParent(0).getName()) : null;
+    
+		try (DiffFormatter df = new DiffFormatter(DisabledOutputStream.INSTANCE)) {
 
-		DiffFormatter df = new DiffFormatter(DisabledOutputStream.INSTANCE);
-		df.setBinaryFileThreshold(2 * 1024); // 2 mb max a file
-		df.setRepository(repo);
-		df.setDiffComparator(RawTextComparator.DEFAULT);
-		df.setDetectRenames(true);
-		setContext(df);
-		
-		List<DiffEntry> diffs = null;
+            df.setBinaryFileThreshold(2 * 1024); // 2 mb max a file
+            df.setRepository(repo);
+            df.setDiffComparator(RawTextComparator.DEFAULT);
+            df.setDetectRenames(true);
+            setContext(df);
 
-		if (parentCommit == null) {
-			RevWalk rw = new RevWalk(repo);
-			diffs = df.scan(new EmptyTreeIterator(), new CanonicalTreeParser(null, rw.getObjectReader(), commit.getTree()));
-			rw.release();
-		} else {
-			diffs = df.scan(parentCommit, currentCommit);
-		}
+            List<DiffEntry> diffs = null;
 
-		df.release();
-
-		return diffs;
+            if (parentCommit == null) {
+                try(RevWalk rw = new RevWalk(repo)) {
+                    diffs = df.scan(new EmptyTreeIterator(), new CanonicalTreeParser(null, rw.getObjectReader(), commit.getTree()));
+                }
+            } else {
+                diffs = df.scan(parentCommit, currentCommit);
+            }
+            return diffs;
+        }
 	}
 
 	private void setContext(DiffFormatter df) {
@@ -380,37 +351,27 @@ public class GitRepository implements SCM {
 	}
 
 	private String getDiffText(Repository repo, DiffEntry diff) throws IOException, UnsupportedEncodingException {
-		DiffFormatter df2 = null;
-		try {
-			String diffText;
-			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			df2 = new DiffFormatter(out);
-			df2.setRepository(repo);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        try (DiffFormatter df2 = new DiffFormatter(out)) {
+            String diffText;
+            df2.setRepository(repo);
 			df2.format(diff);
 			diffText = out.toString("UTF-8");
 			return diffText;
 		} catch (Throwable e) {
 			return "";
-		} finally {
-			if (df2 != null)
-				df2.release();
 		}
 	}
 
 	public synchronized void checkout(String hash) {
-		Git git = null;
-		try {
-			git = openRepository();
-			git.reset().setMode(ResetType.HARD).call();
+        try (Git git = openRepository()) {
+            git.reset().setMode(ResetType.HARD).call();
 			git.checkout().setName(mainBranchName).call();
 			deleteMMBranch(git);
 			git.checkout().setCreateBranch(true).setName(BRANCH_MM).setStartPoint(hash).setForce(true).setOrphan(true).call();
 
 		} catch (Exception e) {
 			throw new RuntimeException(e);
-		} finally {
-			if (git != null)
-				git.close();
 		}
 	}
 
@@ -434,19 +395,12 @@ public class GitRepository implements SCM {
 	}
 
 	public synchronized void reset() {
-		Git git = null;
-		try {
-			git = openRepository();
-
-			git.checkout().setName(mainBranchName).setForce(true).call();
+        try (Git git = openRepository()) {
+            git.checkout().setName(mainBranchName).setForce(true).call();
 			git.branchDelete().setBranchNames(BRANCH_MM).setForce(true).call();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
-		} finally {
-			if (git != null)
-				git.close();
 		}
-
 	}
 
 	private List<File> getAllFilesInPath() {
@@ -469,10 +423,7 @@ public class GitRepository implements SCM {
 	}
 	
 	public List<BlamedLine> blame(String file, String commitToBeBlamed, boolean priorCommit) {
-		Git git = null;
-		try {
-			git = openRepository();
-
+        try (Git git = openRepository()) {
 			ObjectId gitCommitToBeBlamed;
 			if(priorCommit) {
 				Iterable<RevCommit> commits = git.log().add(git.getRepository().resolve(commitToBeBlamed)).call();
@@ -500,9 +451,6 @@ public class GitRepository implements SCM {
 
 		} catch (Exception e) {
 			throw new RuntimeException(e);
-		} finally {
-			if (git != null)
-				git.close();
 		}
 	}
 	
