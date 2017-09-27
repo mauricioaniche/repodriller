@@ -36,8 +36,6 @@ import org.tmatesoft.svn.core.wc.SVNLogClient;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc.SVNUpdateClient;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 /**
  * @author Juliano Silva
  *
@@ -443,7 +441,7 @@ public class SubversionRepository implements SCM {
 	@Override
 	public List<BlamedLine> blame(String file, String currentCommit, boolean priorCommit) {
 		// pull request me!
-		throw new NotImplementedException();
+		throw new RuntimeException("implement me!");
 	}
 	
 	public Integer getMaxNumberFilesInACommit() {
