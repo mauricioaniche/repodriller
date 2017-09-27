@@ -490,6 +490,12 @@ are ignored. Default is 200.
 
 (not written yet)
 
+# Advice to researchers
+
+## Git
+
+You should read this paper:
+- Bird, Christian, et al. "The promises and perils of mining git." Mining Software Repositories, 2009. MSR'09. 6th IEEE International Working Conference on. IEEE, 2009. [Link](http://cs.queensu.ca/~ahmed/home/teaching/CISC880/F10/papers/MiningGit_MSR2009.pdf).
 
 # How do I cite RepoDriller?
 
