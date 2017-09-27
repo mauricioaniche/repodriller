@@ -23,5 +23,5 @@ public interface CommitVisitor {
 	default void initialize(SCMRepository repo, PersistenceMechanism writer) {}
 	void process(SCMRepository repo, Commit commit, PersistenceMechanism writer);
 	default void finalize(SCMRepository repo, PersistenceMechanism writer) {}
-	String name();
+	default String name() { return this.getClass().getSimpleName(); }
 }

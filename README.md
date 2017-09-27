@@ -92,12 +92,6 @@ public class DevelopersVisitor implements CommitVisitor {
 		);
 
 	}
-
-	@Override
-	public String name() {
-		return "developers";
-	}
-
 }
 ```
 
@@ -315,11 +309,6 @@ public class ModificationsVisitor implements CommitVisitor {
 		
 	}
 
-	@Override
-	public String name() {
-		return "files-per-dev";
-	}
-
 }
 ```
 
@@ -363,12 +352,6 @@ public class JavaParserVisitor implements CommitVisitor {
 		}
 		
 	}
-
-	@Override
-	public String name() {
-		return "java-parser";
-	}
-
 }
 ```
 
@@ -464,13 +447,6 @@ public class JavaParserVisitor implements CommitVisitor {
 			throw new RuntimeException("error reading file " + f.getAbsolutePath(), e);
 		}
 	}
-	
-
-	@Override
-	public String name() {
-		return "java-parser";
-	}
-
 }
 ```
 
