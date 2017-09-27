@@ -510,4 +510,28 @@ public class GitRepository implements SCM {
 		return maxNumberFilesInACommit;
 	}
 
+	@Override
+	public String getCommitFromTag(String tag) {
+
+		Git git = null;
+		try {
+			git = openRepository();
+			Repository repo = git.getRepository();
+
+			Iterable<RevCommit> commits = git.log().add(repo.resolve(tag)).call();
+			
+			for(RevCommit commit : commits) {
+				return commit.getName().toString();
+			}
+			
+			throw new RuntimeException("Failed for tag " + tag); // we never arrive here, hopefully
+
+		} catch (Exception e) {
+			throw new RuntimeException("Failed for tag " + tag, e);
+		} finally {
+			if (git != null)
+				git.close();
+		}
+	}
+
 }

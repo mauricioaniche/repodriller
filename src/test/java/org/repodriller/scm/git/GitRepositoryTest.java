@@ -37,10 +37,12 @@ public class GitRepositoryTest {
 	private GitRepository git2;
 	private GitRepository git3;
 	private GitRepository git6;
+	private GitRepository git8;
 	private static String path1;
 	private static String path2;
 	private static String path3;
 	private static String path6;
+	private static String path8;
 
 	@BeforeClass
 	public static void readPath() throws FileNotFoundException {
@@ -48,6 +50,7 @@ public class GitRepositoryTest {
 		path2 = GitRepositoryTest.class.getResource("/").getPath() + "../../test-repos/git-2";
 		path3 = GitRepositoryTest.class.getResource("/").getPath() + "../../test-repos/git-3";
 		path6 = GitRepositoryTest.class.getResource("/").getPath() + "../../test-repos/git-6";
+		path8 = GitRepositoryTest.class.getResource("/").getPath() + "../../test-repos/git-8";
 	}
 	
 	@Before
@@ -56,6 +59,7 @@ public class GitRepositoryTest {
 		git2 = new GitRepository(path2);
 		git3 = new GitRepository(path3);
 		git6 = new GitRepository(path6, true);
+		git8 = new GitRepository(path8);
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -271,6 +275,20 @@ public class GitRepositoryTest {
 		Assert.assertTrue(changeSets.stream().anyMatch(x -> x.getId().equals("80c6a1123d60a021c41d2581f8fbf6cfc2e38977")));
 		Assert.assertTrue(changeSets.stream().anyMatch(x -> x.getId().equals("7a58b021f41b96a73d1383bb5e4e0feab1861327")));
 		Assert.assertTrue(changeSets.stream().anyMatch(x -> x.getId().equals("933b2c6a6be916546d13b684d3201de6d3bc4058")));
+	}
+	
+	@Test
+	public void tags(){
+		String commitTag1 = git8.getCommitFromTag("tag1");
+		Assert.assertEquals("6bb9e2c6a8080e6b5b34e6e316c894b2ddbf7fcd", commitTag1);
+		
+		String commitTag2 = git8.getCommitFromTag("tag2");
+		Assert.assertEquals("4638730126d40716e230c2040751a13153fb1556", commitTag2);
+	}
+	
+	@Test(expected=RuntimeException.class)
+	public void tagsException(){
+		git8.getCommitFromTag("tag3");
 	}
 	
 }

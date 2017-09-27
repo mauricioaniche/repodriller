@@ -153,5 +153,10 @@ public class GitRemoteRepository implements SCM {
 	public static MultipleGitRemoteRepositoryBuilder hostedOn(List<String> gitUrls) {
 		return new MultipleGitRemoteRepositoryBuilder(gitUrls);
 	}
+
+	@Override
+	public String getCommitFromTag(String tag) {
+		return tempGitRepository.getCommitFromTag(tag);
+	}
 	
 }

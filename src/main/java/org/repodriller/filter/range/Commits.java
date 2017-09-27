@@ -36,4 +36,8 @@ public class Commits {
 	public static CommitRange range(String start, String end) {
 		return new Range(start, end);
 	}
+	
+	public static CommitRange betweenTags(String from, String to){
+		return new BetweenTags(from, to);
+	}
 }
