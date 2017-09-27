@@ -26,35 +26,35 @@ public class RepoDriller {
 	public static void main(String[] args) {
 		System.out.println("You should not run me! :/");
 	}
-	
+
 	private static Logger log = Logger.getLogger(RepoDriller.class);
 
 	public void start(Study study) {
 
 		try {
-			
+
 			Calendar startDate = Calendar.getInstance();
-			
+
 			log.info("# -------------------------------------------------- #");
 			log.info("#                   RepoDriller                      #");
-			log.info("#                     v1.2.1                         #");
+			log.info("#                     v1.3.0                         #");
 			log.info("#               www.repodriller.org                  #");
 			log.info("# -------------------------------------------------- #");
 			log.info("Starting engine: " + new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").format(startDate.getTime()));
-			
+
 			try {
 				study.execute();
 			} catch (Throwable t) {
 				log.error("some study error came to me", t);
 			}
-			
+
 			Calendar finishDate = Calendar.getInstance();
 			log.info("Finished: " + new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").format(finishDate.getTime()));
 			long seconds = (finishDate.getTimeInMillis() - startDate.getTimeInMillis())/1000;
 			log.info("It took " + seconds + " seconds (~" + seconds/60 + " minutes).");
 			log.info("Brought to you by RepoDriller (repodriller.org.br)");
 			log.info("# -------------------------------------------------- #");
-			
+
 		} catch(Throwable ex) {
 			log.error("Some error ocurred", ex);
 		}
