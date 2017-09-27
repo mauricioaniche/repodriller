@@ -19,7 +19,6 @@ package org.repodriller.scm;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -30,18 +29,12 @@ import java.util.stream.Collectors;
 import org.apache.log4j.Logger;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ResetCommand.ResetType;
-import org.eclipse.jgit.api.errors.CannotDeleteCurrentBranchException;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.api.errors.NoHeadException;
-import org.eclipse.jgit.api.errors.NotMergedException;
 import org.eclipse.jgit.blame.BlameResult;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffEntry.ChangeType;
 import org.eclipse.jgit.diff.DiffFormatter;
 import org.eclipse.jgit.diff.RawTextComparator;
-import org.eclipse.jgit.errors.AmbiguousObjectException;
-import org.eclipse.jgit.errors.IncorrectObjectTypeException;
-import org.eclipse.jgit.errors.MissingObjectException;
 import org.eclipse.jgit.lib.AnyObjectId;
 import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.ObjectId;
@@ -114,7 +107,7 @@ public class GitRepository implements SCM {
 	}
 	
 	public static SCMRepository[] allProjectsIn(String path, boolean singleParentOnly) {
-		List<SCMRepository> repos = new ArrayList<SCMRepository>();
+		List<SCMRepository> repos = new ArrayList<>();
 
 		for (String dir : FileUtils.getAllDirsIn(path)) {
 			repos.add(singleProject(dir, singleParentOnly));
@@ -180,7 +173,7 @@ public class GitRepository implements SCM {
 
 	private List<ChangeSet> firstParentsOnly(Git git) {
 		try {
-			List<ChangeSet> allCs = new ArrayList<ChangeSet>();
+			List<ChangeSet> allCs = new ArrayList<>();
 			
 			RevWalk revWalk = new RevWalk(git.getRepository());
 			revWalk.setRevFilter(new FirstParentFilter());
@@ -199,8 +192,8 @@ public class GitRepository implements SCM {
 		}
 	}
 
-	private List<ChangeSet> getAllCommits(Git git) throws GitAPIException, NoHeadException, IOException {
-		List<ChangeSet> allCs = new ArrayList<ChangeSet>();
+	private List<ChangeSet> getAllCommits(Git git) throws GitAPIException, IOException {
+		List<ChangeSet> allCs = new ArrayList<>();
 
 		for (RevCommit r : git.log().all().call()) {
 			allCs.add(extractChangeSet(r));
@@ -212,8 +205,7 @@ public class GitRepository implements SCM {
 		String hash = r.getName();
 		GregorianCalendar date = convertToDate(r);
 
-		ChangeSet cs = new ChangeSet(hash, date);
-		return cs;
+		return new ChangeSet(hash, date);
 	}
 
 	private GregorianCalendar convertToDate(RevCommit revCommit) {
@@ -306,8 +298,7 @@ public class GitRepository implements SCM {
 		return mappedBranches;
 	}
 
-	private List<DiffEntry> diffsForTheCommit(Repository repo, RevCommit commit) throws IOException, AmbiguousObjectException,
-			IncorrectObjectTypeException {
+	private List<DiffEntry> diffsForTheCommit(Repository repo, RevCommit commit) throws IOException {
 
 		AnyObjectId currentCommit = repo.resolve(commit.getName());
 		AnyObjectId parentCommit = commit.getParentCount() > 0 ? repo.resolve(commit.getParent(0).getName()) : null;
@@ -339,8 +330,7 @@ public class GitRepository implements SCM {
 		df.setContext(Integer.parseInt(System.getProperty("git.diffcontext")));
 	}
 
-	private String getSourceCode(Repository repo, DiffEntry diff) throws MissingObjectException, IOException, UnsupportedEncodingException {
-
+	private String getSourceCode(Repository repo, DiffEntry diff) throws IOException {
 		try {
 			ObjectReader reader = repo.newObjectReader();
 			byte[] bytes = reader.open(diff.getNewId().toObjectId()).getBytes();
@@ -350,7 +340,7 @@ public class GitRepository implements SCM {
 		}
 	}
 
-	private String getDiffText(Repository repo, DiffEntry diff) throws IOException, UnsupportedEncodingException {
+	private String getDiffText(Repository repo, DiffEntry diff) throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try (DiffFormatter df2 = new DiffFormatter(out)) {
             String diffText;
@@ -375,7 +365,7 @@ public class GitRepository implements SCM {
 		}
 	}
 
-	private synchronized void deleteMMBranch(Git git) throws GitAPIException, NotMergedException, CannotDeleteCurrentBranchException {
+	private synchronized void deleteMMBranch(Git git) throws GitAPIException {
 		List<Ref> refs = git.branchList().call();
 		for (Ref r : refs) {
 			if (r.getName().endsWith(BRANCH_MM)) {
@@ -386,7 +376,7 @@ public class GitRepository implements SCM {
 	}
 
 	public List<RepositoryFile> files() {
-		List<RepositoryFile> all = new ArrayList<RepositoryFile>();
+		List<RepositoryFile> all = new ArrayList<>();
 		for (File f : getAllFilesInPath()) {
 			all.add(new RepositoryFile(f));
 		}
@@ -476,5 +466,4 @@ public class GitRepository implements SCM {
 			throw new RuntimeException("Failed for tag " + tag, e);
 		}
 	}
-
 }
