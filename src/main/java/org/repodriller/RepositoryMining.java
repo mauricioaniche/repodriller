@@ -58,7 +58,7 @@ public class RepositoryMining {
 	private static final Logger log = Logger.getLogger(RepositoryMining.class);
 
 	private List<SCMRepository> repos;
-	private RepoVisitor visitors;
+	private RepoVisitor repoVisitor;
 	private CommitRange range;
 	private int threads;
 	private boolean reverseOrder;
@@ -71,7 +71,7 @@ public class RepositoryMining {
 	 */
 	public RepositoryMining() {
 		repos = new ArrayList<SCMRepository>();
-		visitors = new RepoVisitor();
+		repoVisitor = new RepoVisitor();
 		filters = Arrays.asList((CommitFilter) new NoFilter());
 		this.threads = 1;
 	}
@@ -107,7 +107,7 @@ public class RepositoryMining {
 	 * @return this
 	 */
 	public RepositoryMining process(CommitVisitor visitor, PersistenceMechanism writer) {
-		visitors.addVisitor(visitor, writer);
+		repoVisitor.addVisitor(visitor, writer);
 		return this;
 	}
 
@@ -172,15 +172,15 @@ public class RepositoryMining {
 		/* Make sure this RepositoryMining was initialized properly. */
 		if (repos.isEmpty())
 			throw new RepoDrillerException("No repos specified");
-		if (visitors.isEmpty())
+		if (repoVisitor.isEmpty())
 			throw new RepoDrillerException("No visitors specified");
 
 		for(SCMRepository repo : repos) {
-			visitors.beginRepoVisit(repo);
+			repoVisitor.beginRepoVisit(repo);
 			processRepo(repo);
-			visitors.endRepoVisit();
+			repoVisitor.endRepoVisit();
 		}
-		visitors.closeAllPersistence();
+		repoVisitor.closeAllPersistence(); /* TODO See comment in RepoVisitor about the wisdom of this routine. */
 		printScript();
 
 	}
@@ -246,7 +246,7 @@ public class RepositoryMining {
 
 		log.info("The following processors were executed:");
 
-		visitors.printVisitors();
+		repoVisitor.printVisitors();
 	}
 
 	/**
@@ -269,7 +269,7 @@ public class RepositoryMining {
 			return;
 		}
 
-		visitors.visitCommit(commit);
+		repoVisitor.visitCommit(commit);
 	}
 
 	/**
