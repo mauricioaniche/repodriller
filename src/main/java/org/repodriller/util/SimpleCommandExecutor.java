@@ -7,24 +7,68 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * If your analysis needs to work with external tools, a SimpleCommandExecutor gives you a clean way to interact with them.
+ * Usage:
+ *  - Set environment vars with the various manipulation methods.
+ *  - Execute with {@link SimpleCommandExecutor#execute}.
+ *
+ * @author Mauricio Aniche
+ */
 public class SimpleCommandExecutor {
 
-	private List<EnvironmentVar> vars = null;
-	
-	public void setEnvironmentVar(String name, String value)
-	{
-		if( vars == null )
-			vars = new ArrayList<EnvironmentVar>();
-		
-		vars.add(new EnvironmentVar(name, value));
+	private List<EnvironmentVar> envVars = null;
+	private boolean inheritEnv = false;
+
+	public SimpleCommandExecutor() {
+		envVars = new ArrayList<EnvironmentVar>();
+		inheritEnv = false;
 	}
-	
-	public String execute(String command, String basePath) {
+
+	/**
+	 * Should child inherit parent's environment vars?
+	 *
+	 * @param inherit	True for inherit, else false.
+	 * @return 			this, for chaining
+	 */
+	public SimpleCommandExecutor inheritEnv(boolean inherit) {
+		inheritEnv = inherit;
+		return this;
+	}
+
+	/**
+	 * Add this <name, value> pair to the child's environment.
+	 *
+	 * @return this, for chaining
+	 */
+	public SimpleCommandExecutor setEnvironmentVar(String name, String value) {
+		envVars.add(new EnvironmentVar(name, value));
+		return this;
+	}
+
+	/**
+	 * Clear the child's environment.
+	 *
+	 * @return this, for chaining
+	 */
+	public SimpleCommandExecutor clearEnvironmentVars() {
+		envVars.clear();
+		return this;
+	}
+
+	/**
+	 * Execute {@code command} from {@code workDir}, providing the specified environment.
+	 * For example, {@code execute("ls /tmp", null)}.
+	 *
+	 * @param command	The command to invoke
+	 * @param workDir	Working dir from which to execute the command
+	 * @return			The output from the command
+	 */
+	public String execute(String command, String workDir) {
 		StringBuffer total = new StringBuffer();
-		String finalCommand = command;
 		Process proc;
 		try {
-			proc = Runtime.getRuntime().exec(finalCommand, getEnvTokens(), new File(basePath));
+			proc = Runtime.getRuntime().exec(command, getEnvTokens(), new File(workDir));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -34,38 +78,48 @@ public class SimpleCommandExecutor {
 			total.append(sc.nextLine() + "\r\n");
 		}
 		sc.close();
-		
-		return total.toString();
 
+		return total.toString();
 	}
-	
-	private String[] getEnvTokens()
-	{
-		if( vars == null )
+
+	/**
+	 * If inheritEnv, returns null.
+	 * Otherwise returns a properly-formatted array of environment tokens in "X=Y" format.
+	 *
+	 * @return Environment variables as tokens suitable for use with Runtime.exec
+	 */
+	private String[] getEnvTokens() {
+		if (inheritEnv)
 			return null;
-		
-		String[] envTokenArray = new String[vars.size()];
-		Iterator<EnvironmentVar> envVarIter = vars.iterator();
-		int nEnvVarIndex = 0; 
-		while (envVarIter.hasNext() == true)
-		{
-			EnvironmentVar envVar = (EnvironmentVar)(envVarIter.next());
-			String envVarToken = envVar.fName + "=" + envVar.fValue;
-			envTokenArray[nEnvVarIndex++] = envVarToken;
+
+		String[] envTokens = new String[envVars.size()];
+
+		/* Convert envVars to envTokens. */
+		Iterator<EnvironmentVar> iter = envVars.iterator();
+		int i = 0;
+		while (iter.hasNext()) {
+			EnvironmentVar envVar = iter.next();
+			String envVarToken = String.join("=", envVar.fName + "=" + envVar.fValue);
+			envTokens[i] = envVarToken;
+			i++;
 		}
-		
-		return envTokenArray;
-	}	
+
+		return envTokens;
+	}
 
 }
 
-class EnvironmentVar
-{
+/**
+ * Simple wrapper for the <key, value> pairs set in the child's environment.
+ * There's really no purpose to this class at the moment, but maybe we'll want it later.
+ *
+ * @author Mauricio Aniche
+ */
+class EnvironmentVar {
 	public String fName = null;
 	public String fValue = null;
-	
-	public EnvironmentVar(String name, String value)
-	{
+
+	public EnvironmentVar(String name, String value) {
 		fName = name;
 		fValue = value;
 	}
