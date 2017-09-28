@@ -89,9 +89,9 @@ public class RepositoryMining {
 	}
 
 	/**
-	 * Add a repo to mine.
+	 * Add repos to mine.
 	 *
-	 * @param repo		A repo to mine
+	 * @param repo		One or more repos to mine
 	 * @return this
 	 */
 	public RepositoryMining in(SCMRepository... repo) {
