@@ -422,6 +422,20 @@ are ignored. Default is 200.
 
 (not written yet)
 
+## Using ASTs to parse source code
+
+Repodriller does not come with JDT or any other code parser (as it used to be in old versions). 
+However, it naturally fits with such tools. 
+
+The [repodriller JDT plugin](https://github.com/mauricioaniche/repodriller-plugin-jdt) adds all
+JDT libraries to your study. 
+If you want to learn more about JDT, check the documentation for [ASTVisitor class](http://help.eclipse.org/juno/index.jsp?topic=%2Forg.eclipse.jdt.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fjdt%2Fcore%2Fdom%2FASTVisitor.html).
+In addition, if you are looking for traditional code metrics
+in Java, you may use our [CK project](https://github.com/mauricioaniche/ck).
+
+We currently do not have any out-of-the-box plugin for other languages. However, we do not expect
+any integration problems with them.
+
 # Advice to researchers
 
 ## Git
