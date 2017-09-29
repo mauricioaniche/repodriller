@@ -17,7 +17,17 @@
 package org.repodriller;
 
 
+/**
+ * Conduct your study here!
+ * Your Study should create and drive a {@link RepositoryMining} instance.
+ * Use a Study in conjunction with a {@link RepoDriller} instance.
+ *
+ * @author Mauricio Aniche
+ */
 public interface Study {
 
+	/**
+	 * Actually do all of the work here.
+	 */
 	void execute();
 }

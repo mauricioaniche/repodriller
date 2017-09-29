@@ -58,7 +58,7 @@ public class RepositoryMining {
 	private static final Logger log = Logger.getLogger(RepositoryMining.class);
 
 	private List<SCMRepository> repos;
-	private CommitVisitorIterator visitors;
+	private RepoVisitor repoVisitor;
 	private CommitRange range;
 	private int threads;
 	private boolean reverseOrder;
@@ -71,7 +71,7 @@ public class RepositoryMining {
 	 */
 	public RepositoryMining() {
 		repos = new ArrayList<SCMRepository>();
-		visitors = new CommitVisitorIterator();
+		repoVisitor = new RepoVisitor();
 		filters = Arrays.asList((CommitFilter) new NoFilter());
 		this.threads = 1;
 	}
@@ -89,9 +89,9 @@ public class RepositoryMining {
 	}
 
 	/**
-	 * Add a repo to mine.
+	 * Add repos to mine.
 	 *
-	 * @param repo		A repo to mine
+	 * @param repo		One or more repos to mine
 	 * @return this
 	 */
 	public RepositoryMining in(SCMRepository... repo) {
@@ -107,7 +107,7 @@ public class RepositoryMining {
 	 * @return this
 	 */
 	public RepositoryMining process(CommitVisitor visitor, PersistenceMechanism writer) {
-		visitors.put(visitor, writer);
+		repoVisitor.addVisitor(visitor, writer);
 		return this;
 	}
 
@@ -172,15 +172,15 @@ public class RepositoryMining {
 		/* Make sure this RepositoryMining was initialized properly. */
 		if (repos.isEmpty())
 			throw new RepoDrillerException("No repos specified");
-		if (visitors.isEmpty())
+		if (repoVisitor.isEmpty())
 			throw new RepoDrillerException("No visitors specified");
 
 		for(SCMRepository repo : repos) {
-			visitors.initializeVisitors(repo);
+			repoVisitor.beginRepoVisit(repo);
 			processRepo(repo);
-			visitors.finalizeVisitors(repo);
+			repoVisitor.endRepoVisit();
 		}
-		visitors.closeAllPersistence();
+		repoVisitor.closeAllPersistence(); /* TODO See comment in RepoVisitor about the wisdom of this routine. */
 		printScript();
 
 	}
@@ -246,7 +246,7 @@ public class RepositoryMining {
 
 		log.info("The following processors were executed:");
 
-		visitors.printScript();
+		repoVisitor.printVisitors();
 	}
 
 	/**
@@ -269,7 +269,7 @@ public class RepositoryMining {
 			return;
 		}
 
-		visitors.processCommit(repo, commit);
+		repoVisitor.visitCommit(commit);
 	}
 
 	/**
