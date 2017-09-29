@@ -20,6 +20,11 @@ import org.repodriller.util.RDFileUtils;
  *
  * @author Jamie Davis
  */
+/* TODO Requiring cloning at instantiation-time is not "lightweight".
+ *      It means the user won't get any results until after cloning every repo being analyzed.
+ *      I suggest we only actually clone when the clone() method of an SCM is invoked.
+ *      We should override GitRepository's cheap "copy" implementation of clone() and actually clone then. */
+ /* TODO Remove the AutoCloseable interface; the new clone/delete methods in SCM make things clearer. */
 public class GitRemoteRepository extends GitRepository implements AutoCloseable {
 
 	/* Constants. */
@@ -184,4 +189,6 @@ public class GitRemoteRepository extends GitRepository implements AutoCloseable 
 			FileUtils.deleteDirectory(new File(path));
 		hasLocalState = false;
 	}
+	
+	/* TODO Override clone and delete. */
 }

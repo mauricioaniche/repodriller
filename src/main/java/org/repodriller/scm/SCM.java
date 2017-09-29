@@ -16,6 +16,7 @@
 
 package org.repodriller.scm;
 
+import java.nio.file.Path;
 import java.util.List;
 
 import org.repodriller.domain.ChangeSet;
@@ -93,4 +94,18 @@ public interface SCM {
 	 * Implementors: May not be thread safe, consider synchronized.
 	 */
 	List<RepositoryFile> files();
+
+	/**
+	 * Duplicate this SCM inside the designated {@code parent}.
+	 *
+	 * @param parent Create a copy of this SCM nested inside {@code parent}
+	 * @returns An SCM corresponding to the copy
+	 */
+	SCM clone(Path parent);
+
+	/**
+	 * Delete any local storage devoted to this SCM.
+	 * Should be safe to call repeatedly without ill effect.
+	 */
+	void delete();
 }

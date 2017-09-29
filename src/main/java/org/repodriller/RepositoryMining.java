@@ -16,14 +16,23 @@
 
 package org.repodriller;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.Future;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.log4j.Logger;
 import org.repodriller.domain.ChangeSet;
@@ -35,8 +44,7 @@ import org.repodriller.persistence.NoPersistence;
 import org.repodriller.persistence.PersistenceMechanism;
 import org.repodriller.scm.CommitVisitor;
 import org.repodriller.scm.SCMRepository;
-
-import com.google.common.collect.Lists;
+import org.repodriller.util.RDFileUtils;
 
 /**
  * RepositoryMining is the core class of RepoDriller.
@@ -56,13 +64,32 @@ public class RepositoryMining {
 
 	private static final String DATE_FORMAT = "dd/MM/yyyy HH:mm:ss";
 	private static final Logger log = Logger.getLogger(RepositoryMining.class);
+	private static final int THREADS_PER_CORE = 2;
 
 	private List<SCMRepository> repos;
 	private RepoVisitor repoVisitor;
 	private CommitRange range;
-	private int threads;
+
 	private boolean reverseOrder;
 	private List<CommitFilter> filters;
+
+	/* Storage members. */
+	/* We clone() the active repository to this location.
+	 * For performance, the user should specify "fast storage" to accelerate access.
+	 * This is a lightweight alternative to pre-processing repositories and storing them in-memory or
+	 * in-DB as done in MSR frameworks like Boa and Alitheia Core. */
+	/* TODO A utility program to create a RAM-FS on Linux would be helpful. */
+	private Path repoTmpDir;
+
+	/* Concurrency members.
+	 * Rules: - If visitorsAreThreadSafe, you can have nRepoThreads > 1.
+	 *        - If visitorsChangeRepoState, then each thread needs its own clone of the repo to work on.
+	 *          Otherwise, the repo threads can work concurrently on the same repo instance. */
+	private boolean visitorsAreThreadSafe = false; /* Each visitor can tolerate multiple threads entering it at the Java-level? */
+	private boolean visitorsChangeRepoState = true; /* Visitors might call checkout or related? */
+	private int nRepoThreads = 1; /* Num threads working on a repo at a time. */
+
+	private ExecutorService threadpool; /* Owned by mine(). */
 
 	/**
 	 * Create a new RepositoryMining.
@@ -73,7 +100,11 @@ public class RepositoryMining {
 		repos = new ArrayList<SCMRepository>();
 		repoVisitor = new RepoVisitor();
 		filters = Arrays.asList((CommitFilter) new NoFilter());
-		this.threads = 1;
+
+		/* Initialize concurrency settings conservatively. */
+		visitorsAreThreadSafe(false);
+		visitorsChangeRepoState(true);
+		withThreads(-1);
 	}
 
 	/**
@@ -112,7 +143,7 @@ public class RepositoryMining {
 	}
 
 	/**
-	 * Add a CommitVisitor to process commits.
+	 * Add a CommitVisitor to process commits. No PersistenceMechanism.
 	 *
 	 * @param visitor The visitor to be processed
 	 * @return this
@@ -136,7 +167,6 @@ public class RepositoryMining {
 	 * Make CommitVisitor's visit the commits in the opposite order returned by the CommitRange.
 	 *
 	 * @return this
-	 *
 	 */
 	// TODO: I think this should be a feature of Commits. Seems odd to have it at this level.
 	public RepositoryMining reverseOrder() {
@@ -145,26 +175,80 @@ public class RepositoryMining {
 	}
 
 	/**
-	 * Configure parallelism for each repo
+	 * Control where we store temporary copies of repos.
+	 * For optimal performance, this should be a *fast* place, e.g. an FS stored on RAMDisk or SSD.
 	 *
-	 * @param nThreads	Number of threads that can visit each repo concurrently (default 1).
+	 * @param repoTmpDir
+	 * @return this
+	 */
+	public RepositoryMining setRepoTmpDir(Path repoTmpDir) {
+		if (repoTmpDir == null) {
+			try {
+				repoTmpDir = Paths.get(RDFileUtils.getTempPath(null));
+				if (!RDFileUtils.mkdir(repoTmpDir))
+					throw new RepoDrillerException("Couldn't create tmp dir " + repoTmpDir);
+			} catch (IOException e) {
+				throw new RepoDrillerException("Couldn't get tmp dir: " + e);
+			}
+		}
+		log.debug("Using repoTmpDir " + repoTmpDir);
+		this.repoTmpDir = repoTmpDir;
+		return this;
+	}
+
+	/**
+	 * Indicate whether a visitor can be safely entered by multiple threads concurrently.
+	 *
+	 * @param conflict True if any visitor expects to be the only active visitor
+	 * @return this
+	 */
+	public RepositoryMining visitorsAreThreadSafe(boolean conflict) {
+		visitorsAreThreadSafe = conflict;
+		return this;
+	}
+
+	/**
+	 * Indicate whether visitor threads may change repo state.
+	 * If they change repo state, the repo cannot be safely accessed by multiple visitor threads concurrently.
+	 *
+	 * @param change True if any visitor might change repo state (e.g. checkout)
+	 * @return this
+	 */
+	public RepositoryMining visitorsChangeRepoState(boolean change) {
+		visitorsChangeRepoState = change;
+		return this;
+	}
+
+	/**
+	 * Configure parallelism. Use with {@link RepositoryMining#threadsConflictOnRepo}.
+	 * If you use >1 thread, {@link RepositoryMining#through} will not define a FIFO order of commit processing.
+	 *
+	 * @param nThreads	Number of threads that can visit each repo concurrently (default 1). Give -1 for a good default value after calling {@link RepositoryMining#visitorsAreThreadSafe}.
 	 * @return this
 	 */
 	public RepositoryMining withThreads(int nThreads) {
-		if (nThreads < 1)
+		if (nThreads == -1) {
+			if (visitorsAreThreadSafe)
+				/* 4x cores, presuming some I/O-bound work. */
+				nThreads = THREADS_PER_CORE*Runtime.getRuntime().availableProcessors();
+			else
+				nThreads = 1;
+		}
+		else if (nThreads < -1)
 			throw new RepoDrillerException("Negative number of threads");
 
-		this.threads = nThreads;
+		this.nRepoThreads = nThreads;
 		return this;
 	}
 
 	/**
 	 * The big kahuna.
-	 * Go through all the repos in turn.
-	 * Retrieve the commits associated with each repo.
-	 * For each commit, using {@code withThreads(X)} threads:
-	 *   Apply any commit filters.
-	 *   Apply all visitors.
+	 * Using the current configuration of repositories, visitors, threads, etc.:
+	 *   Go through all the repos in turn.
+	 *   Retrieve the commits associated with each repo.
+	 *   For each commit, using {@code withThreads(X)} threads:
+	 *     Apply any commit filters.
+	 *     Apply all visitors.
 	 *
 	 * @throws RepoDrillerException in case of any problems.
 	 */
@@ -175,63 +259,132 @@ public class RepositoryMining {
 			throw new RepoDrillerException("No repos specified");
 		if (repoVisitor.isEmpty())
 			throw new RepoDrillerException("No visitors specified");
+		if (!validateConcurrencyConfiguration())
+			throw new RepoDrillerException("Invalid concurrency configuration");
 
-		for(SCMRepository repo : repos) {
-			repoVisitor.beginRepoVisit(repo);
+		/* Finish any setup. */
+		boolean cleanUpRepoTmpDir = false;
+		if (repoTmpDir == null) {
+			log.debug("Initializing repoTmpDir");
+			cleanUpRepoTmpDir = true;
+			setRepoTmpDir(null);
+		}
+
+		log.info("Mining " + repos.size() + " repos with " + nRepoThreads + " threads");
+		threadpool = Executors.newFixedThreadPool(nRepoThreads);
+
+		long begin = System.nanoTime();
+		for (SCMRepository repo : repos) {
+			repoVisitor.beginRepoVisit(repo, repoTmpDir, nRepoThreads, visitorsChangeRepoState);
 			processRepo(repo);
 			repoVisitor.endRepoVisit();
 		}
+		long end = System.nanoTime();
+		long elapsedInMS = (long) ((end - begin)/10e6);
+		log.info("Mining took " + elapsedInMS + " ms");;
+
+		/* Teardown. */
+		threadpool.shutdown();
+
 		repoVisitor.closeAllPersistence(); /* TODO See comment in RepoVisitor about the wisdom of this routine. */
 		printScript();
 
+		if (cleanUpRepoTmpDir) {
+			try {
+				FileUtils.deleteDirectory(new File(repoTmpDir.toString()));
+			} catch (IOException e) {
+				log.error("Couldn't delete repoTmpDir " + repoTmpDir + ": " + e);
+			}
+		}
+	}
+
+	/**
+	 * Check that the concurrency configuration is valid at mine time.
+	 *
+	 * @return True if concurrency configuration is valid, else false
+	 */
+	private boolean validateConcurrencyConfiguration() {
+		if (1 < nRepoThreads) {
+			if (visitorsAreThreadSafe) {
+				log.debug("Visitors are thread safe, so " + nRepoThreads + " repo threads is OK");
+				return true;
+			}
+			log.debug("Visitors are not threads afe, so " + nRepoThreads + " repo threads is not OK");
+			return false;
+		}
+		else if (nRepoThreads == 1) {
+			log.debug("nRepoThreads " + nRepoThreads + " is fine");
+			return true;
+		}
+		else {
+			log.debug("Invalid nRepoThreads " + nRepoThreads);
+			return false;
+		}
 	}
 
 	/**
 	 * Retrieve the commits associated with this repo, filter them, and apply visitors to the survivors.
-	 * Each commit is assigned to one thread which applies the visitors.
+	 * Each commit is assigned to one thread which applies the visitors via calls to {@link RepoVisitor#visitCommit}
 	 *
 	 * @param repo	A repo to process
 	 */
 	private void processRepo(SCMRepository repo) {
 		log.info("Git repository in " + repo.getPath());
 
-		List<ChangeSet> allCs = range.get(repo.getScm());
-		if(!reverseOrder) Collections.reverse(allCs);
+		List<ChangeSet> rawCs = range.get(repo.getScm());
+		if (!reverseOrder) Collections.reverse(rawCs); // TODO This is counter-intuitive. Why do we reverse if we are not reversing?
+		log.info(rawCs.size() + " ChangeSets to process");
 
-		log.info("Total commits: " + allCs.size());
+		/* Shared queue of ChangeSets. */
+		Queue<ChangeSet> csQueue = new ConcurrentLinkedQueue<ChangeSet>(rawCs);
 
-		log.info("Starting threads: " + threads);
-		ExecutorService exec = Executors.newFixedThreadPool(threads);
-		List<List<ChangeSet>> partitions = Lists.partition(allCs, threads);
-		for(List<ChangeSet> partition : partitions) {
-			/* TODO This partitioning is non-optimal.
-			 *      Different commits may cost different amounts (e.g. later commits may cost more than earlier commits).
-			 *      We should allCs as a queue and have threads consume off of it.
-			 */
-			exec.submit(() -> {
-				for(ChangeSet cs : partition) {
+		List<Future<Integer>> threadDone = new ArrayList<Future<Integer>>();
+		/* Divide csQueue among the worker threads.
+		 * If there is 1 worker thread, ChangeSets are processed in FIFO order.
+		 * With many threads the processing order is hard to characterize. */
+		for (int i = 0; i < nRepoThreads; i++) {
+			threadDone.add(threadpool.submit(() -> {
+				int nConsumed = 0;
+				/* Consume ChangeSets until there are no more. */
+				while (true) {
+					ChangeSet cs = null;
 					try {
+						cs = csQueue.remove();
 						processChangeSet(repo, cs);
+						nConsumed++;
+					} catch (NoSuchElementException e) {
+						log.debug("No ChangeSets left to process, must be done with this repo");
+						break;
 					} catch (OutOfMemoryError e) {
-						System.err.println("Commit " + cs.getId() + " in " + repo.getLastDir() + " caused OOME");
+						String msg = "ChangeSet " + cs.getId() + " in " + repo.getLastDir() + " caused OOME:" + e + "\n\nGoodbye :/";
+						System.err.println(msg);
+						log.fatal(msg);
 						e.printStackTrace();
-						System.err.println("goodbye :/");
-
-						log.fatal("Commit " + cs.getId() + " in " + repo.getLastDir() + " caused OOME", e);
-						log.fatal("Goodbye! ;/");
-						System.exit(-1);
+						System.exit(1);
 					} catch(Throwable t) {
-						log.error(t);
+						log.error("Got exception from ChangeSet  " + cs.getId() + ": " + t);
+						continue;
 					}
 				}
-			});
+				log.debug("Thread done");
+				return nConsumed;
+			}));
 		}
 
-		try {
-			exec.shutdown();
-			exec.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
-		} catch (InterruptedException e) {
-			log.error("error waiting for threads to terminate in " + repo.getLastDir(), e);
+		/* Await the futures. */
+		int totalConsumed = 0;
+		for (Future<Integer> f: threadDone) {
+			try {
+				totalConsumed += f.get();
+			} catch (InterruptedException | ExecutionException e) {
+				log.error(e);
+			}
+		}
+
+		/* Make sure we didn't lose any ChangeSets. */
+		if (totalConsumed != rawCs.size()) {
+			log.fatal("Error, consumed " + totalConsumed + " ChangeSets but had " + rawCs.size() + " ChangeSets to work on");
+			System.exit(1);
 		}
 	}
 

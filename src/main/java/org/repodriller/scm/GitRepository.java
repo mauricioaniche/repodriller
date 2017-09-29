@@ -19,6 +19,7 @@ package org.repodriller.scm;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
@@ -544,5 +545,19 @@ public class GitRepository implements SCM {
 
 	public void setFirstParentOnly(boolean firstParentOnly) {
 		this.firstParentOnly = firstParentOnly;
+	}
+
+	@Override
+	public SCM clone(Path parent) {
+		// TODO Auto-generated method stub
+		// copy
+		return null;
+	}
+
+	@Override
+	public void delete() {
+		// TODO Auto-generated method stub
+		// rm -rf equivalent
+		// allow to be destroyed more than once
 	}
 }

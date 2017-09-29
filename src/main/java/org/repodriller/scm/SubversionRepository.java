@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -456,4 +457,15 @@ public class SubversionRepository implements SCM {
 		throw new RuntimeException("implement me!");
 	}
 
+	@Override
+	public SCM clone(Path parent) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void delete() {
+		// TODO Auto-generated method stub
+		
+	}
 }

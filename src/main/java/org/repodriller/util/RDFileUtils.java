@@ -3,6 +3,7 @@ package org.repodriller.util;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import org.apache.commons.io.IOUtils;
 
 /**
  * Various utilities for working with files.
+ * Watch out for TOCTOU.
  *
  * @author Mauricio Aniche
  */
@@ -116,5 +118,27 @@ public class RDFileUtils {
 		} catch (IOException e) {
 			throw new IOException("Error, couldn't create temp dir in " + directory + ": " + e);
 		}
+	}
+
+	/**
+	 * Does this Path exist?
+	 *
+	 * @param p Path to check
+	 * @return True if p exists, else false
+	 */
+	public static boolean exists(Path p) {
+		File f = new File(p.toString());
+		return f.exists();
+	}
+
+	/**
+	 * Is this Path a dir?
+	 *
+	 * @param p Path to check
+	 * @return True if p exists and is a dir, else false
+	 */
+	public static boolean isDir(Path p) {
+		File f = new File(p.toString());
+		return f.isDirectory();
 	}
 }
