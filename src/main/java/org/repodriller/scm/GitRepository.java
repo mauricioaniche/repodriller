@@ -454,7 +454,7 @@ public class GitRepository implements SCM {
 		try (Git git = openRepository()) {
 			Repository repo = git.getRepository();
 
-			Iterable<RevCommit> commits = git.log().add(repo.resolve(tag)).call();
+			Iterable<RevCommit> commits = git.log().add(getActualRefObjectId(repo.findRef(tag), repo)).call();
 			
 			for(RevCommit commit : commits) {
 				return commit.getName().toString();
@@ -465,5 +465,13 @@ public class GitRepository implements SCM {
 		} catch (Exception e) {
 			throw new RuntimeException("Failed for tag " + tag, e);
 		}
+	}
+	
+	private ObjectId getActualRefObjectId(Ref ref, Repository repo) {
+		final Ref repoPeeled = repo.peel(ref);
+		if(repoPeeled.getPeeledObjectId() != null) {
+			return repoPeeled.getPeeledObjectId();
+		}
+		return ref.getObjectId();
 	}
 }

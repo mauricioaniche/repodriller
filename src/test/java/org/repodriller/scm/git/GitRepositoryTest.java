@@ -288,7 +288,7 @@ public class GitRepositoryTest {
 	
 	@Test(expected=RuntimeException.class)
 	public void tagsException(){
-		git8.getCommitFromTag("tag3");
+		git8.getCommitFromTag("tag4");
 	}
 	
 }
