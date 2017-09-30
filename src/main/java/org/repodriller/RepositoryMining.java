@@ -50,7 +50,7 @@ import com.google.common.collect.Lists;
  * The RepositoryMining methods return the instance for easy chaining.
  *
  * @author Mauricio Aniche
- * @throws RepoDrillerException
+ * @throws RepoDrillerException in case of any problems.
  */
 public class RepositoryMining {
 
@@ -114,7 +114,7 @@ public class RepositoryMining {
 	/**
 	 * Add a CommitVisitor to process commits.
 	 *
-	 * @param visitor
+	 * @param visitor The visitor to be processed
 	 * @return this
 	 */
 	public RepositoryMining process(CommitVisitor visitor) {
@@ -136,8 +136,9 @@ public class RepositoryMining {
 	 * Make CommitVisitor's visit the commits in the opposite order returned by the CommitRange.
 	 *
 	 * @return this
-	 * @todo I think this should be a feature of Commits. Seems odd to have it at this level.
+	 *
 	 */
+	// TODO: I think this should be a feature of Commits. Seems odd to have it at this level.
 	public RepositoryMining reverseOrder() {
 		reverseOrder = true;
 		return this;
@@ -165,7 +166,7 @@ public class RepositoryMining {
 	 *   Apply any commit filters.
 	 *   Apply all visitors.
 	 *
-	 * @throws RepoDrillerException
+	 * @throws RepoDrillerException in case of any problems.
 	 */
 	public void mine() {
 

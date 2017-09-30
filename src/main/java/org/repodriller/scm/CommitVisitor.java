@@ -39,8 +39,8 @@ public interface CommitVisitor {
 	/**
 	 * Called before this CommitVisitor begins visiting {@code repo}.
 	 *
-	 * @param repo
-	 * @param writer
+	 * @param repo The SCM repo
+	 * @param writer The persistence mechanism
 	 */
 	default void initialize(SCMRepository repo, PersistenceMechanism writer) {}
 
@@ -48,17 +48,17 @@ public interface CommitVisitor {
 	 * Visit this <{@code repo}, {@code commit}> combination.
 	 * Should be thread-safe.
 	 *
-	 * @param repo
-	 * @param commit
-	 * @param writer
+	 * @param repo The SCM repo
+	 * @param commit The visited commit
+	 * @param writer The persistence mechanism
 	 */
 	void process(SCMRepository repo, Commit commit, PersistenceMechanism writer);
 
 	/**
 	 * Called after this CommitVisitor has completely visited {@code repo}.
 	 *
-	 * @param repo
-	 * @param writer
+	 * @param repo The SCM repo
+	 * @param writer The persistence mechanism
 	 */
 	default void finalize(SCMRepository repo, PersistenceMechanism writer) {}
 

@@ -49,7 +49,7 @@ public class RepoDriller {
 	 * Catches and logs any exceptions thrown.
 	 * Has a stopwatch for you.
 	 *
-	 * @param study
+	 * @param study The study to be performed
 	 */
 	public void start(Study study) {
 		/* TODO We could just make this static, no? What's the point in having a RepoDriller instance? */

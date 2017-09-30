@@ -17,9 +17,9 @@ import org.repodriller.scm.SCMRepository;
  *
  * Intended use:
  *   - {@link RepoVisitor#addVisitor} all of the CommitVisitor/PersistenceMechanism pairs you want.
- *   - {@link RepoVisitor#beginRepoTour} to start a new repo
- *   - {@link RepoVisitor#visit} for each Commit you're visiting in the current repo
- *   - {#link CommitVisitorIterator#endRepoTour} after you're done with this repo
+ *   - {@link RepoVisitor#beginRepoVisit} to start a new repo
+ *   - {@link RepoVisitor#visitCommit} for each Commit you're visiting in the current repo
+ *   - {@link RepoVisitor#endRepoVisit} after you're done with this repo
  *
  * @author Mauricio Aniche
  *
@@ -31,7 +31,7 @@ public class RepoVisitor {
 	private SCMRepository currentRepo; // One at a time.
 
 	public RepoVisitor() {
-		visitors = new HashMap<CommitVisitor, PersistenceMechanism>();
+		visitors = new HashMap<>();
 		currentRepo = null;
 	}
 
@@ -40,29 +40,13 @@ public class RepoVisitor {
 	 ***/
 
 	/**
-	 * Add this <CommitVisitor, PersistenceMechanism> pair to my collection.
+	 * Add this &lt;CommitVisitor, PersistenceMechanism&gt; pair to my collection.
 	 *
-	 * @param visitor
-	 * @param writer
+	 * @param visitor The visitor to be added
+	 * @param writer The persistence mechanism associated to this visitor
 	 */
 	public void addVisitor(CommitVisitor visitor, PersistenceMechanism writer) {
 		visitors.put(visitor, writer);
-	}
-
-	/**
-	 * Remove this CommitVisitors from my collection, if present.
-	 *
-	 * @param visitor
-	 */
-	public void removeVisitor(CommitVisitor visitor) {
-		visitors.remove(visitor);
-	}
-
-	/**
-	 * Empty my collection of CommitVisitors.
-	 */
-	public void clearVisitors() {
-		visitors.clear();
 	}
 
 	/**
@@ -114,7 +98,7 @@ public class RepoVisitor {
 	 * Visit this commit in the current repo.
 	 * Calls {@link CommitVisitor#process} on each CommitVisitor in my collection.
 	 *
-	 * @param commit
+	 * @param commit The commit that will be visited
 	 */
 	void visitCommit(Commit commit) {
 		for(Map.Entry<CommitVisitor, PersistenceMechanism> entry : visitors.entrySet()) {

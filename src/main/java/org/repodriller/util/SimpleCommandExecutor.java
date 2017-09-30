@@ -39,6 +39,8 @@ public class SimpleCommandExecutor {
 	/**
 	 * Add this <name, value> pair to the child's environment.
 	 *
+	 * @param name The name of the parameter
+	 * @param value Its value
 	 * @return this, for chaining
 	 */
 	public SimpleCommandExecutor setEnvironmentVar(String name, String value) {
