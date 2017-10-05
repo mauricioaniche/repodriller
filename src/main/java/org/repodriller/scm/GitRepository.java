@@ -414,11 +414,11 @@ public class GitRepository implements SCM {
 	public String blame(String file, String commitToBeBlamed, Integer line) {
 		return blame(file,commitToBeBlamed).get(line).getCommit();
 	}
-	
+
 	public List<BlamedLine> blame(String file, String commitToBeBlamed) {
 		return blame(file, commitToBeBlamed, true);
 	}
-	
+
 	public List<BlamedLine> blame(String file, String commitToBeBlamed, boolean priorCommit) {
         try (Git git = openRepository()) {
 			ObjectId gitCommitToBeBlamed;
@@ -426,7 +426,7 @@ public class GitRepository implements SCM {
 				Iterable<RevCommit> commits = git.log().add(git.getRepository().resolve(commitToBeBlamed)).call();
 				gitCommitToBeBlamed = commits.iterator().next().getParent(0).getId();
 			} else {
-				gitCommitToBeBlamed = git.getRepository().resolve(commitToBeBlamed); 
+				gitCommitToBeBlamed = git.getRepository().resolve(commitToBeBlamed);
 			}
 
 			BlameResult blameResult = git.blame().setFilePath(file).setStartCommit(gitCommitToBeBlamed).setFollowFileRenames(true).call();
@@ -434,13 +434,13 @@ public class GitRepository implements SCM {
 				int rows = blameResult.getResultContents().size();
 				List<BlamedLine> result = new ArrayList<>();
 				for(int i = 0; i < rows; i++) {
-					result.add(new BlamedLine(i, 
-							blameResult.getResultContents().getString(i), 
-							blameResult.getSourceAuthor(i).getName(), 
-							blameResult.getSourceCommitter(i).getName(), 
+					result.add(new BlamedLine(i,
+							blameResult.getResultContents().getString(i),
+							blameResult.getSourceAuthor(i).getName(),
+							blameResult.getSourceCommitter(i).getName(),
 							blameResult.getSourceCommit(i).getId().getName()));
 				}
-				
+
 				return result;
 			} else {
 				throw new RuntimeException("BlameResult not found.");
@@ -450,7 +450,7 @@ public class GitRepository implements SCM {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	public Integer getMaxNumberFilesInACommit() {
 		return maxNumberFilesInACommit;
 	}
@@ -462,18 +462,18 @@ public class GitRepository implements SCM {
 			Repository repo = git.getRepository();
 
 			Iterable<RevCommit> commits = git.log().add(getActualRefObjectId(repo.findRef(tag), repo)).call();
-			
+
 			for(RevCommit commit : commits) {
 				return commit.getName().toString();
 			}
-			
+
 			throw new RuntimeException("Failed for tag " + tag); // we never arrive here, hopefully
 
 		} catch (Exception e) {
 			throw new RuntimeException("Failed for tag " + tag, e);
 		}
 	}
-	
+
 	private ObjectId getActualRefObjectId(Ref ref, Repository repo) {
 		final Ref repoPeeled = repo.peel(ref);
 		if(repoPeeled.getPeeledObjectId() != null) {
