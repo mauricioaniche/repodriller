@@ -47,17 +47,26 @@ import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.eclipse.jgit.treewalk.EmptyTreeIterator;
 import org.eclipse.jgit.util.io.DisabledOutputStream;
+import org.repodriller.RepoDrillerException;
 import org.repodriller.domain.ChangeSet;
 import org.repodriller.domain.Commit;
 import org.repodriller.domain.Developer;
+import org.repodriller.domain.Modification;
 import org.repodriller.domain.ModificationType;
 import org.repodriller.util.FileUtils;
 
+/**
+ * Everything you need to work with a Git-based source code repository.
+ * Wraps
+ *
+ * @author Mauricio Aniche
+ */
+/* TODO Name: Sounds like it inherits SCMRepository, but it actually implements SCM. */
 public class GitRepository implements SCM {
 
 	private static final int MAX_SIZE_OF_A_DIFF = 100000;
 	private static final int DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT = 5000;
-	private static final String BRANCH_MM = "mm";
+	private static final String BRANCH_MM = "mm"; /* TODO mm -> rd. */
 
 	private String path;
 	private String mainBranchName;
