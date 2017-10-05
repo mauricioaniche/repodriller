@@ -78,22 +78,6 @@ public class GitRepository implements SCM {
 		this(path, false);
 	}
 
-	private int checkMaxNumberOfFiles() {
-		String prop = System.getProperty("git.maxfiles");
-		if(prop == null) {
-			return DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT;
-		}
-		return Integer.parseInt(prop);
-	}
-
-	private int checkMaxSizeOfDiff() {
-		String prop = System.getProperty("git.maxdiff");
-		if(prop == null) {
-			return MAX_SIZE_OF_A_DIFF;
-		}
-		return Integer.parseInt(prop);
-	}
-
 	public static SCMRepository singleProject(String path) {
 		return new GitRepository(path).info();
 	}
@@ -105,7 +89,7 @@ public class GitRepository implements SCM {
 	public static SCMRepository[] allProjectsIn(String path) {
 		return allProjectsIn(path, false);
 	}
-	
+
 	public static SCMRepository[] allProjectsIn(String path, boolean singleParentOnly) {
 		List<SCMRepository> repos = new ArrayList<>();
 
@@ -119,7 +103,7 @@ public class GitRepository implements SCM {
 	public SCMRepository info() {
 		try (Git git = openRepository(); RevWalk rw = new RevWalk(git.getRepository())) {
             AnyObjectId headId = git.getRepository().resolve(Constants.HEAD);
-            
+
 			RevCommit root = rw.parseCommit(headId);
 			rw.sort(RevSort.REVERSE);
 			rw.markStart(root);
@@ -325,9 +309,12 @@ public class GitRepository implements SCM {
 	}
 
 	private void setContext(DiffFormatter df) {
-		String context = System.getProperty("git.diffcontext");
-		if(context==null) return;
-		df.setContext(Integer.parseInt(System.getProperty("git.diffcontext")));
+		try {
+			int context = getSystemProperty("git.diffcontext");
+			df.setContext(context);
+		} catch (Exception e) {
+			return;
+		}
 	}
 
 	private String getSourceCode(Repository repo, DiffEntry diff) throws IOException {
@@ -473,5 +460,48 @@ public class GitRepository implements SCM {
 			return repoPeeled.getPeeledObjectId();
 		}
 		return ref.getObjectId();
+	}
+
+
+	/**
+	 * Return the max number of files in a commit.
+	 * Default is hard-coded to "something large".
+	 * Override with environment variable "git.maxfiles".
+	 *
+	 * @return Max number of files in a commit
+	 */
+	private int checkMaxNumberOfFiles() {
+		try {
+			return getSystemProperty("git.maxfiles");
+		} catch (Exception e) {
+			return DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT;
+		}
+	}
+
+	/**
+	 * Return the max size of a diff in bytes.
+	 * Default is hard-coded to "something large".
+	 * Override with environment variable "git.maxdiff".
+	 *
+	 * @return Max diff size
+	 */
+	private int checkMaxSizeOfDiff() {
+		try {
+			return getSystemProperty("git.maxdiff");
+		} catch (Exception e) {
+			return MAX_SIZE_OF_A_DIFF;
+		}
+	}
+
+	/**
+	 * Get this system property (environment variable)'s value as an integer.
+	 *
+	 * @param name	Environment variable to retrieve
+	 * @return	{@code name} successfully parsed as an int
+	 * @throws NumberFormatException
+	 */
+	private int getSystemProperty (String name) throws NumberFormatException {
+		String val = System.getProperty(name);
+		return Integer.parseInt(val);
 	}
 }
