@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
@@ -142,7 +143,7 @@ public class GitRepository implements SCM {
         try (Git git = openRepository()) {
 			ObjectId head = git.getRepository().resolve(Constants.HEAD);
 
-			RevWalk revWalk = new RevWalk(git.getRepository());
+			RevWalk revWalk = new RevWalk(git.getRepository()); /* TODO Leak. Use try-with. */
 			RevCommit r = revWalk.parseCommit(head);
 			return new ChangeSet(r.getName(), convertToDate(r));
 
@@ -155,7 +156,7 @@ public class GitRepository implements SCM {
 	public List<ChangeSet> getChangeSets() {
         try (Git git = openRepository()) {
             List<ChangeSet> allCs;
-			if(!firstParentOnly) allCs = getAllCommits(git);
+			if (!firstParentOnly) allCs = getAllCommits(git);
 			else allCs = firstParentsOnly(git);
 
 			return allCs;
@@ -167,19 +168,19 @@ public class GitRepository implements SCM {
 	private List<ChangeSet> firstParentsOnly(Git git) {
 		try {
 			List<ChangeSet> allCs = new ArrayList<>();
-			
-			RevWalk revWalk = new RevWalk(git.getRepository());
+
+			RevWalk revWalk = new RevWalk(git.getRepository());  /* TODO Leak. Use try-with. */
 			revWalk.setRevFilter(new FirstParentFilter());
 			revWalk.sort(RevSort.TOPO);
-			Ref headRef = git.getRepository().getRef(Constants.HEAD);
+			Ref headRef = git.getRepository().getRef(Constants.HEAD);  /* TODO Deprecated. */
 			RevCommit headCommit = revWalk.parseCommit(headRef.getObjectId());
 			revWalk.markStart( headCommit );
 			for(RevCommit revCommit : revWalk) {
 				allCs.add(extractChangeSet(revCommit));
 			}
-			
+
 			return allCs;
-			
+
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -205,77 +206,87 @@ public class GitRepository implements SCM {
 		GregorianCalendar date = new GregorianCalendar();
 		date.setTimeZone(revCommit.getAuthorIdent().getTimeZone());
 		date.setTime(revCommit.getAuthorIdent().getWhen());
-		
+
 		return date;
 	}
 
+	/**
+	 * Get the commit with this commit id.
+	 * Caveats:
+	 *   - If commit modifies more than maxNumberFilesInACommit, throws an exception
+	 *   - If one of the file diffs exceeds maxSizeOfDiff, the diffText is discarded
+	 *
+	 * @param id	The SHA1 hash that identifies a git commit.
+	 * @returns Commit	The corresponding Commit, or null.
+	 */
 	@Override
 	public Commit getCommit(String id) {
-        try (Git git = openRepository()) {
+		try (Git git = openRepository()) {
+			/* Using JGit, this commit will be the first entry in the log beginning at id. */
 			Repository repo = git.getRepository();
+			Iterable<RevCommit> jgitCommits = git.log().add(repo.resolve(id)).call();
+			Iterator<RevCommit> itr = jgitCommits.iterator();
 
-			Iterable<RevCommit> commits = git.log().add(repo.resolve(id)).call();
-			Commit theCommit = null;
+			if (!itr.hasNext())
+				return null;
+			RevCommit jgitCommit = itr.next();
 
-			for (RevCommit jgitCommit : commits) {
+			/* Extract metadata. */
+			Developer author = new Developer(jgitCommit.getAuthorIdent().getName(), jgitCommit.getAuthorIdent().getEmailAddress());
+			Developer committer = new Developer(jgitCommit.getCommitterIdent().getName(), jgitCommit.getCommitterIdent().getEmailAddress());
+			TimeZone authorTimeZone = jgitCommit.getAuthorIdent().getTimeZone();
+			TimeZone committerTimeZone = jgitCommit.getCommitterIdent().getTimeZone();
 
-				Developer author = new Developer(jgitCommit.getAuthorIdent().getName(), jgitCommit.getAuthorIdent().getEmailAddress());
-				Developer committer = new Developer(jgitCommit.getCommitterIdent().getName(), jgitCommit.getCommitterIdent().getEmailAddress());
+			String msg = jgitCommit.getFullMessage().trim();
+			String hash = jgitCommit.getName().toString();
+			String parent = (jgitCommit.getParentCount() > 0) ? jgitCommit.getParent(0).getName().toString() : "";
 
-				TimeZone authorTimeZone = jgitCommit.getAuthorIdent().getTimeZone();
-				TimeZone committerTimeZone = jgitCommit.getCommitterIdent().getTimeZone();
-				
-				String msg = jgitCommit.getFullMessage().trim();
-				String hash = jgitCommit.getName().toString();
-				String parent = (jgitCommit.getParentCount() > 0) ? jgitCommit.getParent(0).getName().toString() : "";
+			GregorianCalendar authorDate = new GregorianCalendar();
+			authorDate.setTime(jgitCommit.getAuthorIdent().getWhen());
+			authorDate.setTimeZone(jgitCommit.getAuthorIdent().getTimeZone());
 
-				GregorianCalendar authorDate = new GregorianCalendar();
-				authorDate.setTime(jgitCommit.getAuthorIdent().getWhen());
-				authorDate.setTimeZone(jgitCommit.getAuthorIdent().getTimeZone());
+			GregorianCalendar committerDate = new GregorianCalendar();
+			committerDate.setTime(jgitCommit.getCommitterIdent().getWhen());
+			committerDate.setTimeZone(jgitCommit.getCommitterIdent().getTimeZone());
 
-				GregorianCalendar committerDate = new GregorianCalendar();
-				committerDate.setTime(jgitCommit.getCommitterIdent().getWhen());
-				committerDate.setTimeZone(jgitCommit.getCommitterIdent().getTimeZone());
-				
-				boolean merge = false;
-				if(jgitCommit.getParentCount() > 1) merge = true;
-				Set<String> branches = getBranches(git, hash);
-				boolean isCommitInMainBranch = branches.contains(this.mainBranchName);
-				theCommit = new Commit(hash, author, committer, authorDate, authorTimeZone, committerDate, committerTimeZone, msg, parent, merge, branches, isCommitInMainBranch);
+			boolean isMerge = (jgitCommit.getParentCount() > 1);
 
-				List<DiffEntry> diffsForTheCommit = diffsForTheCommit(repo, jgitCommit);
-				if (diffsForTheCommit.size() > this.getMaxNumberFilesInACommit()) {
-					log.error("commit " + id + " has more than files than the limit");
-					throw new RuntimeException("commit " + id + " too big, sorry");
-				}
+			Set<String> branches = getBranches(git, hash);
+			boolean isCommitInMainBranch = branches.contains(this.mainBranchName);
 
-				for (DiffEntry diff : diffsForTheCommit) {
+			/* Create one of our Commit's based on the jgitCommit metadata. */
+			Commit commit = new Commit(hash, author, committer, authorDate, authorTimeZone, committerDate, committerTimeZone, msg, parent, isMerge, branches, isCommitInMainBranch);
 
-					ModificationType change = Enum.valueOf(ModificationType.class, diff.getChangeType().toString());
-
-					String oldPath = diff.getOldPath();
-					String newPath = diff.getNewPath();
-
-					String diffText = "";
-					String sc = "";
-					if (diff.getChangeType() != ChangeType.DELETE) {
-						diffText = getDiffText(repo, diff);
-						sc = getSourceCode(repo, diff);
-					}
-
-					if (diffText.length() > maxSizeOfDiff) {
-						log.error("diff for " + newPath + " too big");
-						diffText = "-- TOO BIG --";
-					}
-					
-					theCommit.addModification(oldPath, newPath, change, diffText, sc);
-
-				}
-
-				break;
+			/* Convert each of the associated DiffEntry's to a Modification. */
+			List<DiffEntry> diffsForTheCommit = diffsForTheCommit(repo, jgitCommit);
+			if (diffsForTheCommit.size() > maxNumberFilesInACommit) {
+				/* TODO I don't understand why this is exceptional. We should mark the Commit as truncated and handle the first X files. */
+				log.error("commit " + id + " has more than files than the limit");
+				throw new RepoDrillerException("Error, commit " + id + " touches more than " + maxNumberFilesInACommit + " files");
 			}
 
-			return theCommit;
+			for (DiffEntry diff : diffsForTheCommit) {
+				ModificationType change = Enum.valueOf(ModificationType.class, diff.getChangeType().toString());
+
+				String oldPath = diff.getOldPath();
+				String newPath = diff.getNewPath();
+
+				String diffText = "";
+				String sc = "";
+				if (diff.getChangeType() != ChangeType.DELETE) {
+					diffText = getDiffText(repo, diff);
+					sc = getSourceCode(repo, diff);
+				}
+
+				if (diffText.length() > maxSizeOfDiff) {
+					log.error("diff for " + newPath + " too big");
+					diffText = "-- TOO BIG --";
+				}
+
+				commit.addModification(new Modification(oldPath, newPath, change, diffText, sc));
+			}
+
+			return commit;
 		} catch (Exception e) {
 			throw new RuntimeException("error detailing " + id + " in " + path, e);
 		}
@@ -295,7 +306,7 @@ public class GitRepository implements SCM {
 
 		AnyObjectId currentCommit = repo.resolve(commit.getName());
 		AnyObjectId parentCommit = commit.getParentCount() > 0 ? repo.resolve(commit.getParent(0).getName()) : null;
-    
+
 		try (DiffFormatter df = new DiffFormatter(DisabledOutputStream.INSTANCE)) {
 
             df.setBinaryFileThreshold(2 * 1024); // 2 mb max a file

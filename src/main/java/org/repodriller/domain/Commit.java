@@ -64,7 +64,7 @@ public class Commit {
 	public boolean isMerge() {
 		return merge;
 	}
-	
+
 	public String getHash() {
 		return hash;
 	}
@@ -76,7 +76,7 @@ public class Commit {
 	public String getMsg() {
 		return msg;
 	}
-	
+
 	public Developer getCommitter() {
 		return committer;
 	}
@@ -84,21 +84,24 @@ public class Commit {
 	public String getParent() {
 		return parent;
 	}
-	
+
+	/* TODO Deprecate this in favor of the other version. */
 	public void addModification(String oldPath, String newPath, ModificationType change, String diff, String sc) {
-		Modification m = new Modification(oldPath, newPath, change, diff, sc);
-		modifications.add(m);
-		
+		addModification(new Modification (oldPath, newPath, change, diff, sc));
 	}
-	
+
+	public void addModification(Modification m) {
+		modifications.add(m);
+	}
+
 	public void addModifications(List<Modification> modifications) {
 		this.modifications.addAll(modifications);
 	}
-	
+
 	public List<Modification> getModifications() {
 		return Collections.unmodifiableList(modifications);
 	}
-	
+
 	public Calendar getCommitterDate() {
 		return committerDate;
 	}
@@ -108,11 +111,11 @@ public class Commit {
 		return "Commit [hash=" + hash + ", parent=" + parent + ", author=" + author + ", msg=" + msg + ", modifications="
 				+ modifications + "]";
 	}
-	
+
 	public TimeZone getAuthorTimeZone() {
 		return authorTimeZone;
 	}
-	
+
 	public TimeZone getCommitterTimeZone() {
 		return committerTimeZone;
 	}
@@ -128,7 +131,7 @@ public class Commit {
 			return this.getHash().equals(c.getHash());
 		}
 	}
-	
+
 	public Calendar getDate() {
 		return date;
 	}
@@ -136,7 +139,7 @@ public class Commit {
 	public Set<String> getBranches() {
 		return Collections.unmodifiableSet(branches);
 	}
-	
+
 	public boolean isInMainBranch() {
 		return inMainBranch;
 	}
