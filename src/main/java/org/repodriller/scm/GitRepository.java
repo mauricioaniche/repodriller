@@ -382,7 +382,7 @@ public class GitRepository implements SCM {
 		}
 	}
 
-	public List<RepositoryFile> files() {
+	public synchronized List<RepositoryFile> files() {
 		List<RepositoryFile> all = new ArrayList<>();
 		for (File f : getAllFilesInPath()) {
 			all.add(new RepositoryFile(f));
