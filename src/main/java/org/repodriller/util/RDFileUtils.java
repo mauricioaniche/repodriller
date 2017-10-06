@@ -57,24 +57,24 @@ public class RDFileUtils {
 	}
 
 	/**
-	 * Create a unique temporary directory.
+	 * Get a unique path that does not yet exist
 	 *
-	 * @param directory	Where to root the temp dir, defaults to the system temp dir
-	 * @return	Absolute path to a newly created temp directory
+	 * @param directory	Where to begin the path, defaults to the system temp dir
+	 * @return	Absolute path to an available file
 	 * @throws IOException
 	 */
-	public static String makeTempDir(String directory) throws IOException {
+	public static String getTempPath(String directory) throws IOException {
 		try {
-			if (directory == null) {
+			if (directory == null)
 				directory = FileUtils.getTempDirectoryPath();
-			}
 
-			File tmpFile = File.createTempFile("RD-", "", new File(directory));
+			File dir = new File(directory);
+			dir.mkdirs();
+
+			File tmpFile = File.createTempFile("RD-", "", dir);
+			String absPath = tmpFile.getAbsolutePath();
 			tmpFile.delete();
-			if (tmpFile.mkdir())
-				return tmpFile.getAbsolutePath();
-			else
-				throw new IOException("Error, couldn't create temp dir in " + directory);
+			return absPath;
 		} catch (IOException e) {
 			throw new IOException("Error, couldn't create temp dir in " + directory + ": " + e);
 		}

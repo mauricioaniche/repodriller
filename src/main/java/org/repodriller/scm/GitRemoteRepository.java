@@ -2,7 +2,6 @@ package org.repodriller.scm;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,16 +56,13 @@ public class GitRemoteRepository extends GitRepository implements AutoCloseable 
 			this.url = url;
 
 			/* Get a good temp dir name. */
-			String tempDirPath = RDFileUtils.makeTempDir(destination);
-			File dir = new File(tempDirPath);
-			dir.delete();
-
-			/* Concatenate with the repo name. */
+			String tempDirPath = RDFileUtils.getTempPath(destination);
 			String repoName = repoNameFromURL(url);
-			String subdirName = dir.getName() + "-" + repoName;
-			path = Paths.get(destination, subdirName).toAbsolutePath().toString();
+			String cloneDestination = tempDirPath + "-" + repoName;
 
-			log.info("url " + url + " path " + path);
+			path = cloneDestination;
+
+			log.info("url " + url + " destination " + destination + " bare " + bare + " (path " + path + ")");
 
 			/* Fill in GitRepository details. */
 			this.setPath(path);
