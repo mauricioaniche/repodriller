@@ -2,9 +2,11 @@ package org.repodriller.util;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
 /**
@@ -12,7 +14,7 @@ import org.apache.commons.io.IOUtils;
  *
  * @author Mauricio Aniche
  */
-public class FileUtils {
+public class RDFileUtils {
 
 	/**
 	 * Get the absolute path to all subdirs of {@code path}.
@@ -52,9 +54,6 @@ public class FileUtils {
 	 * @return	{@code files} plus all files in the tree rooted at pathToLook
 	 *          Files that are in .svn or .git dirs are ignored.
 	 */
-	/* TODO It's strange that a FileUtils class knows abuot .svn and .git.
-	 * 		If you want to blacklist subtrees, these should be arguments, not hardcoded in this class.
-	 */
 	private static List<File> getAllFilesInPath(String pathToLook, List<File> files) {
 		for (File f : new File(pathToLook).listFiles()) {
 			if (f.isFile())
@@ -88,7 +87,34 @@ public class FileUtils {
 	 * @param f
 	 * @return True if it looks like a "project subdirectory"
 	 */
+	/* TODO It's strange that a FileUtils class knows about .svn and .git.
+	 * 		If you want to blacklist subtrees, these should be arguments, not hardcoded in this class.
+	 */
 	private static boolean isAProjectSubdirectory(File f) {
 		return f.isDirectory() && !f.getName().equals(".svn") && !f.getName().equals(".git");
+	}
+
+	/**
+	 * Create a unique temporary directory.
+	 *
+	 * @param directory	Where to root the temp dir, defaults to the system temp dir
+	 * @return	Absolute path to a newly created temp directory
+	 * @throws IOException
+	 */
+	public static String makeTempDir(String directory) throws IOException {
+		try {
+			if (directory == null) {
+				directory = FileUtils.getTempDirectoryPath();
+			}
+
+			File tmpFile = File.createTempFile("RD-", "", new File(directory));
+			tmpFile.delete();
+			if (tmpFile.mkdir())
+				return tmpFile.getAbsolutePath();
+			else
+				throw new IOException("Error, couldn't create temp dir in " + directory);
+		} catch (IOException e) {
+			throw new IOException("Error, couldn't create temp dir in " + directory + ": " + e);
+		}
 	}
 }
