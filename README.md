@@ -128,7 +128,8 @@ GitRepository.single("/your/project", true);
 
 ## Logging
 
-RepoDriller uses log4j to print useful information about its execution. We recommend you have a log4.xml:
+RepoDriller uses log4j to print useful information about its execution. 
+**Note that this includes Exceptions and their stack traces, which will not appear in standard output.** We recommend you have a log4.xml:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
@@ -154,6 +155,8 @@ RepoDriller uses log4j to print useful information about its execution. We recom
 
 </log4j:configuration>
 ```
+
+Put this file in `{project-root}/src/main/resources/` and you should see logs when RepoDriller runs.
 
 ## Selecting the Commit Range
 
