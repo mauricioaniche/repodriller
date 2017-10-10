@@ -16,13 +16,22 @@
 
 package org.repodriller.scm;
 
+/**
+ * An SCMRepository represents a Source Code Management Repository, i.e. an instance of source code maintained with a version control system.
+ * An SCMRepository includes:
+ *  - some metadata about the repo
+ *  - an SCM instance with the contents of the repo
+ *
+ * @author Mauricio Aniche
+ */
+/* TODO Naming is confusing. */
 public class SCMRepository {
 
-	private String path;
-	private String headCommit;
-	private String firstCommit;
+	private String path; /* Path in local FS. */
+	private String headCommit; /* Most recent commit. */
+	private String firstCommit; /* First commit. */
 	private SCM scm;
-	private String origin;
+	private String origin; /* e.g. GitHub URL */
 
 	public SCMRepository(SCM scm, String origin, String path, String headCommit, String firstCommit) {
 		this.scm = scm;
@@ -31,7 +40,7 @@ public class SCMRepository {
 		this.headCommit = headCommit;
 		this.firstCommit = firstCommit;
 	}
-	
+
 	public String getPath() {
 		return path;
 	}
@@ -49,9 +58,9 @@ public class SCMRepository {
 	}
 
 	public String getOrigin() {
-		return origin==null?path:origin;
+		return origin == null ? path : origin;
 	}
-	
+
 	public String getLastDir() {
 		String[] dirs = path.replace("\\", "/").split("/");
 		return dirs[dirs.length-1];
@@ -62,7 +71,5 @@ public class SCMRepository {
 		return "SCMRepository [path=" + path + ", headCommit=" + headCommit + ", lastCommit=" + firstCommit + ", scm="
 				+ scm + ", origin=" + origin + "]";
 	}
-	
-	
-	
+
 }

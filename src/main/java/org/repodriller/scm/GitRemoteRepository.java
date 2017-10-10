@@ -12,18 +12,19 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.repodriller.domain.ChangeSet;
 import org.repodriller.domain.Commit;
 
+/* TODO Name: Sounds like it inherits SCMRepository, but it actually implements SCM. */
 public class GitRemoteRepository implements SCM {
-	
+
 	private GitRepository tempGitRepository;
 	private String remoteRepositoryUrl;
 	private String tempGitPath;
 
 	private static Logger log = Logger.getLogger(GitRemoteRepository.class);
-	
+
 	public GitRemoteRepository(String url) {
 		this(url, gitSystemTempDir(), false);
 	}
-	
+
 	public GitRemoteRepository(String url, String rootTempGitPath, boolean bare) {
 		try {
 			this.remoteRepositoryUrl = url;
@@ -38,10 +39,10 @@ public class GitRemoteRepository implements SCM {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	protected void initTempGitRepository(boolean bare) throws GitAPIException {
 		File directory = new File(this.tempGitPath);
-		
+
 		if(!directory.exists()) {
 			log.info("Cloning Remote Repository " + this.remoteRepositoryUrl + " into " + this.tempGitPath);
 			Git.cloneRepository()
@@ -57,7 +58,7 @@ public class GitRemoteRepository implements SCM {
 	protected static String gitSystemTempDir() {
 		return FileUtils.getTempDirectory().getAbsolutePath();
 	}
-	
+
 	protected static String gitRemoteRepositoryTempDir(String remoteRepositoryUrl, String rootTempDir) {
 		int lastIndexOfDotGit = remoteRepositoryUrl.lastIndexOf(".git");
 		if(lastIndexOfDotGit < 0 )
@@ -66,31 +67,31 @@ public class GitRemoteRepository implements SCM {
 
 		if(!rootTempDir.endsWith(File.separator))
 			rootTempDir += File.separator;
-		
+
 		return rootTempDir + directoryName;
 	}
-	
+
 	public static SCMRepository singleProject(String url) {
 		return singleProject(url, gitSystemTempDir(), false);
 	}
-	
+
 	protected static SCMRepository singleProject(String url, String rootTempGitPath, boolean bare) {
 		return new GitRemoteRepository(url, rootTempGitPath, bare).info();
 	}
-	
+
 	public static SCMRepository[] allProjectsIn(List<String> urls) {
 		return allProjectsIn(urls, gitSystemTempDir(), false);
 	}
-	
+
 	protected static SCMRepository[] allProjectsIn(List<String> urls, String rootTempGitPath, boolean bare) {
 		List<SCMRepository> repos = new ArrayList<SCMRepository>();
 		for (String url : urls) {
 			repos.add(singleProject(url, rootTempGitPath, bare));
 		}
-		
+
 		return repos.toArray(new SCMRepository[repos.size()]);
 	}
-	
+
 	public void deleteTempGitPath() throws IOException {
 		FileUtils.deleteDirectory(new File(this.tempGitPath));
 	}
@@ -145,7 +146,7 @@ public class GitRemoteRepository implements SCM {
 	public List<BlamedLine> blame(String file, String commitToBeBlamed, boolean priorCommit) {
 		return tempGitRepository.blame(file, commitToBeBlamed, priorCommit);
 	}
-	
+
 	public static SingleGitRemoteRepositoryBuilder hostedOn(String gitUrl) {
 		return new SingleGitRemoteRepositoryBuilder(gitUrl);
 	}
@@ -158,5 +159,5 @@ public class GitRemoteRepository implements SCM {
 	public String getCommitFromTag(String tag) {
 		return tempGitRepository.getCommitFromTag(tag);
 	}
-	
+
 }

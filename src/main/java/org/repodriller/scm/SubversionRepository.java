@@ -40,6 +40,7 @@ import org.tmatesoft.svn.core.wc.SVNUpdateClient;
  * @author Juliano Silva
  *
  */
+/* TODO Name: Sounds like it inherits SCMRepository, but it actually implements SCM. */
 public class SubversionRepository implements SCM {
 
 	private static final int MAX_SIZE_OF_A_DIFF = 100000;
@@ -443,7 +444,7 @@ public class SubversionRepository implements SCM {
 		// pull request me!
 		throw new RuntimeException("implement me!");
 	}
-	
+
 	public Integer getMaxNumberFilesInACommit() {
 		return maxNumberFilesInACommit;
 	}
@@ -453,5 +454,5 @@ public class SubversionRepository implements SCM {
 		// pull request me!
 		throw new RuntimeException("implement me!");
 	}
-	
+
 }

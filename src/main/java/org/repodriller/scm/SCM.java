@@ -21,19 +21,76 @@ import java.util.List;
 import org.repodriller.domain.ChangeSet;
 import org.repodriller.domain.Commit;
 
+/**
+ * This interface defines interactions with a source code repository that uses a Source Code Management system (i.e. version control system).
+ * In essence, any SCM consists of a set of commits in a possibly-linear directed acyclic graph (DAG).
+ *
+ * An SCM:
+ *  - Maintains a set of Commits (full details) that are uniquely identified with ChangeSets (metadata)
+ *  - Has a "most recent commit" called its head
+ *  - Can roll back the state of the repository to a particular Commit
+ *  - Can return to the head
+ *
+ * @author Mauricio Aniche
+ */
 public interface SCM {
 
-	List<ChangeSet> getChangeSets();
-	Commit getCommit(String id);
-	String getCommitFromTag(String tag);
-	ChangeSet getHead();
-	List<RepositoryFile> files();
+	/* Methods for general information about the SCM. */
+
+	/**
+	 * @return Total commits in this SCM.
+	 */
 	long totalCommits();
-	void reset();
-	void checkout(String id);
+
+	/**
+	 * @return ChangeSet representing the "head" (most recent) commit.
+	 */
+	ChangeSet getHead();
+
+	/**
+	 * @return All ChangeSets in this SCM.
+	 */
+	List<ChangeSet> getChangeSets();
+
+	/**
+	 * @return Metadata about this SCM.
+	 */
+	SCMRepository info();
+
+	/* Methods for retrieving Commits. */
+
+	/**
+	 * Retrieve the Commit with this id.
+	 *
+	 * @param id	The commit to retrieve
+	 * @return	The Commit with this id, or null.
+	 */
+	Commit getCommit(String id);
+	/* TODO A method named getCommitXYZ should return a Commit. */
+	String getCommitFromTag(String tag);
+
 	@Deprecated
 	String blame(String file, String currentCommit, Integer line);
 	List<BlamedLine> blame(String file, String commitToBeBlamed, boolean priorCommit);
-	SCMRepository info();
 
+	/* Methods for interacting with current repo state. */
+
+	/**
+	 * Return the repo to the state immediately following the application of the Commit identified by this id.
+	 * @param id	The commit to checkout.
+	 * Implementors: May not be thread safe, consider synchronized.
+	 */
+	void checkout(String id);
+
+	/**
+	 * Return the repo to the state of the head commit.
+	 * Implementors: May not be thread safe, consider synchronized.
+	 */
+	void reset();
+
+	/**
+	 * @return All files currently in the repo.
+	 * Implementors: May not be thread safe, consider synchronized.
+	 */
+	List<RepositoryFile> files();
 }
