@@ -260,9 +260,9 @@ public class GitRepository implements SCM {
 			/* Convert each of the associated DiffEntry's to a Modification. */
 			List<DiffEntry> diffsForTheCommit = diffsForTheCommit(repo, jgitCommit);
 			if (diffsForTheCommit.size() > maxNumberFilesInACommit) {
-				String msg = "Commit " + id + " touches more than " + maxNumberFilesInACommit + " files";
-				log.error(msg);
-				throw new RepoDrillerException(msg);
+				String errMsg = "Commit " + id + " touches more than " + maxNumberFilesInACommit + " files";
+				log.error(errMsg);
+				throw new RepoDrillerException(errMsg);
 			}
 
 			for (DiffEntry diff : diffsForTheCommit) {
