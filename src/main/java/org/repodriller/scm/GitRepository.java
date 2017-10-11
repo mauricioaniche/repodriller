@@ -72,9 +72,10 @@ public class GitRepository implements SCM {
 	private boolean firstParentOnly = false;
 
 	/**
-	 * Make sub-classing easier. Make sure you initialize appropriately with the Setters.
+	 * Intended for sub-classes.
+	 * Make sure you initialize appropriately with the Setters.
 	 */
-	public GitRepository() {
+	protected GitRepository() {
 		this(null);
 	}
 
@@ -487,16 +488,8 @@ public class GitRepository implements SCM {
 		return ref.getObjectId();
 	}
 
-	public String getPath() {
-		return path;
-	}
-
 	public void setPath(String path) {
 		this.path = path;
-	}
-
-	public boolean isFirstParentOnly() {
-		return firstParentOnly;
 	}
 
 	public void setFirstParentOnly(boolean firstParentOnly) {
