@@ -85,11 +85,6 @@ public class Commit {
 		return parent;
 	}
 
-	/* TODO Deprecate this in favor of the other version. */
-	public void addModification(String oldPath, String newPath, ModificationType change, String diff, String sc) {
-		addModification(new Modification (oldPath, newPath, change, diff, sc));
-	}
-
 	public void addModification(Modification m) {
 		modifications.add(m);
 	}
