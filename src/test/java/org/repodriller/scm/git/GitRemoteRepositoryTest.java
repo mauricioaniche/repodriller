@@ -80,8 +80,7 @@ public class GitRemoteRepositoryTest {
 	 * Doesn't work in every machine/filesystem.
 	 * Mock to avoid this issue and make test independent of internet connection?
 	 */
-	/* TODO This works on my Linux box. Can someone test on Windows? */
-//	@AfterClass
+	@AfterClass
 	public static void deleteTempResource() throws IOException {
 		Collection<GitRemoteRepository> repos = new ArrayList<GitRemoteRepository>();
 		repos.add(git1);
