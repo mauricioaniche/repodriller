@@ -30,7 +30,7 @@ public class GitRemoteRepository extends GitRepository implements AutoCloseable 
 
 	/* User-defined. */
 	private String url;
-	private String path;
+	private String path; /* TODO GitRepository also has a path member. Make it protected and inherit, or use getter/setter as needed? */
 
 	private static Logger log = Logger.getLogger(GitRemoteRepository.class);
 
@@ -45,7 +45,8 @@ public class GitRemoteRepository extends GitRepository implements AutoCloseable 
 
 	/**
 	 * @param url	Where do we clone the repo from?
-	 * @param destination	Clone to a tree within rootpath
+	 * @param destination	If provided, clone here. Should not exist already.
+	 *                   	If null, clones to a unique temp dir.
 	 * @param bare	Bare clone (metadata only) or full?
 	 */
 	public GitRemoteRepository(String url, String destination, boolean bare) {
@@ -55,12 +56,19 @@ public class GitRemoteRepository extends GitRepository implements AutoCloseable 
 			/* Set members. */
 			this.url = url;
 
-			/* Get a good temp dir name. */
-			String tempDirPath = RDFileUtils.getTempPath(destination);
-			String repoName = repoNameFromURL(url);
-			String cloneDestination = tempDirPath + "-" + repoName;
+			/* Figure out clone path. */
+			path = destination;
+			if (path == null) {
+				/* Pick a temp dir name. */
+				String tempDirPath = RDFileUtils.getTempPath(null); // all ancestors exist
+				String repoName = repoNameFromURL(url);
+				path = tempDirPath + "-" + repoName;
+			}
 
-			path = cloneDestination;
+			/* path must not exist already. */
+			if (new File(path).exists()) {
+				throw new RepoDrillerException("Error, path " + path + " already exists");
+			}
 
 			log.info("url " + url + " destination " + destination + " bare " + bare + " (path " + path + ")");
 
@@ -71,7 +79,7 @@ public class GitRemoteRepository extends GitRepository implements AutoCloseable 
 			/* Clone the remote repo. */
 			cloneGitRepository(url, path, bare);
 			hasLocalState = true;
-		} catch (IOException|GitAPIException e) {
+		} catch (IOException|GitAPIException|RepoDrillerException e) {
 			log.error("Unsuccessful git remote repository initialization", e);
 			throw new RepoDrillerException(e);
 		}
