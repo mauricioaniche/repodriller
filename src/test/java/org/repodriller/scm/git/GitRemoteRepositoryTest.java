@@ -80,7 +80,8 @@ public class GitRemoteRepositoryTest {
 	 * Doesn't work in every machine/filesystem.
 	 * Mock to avoid this issue and make test independent of internet connection?
 	 */
-	@AfterClass
+	 /* TODO Should enable this to clean up after running tests. Or otherwise avoid dir pollution, e.g. using the system temp dir as the temp directory rather than putting it in the repodriller tree. */
+//	@AfterClass
 	public static void deleteTempResource() throws IOException {
 		Collection<GitRemoteRepository> repos = new ArrayList<GitRemoteRepository>();
 		repos.add(git1);
