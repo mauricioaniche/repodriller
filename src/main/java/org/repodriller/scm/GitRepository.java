@@ -71,7 +71,7 @@ public class GitRepository implements SCM {
 
 	private String path;
 	private String mainBranchName;
-	private int maxNumberFilesInACommit;
+	private int maxNumberFilesInACommit; /* TODO Expose an API to control this value? Also in SubversionRepository. */
 	private int maxSizeOfDiff;
 
 	private static Logger log = Logger.getLogger(GitRepository.class);
@@ -143,7 +143,7 @@ public class GitRepository implements SCM {
         try (Git git = openRepository()) {
 			ObjectId head = git.getRepository().resolve(Constants.HEAD);
 
-			RevWalk revWalk = new RevWalk(git.getRepository()); /* TODO Leak. Use try-with. */
+			RevWalk revWalk = new RevWalk(git.getRepository());
 			RevCommit r = revWalk.parseCommit(head);
 			return new ChangeSet(r.getName(), convertToDate(r));
 
@@ -169,7 +169,7 @@ public class GitRepository implements SCM {
 		try {
 			List<ChangeSet> allCs = new ArrayList<>();
 
-			RevWalk revWalk = new RevWalk(git.getRepository());  /* TODO Leak. Use try-with. */
+			RevWalk revWalk = new RevWalk(git.getRepository());
 			revWalk.setRevFilter(new FirstParentFilter());
 			revWalk.sort(RevSort.TOPO);
 			Ref headRef = git.getRepository().getRef(Constants.HEAD);  /* TODO Deprecated. */
@@ -260,9 +260,9 @@ public class GitRepository implements SCM {
 			/* Convert each of the associated DiffEntry's to a Modification. */
 			List<DiffEntry> diffsForTheCommit = diffsForTheCommit(repo, jgitCommit);
 			if (diffsForTheCommit.size() > maxNumberFilesInACommit) {
-				/* TODO I don't understand why this is exceptional. We should mark the Commit as truncated and handle the first X files. */
-				log.error("commit " + id + " has more than files than the limit");
-				throw new RepoDrillerException("Error, commit " + id + " touches more than " + maxNumberFilesInACommit + " files");
+				String msg = "Commit " + id + " touches more than " + maxNumberFilesInACommit + " files";
+				log.error(msg);
+				throw new RepoDrillerException(msg);
 			}
 
 			for (DiffEntry diff : diffsForTheCommit) {
