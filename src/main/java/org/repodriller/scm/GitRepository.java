@@ -51,31 +51,44 @@ import org.repodriller.domain.ChangeSet;
 import org.repodriller.domain.Commit;
 import org.repodriller.domain.Developer;
 import org.repodriller.domain.ModificationType;
-import org.repodriller.util.FileUtils;
+import org.repodriller.util.RDFileUtils;
 
 public class GitRepository implements SCM {
 
+	/* Constants. */
 	private static final int MAX_SIZE_OF_A_DIFF = 100000;
 	private static final int DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT = 5000;
 	private static final String BRANCH_MM = "mm";
 
-	private String path;
-	private String mainBranchName;
-	private int maxNumberFilesInACommit;
-	private int maxSizeOfDiff;
+	/* Auto-determined. */
+	private String mainBranchName = null;
+	private int maxNumberFilesInACommit = -1;
+	private int maxSizeOfDiff = -1;
 
 	private static Logger log = Logger.getLogger(GitRepository.class);
-	private boolean firstParentOnly;
 
-	public GitRepository(String path, boolean firstParentOnly) {
-		this.path = path;
-		this.firstParentOnly = firstParentOnly;
-		this.maxNumberFilesInACommit = checkMaxNumberOfFiles();
-		this.maxSizeOfDiff = checkMaxSizeOfDiff();
+	/* User-specified. */
+	private String path = null;
+	private boolean firstParentOnly = false;
+
+	/**
+	 * Intended for sub-classes.
+	 * Make sure you initialize appropriately with the Setters.
+	 */
+	protected GitRepository() {
+		this(null);
 	}
 
 	public GitRepository(String path) {
 		this(path, false);
+	}
+
+	public GitRepository(String path, boolean firstParentOnly) {
+		setPath(path);
+		setFirstParentOnly(firstParentOnly);
+
+		this.maxNumberFilesInACommit = checkMaxNumberOfFiles();
+		this.maxSizeOfDiff = checkMaxSizeOfDiff();
 	}
 
 	private int checkMaxNumberOfFiles() {
@@ -105,11 +118,11 @@ public class GitRepository implements SCM {
 	public static SCMRepository[] allProjectsIn(String path) {
 		return allProjectsIn(path, false);
 	}
-	
+
 	public static SCMRepository[] allProjectsIn(String path, boolean singleParentOnly) {
 		List<SCMRepository> repos = new ArrayList<>();
 
-		for (String dir : FileUtils.getAllDirsIn(path)) {
+		for (String dir : RDFileUtils.getAllDirsIn(path)) {
 			repos.add(singleProject(dir, singleParentOnly));
 		}
 
@@ -119,7 +132,7 @@ public class GitRepository implements SCM {
 	public SCMRepository info() {
 		try (Git git = openRepository(); RevWalk rw = new RevWalk(git.getRepository())) {
             AnyObjectId headId = git.getRepository().resolve(Constants.HEAD);
-            
+
 			RevCommit root = rw.parseCommit(headId);
 			rw.sort(RevSort.REVERSE);
 			rw.markStart(root);
@@ -174,7 +187,7 @@ public class GitRepository implements SCM {
 	private List<ChangeSet> firstParentsOnly(Git git) {
 		try {
 			List<ChangeSet> allCs = new ArrayList<>();
-			
+
 			RevWalk revWalk = new RevWalk(git.getRepository());
 			revWalk.setRevFilter(new FirstParentFilter());
 			revWalk.sort(RevSort.TOPO);
@@ -184,9 +197,9 @@ public class GitRepository implements SCM {
 			for(RevCommit revCommit : revWalk) {
 				allCs.add(extractChangeSet(revCommit));
 			}
-			
+
 			return allCs;
-			
+
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -212,7 +225,7 @@ public class GitRepository implements SCM {
 		GregorianCalendar date = new GregorianCalendar();
 		date.setTimeZone(revCommit.getAuthorIdent().getTimeZone());
 		date.setTime(revCommit.getAuthorIdent().getWhen());
-		
+
 		return date;
 	}
 
@@ -231,7 +244,7 @@ public class GitRepository implements SCM {
 
 				TimeZone authorTimeZone = jgitCommit.getAuthorIdent().getTimeZone();
 				TimeZone committerTimeZone = jgitCommit.getCommitterIdent().getTimeZone();
-				
+
 				String msg = jgitCommit.getFullMessage().trim();
 				String hash = jgitCommit.getName().toString();
 				String parent = (jgitCommit.getParentCount() > 0) ? jgitCommit.getParent(0).getName().toString() : "";
@@ -243,7 +256,7 @@ public class GitRepository implements SCM {
 				GregorianCalendar committerDate = new GregorianCalendar();
 				committerDate.setTime(jgitCommit.getCommitterIdent().getWhen());
 				committerDate.setTimeZone(jgitCommit.getCommitterIdent().getTimeZone());
-				
+
 				boolean merge = false;
 				if(jgitCommit.getParentCount() > 1) merge = true;
 				Set<String> branches = getBranches(git, hash);
@@ -274,7 +287,7 @@ public class GitRepository implements SCM {
 						log.error("diff for " + newPath + " too big");
 						diffText = "-- TOO BIG --";
 					}
-					
+
 					theCommit.addModification(oldPath, newPath, change, diffText, sc);
 
 				}
@@ -302,7 +315,7 @@ public class GitRepository implements SCM {
 
 		AnyObjectId currentCommit = repo.resolve(commit.getName());
 		AnyObjectId parentCommit = commit.getParentCount() > 0 ? repo.resolve(commit.getParent(0).getName()) : null;
-    
+
 		try (DiffFormatter df = new DiffFormatter(DisabledOutputStream.INSTANCE)) {
 
             df.setBinaryFileThreshold(2 * 1024); // 2 mb max a file
@@ -394,7 +407,7 @@ public class GitRepository implements SCM {
 	}
 
 	private List<File> getAllFilesInPath() {
-		return FileUtils.getAllFilesInPath(path);
+		return RDFileUtils.getAllFilesInPath(path);
 	}
 
 	@Override
@@ -407,11 +420,11 @@ public class GitRepository implements SCM {
 	public String blame(String file, String commitToBeBlamed, Integer line) {
 		return blame(file,commitToBeBlamed).get(line).getCommit();
 	}
-	
+
 	public List<BlamedLine> blame(String file, String commitToBeBlamed) {
 		return blame(file, commitToBeBlamed, true);
 	}
-	
+
 	public List<BlamedLine> blame(String file, String commitToBeBlamed, boolean priorCommit) {
         try (Git git = openRepository()) {
 			ObjectId gitCommitToBeBlamed;
@@ -419,7 +432,7 @@ public class GitRepository implements SCM {
 				Iterable<RevCommit> commits = git.log().add(git.getRepository().resolve(commitToBeBlamed)).call();
 				gitCommitToBeBlamed = commits.iterator().next().getParent(0).getId();
 			} else {
-				gitCommitToBeBlamed = git.getRepository().resolve(commitToBeBlamed); 
+				gitCommitToBeBlamed = git.getRepository().resolve(commitToBeBlamed);
 			}
 
 			BlameResult blameResult = git.blame().setFilePath(file).setStartCommit(gitCommitToBeBlamed).setFollowFileRenames(true).call();
@@ -427,13 +440,13 @@ public class GitRepository implements SCM {
 				int rows = blameResult.getResultContents().size();
 				List<BlamedLine> result = new ArrayList<>();
 				for(int i = 0; i < rows; i++) {
-					result.add(new BlamedLine(i, 
-							blameResult.getResultContents().getString(i), 
-							blameResult.getSourceAuthor(i).getName(), 
-							blameResult.getSourceCommitter(i).getName(), 
+					result.add(new BlamedLine(i,
+							blameResult.getResultContents().getString(i),
+							blameResult.getSourceAuthor(i).getName(),
+							blameResult.getSourceCommitter(i).getName(),
 							blameResult.getSourceCommit(i).getId().getName()));
 				}
-				
+
 				return result;
 			} else {
 				throw new RuntimeException("BlameResult not found.");
@@ -443,7 +456,7 @@ public class GitRepository implements SCM {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	public Integer getMaxNumberFilesInACommit() {
 		return maxNumberFilesInACommit;
 	}
@@ -455,23 +468,31 @@ public class GitRepository implements SCM {
 			Repository repo = git.getRepository();
 
 			Iterable<RevCommit> commits = git.log().add(getActualRefObjectId(repo.findRef(tag), repo)).call();
-			
+
 			for(RevCommit commit : commits) {
 				return commit.getName().toString();
 			}
-			
+
 			throw new RuntimeException("Failed for tag " + tag); // we never arrive here, hopefully
 
 		} catch (Exception e) {
 			throw new RuntimeException("Failed for tag " + tag, e);
 		}
 	}
-	
+
 	private ObjectId getActualRefObjectId(Ref ref, Repository repo) {
 		final Ref repoPeeled = repo.peel(ref);
 		if(repoPeeled.getPeeledObjectId() != null) {
 			return repoPeeled.getPeeledObjectId();
 		}
 		return ref.getObjectId();
+	}
+
+	public void setPath(String path) {
+		this.path = path;
+	}
+
+	public void setFirstParentOnly(boolean firstParentOnly) {
+		this.firstParentOnly = firstParentOnly;
 	}
 }

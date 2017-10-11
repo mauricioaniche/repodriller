@@ -9,142 +9,155 @@ import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.repodriller.domain.ChangeSet;
-import org.repodriller.domain.Commit;
+import org.repodriller.RepoDrillerException;
+import org.repodriller.util.RDFileUtils;
 
-/* TODO Name: Sounds like it inherits SCMRepository, but it actually implements SCM. */
-public class GitRemoteRepository implements SCM {
+/**
+ * A GitRepository that knows how to clone a remote repo and clean up after itself.
+ * Instantiating a GitRemoteRepository will clone the specified repo, which
+ *  - is expensive
+ *  - may throw an exception
+ *
+ * @author Jamie Davis
+ */
+public class GitRemoteRepository extends GitRepository implements AutoCloseable {
 
-	private GitRepository tempGitRepository;
-	private String remoteRepositoryUrl;
-	private String tempGitPath;
+	/* Constants. */
+	public static final String URL_SUFFIX = ".git";
+
+	/* Internal. */
+	private boolean hasLocalState = false;
+
+	/* User-defined. */
+	private String url;
+	private String path;
 
 	private static Logger log = Logger.getLogger(GitRemoteRepository.class);
 
+	/**
+	 * @param url	Where do we clone the repo from?
+	 * @throws GitAPIException
+	 * @throws IOException
+	 */
 	public GitRemoteRepository(String url) {
-		this(url, gitSystemTempDir(), false);
+		this(url, null, false);
 	}
 
-	public GitRemoteRepository(String url, String rootTempGitPath, boolean bare) {
+	/**
+	 * @param url	Where do we clone the repo from?
+	 * @param destination	Clone to a tree within rootpath
+	 * @param bare	Bare clone (metadata only) or full?
+	 */
+	public GitRemoteRepository(String url, String destination, boolean bare) {
+		super();
+
 		try {
-			this.remoteRepositoryUrl = url;
-			if(rootTempGitPath == null) {
-				rootTempGitPath = gitSystemTempDir();
-			}
-			this.tempGitPath = gitRemoteRepositoryTempDir(url, rootTempGitPath);
-			this.initTempGitRepository(bare);
-			this.tempGitRepository = new GitRepository(new File(tempGitPath).getCanonicalPath());
-		} catch (Exception e) {
-			log.error("Git remote repository initialization", e);
-			throw new RuntimeException(e);
+			/* Set members. */
+			this.url = url;
+
+			/* Get a good temp dir name. */
+			String tempDirPath = RDFileUtils.getTempPath(destination);
+			String repoName = repoNameFromURL(url);
+			String cloneDestination = tempDirPath + "-" + repoName;
+
+			path = cloneDestination;
+
+			log.info("url " + url + " destination " + destination + " bare " + bare + " (path " + path + ")");
+
+			/* Fill in GitRepository details. */
+			this.setPath(path);
+			this.setFirstParentOnly(true); /* TODO. */
+
+			/* Clone the remote repo. */
+			cloneGitRepository(url, path, bare);
+			hasLocalState = true;
+		} catch (IOException|GitAPIException e) {
+			log.error("Unsuccessful git remote repository initialization", e);
+			throw new RepoDrillerException(e);
 		}
 	}
 
-	protected void initTempGitRepository(boolean bare) throws GitAPIException {
-		File directory = new File(this.tempGitPath);
+	/**
+	 * Clone a git repository.
+	 *
+	 * @param url	Where from?
+	 * @param destination	Where to?
+	 * @param bare	Bare (metadata-only) or full?
+	 * @throws GitAPIException
+	 */
+	private void cloneGitRepository(String url, String destination, boolean bare) throws GitAPIException {
+		File directory = new File(destination);
 
-		if(!directory.exists()) {
-			log.info("Cloning Remote Repository " + this.remoteRepositoryUrl + " into " + this.tempGitPath);
-			Git.cloneRepository()
-					.setURI(this.remoteRepositoryUrl)
-					.setBare(bare)
-					.setDirectory(directory)
-					.setCloneAllBranches(true)
-					.setNoCheckout(false)
-					.call();
-		}
+		if (directory.exists())
+			throw new RepoDrillerException("Error, destination " + destination + " already exists");
+
+		log.info("Cloning Remote Repository " + url + " into " + this.path);
+		Git.cloneRepository()
+				.setURI(url)
+				.setBare(bare)
+				.setDirectory(directory)
+				.setCloneAllBranches(true)
+				.setNoCheckout(false)
+				.call();
 	}
 
-	protected static String gitSystemTempDir() {
-		return FileUtils.getTempDirectory().getAbsolutePath();
+	/**
+	 * Extract a git repo name from its URL.
+	 *
+	 * @param url
+	 * @return
+	 */
+	private static String repoNameFromURL(String url) {
+		/* Examples:
+		 *   git@github.com:substack/node-mkdirp.git
+		 *   https://bitbucket.org/fenics-project/notebooks.git
+		 */
+		int lastSlashIx = url.lastIndexOf("/");
+
+		int lastSuffIx = url.lastIndexOf(URL_SUFFIX);
+		if (lastSuffIx < 0)
+			lastSuffIx = url.length();
+
+		if (lastSlashIx < 0 || lastSuffIx <= lastSlashIx)
+			throw new RepoDrillerException("Error, ill-formed url: " + url);
+
+		return url.substring(lastSlashIx + 1, lastSuffIx);
 	}
 
-	protected static String gitRemoteRepositoryTempDir(String remoteRepositoryUrl, String rootTempDir) {
-		int lastIndexOfDotGit = remoteRepositoryUrl.lastIndexOf(".git");
-		if(lastIndexOfDotGit < 0 )
-			lastIndexOfDotGit = remoteRepositoryUrl.length();
-		String directoryName = remoteRepositoryUrl.substring(remoteRepositoryUrl.lastIndexOf("/")+1, lastIndexOfDotGit);
-
-		if(!rootTempDir.endsWith(File.separator))
-			rootTempDir += File.separator;
-
-		return rootTempDir + directoryName;
+	/**
+	 * Clean up this object.
+	 * See {@link GitRemoteRepository#close}.
+	 *
+	 * @throws IOException
+	 */
+	@Deprecated
+	public void deleteTempGitPath() throws IOException {
+		if (hasLocalState)
+			FileUtils.deleteDirectory(new File(this.path));
 	}
+
+	/* Various factory methods. */
 
 	public static SCMRepository singleProject(String url) {
-		return singleProject(url, gitSystemTempDir(), false);
+		return singleProject(url, null, false);
 	}
 
-	protected static SCMRepository singleProject(String url, String rootTempGitPath, boolean bare) {
-		return new GitRemoteRepository(url, rootTempGitPath, bare).info();
+	@SuppressWarnings("resource")
+	public static SCMRepository singleProject(String url, String rootpath, boolean bare) {
+		return new GitRemoteRepository(url, rootpath, bare).info();
 	}
 
-	public static SCMRepository[] allProjectsIn(List<String> urls) {
-		return allProjectsIn(urls, gitSystemTempDir(), false);
+	public static SCMRepository[] allProjectsIn(List<String> urls) throws GitAPIException, IOException {
+		return allProjectsIn(urls, null, false);
 	}
 
-	protected static SCMRepository[] allProjectsIn(List<String> urls, String rootTempGitPath, boolean bare) {
+	protected static SCMRepository[] allProjectsIn(List<String> urls, String rootpath, boolean bare) {
 		List<SCMRepository> repos = new ArrayList<SCMRepository>();
 		for (String url : urls) {
-			repos.add(singleProject(url, rootTempGitPath, bare));
+			repos.add(singleProject(url, rootpath, bare));
 		}
 
 		return repos.toArray(new SCMRepository[repos.size()]);
-	}
-
-	public void deleteTempGitPath() throws IOException {
-		FileUtils.deleteDirectory(new File(this.tempGitPath));
-	}
-
-	@Override
-	public SCMRepository info() {
-		return tempGitRepository.info();
-	}
-
-	@Override
-	public ChangeSet getHead() {
-		return tempGitRepository.getHead();
-	}
-
-	@Override
-	public List<ChangeSet> getChangeSets() {
-		return tempGitRepository.getChangeSets();
-	}
-
-	@Override
-	public Commit getCommit(String id) {
-		return tempGitRepository.getCommit(id);
-	}
-
-	@Override
-	public void checkout(String hash) {
-		tempGitRepository.checkout(hash);
-	}
-
-	@Override
-	public List<RepositoryFile> files() {
-		return tempGitRepository.files();
-	}
-
-	@Override
-	public void reset() {
-		tempGitRepository.reset();
-	}
-
-	@Override
-	public long totalCommits() {
-		return tempGitRepository.totalCommits();
-	}
-
-	@Override
-	@Deprecated
-	public String blame(String file, String currentCommit, Integer line) {
-		return tempGitRepository.blame(file, currentCommit, line);
-	}
-
-	@Override
-	public List<BlamedLine> blame(String file, String commitToBeBlamed, boolean priorCommit) {
-		return tempGitRepository.blame(file, commitToBeBlamed, priorCommit);
 	}
 
 	public static SingleGitRemoteRepositoryBuilder hostedOn(String gitUrl) {
@@ -155,9 +168,11 @@ public class GitRemoteRepository implements SCM {
 		return new MultipleGitRemoteRepositoryBuilder(gitUrls);
 	}
 
-	@Override
-	public String getCommitFromTag(String tag) {
-		return tempGitRepository.getCommitFromTag(tag);
-	}
+	/* Interface: AutoCloseable. */
 
+	@Override
+	public void close() throws IOException {
+		if (hasLocalState)
+			FileUtils.deleteDirectory(new File(path));
+	}
 }

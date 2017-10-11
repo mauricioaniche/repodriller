@@ -2,7 +2,7 @@ package org.repodriller.scm;
 
 import java.io.File;
 
-import org.repodriller.util.FileUtils;
+import org.repodriller.util.RDFileUtils;
 
 public class RepositoryFile {
 
@@ -33,7 +33,7 @@ public class RepositoryFile {
 	}
 	
 	public String getSourceCode() {
-		return FileUtils.readFile(getFile());
+		return RDFileUtils.readFile(getFile());
 	}
 	
 	@Override
