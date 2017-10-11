@@ -19,8 +19,8 @@ public class RDFileUtils {
 	/**
 	 * Get the absolute path to all subdirs of {@code path}.
 	 *
-	 * @param path	Root of directory tree
-	 * @return	All children of this root that are subdirs
+	 * @param path  Root of directory tree
+	 * @return      All children of this root that are subdirs
 	 */
 	public static List<String> getAllDirsIn(String path) {
 		File dir = new File(path);
@@ -33,6 +33,7 @@ public class RDFileUtils {
 				projects.add(possibleDir.getAbsolutePath());
 			}
 		}
+
 		return projects;
 	}
 
@@ -46,6 +47,8 @@ public class RDFileUtils {
 		return getAllFilesInPath(pathToLook, new ArrayList<>());
 	}
 
+	/* TODO This method should not have checks for .git and .svn hard-coded into it
+	 *      (see isAProjectSubdirectory). */
 	/**
 	 * Helper for getAllFilesInPath.
 	 *
@@ -77,7 +80,7 @@ public class RDFileUtils {
 			input.close();
 			return text;
 		} catch (Exception e) {
-			throw new RuntimeException("Error reading file " + f.getAbsolutePath(), e);
+			throw new RuntimeException("error reading file " + f.getAbsolutePath(), e);
 		}
 	}
 
@@ -86,9 +89,6 @@ public class RDFileUtils {
 	 *
 	 * @param f
 	 * @return True if it looks like a "project subdirectory"
-	 */
-	/* TODO It's strange that a FileUtils class knows about .svn and .git.
-	 * 		If you want to blacklist subtrees, these should be arguments, not hardcoded in this class.
 	 */
 	private static boolean isAProjectSubdirectory(File f) {
 		return f.isDirectory() && !f.getName().equals(".svn") && !f.getName().equals(".git");
