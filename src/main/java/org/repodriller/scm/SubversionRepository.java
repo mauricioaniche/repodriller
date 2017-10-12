@@ -266,6 +266,11 @@ public class SubversionRepository implements SCM {
 			return "";
 		}
 	}
+	
+	@Override
+	public void getDiffBetweenCommits(String priorCommit, String laterCommit) {
+		// TODO Auto-generated method stub	
+	}
 
 	private ModificationType getModificationType(SVNLogEntryPath e) {
 		if (e.getType() == 'A') {

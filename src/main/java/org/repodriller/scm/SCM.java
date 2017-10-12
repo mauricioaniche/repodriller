@@ -68,7 +68,6 @@ public interface SCM {
 	Commit getCommit(String id);
 	/* TODO A method named getCommitXYZ should return a Commit. */
 	String getCommitFromTag(String tag);
-
 	@Deprecated
 	String blame(String file, String currentCommit, Integer line);
 	List<BlamedLine> blame(String file, String commitToBeBlamed, boolean priorCommit);

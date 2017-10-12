@@ -306,7 +306,6 @@ public class GitRepository implements SCM {
 		}
 	}
 
-
 	private Set<String> getBranches(Git git, String hash) throws GitAPIException {
 		List<Ref> gitBranches = git.branchList().setContains(hash).call();
 		Set<String> mappedBranches = gitBranches.stream()
@@ -321,6 +320,23 @@ public class GitRepository implements SCM {
 		AnyObjectId currentCommit = repo.resolve(commit.getName());
 		AnyObjectId parentCommit = commit.getParentCount() > 0 ? repo.resolve(commit.getParent(0).getName()) : null;
 
+		return this.getDiffBetweenCommits(repo, parentCommit, currentCommit);
+	}
+
+	@Override
+	public void getDiffBetweenCommits(String priorCommitHash, String laterCommitHash) {
+		try (Git git = openRepository()) {
+			Repository repo = git.getRepository();
+			AnyObjectId priorCommit = repo.resolve(priorCommitHash);
+			AnyObjectId laterCommit = repo.resolve(laterCommitHash);
+			List<DiffEntry> diffs = this.getDiffBetweenCommits(repo, priorCommit, laterCommit);
+		} catch (Exception e) {
+			throw new RuntimeException("error diffing " + priorCommitHash + " and " + laterCommitHash + " in " + path, e);
+		}
+	}
+
+
+	private List<DiffEntry> getDiffBetweenCommits(Repository repo, AnyObjectId parentCommit, AnyObjectId currentCommit) {
 		try (DiffFormatter df = new DiffFormatter(DisabledOutputStream.INSTANCE)) {
 
             df.setBinaryFileThreshold(2 * 1024); // 2 mb max a file
@@ -333,13 +349,16 @@ public class GitRepository implements SCM {
 
             if (parentCommit == null) {
                 try(RevWalk rw = new RevWalk(repo)) {
+                	RevCommit commit = rw.parseCommit(currentCommit);
                     diffs = df.scan(new EmptyTreeIterator(), new CanonicalTreeParser(null, rw.getObjectReader(), commit.getTree()));
                 }
             } else {
                 diffs = df.scan(parentCommit, currentCommit);
             }
             return diffs;
-        }
+        } catch (IOException e) {
+        	throw new RuntimeException("error diffing " + parentCommit.getName() + " and " + currentCommit.getName() + " in " + path, e);
+		}
 	}
 
 	private void setContext(DiffFormatter df) {
