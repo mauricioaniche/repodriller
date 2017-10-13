@@ -164,6 +164,7 @@ public class SubversionRepository implements SCM {
 
 	@SuppressWarnings("rawtypes")
 	@Override
+	/* TODO Refactor as in GitRepository.getCommit. */
 	public Commit getCommit(String id) {
 		SVNRepository repository = null;
 
