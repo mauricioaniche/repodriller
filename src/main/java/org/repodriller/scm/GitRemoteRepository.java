@@ -29,39 +29,39 @@ public class GitRemoteRepository extends GitRepository implements AutoCloseable 
 	private boolean hasLocalState = false;
 
 	/* User-defined. */
-	private String url;
+	private String uri;
 	private String path; /* TODO GitRepository also has a path member. Make it protected and inherit, or use getter/setter as needed? */
 
 	private static Logger log = Logger.getLogger(GitRemoteRepository.class);
 
 	/**
-	 * @param url	Where do we clone the repo from?
+	 * @param uri	Where do we clone the repo from?
 	 * @throws GitAPIException
 	 * @throws IOException
 	 */
-	public GitRemoteRepository(String url) {
-		this(url, null, false);
+	public GitRemoteRepository(String uri) {
+		this(uri, null, false);
 	}
 
 	/**
-	 * @param url	Where do we clone the repo from?
+	 * @param uri	Where do we clone the repo from? Anything that works as an argument to "git clone", e.g. local dir or GitHub address.
 	 * @param destination	If provided, clone here. Should not exist already.
 	 *                   	If null, clones to a unique temp dir.
 	 * @param bare	Bare clone (metadata only) or full?
 	 */
-	public GitRemoteRepository(String url, String destination, boolean bare) {
+	public GitRemoteRepository(String uri, String destination, boolean bare) {
 		super();
 
 		try {
 			/* Set members. */
-			this.url = url;
+			this.uri = uri;
 
 			/* Figure out clone path. */
 			path = destination;
 			if (path == null) {
 				/* Pick a temp dir name. */
 				String tempDirPath = RDFileUtils.getTempPath(null); // all ancestors exist
-				String repoName = repoNameFromURL(url);
+				String repoName = repoNameFromURI(uri);
 				path = tempDirPath + "-" + repoName;
 			}
 
@@ -70,14 +70,14 @@ public class GitRemoteRepository extends GitRepository implements AutoCloseable 
 				throw new RepoDrillerException("Error, path " + path + " already exists");
 			}
 
-			log.info("url " + url + " destination " + destination + " bare " + bare + " (path " + path + ")");
+			log.info("url " + uri + " destination " + destination + " bare " + bare + " (path " + path + ")");
 
 			/* Fill in GitRepository details. */
 			this.setPath(path);
 			this.setFirstParentOnly(true); /* TODO. */
 
 			/* Clone the remote repo. */
-			cloneGitRepository(url, path, bare);
+			cloneGitRepository(uri, path, bare);
 			hasLocalState = true;
 		} catch (IOException|GitAPIException|RepoDrillerException e) {
 			log.error("Unsuccessful git remote repository initialization", e);
@@ -88,20 +88,20 @@ public class GitRemoteRepository extends GitRepository implements AutoCloseable 
 	/**
 	 * Clone a git repository.
 	 *
-	 * @param url	Where from?
+	 * @param uri	Where from?
 	 * @param destination	Where to?
 	 * @param bare	Bare (metadata-only) or full?
 	 * @throws GitAPIException
 	 */
-	private void cloneGitRepository(String url, String destination, boolean bare) throws GitAPIException {
+	private void cloneGitRepository(String uri, String destination, boolean bare) throws GitAPIException {
 		File directory = new File(destination);
 
 		if (directory.exists())
 			throw new RepoDrillerException("Error, destination " + destination + " already exists");
 
-		log.info("Cloning Remote Repository " + url + " into " + this.path);
+		log.info("Cloning Remote Repository " + uri + " into " + this.path);
 		Git.cloneRepository()
-				.setURI(url)
+				.setURI(uri)
 				.setBare(bare)
 				.setDirectory(directory)
 				.setCloneAllBranches(true)
@@ -112,24 +112,25 @@ public class GitRemoteRepository extends GitRepository implements AutoCloseable 
 	/**
 	 * Extract a git repo name from its URL.
 	 *
-	 * @param url
+	 * @param uri
 	 * @return
 	 */
-	private static String repoNameFromURL(String url) {
+	private static String repoNameFromURI(String uri) {
 		/* Examples:
 		 *   git@github.com:substack/node-mkdirp.git
 		 *   https://bitbucket.org/fenics-project/notebooks.git
+		 *   /tmp/existing-git-dir
 		 */
-		int lastSlashIx = url.lastIndexOf("/");
+		int lastSlashIx = uri.lastIndexOf("/");
 
-		int lastSuffIx = url.lastIndexOf(URL_SUFFIX);
+		int lastSuffIx = uri.lastIndexOf(URL_SUFFIX);
 		if (lastSuffIx < 0)
-			lastSuffIx = url.length();
+			lastSuffIx = uri.length();
 
 		if (lastSlashIx < 0 || lastSuffIx <= lastSlashIx)
-			throw new RepoDrillerException("Error, ill-formed url: " + url);
+			throw new RepoDrillerException("Error, ill-formed url: " + uri);
 
-		return url.substring(lastSlashIx + 1, lastSuffIx);
+		return uri.substring(lastSlashIx + 1, lastSuffIx);
 	}
 
 	/**
@@ -181,6 +182,6 @@ public class GitRemoteRepository extends GitRepository implements AutoCloseable 
 	public void close() throws IOException {
 		if (hasLocalState)
 			FileUtils.deleteDirectory(new File(path));
-		hasLocalState = false;	
+		hasLocalState = false;
 	}
 }
