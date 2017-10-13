@@ -19,7 +19,7 @@ import org.repodriller.domain.Commit;
 import org.repodriller.domain.Developer;
 import org.repodriller.domain.Modification;
 import org.repodriller.domain.ModificationType;
-import org.repodriller.util.FileUtils;
+import org.repodriller.util.RDFileUtils;
 import org.tmatesoft.svn.core.SVNDepth;
 import org.tmatesoft.svn.core.SVNDirEntry;
 import org.tmatesoft.svn.core.SVNException;
@@ -101,7 +101,7 @@ public class SubversionRepository implements SCM {
 	public static SCMRepository[] allProjectsIn(String path, Integer maxNumberOfFilesInACommit) {
 		List<SCMRepository> repos = new ArrayList<SCMRepository>();
 
-		for (String dir : FileUtils.getAllDirsIn(path)) {
+		for (String dir : RDFileUtils.getAllDirsIn(path)) {
 			repos.add(singleProject(dir, maxNumberOfFilesInACommit));
 		}
 
@@ -320,7 +320,7 @@ public class SubversionRepository implements SCM {
 	}
 
 	private List<File> getAllFilesInPath() {
-		return FileUtils.getAllFilesInPath(workingCopyPath);
+		return RDFileUtils.getAllFilesInPath(workingCopyPath);
 	}
 
 	private boolean isNotAnImportantFile(File f) {

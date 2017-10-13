@@ -13,4 +13,8 @@ public class RepoDrillerException extends RuntimeException{
 		super(msg);
 	}
 
+	public RepoDrillerException(Exception e) {
+		super(e);
+	}
+
 }

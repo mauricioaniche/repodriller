@@ -54,7 +54,7 @@ import org.repodriller.domain.Commit;
 import org.repodriller.domain.Developer;
 import org.repodriller.domain.Modification;
 import org.repodriller.domain.ModificationType;
-import org.repodriller.util.FileUtils;
+import org.repodriller.util.RDFileUtils;
 
 /**
  * Everything you need to work with a Git-based source code repository.
@@ -65,27 +65,41 @@ import org.repodriller.util.FileUtils;
 /* TODO Name: Sounds like it inherits SCMRepository, but it actually implements SCM. */
 public class GitRepository implements SCM {
 
+	/* Constants. */
 	private static final int MAX_SIZE_OF_A_DIFF = 100000;
 	private static final int DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT = 5000;
 	private static final String BRANCH_MM = "mm"; /* TODO mm -> rd. */
 
-	private String path;
-	private String mainBranchName;
-	private int maxNumberFilesInACommit; /* TODO Expose an API to control this value? Also in SubversionRepository. */
-	private int maxSizeOfDiff;
+	/* Auto-determined. */
+	private String mainBranchName = null;
+	private int maxNumberFilesInACommit = -1; /* TODO Expose an API to control this value? Also in SubversionRepository. */
+	private int maxSizeOfDiff = -1; /* TODO Expose an API to control this value? Also in SubversionRepository. */
 
 	private static Logger log = Logger.getLogger(GitRepository.class);
-	private boolean firstParentOnly;
 
-	public GitRepository(String path, boolean firstParentOnly) {
-		this.path = path;
-		this.firstParentOnly = firstParentOnly;
-		this.maxNumberFilesInACommit = checkMaxNumberOfFiles();
-		this.maxSizeOfDiff = checkMaxSizeOfDiff();
+	/* User-specified. */
+	private String path = null;
+	private boolean firstParentOnly = false;
+
+	/**
+	 * Intended for sub-classes.
+	 * Make sure you initialize appropriately with the Setters.
+	 */
+	protected GitRepository() {
+		this(null);
 	}
 
 	public GitRepository(String path) {
 		this(path, false);
+	}
+
+
+	public GitRepository(String path, boolean firstParentOnly) {
+		setPath(path);
+		setFirstParentOnly(firstParentOnly);
+
+		maxNumberFilesInACommit = checkMaxNumberOfFiles();
+		maxSizeOfDiff = checkMaxSizeOfDiff();
 	}
 
 	public static SCMRepository singleProject(String path) {
@@ -103,7 +117,7 @@ public class GitRepository implements SCM {
 	public static SCMRepository[] allProjectsIn(String path, boolean singleParentOnly) {
 		List<SCMRepository> repos = new ArrayList<>();
 
-		for (String dir : FileUtils.getAllDirsIn(path)) {
+		for (String dir : RDFileUtils.getAllDirsIn(path)) {
 			repos.add(singleProject(dir, singleParentOnly));
 		}
 
@@ -129,7 +143,7 @@ public class GitRepository implements SCM {
 
 	protected Git openRepository() throws IOException, GitAPIException {
 		Git git = Git.open(new File(path));
-		if(this.mainBranchName == null) {
+		if (this.mainBranchName == null) {
 			this.mainBranchName = discoverMainBranchName(git);
 		}
 		return git;
@@ -401,7 +415,7 @@ public class GitRepository implements SCM {
 	}
 
 	private List<File> getAllFilesInPath() {
-		return FileUtils.getAllFilesInPath(path);
+		return RDFileUtils.getAllFilesInPath(path);
 	}
 
 	@Override
@@ -482,7 +496,6 @@ public class GitRepository implements SCM {
 		return ref.getObjectId();
 	}
 
-
 	/**
 	 * Return the max number of files in a commit.
 	 * Default is hard-coded to "something large".
@@ -523,5 +536,13 @@ public class GitRepository implements SCM {
 	private int getSystemProperty (String name) throws NumberFormatException {
 		String val = System.getProperty(name);
 		return Integer.parseInt(val);
+	}
+
+	public void setPath(String path) {
+		this.path = path;
+	}
+
+	public void setFirstParentOnly(boolean firstParentOnly) {
+		this.firstParentOnly = firstParentOnly;
 	}
 }

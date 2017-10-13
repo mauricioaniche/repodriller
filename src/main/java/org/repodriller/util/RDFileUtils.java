@@ -2,9 +2,11 @@ package org.repodriller.util;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
 /**
@@ -12,13 +14,13 @@ import org.apache.commons.io.IOUtils;
  *
  * @author Mauricio Aniche
  */
-public class FileUtils {
+public class RDFileUtils {
 
 	/**
 	 * Get the absolute path to all subdirs of {@code path}.
 	 *
-	 * @param path	Root of directory tree
-	 * @return	All children of this root that are subdirs
+	 * @param path  Root of directory tree
+	 * @return      All children of this root that are subdirs
 	 */
 	public static List<String> getAllDirsIn(String path) {
 		File dir = new File(path);
@@ -31,6 +33,7 @@ public class FileUtils {
 				projects.add(possibleDir.getAbsolutePath());
 			}
 		}
+
 		return projects;
 	}
 
@@ -44,6 +47,8 @@ public class FileUtils {
 		return getAllFilesInPath(pathToLook, new ArrayList<>());
 	}
 
+	/* TODO This method should not have checks for .git and .svn hard-coded into it
+	 *      (see isAProjectSubdirectory). */
 	/**
 	 * Helper for getAllFilesInPath.
 	 *
@@ -51,9 +56,6 @@ public class FileUtils {
 	 * @param files	Ongoing collection of files (not dirs)
 	 * @return	{@code files} plus all files in the tree rooted at pathToLook
 	 *          Files that are in .svn or .git dirs are ignored.
-	 */
-	/* TODO It's strange that a FileUtils class knows abuot .svn and .git.
-	 * 		If you want to blacklist subtrees, these should be arguments, not hardcoded in this class.
 	 */
 	private static List<File> getAllFilesInPath(String pathToLook, List<File> files) {
 		for (File f : new File(pathToLook).listFiles()) {
@@ -78,7 +80,7 @@ public class FileUtils {
 			input.close();
 			return text;
 		} catch (Exception e) {
-			throw new RuntimeException("Error reading file " + f.getAbsolutePath(), e);
+			throw new RuntimeException("error reading file " + f.getAbsolutePath(), e);
 		}
 	}
 
@@ -90,5 +92,29 @@ public class FileUtils {
 	 */
 	private static boolean isAProjectSubdirectory(File f) {
 		return f.isDirectory() && !f.getName().equals(".svn") && !f.getName().equals(".git");
+	}
+
+	/**
+	 * Get a unique path that does not yet exist
+	 *
+	 * @param directory	Where to begin the path, defaults to the system temp dir
+	 * @return	Absolute path to an available file
+	 * @throws IOException
+	 */
+	public static String getTempPath(String directory) throws IOException {
+		try {
+			if (directory == null)
+				directory = FileUtils.getTempDirectoryPath();
+
+			File dir = new File(directory);
+			dir.mkdirs();
+
+			File tmpFile = File.createTempFile("RD-", "", dir);
+			String absPath = tmpFile.getAbsolutePath();
+			tmpFile.delete();
+			return absPath;
+		} catch (IOException e) {
+			throw new IOException("Error, couldn't create temp dir in " + directory + ": " + e);
+		}
 	}
 }
