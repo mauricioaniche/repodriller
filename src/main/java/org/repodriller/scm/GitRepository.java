@@ -280,24 +280,8 @@ public class GitRepository implements SCM {
 			}
 
 			for (DiffEntry diff : diffsForTheCommit) {
-				ModificationType change = Enum.valueOf(ModificationType.class, diff.getChangeType().toString());
-
-				String oldPath = diff.getOldPath();
-				String newPath = diff.getNewPath();
-
-				String diffText = "";
-				String sc = "";
-				if (diff.getChangeType() != ChangeType.DELETE) {
-					diffText = getDiffText(repo, diff);
-					sc = getSourceCode(repo, diff);
-				}
-
-				if (diffText.length() > maxSizeOfDiff) {
-					log.error("diff for " + newPath + " too big");
-					diffText = "-- TOO BIG --";
-				}
-
-				commit.addModification(new Modification(oldPath, newPath, change, diffText, sc));
+				Modification m = this.getModificationFromDiff(repo, diff);
+				commit.addModification(m);
 			}
 
 			return commit;
@@ -315,6 +299,27 @@ public class GitRepository implements SCM {
 		return mappedBranches;
 	}
 
+	private Modification getModificationFromDiff(Repository repo, DiffEntry diff) throws IOException {
+		ModificationType change = Enum.valueOf(ModificationType.class, diff.getChangeType().toString());
+
+		String oldPath = diff.getOldPath();
+		String newPath = diff.getNewPath();
+
+		String diffText = "";
+		String sc = "";
+		if (diff.getChangeType() != ChangeType.DELETE) {
+			diffText = getDiffText(repo, diff);
+			sc = getSourceCode(repo, diff);
+		}
+
+		if (diffText.length() > maxSizeOfDiff) {
+			log.error("diff for " + newPath + " too big");
+			diffText = "-- TOO BIG --";
+		}
+
+		return new Modification(oldPath, newPath, change, diffText, sc);
+	}
+
 	private List<DiffEntry> diffsForTheCommit(Repository repo, RevCommit commit) throws IOException {
 
 		AnyObjectId currentCommit = repo.resolve(commit.getName());
@@ -324,12 +329,20 @@ public class GitRepository implements SCM {
 	}
 
 	@Override
-	public void getDiffBetweenCommits(String priorCommitHash, String laterCommitHash) {
+	public List<Modification> getDiffBetweenCommits(String priorCommitHash, String laterCommitHash) {
 		try (Git git = openRepository()) {
 			Repository repo = git.getRepository();
 			AnyObjectId priorCommit = repo.resolve(priorCommitHash);
 			AnyObjectId laterCommit = repo.resolve(laterCommitHash);
+
 			List<DiffEntry> diffs = this.getDiffBetweenCommits(repo, priorCommit, laterCommit);
+			List<Modification> modifications = new ArrayList<Modification>();
+			for (DiffEntry diff : diffs) {
+				Modification m = this.getModificationFromDiff(repo, diff);
+				modifications.add(m);
+			}
+
+			return modifications;
 		} catch (Exception e) {
 			throw new RuntimeException("error diffing " + priorCommitHash + " and " + laterCommitHash + " in " + path, e);
 		}
