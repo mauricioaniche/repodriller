@@ -154,15 +154,18 @@ public class GitRepository implements SCM {
 	}
 
 	public ChangeSet getHead() {
+		RevWalk revWalk = null;
         try (Git git = openRepository()) {
 			ObjectId head = git.getRepository().resolve(Constants.HEAD);
 
-			RevWalk revWalk = new RevWalk(git.getRepository());
+			revWalk = new RevWalk(git.getRepository());
 			RevCommit r = revWalk.parseCommit(head);
 			return new ChangeSet(r.getName(), convertToDate(r));
 
 		} catch (Exception e) {
 			throw new RuntimeException("error in getHead() for " + path, e);
+		} finally {
+			revWalk.close();
 		}
 	}
 
@@ -180,10 +183,11 @@ public class GitRepository implements SCM {
 	}
 
 	private List<ChangeSet> firstParentsOnly(Git git) {
+		RevWalk revWalk = null;
 		try {
 			List<ChangeSet> allCs = new ArrayList<>();
 
-			RevWalk revWalk = new RevWalk(git.getRepository());
+			revWalk = new RevWalk(git.getRepository());
 			revWalk.setRevFilter(new FirstParentFilter());
 			revWalk.sort(RevSort.TOPO);
 			Ref headRef = git.getRepository().getRef(Constants.HEAD);  /* TODO Deprecated. */
@@ -197,6 +201,8 @@ public class GitRepository implements SCM {
 
 		} catch (Exception e) {
 			throw new RuntimeException(e);
+		} finally {
+			revWalk.close();
 		}
 	}
 
