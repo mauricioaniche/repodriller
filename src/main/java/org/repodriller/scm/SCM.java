@@ -69,7 +69,17 @@ public interface SCM {
 	Commit getCommit(String id);
 	/* TODO A method named getCommitXYZ should return a Commit. */
 	String getCommitFromTag(String tag);
+	
+	/**
+	 * Get the diff between the specified commits.
+	 * 
+	 * @param priorCommit	The first (old) commit
+	 * @param laterCommit	The second (new) commit
+	 * @return A list of Modification objects representing the changes between
+	 * 			priorCommit and laterCommit.
+	 */
 	List<Modification> getDiffBetweenCommits(String priorCommit, String laterCommit);
+	
 	@Deprecated
 	String blame(String file, String currentCommit, Integer line);
 	List<BlamedLine> blame(String file, String commitToBeBlamed, boolean priorCommit);

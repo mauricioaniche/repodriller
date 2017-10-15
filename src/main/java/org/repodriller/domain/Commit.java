@@ -89,11 +89,6 @@ public class Commit {
 		modifications.add(m);
 	}
 
-	public void addModification(String oldPath, String newPath, ModificationType change, String diff, String sc) {
-		Modification m = new Modification(oldPath, newPath, change, diff, sc);
-		modifications.add(m);
-	}
-
 	public void addModifications(List<Modification> modifications) {
 		this.modifications.addAll(modifications);
 	}

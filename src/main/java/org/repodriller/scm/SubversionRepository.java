@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
+import org.repodriller.RepoDrillerException;
 import org.repodriller.domain.ChangeSet;
 import org.repodriller.domain.Commit;
 import org.repodriller.domain.Developer;
@@ -270,7 +271,7 @@ public class SubversionRepository implements SCM {
 	@Override
 	public List<Modification> getDiffBetweenCommits(String priorCommit, String laterCommit) {
 		// TODO Not yet implemented for SVN.
-		return new ArrayList<Modification>();
+		throw new RepoDrillerException("This feature has not yet been implemented for Subversion repos.");
 	}
 
 	private ModificationType getModificationType(SVNLogEntryPath e) {

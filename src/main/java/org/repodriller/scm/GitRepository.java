@@ -280,7 +280,7 @@ public class GitRepository implements SCM {
 			}
 
 			for (DiffEntry diff : diffsForTheCommit) {
-				Modification m = this.getModificationFromDiff(repo, diff);
+				Modification m = this.diffToModification(repo, diff);
 				commit.addModification(m);
 			}
 
@@ -299,7 +299,7 @@ public class GitRepository implements SCM {
 		return mappedBranches;
 	}
 
-	private Modification getModificationFromDiff(Repository repo, DiffEntry diff) throws IOException {
+	private Modification diffToModification(Repository repo, DiffEntry diff) throws IOException {
 		ModificationType change = Enum.valueOf(ModificationType.class, diff.getChangeType().toString());
 
 		String oldPath = diff.getOldPath();
@@ -336,12 +336,15 @@ public class GitRepository implements SCM {
 			AnyObjectId laterCommit = repo.resolve(laterCommitHash);
 
 			List<DiffEntry> diffs = this.getDiffBetweenCommits(repo, priorCommit, laterCommit);
-			List<Modification> modifications = new ArrayList<Modification>();
-			for (DiffEntry diff : diffs) {
-				Modification m = this.getModificationFromDiff(repo, diff);
-				modifications.add(m);
-			}
-
+			List<Modification> modifications = diffs.stream()
+				.map(diff -> {
+					try {
+						return this.diffToModification(repo, diff);
+					} catch (IOException e) {
+						throw new RuntimeException("error diffing " + priorCommitHash + " and " + laterCommitHash + " in " + path, e);
+					}
+				})
+				.collect(Collectors.toList());
 			return modifications;
 		} catch (Exception e) {
 			throw new RuntimeException("error diffing " + priorCommitHash + " and " + laterCommitHash + " in " + path, e);
@@ -362,7 +365,7 @@ public class GitRepository implements SCM {
 
             if (parentCommit == null) {
                 try(RevWalk rw = new RevWalk(repo)) {
-                	RevCommit commit = rw.parseCommit(currentCommit);
+                		RevCommit commit = rw.parseCommit(currentCommit);
                     diffs = df.scan(new EmptyTreeIterator(), new CanonicalTreeParser(null, rw.getObjectReader(), commit.getTree()));
                 }
             } else {
