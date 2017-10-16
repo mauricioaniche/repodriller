@@ -27,7 +27,8 @@ import org.repodriller.RepoDrillerException;
 import org.repodriller.persistence.PersistenceMechanism;
 
 /**
- * A CSVFile
+ * A CSVFile lets you write Comma-Separated Value format data to a file
+ * using the PersistenceMechanism interface.
  *
  * @author Mauricio Aniche
  */
@@ -37,7 +38,7 @@ public class CSVFile implements PersistenceMechanism {
 
 	private String[] header = null;
 
-	private boolean writable = false;
+	private boolean isOpen = false;
 
 	private static final Logger log = Logger.getLogger(CSVFile.class);
 
@@ -120,7 +121,7 @@ public class CSVFile implements PersistenceMechanism {
 	 */
 	@Override
 	public synchronized void write(Object... fields) throws CSVFileFormatException {
-		if (!writable)
+		if (!isOpen)
 			throw new RepoDrillerException("Error, writing to a closed CSVFile");
 
 		if (header != null && header.length != fields.length)
@@ -149,8 +150,10 @@ public class CSVFile implements PersistenceMechanism {
 
 	@Override
 	public synchronized void close() {
-		ps.close();
-		writable = false;
+		if (isOpen) {
+			ps.close();
+			isOpen = false;
+		}
 	}
 
 	/* Misc. helpers. */
@@ -164,7 +167,7 @@ public class CSVFile implements PersistenceMechanism {
 	private void open(String fileName, boolean append) {
 		try {
 			ps = new PrintStream(new FileOutputStream(fileName, append));
-			writable = true;
+			isOpen = true;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
