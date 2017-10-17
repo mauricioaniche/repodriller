@@ -418,7 +418,7 @@ public class RepositoryMining {
 				" from " + commit.getAuthor().getName() +
 				" with " + commit.getModifications().size() + " modifications");
 
-		if(!filtersAccept(commit)) {
+		if (!filtersAccept(commit)) {
 			log.info("-> Filtered");
 			return;
 		}
@@ -433,8 +433,8 @@ public class RepositoryMining {
 	 * @return allAccepted
 	 */
 	private boolean filtersAccept(Commit commit) {
-		for(CommitFilter filter : filters) {
-			if(!filter.accept(commit))
+		for (CommitFilter filter : filters) {
+			if (!filter.accept(commit))
 				return false;
 		}
 		return true;
