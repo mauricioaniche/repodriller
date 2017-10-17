@@ -96,12 +96,12 @@ public interface SCM {
 	List<RepositoryFile> files();
 
 	/**
-	 * Duplicate this SCM inside the designated {@code parent}.
+	 * Duplicate this SCM.
 	 *
-	 * @param parent Create a copy of this SCM nested inside {@code parent}
+	 * @param dest On-disk records will be rooted here (e.g. "/tmp/clone-here")
 	 * @returns An SCM corresponding to the copy
 	 */
-	SCM clone(Path parent);
+	SCM clone(Path dest);
 
 	/**
 	 * Delete any local storage devoted to this SCM.

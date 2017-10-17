@@ -1,6 +1,7 @@
 package org.repodriller;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -85,7 +86,7 @@ public class RepoVisitor {
 	 * Calls {@link CommitVisitor#initialize} on each CommitVisitor in my collection.
 	 *
 	 * @param repo	The repo we are visiting next
-	 * @param workPath	Where to put the working copy of {@code repo}? Ideally this is fast storage like a RAMDisk.
+	 * @param workPath	Where to store the working copy(s) of {@code repo}? Ideally this is fast storage like a RAMDisk.
 	 * @param nThreads	The number of threads that may call {@link RepoVisitor#visitCommit} concurrently.
 	 * @param visitorsChangeRepoState	True if visitors need to operate in independent copies of {@code repo} for safety.
 	 */
@@ -125,11 +126,13 @@ public class RepoVisitor {
 		 *  1. Simplifies code: we always delete() the SCM for every SCMRepository in the pool.
 		 *  2. If currentRepo is a remote repo, we don't want to pay the network cost on each clone.
 		 *     Deriving subsequent clones from firstClone should be cheap. */
-		SCMRepository firstClone = currentRepo.getScm().clone(workPath).info();
+		Path cloneDir = Paths.get(workPath.toString() + "-clone1");
+		SCMRepository firstClone = currentRepo.getScm().clone(cloneDir).info();
 		putSCMRepositoryClone(firstClone);
 		IntStream.range(2, nThreads).forEach(i -> {
 			if (visitorsChangeRepoState) {
-				SCMRepository clone = firstClone.getScm().clone(workPath).info();
+				Path dir = Paths.get(workPath.toString() + "-clone" + i);
+				SCMRepository clone = firstClone.getScm().clone(dir).info();
 				putSCMRepositoryClone(clone);
 			}
 			else {
@@ -156,7 +159,7 @@ public class RepoVisitor {
 			PersistenceMechanism writer = entry.getValue();
 
 			try {
-				log.info("-> Processing " + commit.getHash() + " with " + visitor.name() + " in clone " + scmRepoClone.getPath());
+				log.info("Thread " + Thread.currentThread().getId() + ": processing " + commit.getHash() + " with " + visitor.name() + " in clone " + scmRepoClone.getPath());
 				visitor.process(scmRepoClone, commit, writer);
 			} catch (CSVFileFormatException e) {
 				log.fatal(e);

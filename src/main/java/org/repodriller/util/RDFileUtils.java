@@ -3,12 +3,17 @@ package org.repodriller.util;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.repodriller.RepoDrillerException;
 
 /**
  * Various utilities for working with files.
@@ -127,7 +132,7 @@ public class RDFileUtils {
 	 * @return True if p exists, else false
 	 */
 	public static boolean exists(Path p) {
-		File f = new File(p.toString());
+		File f = p.toFile();
 		return f.exists();
 	}
 
@@ -138,7 +143,57 @@ public class RDFileUtils {
 	 * @return True if p exists and is a dir, else false
 	 */
 	public static boolean isDir(Path p) {
-		File f = new File(p.toString());
+		File f = p.toFile();
 		return f.isDirectory();
+	}
+
+	/**
+	 * Call mkdir on p.
+	 *
+	 * @param p	Path to mkdir
+	 * @return	True if p is a dir afterward, else false
+	 */
+	public static boolean mkdir(Path p) {
+		File f = p.toFile();
+		f.mkdirs();
+		return isDir(p);
+	}
+
+	/**
+	 * Copy directory tree from {@code src} to {@code dest}. {@code dest} should not exist.
+	 *
+	 * @param src	Where from? Must exist.
+	 * @param dest	Where to? Must not exist.
+	 */
+	public static void copyDirTree(Path src, Path dest) {
+		if (!src.toFile().exists())
+			throw new RepoDrillerException("Error, src does not exist");
+		if (dest.toFile().exists())
+			throw new RepoDrillerException("Error, dest exists already");
+
+        try {
+			Files.walkFileTree(src, new SimpleFileVisitor<Path>() {
+				@Override
+			    public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+					Files.copy(dir, dest.resolve(src.relativize(dir)));
+			        return FileVisitResult.CONTINUE;
+			    }
+			    @Override
+			    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+			        Files.copy(file, dest.resolve(src.relativize(file)));
+			        return FileVisitResult.CONTINUE;
+			    }
+			    @Override
+			    public FileVisitResult visitFileFailed(Path file, IOException exc) {
+			        return FileVisitResult.CONTINUE;
+			    }
+				@Override
+				public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+					return FileVisitResult.CONTINUE;
+				}
+			});
+		} catch (IOException e) {
+			throw new RepoDrillerException("copyDir failed: " + e);
+		}
 	}
 }

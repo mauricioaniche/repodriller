@@ -2,6 +2,8 @@ package org.repodriller.scm;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,9 +25,10 @@ import org.repodriller.util.RDFileUtils;
 /* TODO Requiring cloning at instantiation-time is not "lightweight".
  *      It means the user won't get any results until after cloning every repo being analyzed.
  *      I suggest we only actually clone when the clone() method of an SCM is invoked.
- *      We should override GitRepository's cheap "copy" implementation of clone() and actually clone then. */
- /* TODO Remove the AutoCloseable interface; the new clone/delete methods in SCM make things clearer. */
-public class GitRemoteRepository extends GitRepository implements AutoCloseable {
+ *      We should override GitRepository's cheap "copy" implementation of clone() and actually clone then.
+ *      In this case I suppose we might want to differentiate between a "lightweight" SCM and a "full" SCM? Hmm.
+ *      */
+public class GitRemoteRepository extends GitRepository {
 
 	/* Constants. */
 	public static final String URL_SUFFIX = ".git";
@@ -35,7 +38,8 @@ public class GitRemoteRepository extends GitRepository implements AutoCloseable 
 
 	/* User-defined. */
 	private String uri;
-	private String path; /* TODO GitRepository also has a path member. Make it protected and inherit, or use getter/setter as needed? */
+	private Path path; /* TODO GitRepository also has a path member. Make it protected and inherit, or use getter/setter as needed? */
+	private boolean bareClone = false;
 
 	private static Logger log = Logger.getLogger(GitRemoteRepository.class);
 
@@ -60,26 +64,23 @@ public class GitRemoteRepository extends GitRepository implements AutoCloseable 
 		try {
 			/* Set members. */
 			this.uri = uri;
+			this.bareClone = bare;
 
-			/* Figure out clone path. */
-			path = destination;
-			if (path == null) {
+			/* Choose our own path? */
+			if (destination == null) {
 				/* Pick a temp dir name. */
-				String tempDirPath = RDFileUtils.getTempPath(null); // all ancestors exist
+				String tempDirPath;
+				tempDirPath = RDFileUtils.getTempPath(null);
 				String repoName = repoNameFromURI(uri);
-				path = tempDirPath + "-" + repoName;
+				path = Paths.get(tempDirPath.toString() + "-" + repoName); // foo-RepoOne
 			}
+			else
+				path = Paths.get(destination);
 
 			/* path must not exist already. */
-			if (new File(path).exists()) {
+			if (RDFileUtils.exists(path)) {
 				throw new RepoDrillerException("Error, path " + path + " already exists");
 			}
-
-			log.info("url " + uri + " destination " + destination + " bare " + bare + " (path " + path + ")");
-
-			/* Fill in GitRepository details. */
-			this.setPath(path);
-			this.setFirstParentOnly(true); /* TODO. */
 
 			/* Clone the remote repo. */
 			cloneGitRepository(uri, path, bare);
@@ -88,21 +89,27 @@ public class GitRemoteRepository extends GitRepository implements AutoCloseable 
 			log.error("Unsuccessful git remote repository initialization", e);
 			throw new RepoDrillerException(e);
 		}
+
+		log.info("url " + uri + " destination " + destination + " bare " + bare + " (path " + path + ")");
+
+		/* Fill in GitRepository details. */
+		this.setPath(path.toString());
+		this.setFirstParentOnly(true); /* TODO. */
 	}
 
 	/**
 	 * Clone a git repository.
 	 *
 	 * @param uri	Where from?
-	 * @param destination	Where to?
+	 * @param dest	Where to?
 	 * @param bare	Bare (metadata-only) or full?
 	 * @throws GitAPIException
 	 */
-	private void cloneGitRepository(String uri, String destination, boolean bare) throws GitAPIException {
-		File directory = new File(destination);
+	private void cloneGitRepository(String uri, Path dest, boolean bare) throws GitAPIException {
+		File directory = new File(dest.toString());
 
 		if (directory.exists())
-			throw new RepoDrillerException("Error, destination " + destination + " already exists");
+			throw new RepoDrillerException("Error, destination " + dest.toString() + " already exists");
 
 		log.info("Cloning Remote Repository " + uri + " into " + this.path);
 		Git.cloneRepository()
@@ -138,17 +145,6 @@ public class GitRemoteRepository extends GitRepository implements AutoCloseable 
 		return uri.substring(lastSlashIx + 1, lastSuffIx);
 	}
 
-	/**
-	 * Clean up this object.
-	 * See {@link GitRemoteRepository#close}.
-	 *
-	 * @throws IOException
-	 */
-	@Deprecated
-	public void deleteTempGitPath() throws IOException {
-		close();
-	}
-
 	/* Various factory methods. */
 
 	public static SCMRepository singleProject(String url) {
@@ -181,14 +177,26 @@ public class GitRemoteRepository extends GitRepository implements AutoCloseable 
 		return new MultipleGitRemoteRepositoryBuilder(gitUrls);
 	}
 
-	/* Interface: AutoCloseable. */
+	@Override
+	public SCM clone(Path dest) {
+		try {
+			log.info("Cloning " + uri + " to " + dest);
+			cloneGitRepository(uri, dest, bareClone);
+			return new GitRepository(dest.toString());
+		} catch (GitAPIException e) {
+			throw new RepoDrillerException("Clone failed: " + e);
+		}
+	}
 
 	@Override
-	public void close() throws IOException {
-		if (hasLocalState)
-			FileUtils.deleteDirectory(new File(path));
-		hasLocalState = false;
+	public void delete() {
+		if (hasLocalState) {
+			try {
+				FileUtils.deleteDirectory(new File(path.toString()));
+				hasLocalState = false;
+			} catch (IOException e) {
+				log.error("Couldn't delete GitRemoteRepository with path " + path);
+			}
+		}
 	}
-	
-	/* TODO Override clone and delete. */
 }
