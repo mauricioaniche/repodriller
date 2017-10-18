@@ -2,8 +2,8 @@ package org.repodriller;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.stream.IntStream;
@@ -36,14 +36,25 @@ import org.repodriller.util.RDFileUtils;
  */
 public class RepoVisitor {
 
-	private Map<CommitVisitor, PersistenceMechanism> visitors;
-	private static final Logger log = Logger.getLogger(RepoVisitor.class);
+	class CVPM {
+		public CommitVisitor cv;
+		public PersistenceMechanism pm;
+		CVPM(CommitVisitor cv, PersistenceMechanism pm) {
+			this.cv = cv;
+			this.pm = pm;
+		}
+	}
+
+	private Collection<CVPM> visitors;
 	private SCMRepository currentRepo; // One at a time.
 
+	/* Fixed-size resource pool, of SCMRepository clones. */
 	private BlockingQueue<SCMRepository> clonePool;
 
+	private static final Logger log = Logger.getLogger(RepoVisitor.class);
+
 	public RepoVisitor() {
-		visitors = new HashMap<>();
+		visitors = new LinkedList<CVPM>();
 		currentRepo = null;
 	}
 
@@ -58,15 +69,15 @@ public class RepoVisitor {
 	 * @param writer The persistence mechanism associated to this visitor
 	 */
 	public void addVisitor(CommitVisitor visitor, PersistenceMechanism writer) {
-		visitors.put(visitor, writer);
+		visitors.add(new CVPM(visitor, writer));
 	}
 
 	/**
 	 * Print a description of all of the CommitVisitors I maintain.
 	 */
 	void printVisitors() {
-		for(CommitVisitor visitor : visitors.keySet()) {
-			log.info("- " + visitor.name() + " (" + visitor.getClass().getName() + ")");
+		for(CVPM cvpm : visitors) {
+			log.info("- " + cvpm.cv.name() + " (" + cvpm.cv.getClass().getName() + ")");
 		}
 	}
 
@@ -103,17 +114,14 @@ public class RepoVisitor {
 			throw new RepoDrillerException("Error, one repo at a time. We are already visiting a repo.");
 		currentRepo = repo;
 
-		/* Initialize the visitors with the repo. */
-		for (Map.Entry<CommitVisitor, PersistenceMechanism> entry : visitors.entrySet()) {
-			CommitVisitor visitor = entry.getKey();
-			PersistenceMechanism writer = entry.getValue();
-
+		/* initialize() the visitors with the repo. */
+		for (CVPM cvpm : visitors) {
 			try {
-				log.info("-> Initializing visitor " + visitor.name());
-				visitor.initialize(currentRepo, writer);
+				log.info("-> Initializing visitor " + cvpm.cv.name());
+				cvpm.cv.initialize(currentRepo, cvpm.pm);
 			} catch (Exception e) {
-				log.error("error in " + currentRepo.getPath() +
-						"when initializing " + visitor.name() + ", error=" + e.getMessage(), e);
+				log.error("Error in " + currentRepo.getPath() +
+						"when initializing " + cvpm.cv.name() + ", error=" + e.getMessage(), e);
 			}
 		}
 
@@ -141,8 +149,6 @@ public class RepoVisitor {
 		});
 	}
 
-
-
 	/**
 	 * Visit this commit in the current repo.
 	 * Calls {@link CommitVisitor#process} on each CommitVisitor in my collection.
@@ -150,23 +156,21 @@ public class RepoVisitor {
 	 * @param commit The commit that will be visited
 	 */
 	void visitCommit(Commit commit) {
+		log.info("Visiting commit " + commit.getHash());
 		/* Get a clone from the pool. */
 		SCMRepository scmRepoClone = getSCMRepositoryClone();
 
 		/* Have each visitor process this commit. */
-		for(Map.Entry<CommitVisitor, PersistenceMechanism> entry : visitors.entrySet()) {
-			CommitVisitor visitor = entry.getKey();
-			PersistenceMechanism writer = entry.getValue();
-
+		for (CVPM cvpm : visitors) {
 			try {
-				log.info("Thread " + Thread.currentThread().getId() + ": processing " + commit.getHash() + " with " + visitor.name() + " in clone " + scmRepoClone.getPath());
-				visitor.process(scmRepoClone, commit, writer);
+				log.info("Thread " + Thread.currentThread().getId() + ": processing " + commit.getHash() + " with " + cvpm.cv.name() + " in clone " + scmRepoClone.getPath());
+				cvpm.cv.process(scmRepoClone, commit, cvpm.pm);
 			} catch (CSVFileFormatException e) {
 				log.fatal(e);
 				System.exit(-1);
 			} catch (Exception e) {
 				log.error("Error processing #" + commit.getHash() + " in clone " + scmRepoClone.getPath() +
-						", processor=" + visitor.name() + ", error=" + e.getMessage(), e);
+						", processor=" + cvpm.cv.name() + ", error=" + e.getMessage(), e);
 			}
 		}
 
@@ -179,17 +183,14 @@ public class RepoVisitor {
  	 * Calls {@link CommitVisitor#finalize} on each CommitVisitor in my collection.
 	 */
 	void endRepoVisit() {
-		/* finalize() the visitors. */
-		for(Map.Entry<CommitVisitor, PersistenceMechanism> entry : visitors.entrySet()) {
-			CommitVisitor visitor = entry.getKey();
-			PersistenceMechanism writer = entry.getValue();
-
+		/* finalize() the visitors with the repo. */
+		for (CVPM cvpm : visitors) {
 			try {
-				log.info("-> Finalizing visitor " + visitor.name());
-				visitor.finalize(currentRepo, writer);
+				log.info("-> Finalizing visitor " + cvpm.cv.name());
+				cvpm.cv.finalize(currentRepo, cvpm.pm);
 			} catch (Exception e) {
-				log.error("error in " + currentRepo.getPath() +
-						"when finalizing " + visitor.name() + ", error=" + e.getMessage(), e);
+				log.error("Error in " + currentRepo.getPath() +
+						"when finalizing " + cvpm.cv.name() + ", error=" + e.getMessage(), e);
 			}
 		}
 
@@ -209,8 +210,8 @@ public class RepoVisitor {
 	void closeAllPersistence() {
 		/* TODO: This API doesn't make sense to me. Why are the persistence mechanisms closed by this class?
 		 *       I think it should be moved. */
-		for(PersistenceMechanism persist : visitors.values()) {
-			persist.close();
+		for (CVPM cvpm : visitors) {
+			cvpm.pm.close();
 		}
 	}
 
