@@ -157,14 +157,14 @@ public class RepoVisitor {
 	 * @param commit The commit that will be visited
 	 */
 	void visitCommit(Commit commit) {
-		log.info("Visiting commit " + commit.getHash());
+		log.debug("Visiting commit " + commit.getHash());
 		/* Get a clone from the pool. */
 		SCMRepository scmRepoClone = getSCMRepositoryClone();
 
 		/* Have each visitor process this commit. */
 		for (CVPM cvpm : visitors) {
 			try {
-				log.info("Thread " + Thread.currentThread().getId() + ": processing " + commit.getHash() + " with " + cvpm.cv.name() + " in clone " + scmRepoClone.getPath());
+				log.debug("Thread " + Thread.currentThread().getId() + ": processing " + commit.getHash() + " with " + cvpm.cv.name() + " in clone " + scmRepoClone.getPath());
 				cvpm.cv.process(scmRepoClone, commit, cvpm.pm);
 			} catch (CSVFileFormatException e) {
 				log.fatal(e);

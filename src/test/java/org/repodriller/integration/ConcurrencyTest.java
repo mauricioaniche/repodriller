@@ -29,7 +29,7 @@ public class ConcurrencyTest {
 
 	@Before
 	public void setPath() {
-		repoPath = "/tmp/clone-libuv";
+		repoPath = this.getClass().getResource("/").getPath() + "../../test-repos/git-3"; /* Most commits among the test repos. */
 	}
 
 	@Test
@@ -38,12 +38,11 @@ public class ConcurrencyTest {
 
 		new RepositoryMining()
 		.in(GitRepository.singleProject(repoPath))
-		.through(Commits.daily(1))
+		.through(Commits.all())
 		.process(visitor)
 		.visitorsAreThreadSafe(true)
 		.visitorsChangeRepoState(false)
 		.withThreads(1)
-		.setRepoTmpDir(Paths.get("/tmp/rd"))
 		.mine();
 
 		addVisitorToResults("sequential", visitor);
@@ -55,12 +54,11 @@ public class ConcurrencyTest {
 
 		new RepositoryMining()
 		.in(GitRepository.singleProject(repoPath))
-		.through(Commits.daily(1))
+		.through(Commits.all())
 		.process(visitor)
 		.visitorsAreThreadSafe(true)
 		.visitorsChangeRepoState(false)
 		.withThreads(2) // >1 thread
-		.setRepoTmpDir(Paths.get("/tmp/rd"))
 		.mine();
 
 		addVisitorToResults("simpleConcurrent", visitor);
@@ -72,12 +70,11 @@ public class ConcurrencyTest {
 
 		new RepositoryMining()
 		.in(GitRepository.singleProject(repoPath))
-		.through(Commits.daily(1))
+		.through(Commits.all())
 		.process(visitor)
 		.visitorsAreThreadSafe(true)
 		.visitorsChangeRepoState(false)
 		.withThreads(100) // Many threads
-		.setRepoTmpDir(Paths.get("/tmp/rd"))
 		.mine();
 
 		addVisitorToResults("heavyConcurrent", visitor);
@@ -89,12 +86,11 @@ public class ConcurrencyTest {
 
 		new RepositoryMining()
 		.in(GitRepository.singleProject(repoPath))
-		.through(Commits.daily(1))
+		.through(Commits.all())
 		.process(visitor)
 		.visitorsAreThreadSafe(true)
 		.visitorsChangeRepoState(true) // Clone for each thread
 		.withThreads(1) // One thread
-		.setRepoTmpDir(Paths.get("/tmp/rd"))
 		.mine();
 
 		addVisitorToResults("changingRepoState_Sequential", visitor);
@@ -106,12 +102,11 @@ public class ConcurrencyTest {
 
 		new RepositoryMining()
 		.in(GitRepository.singleProject(repoPath))
-		.through(Commits.daily(1))
+		.through(Commits.all())
 		.process(visitor)
 		.visitorsAreThreadSafe(true)
 		.visitorsChangeRepoState(true) // Clone for each thread
 		.withThreads(20) // Many threads
-		.setRepoTmpDir(Paths.get("/tmp/rd"))
 		.mine();
 
 		addVisitorToResults("changingRepoState_Concurrent", visitor);
@@ -123,12 +118,11 @@ public class ConcurrencyTest {
 
 		new RepositoryMining()
 		.in(GitRepository.singleProject(repoPath))
-		.through(Commits.daily(1))
+		.through(Commits.all())
 		.process(visitor)
 		.visitorsAreThreadSafe(true)
 		.visitorsChangeRepoState(true)
 		.withThreads(-1) // Default # threads
-		.setRepoTmpDir(Paths.get("/tmp/rd"))
 		.mine();
 
 		addVisitorToResults("changingRepoState_defaultThreads", visitor);
@@ -142,11 +136,10 @@ public class ConcurrencyTest {
 		try {
 			new RepositoryMining()
 			.in(GitRepository.singleProject(repoPath))
-			.through(Commits.daily(1))
+			.through(Commits.all())
 			.process(visitor)
 			.visitorsAreThreadSafe(false) // Non-thread safe
 			.withThreads(2) // but 2 threads
-			.setRepoTmpDir(Paths.get("/tmp/rd"))
 			.mine();
 
 			addVisitorToResults("catchesInvalidConfig", visitor);
