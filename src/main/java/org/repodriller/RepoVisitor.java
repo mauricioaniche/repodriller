@@ -134,12 +134,13 @@ public class RepoVisitor {
 		 *  1. Simplifies code: we always delete() the SCM for every SCMRepository in the pool.
 		 *  2. If currentRepo is a remote repo, we don't want to pay the network cost on each clone.
 		 *     Deriving subsequent clones from firstClone should be cheap. */
-		Path cloneDir = Paths.get(workPath.toString() + "-clone1");
+		Path clonePath = Paths.get(repo.getPath()).getFileName(); // libuv
+		Path cloneDir = Paths.get(workPath.resolve(clonePath) + "-clone1"); // libuv-clone1
 		SCMRepository firstClone = currentRepo.getScm().clone(cloneDir).info();
 		putSCMRepositoryClone(firstClone);
 		IntStream.range(2, nThreads).forEach(i -> {
 			if (visitorsChangeRepoState) {
-				Path dir = Paths.get(workPath.toString() + "-clone" + i);
+				Path dir = Paths.get(workPath.resolve(clonePath) + "-clone" + i); // libuv-clonei
 				SCMRepository clone = firstClone.getScm().clone(dir).info();
 				putSCMRepositoryClone(clone);
 			}
