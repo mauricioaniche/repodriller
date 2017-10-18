@@ -461,7 +461,6 @@ An MSR framework offers two benefits:
 ## How is RepoDriller different from other MSR frameworks?
 
 RepoDriller is a minimalist's MSR framework, a lightweight tool for flexible analysis.
-
 - RepoDriller is *lightweight*:
 	1. It's a straightforward Java framework with the APIs you need -- no more, no less.
 	2. You pay for storage and computation when you need to. No significant pre-processing stage, no giant database.
@@ -469,6 +468,7 @@ RepoDriller is a minimalist's MSR framework, a lightweight tool for flexible ana
 	1. Write arbitrary analyses in the popular Java programming language.
 	2. RepoDriller has the right knobs -- tune which commits you visit, how much concurrency you want, etc.
 
+Here's how it compares to some other MSR frameworks and tools:
 - [GHTorrent](http://ghtorrent.org/) lets you query GitHub events.
 	1. You are restricted to querying projects on GitHub.
 	2. You are restricted to the information exposed in a GitHub API.
