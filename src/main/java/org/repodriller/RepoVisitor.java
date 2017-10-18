@@ -87,7 +87,7 @@ public class RepoVisitor {
 	 *
 	 * @param repo	The repo we are visiting next
 	 * @param workPath	Where to store the working copy(s) of {@code repo}? Ideally this is fast storage like a RAMDisk.
-	 * @param nThreads	The number of threads that may call {@link RepoVisitor#visitCommit} concurrently.
+	 * @param nThreads	Allocate enough resources to support this much concurrency in {@link RepoVisitor#visitCommit}.
 	 * @param visitorsChangeRepoState	True if visitors need to operate in independent copies of {@code repo} for safety.
 	 */
 	void beginRepoVisit(SCMRepository repo, Path workPath, int nThreads, boolean visitorsChangeRepoState) {
@@ -235,6 +235,12 @@ public class RepoVisitor {
 	 * @return A clone
 	 */
 	private SCMRepository getSCMRepositoryClone() {
-		return clonePool.remove();
+		while (true) {
+			try {
+				return clonePool.take();
+			} catch (InterruptedException e) {
+				;
+			}
+		}
 	}
 }
