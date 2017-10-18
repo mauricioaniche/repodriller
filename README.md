@@ -232,7 +232,7 @@ Note about the implementation: This is not supported by JGit, so it makes use of
 
 ## Diffs
 
-Modifications contains _diffs_ between two specified versions. This diff is extracted
+Modifications contains _diffs_ from the current version and the last one. This diff is extracted
 directly from Git output. A common example of the output can be seen below.
 Diffs have their own format (the @@ indicates how you should read it).
 
@@ -252,7 +252,7 @@ index f38a97d..2b96b0e 100644
                 this.maxSizeOfDiff = checkMaxSizeOfDiff();
 ```
 
-You can get diffs between two specified revisions that are not necessarily adjacent:
+You can also get diffs between two specified revisions that are not necessarily adjacent:
 
 ```java
 SCM repo = new GitRepository(path/to/repo);
