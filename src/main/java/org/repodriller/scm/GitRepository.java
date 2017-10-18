@@ -40,6 +40,7 @@ import org.eclipse.jgit.lib.AnyObjectId;
 import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectReader;
+import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
@@ -51,6 +52,7 @@ import org.eclipse.jgit.util.io.DisabledOutputStream;
 import org.repodriller.RepoDrillerException;
 import org.repodriller.domain.ChangeSet;
 import org.repodriller.domain.Commit;
+import org.repodriller.domain.CommitPerson;
 import org.repodriller.domain.Developer;
 import org.repodriller.domain.Modification;
 import org.repodriller.domain.ModificationType;
@@ -159,8 +161,7 @@ public class GitRepository implements SCM {
 
 			RevWalk revWalk = new RevWalk(git.getRepository());
 			RevCommit r = revWalk.parseCommit(head);
-			return new ChangeSet(r.getName(), convertToDate(r));
-
+			return extractChangeSet(r);
 		} catch (Exception e) {
 			throw new RuntimeException("error in getHead() for " + path, e);
 		}
@@ -209,19 +210,24 @@ public class GitRepository implements SCM {
 		return allCs;
 	}
 
-	private ChangeSet extractChangeSet(RevCommit r) {
-		String hash = r.getName();
-		GregorianCalendar date = convertToDate(r);
-
-		return new ChangeSet(hash, date);
+	private GregorianCalendar extractCalendar(PersonIdent pi) {
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.setTimeZone(pi.getTimeZone());
+		cal.setTime(pi.getWhen());
+		return cal;
 	}
 
-	private GregorianCalendar convertToDate(RevCommit revCommit) {
-		GregorianCalendar date = new GregorianCalendar();
-		date.setTimeZone(revCommit.getAuthorIdent().getTimeZone());
-		date.setTime(revCommit.getAuthorIdent().getWhen());
+	private CommitPerson extractCommitPerson(PersonIdent pi) {
+		return new CommitPerson(pi.getName(), pi.getEmailAddress(), extractCalendar(pi));
+	}
 
-		return date;
+	private ChangeSet extractChangeSet(RevCommit r) {
+		String id = r.getName();
+		String msg = r.getFullMessage();
+		CommitPerson author = extractCommitPerson(r.getAuthorIdent());
+		CommitPerson committer = extractCommitPerson(r.getCommitterIdent());
+
+		return new ChangeSet(id, msg, author, committer);
 	}
 
 	/**

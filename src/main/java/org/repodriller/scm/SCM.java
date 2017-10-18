@@ -48,7 +48,7 @@ public interface SCM {
 	ChangeSet getHead();
 
 	/**
-	 * @return All ChangeSets in this SCM.
+	 * @return All ChangeSets in this SCM. Probably with the newest ChangeSet at the front of the list.
 	 */
 	List<ChangeSet> getChangeSets();
 

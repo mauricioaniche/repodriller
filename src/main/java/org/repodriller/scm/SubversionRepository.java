@@ -14,8 +14,10 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
+import org.eclipse.jgit.lib.PersonIdent;
 import org.repodriller.domain.ChangeSet;
 import org.repodriller.domain.Commit;
+import org.repodriller.domain.CommitPerson;
 import org.repodriller.domain.Developer;
 import org.repodriller.domain.Modification;
 import org.repodriller.domain.ModificationType;
@@ -149,7 +151,7 @@ public class SubversionRepository implements SCM {
 			Collection log = repository.log(new String[] { "" }, null, startRevision, endRevision, true, true);
 			for (Iterator iterator = log.iterator(); iterator.hasNext();) {
 				SVNLogEntry entry = (SVNLogEntry) iterator.next();
-				allCs.add(new ChangeSet(String.valueOf(entry.getRevision()), convertToCalendar(entry.getDate())));
+				allCs.add(extractChangeSet(entry));
 			}
 
 			return allCs;
@@ -160,6 +162,35 @@ public class SubversionRepository implements SCM {
 			if (repository != null)
 				repository.closeSession();
 		}
+	}
+
+	private ChangeSet extractChangeSet(SVNLogEntry entry) {
+		String id = String.valueOf(entry.getRevision());
+		String msg = entry.getMessage();
+
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.setTime(entry.getDate());
+		CommitPerson author = new CommitPerson(entry.getAuthor(), "", cal);
+
+		return new ChangeSet(id, msg, author);
+	}
+
+	private ChangeSet extractChangeSet(SVNDirEntry entry) {
+		String id = String.valueOf(entry.getRevision());
+		String msg = entry.getCommitMessage();
+
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.setTime(entry.getDate());
+		CommitPerson author = new CommitPerson(entry.getAuthor(), "", cal);
+
+		return new ChangeSet(id, msg, author);
+	}
+
+	private GregorianCalendar extractCalendar(PersonIdent pi) {
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.setTimeZone(pi.getTimeZone());
+		cal.setTime(pi.getWhen());
+		return cal;
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -291,8 +322,7 @@ public class SubversionRepository implements SCM {
 			authenticateIfNecessary(repository);
 
 			SVNDirEntry entry = repository.info("/", -1);
-			return new ChangeSet(String.valueOf(entry.getRevision()), convertToCalendar(entry.getDate()));
-
+			return extractChangeSet(entry);
 		} catch (SVNException e) {
 			throw new RuntimeException("error in getHead() for " + path, e);
 		} finally {

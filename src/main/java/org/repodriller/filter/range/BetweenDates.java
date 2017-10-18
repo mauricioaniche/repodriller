@@ -8,7 +8,7 @@ import org.repodriller.domain.ChangeSet;
 import org.repodriller.scm.SCM;
 
 public class BetweenDates implements CommitRange {
-	
+
 	private Calendar from;
 	private Calendar to;
 
@@ -19,22 +19,22 @@ public class BetweenDates implements CommitRange {
 
 	@Override
 	public List<ChangeSet> get(SCM scm) {
-		
+
 		List<ChangeSet> all = scm.getChangeSets();
-		
+
 		LinkedList<ChangeSet> filtered = new LinkedList<ChangeSet>();
-		
+
 		for(ChangeSet cs : all) {
 			if(isInTheRange(cs)) {
 				filtered.addLast(cs);
 			}
 		}
-		
+
 		return filtered;
 	}
 
 	private boolean isInTheRange(ChangeSet cs) {
-		return from.before(cs.getTime()) && to.after(cs.getTime());
+		return from.before(cs.getCommitter().time) && to.after(cs.getCommitter().time);
 	}
 
 

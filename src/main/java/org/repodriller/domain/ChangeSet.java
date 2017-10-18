@@ -16,45 +16,88 @@
 
 package org.repodriller.domain;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * A ChangeSet is metadata that uniquely identifies a Commit from an SCM.
- *
- * @author Mauricio Aniche
+ * A ChangeSet is metadata about a Commit from an SCM.
+ * It's "everything but the diff".
  */
 public class ChangeSet {
 
-	private final Calendar date;
-	private final String id;
+	private String id; /* Unique within an SCM. */
+	private String message;
 
-	public ChangeSet(String id, Calendar date) {
+	private CommitPerson author; /* Person who committed it. */
+	private CommitPerson committer; /* Person who merged it. This is probably the field you want. */
+
+	public ChangeSet(String id, String message, CommitPerson author) {
 		this.id = id;
-		this.date = date;
+		this.message = message;
+
+		this.author = author;
+		this.committer = this.author;
+	}
+
+	public ChangeSet(String id, String message, CommitPerson author, CommitPerson committer) {
+		this.id = id;
+		this.message = message;
+
+		this.author = author;
+		this.committer = committer;
 	}
 
 	/**
-	 * @return The time at which this ChangeSet was created by a developer
-	 */
-	public Calendar getTime() {
-		return date;
-	}
-
-	/**
-	 * @return The id of this ChangeSet in its SCM
+	 * @return Unique ID within SCM
 	 */
 	public String getId() {
 		return id;
 	}
 
+	/**
+	 * @return Commit message
+	 */
+	public String getMessage() {
+		return message;
+	}
+
+	/**
+	 * How the ChangeSet was created.
+	 *
+	 * @return Person who authored the commit. See {@link ChangeSet#getCommitter}.
+	 */
+	public CommitPerson getAuthor() {
+		return author;
+	}
+
+	/**
+	 * How the ChangeSet entered the codebase, e.g. when a PR is accepted.
+	 *
+	 * @return Person who merged the commit.
+	 */
+	public CommitPerson getCommitter() {
+		return committer;
+	}
+
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((date == null) ? 0 : date.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
+		final int prime1 = 17;
+		final int prime2 = 31;
+
+		int hash = prime1;
+
+		/* I'm sure there's a more efficient way to do this... */
+		List<Object> members = new ArrayList<Object>();
+		members.add(id);
+		members.add(message);
+		members.add(author);
+		members.add(committer);
+
+		for (Object member : members) {
+			hash = prime2*hash + ((member == null) ? 0 : member.hashCode());
+		}
+
+		return hash;
 	}
 
 	@Override
@@ -69,24 +112,27 @@ public class ChangeSet {
 
 		/* Compare two distinct instances. */
 		ChangeSet other = (ChangeSet) obj;
-		if (date == null) {
-			if (other.date != null)
-				return false;
-		} else if (!date.equals(other.date))
-			return false;
 
 		if (id == null) {
 			if (other.id != null)
 				return false;
-		} else if (!id.equals(other.id))
-			return false;
+		}
+		else {
+			if (!id.equals(other.id))
+				return false;
+		}
 
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "[" + id + ", " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date.getTime()) + "]";
+		if (author.equals(committer)) {
+			return String.format("%s: author %s", id, author);
+		}
+		else {
+			return String.format("%s: author %s, committer %s", id, author, committer);
+		}
 	}
 
 }
