@@ -154,15 +154,18 @@ public class GitRepository implements SCM {
 	}
 
 	public ChangeSet getHead() {
+		RevWalk revWalk = null;
         try (Git git = openRepository()) {
 			ObjectId head = git.getRepository().resolve(Constants.HEAD);
 
-			RevWalk revWalk = new RevWalk(git.getRepository());
+			revWalk = new RevWalk(git.getRepository());
 			RevCommit r = revWalk.parseCommit(head);
 			return new ChangeSet(r.getName(), convertToDate(r));
 
 		} catch (Exception e) {
 			throw new RuntimeException("error in getHead() for " + path, e);
+		} finally {
+			revWalk.close();
 		}
 	}
 
@@ -180,10 +183,11 @@ public class GitRepository implements SCM {
 	}
 
 	private List<ChangeSet> firstParentsOnly(Git git) {
+		RevWalk revWalk = null;
 		try {
 			List<ChangeSet> allCs = new ArrayList<>();
 
-			RevWalk revWalk = new RevWalk(git.getRepository());
+			revWalk = new RevWalk(git.getRepository());
 			revWalk.setRevFilter(new FirstParentFilter());
 			revWalk.sort(RevSort.TOPO);
 			Ref headRef = git.getRepository().getRef(Constants.HEAD);  /* TODO Deprecated. */
@@ -197,6 +201,8 @@ public class GitRepository implements SCM {
 
 		} catch (Exception e) {
 			throw new RuntimeException(e);
+		} finally {
+			revWalk.close();
 		}
 	}
 
@@ -280,24 +286,8 @@ public class GitRepository implements SCM {
 			}
 
 			for (DiffEntry diff : diffsForTheCommit) {
-				ModificationType change = Enum.valueOf(ModificationType.class, diff.getChangeType().toString());
-
-				String oldPath = diff.getOldPath();
-				String newPath = diff.getNewPath();
-
-				String diffText = "";
-				String sc = "";
-				if (diff.getChangeType() != ChangeType.DELETE) {
-					diffText = getDiffText(repo, diff);
-					sc = getSourceCode(repo, diff);
-				}
-
-				if (diffText.length() > maxSizeOfDiff) {
-					log.error("diff for " + newPath + " too big");
-					diffText = "-- TOO BIG --";
-				}
-
-				commit.addModification(new Modification(oldPath, newPath, change, diffText, sc));
+				Modification m = this.diffToModification(repo, diff);
+				commit.addModification(m);
 			}
 
 			return commit;
@@ -305,7 +295,6 @@ public class GitRepository implements SCM {
 			throw new RuntimeException("error detailing " + id + " in " + path, e);
 		}
 	}
-
 
 	private Set<String> getBranches(Git git, String hash) throws GitAPIException {
 		List<Ref> gitBranches = git.branchList().setContains(hash).call();
@@ -316,11 +305,60 @@ public class GitRepository implements SCM {
 		return mappedBranches;
 	}
 
+	private Modification diffToModification(Repository repo, DiffEntry diff) throws IOException {
+		ModificationType change = Enum.valueOf(ModificationType.class, diff.getChangeType().toString());
+
+		String oldPath = diff.getOldPath();
+		String newPath = diff.getNewPath();
+
+		String diffText = "";
+		String sc = "";
+		if (diff.getChangeType() != ChangeType.DELETE) {
+			diffText = getDiffText(repo, diff);
+			sc = getSourceCode(repo, diff);
+		}
+
+		if (diffText.length() > maxSizeOfDiff) {
+			log.error("diff for " + newPath + " too big");
+			diffText = "-- TOO BIG --";
+		}
+
+		return new Modification(oldPath, newPath, change, diffText, sc);
+	}
+
 	private List<DiffEntry> diffsForTheCommit(Repository repo, RevCommit commit) throws IOException {
 
 		AnyObjectId currentCommit = repo.resolve(commit.getName());
 		AnyObjectId parentCommit = commit.getParentCount() > 0 ? repo.resolve(commit.getParent(0).getName()) : null;
 
+		return this.getDiffBetweenCommits(repo, parentCommit, currentCommit);
+	}
+
+	@Override
+	public List<Modification> getDiffBetweenCommits(String priorCommitHash, String laterCommitHash) {
+		try (Git git = openRepository()) {
+			Repository repo = git.getRepository();
+			AnyObjectId priorCommit = repo.resolve(priorCommitHash);
+			AnyObjectId laterCommit = repo.resolve(laterCommitHash);
+
+			List<DiffEntry> diffs = this.getDiffBetweenCommits(repo, priorCommit, laterCommit);
+			List<Modification> modifications = diffs.stream()
+				.map(diff -> {
+					try {
+						return this.diffToModification(repo, diff);
+					} catch (IOException e) {
+						throw new RuntimeException("error diffing " + priorCommitHash + " and " + laterCommitHash + " in " + path, e);
+					}
+				})
+				.collect(Collectors.toList());
+			return modifications;
+		} catch (Exception e) {
+			throw new RuntimeException("error diffing " + priorCommitHash + " and " + laterCommitHash + " in " + path, e);
+		}
+	}
+
+
+	private List<DiffEntry> getDiffBetweenCommits(Repository repo, AnyObjectId parentCommit, AnyObjectId currentCommit) {
 		try (DiffFormatter df = new DiffFormatter(DisabledOutputStream.INSTANCE)) {
 
             df.setBinaryFileThreshold(2 * 1024); // 2 mb max a file
@@ -333,13 +371,16 @@ public class GitRepository implements SCM {
 
             if (parentCommit == null) {
                 try(RevWalk rw = new RevWalk(repo)) {
+                		RevCommit commit = rw.parseCommit(currentCommit);
                     diffs = df.scan(new EmptyTreeIterator(), new CanonicalTreeParser(null, rw.getObjectReader(), commit.getTree()));
                 }
             } else {
                 diffs = df.scan(parentCommit, currentCommit);
             }
             return diffs;
-        }
+        } catch (IOException e) {
+        	throw new RuntimeException("error diffing " + parentCommit.getName() + " and " + currentCommit.getName() + " in " + path, e);
+		}
 	}
 
 	private void setContext(DiffFormatter df) {
