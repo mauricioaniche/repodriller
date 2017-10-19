@@ -257,7 +257,7 @@ the diff and returns two separate lists: lines (number and content) from the pre
 from the new version. As one diff may contain different blocks of diffs (happens when the file
 was modified in two parts that are far from each other), the parser returns 1 or more diff blocks.
 
-```
+```java
 // parse the diff
 DiffParser parsedDiff = new DiffParser(diff);
 
@@ -385,19 +385,28 @@ public class JavaParserVisitor implements CommitVisitor {
 }
 ```
 
-## Dealing with Threads
+## Accelerating your analysis
 
-If your machine has multiple cores, RepoDriller can execute the commit visitor over many threads. This is just another configuration you set in _RepositoryMining_. The _withThreads()_ lets you configure the number of threads the framework will use to process everything.
+### Threads
+RepoDriller can divide the work of analyzing a repository among multiple threads. If your machine has several cores, this can significantly improve performance. However, your CommitVisitors must be thread-safe, and your analysis must tolerate visiting commits in a relatively arbitrary order.
 
-We suggest you use threads unless your workflow must _checkout_ revisions. We only keep one copy of the repository on disk, so two threads would conflict if they both ran _checkout_.
+Here are the RepositoryMining APIs you should consider:
+- _visitorsAreThreadSafe(safe)_: Are all of your CommitVisitors thread-safe?
+- _visitorsChangeRepoState(change)_: Do any of your CommitVisitors have external effects, e.g. changing the on-disk repo state with _checkout()_?
+- _withThreads(X)_: Visit the current repo from X threads
+
+### Fast storage
+RepoDriller CommitVisitors always visit a *copy* of the repository being analyzed. By default RepoDriller stores this copy in the system-wide temporary directory. If your machine has faster storage available, e.g. RAM-based (like tmpfs or ramfs on Linux) or a partition on an SSD, try specifying this path with _setRepoTmpDir(path)_. This will be particularly helpful if your CommitVisitors must _checkout()_.
 
 ```java
 @Override
 public void execute() {
 	new RepositoryMining()
 		.in(GitRepository.singleProject("/Users/mauricioaniche/workspace/repodriller"))
-		.through(Commits.all())
-		.withThreads(3)
+		.through(Commits.all()) // But not necessarily in this order with threads.
+		.visitorsAreThreadSafe(true) // So threads are possible.
+		.visitorsChangeRepoState(true) // So each thread needs its own copy of the repo.
+		.withThreads(-1) // Pick a good number of threads for my machine.
 		.process(new JavaParserVisitor(), new CSVFile("/Users/mauricioaniche/Desktop/devs.csv"))
 		.mine();
 }
