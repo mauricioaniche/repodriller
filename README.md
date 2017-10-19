@@ -478,7 +478,7 @@ Here's how it compares to some other MSR frameworks and tools:
 	3. If you roll your own Boa cluster, you are restricted to repositories with languages that Boa can import (i.e. parse into ASTs).
 - [Alitheia Core](https://github.com/istlab/Alitheia-Core) is a scalable platform for MSR.
 	1. Alitheia-Core is a heavyweight approach. You pay a lot of up-front costs (configuration, pre-processing, etc.) in exchange for a scalable analysis. If you're doing exploratory research, the overhead may not be worth it.
-	2. Alitheia Core is no longer being maintained. You have to figure out how to set it up yourself. Good luck.
+	2. Alitheia Core is no longer being maintained.
 
 ## How do I cite RepoDriller?
 
