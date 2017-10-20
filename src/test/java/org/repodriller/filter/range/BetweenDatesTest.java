@@ -25,8 +25,7 @@ public class BetweenDatesTest {
 
 	@Test
 	public void should_get_commits_in_range() {
-		range = new BetweenDates(new GregorianCalendar(2016, Calendar.JANUARY, 01),
-								new GregorianCalendar(2016, Calendar.DECEMBER, 31));
+		List<ChangeSet> list;
 
 		ChangeSet c1 = new ChangeSet("1", "", new CommitPerson("", "", new GregorianCalendar(2015, Calendar.JANUARY, 23)));
 		ChangeSet c2 = new ChangeSet("2", "", new CommitPerson("", "", new GregorianCalendar(2015, Calendar.MARCH, 24)));
@@ -36,11 +35,41 @@ public class BetweenDatesTest {
 
 		Mockito.when(scm.getChangeSets()).thenReturn(Arrays.asList(c1, c2, c3, c4, c5));
 
-		List<ChangeSet> list = range.get(scm);
+		/* Entries between Jan 1 2016 and Dec 31 2016. */
+		range = new BetweenDates(new GregorianCalendar(2016, Calendar.JANUARY, 01), new GregorianCalendar(2016, Calendar.DECEMBER, 31));
 
+		list = range.get(scm);
 		Assert.assertEquals(2, list.size());
 		Assert.assertTrue(list.contains(c3));
 		Assert.assertTrue(list.contains(c4));
+
+		/* Entries before Dec 31 2016. */
+		range = new BetweenDates(null, new GregorianCalendar(2016, Calendar.DECEMBER, 31));
+
+		list = range.get(scm);
+		Assert.assertEquals(4, list.size());
+		Assert.assertTrue(list.contains(c1));
+		Assert.assertTrue(list.contains(c2));
+		Assert.assertTrue(list.contains(c3));
+		Assert.assertTrue(list.contains(c4));
+
+		/* Entries after Dec 31 2016. */
+		range = new BetweenDates(new GregorianCalendar(2016, Calendar.DECEMBER, 31), null);
+
+		list = range.get(scm);
+		Assert.assertEquals(1, list.size());
+		Assert.assertTrue(list.contains(c5));
+
+		/* All entries. */
+		range = new BetweenDates(null, null);
+
+		list = range.get(scm);
+		Assert.assertEquals(5, list.size());
+		Assert.assertTrue(list.contains(c1));
+		Assert.assertTrue(list.contains(c2));
+		Assert.assertTrue(list.contains(c3));
+		Assert.assertTrue(list.contains(c4));
+		Assert.assertTrue(list.contains(c5));
 	}
 
 }

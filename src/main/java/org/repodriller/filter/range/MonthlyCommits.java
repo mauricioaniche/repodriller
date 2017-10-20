@@ -6,12 +6,36 @@ import java.util.List;
 import org.repodriller.domain.ChangeSet;
 import org.repodriller.scm.SCM;
 
+/**
+ * ChangeSets every X months.
+ */
 public class MonthlyCommits implements CommitRange {
 
 	private final long monthsInMillis;
+	private ChangeSet.Contributor whichContributorTime;
 
+	/**
+	 * ChangeSets every {@code months} months.
+	 * Uses AUTHOR time.
+	 * This is probably not what you want in a complex git repo.
+	 *
+	 * @param months
+	 */
 	public MonthlyCommits(int months) {
+		this(months, ChangeSet.Contributor.AUTHOR);
+	}
+
+	/**
+	 * ChangeSets every {@code months} months.
+	 * Uses the specified contributor time.
+	 * You probably want to use this with CONTRIBUTOR time.
+	 *
+	 * @param months
+	 * @param contributor
+	 */
+	public MonthlyCommits(int months, ChangeSet.Contributor contributor) {
 		monthsInMillis = 1000L * 60L * 60L * 24L * 30L * months;
+		whichContributorTime = contributor;
 	}
 
 	@Override
@@ -34,8 +58,8 @@ public class MonthlyCommits implements CommitRange {
 	private boolean isFarFromTheLastOne(ChangeSet cs, LinkedList<ChangeSet> filtered) {
 		ChangeSet lastOne = filtered.getLast();
 
-		long lastInMillis = lastOne.getCommitter().time.getTimeInMillis();
-		long currentInMillis = cs.getCommitter().time.getTimeInMillis();
+		long lastInMillis = lastOne.getContributor(whichContributorTime).time.getTimeInMillis();
+		long currentInMillis = cs.getContributor(whichContributorTime).time.getTimeInMillis();
 
 		return (lastInMillis - currentInMillis >= monthsInMillis);
 	}

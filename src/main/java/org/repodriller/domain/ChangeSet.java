@@ -25,6 +25,10 @@ import java.util.List;
  */
 public class ChangeSet {
 
+	public enum Contributor {
+	    AUTHOR, COMMITTER
+	};
+
 	private String id; /* Unique within an SCM. */
 	private String message;
 
@@ -77,6 +81,23 @@ public class ChangeSet {
 	 */
 	public CommitPerson getCommitter() {
 		return committer;
+	}
+
+	/**
+	 * Return the requested contributor.
+	 *
+	 * @param contributor
+	 * @return
+	 */
+	public CommitPerson getContributor(ChangeSet.Contributor contributor) {
+		switch (contributor) {
+			case AUTHOR:
+				return getAuthor();
+			case COMMITTER:
+				return getCommitter();
+			default:
+				return null;
+		}
 	}
 
 	@Override
