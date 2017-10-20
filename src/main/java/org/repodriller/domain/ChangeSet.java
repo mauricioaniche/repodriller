@@ -17,6 +17,7 @@
 package org.repodriller.domain;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -49,6 +50,14 @@ public class ChangeSet {
 
 		this.author = author;
 		this.committer = committer;
+	}
+
+	/**
+	 * @return The time at which this ChangeSet was created by a developer. In Git, this is "author time", not "committer time".
+	 */
+	@Deprecated
+	public Calendar getTime() {
+		return author.time;
 	}
 
 	/**
