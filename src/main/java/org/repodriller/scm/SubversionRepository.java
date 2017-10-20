@@ -15,6 +15,7 @@ import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jgit.lib.PersonIdent;
+import org.repodriller.RepoDrillerException;
 import org.repodriller.domain.ChangeSet;
 import org.repodriller.domain.Commit;
 import org.repodriller.domain.CommitPerson;
@@ -296,6 +297,12 @@ public class SubversionRepository implements SCM {
 		} catch (Exception e) {
 			return "";
 		}
+	}
+
+	@Override
+	public List<Modification> getDiffBetweenCommits(String priorCommit, String laterCommit) {
+		// TODO Not yet implemented for SVN.
+		throw new RepoDrillerException("This feature has not yet been implemented for Subversion repos.");
 	}
 
 	private ModificationType getModificationType(SVNLogEntryPath e) {

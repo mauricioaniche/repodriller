@@ -181,6 +181,6 @@ public class GitRemoteRepository extends GitRepository implements AutoCloseable 
 	public void close() throws IOException {
 		if (hasLocalState)
 			FileUtils.deleteDirectory(new File(path));
-		hasLocalState = false;	
+		hasLocalState = false;
 	}
 }
