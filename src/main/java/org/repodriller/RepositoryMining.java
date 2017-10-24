@@ -104,7 +104,7 @@ public class RepositoryMining {
 		/* Initialize concurrency settings conservatively. */
 		visitorsAreThreadSafe(false);
 		visitorsChangeRepoState(true);
-		withThreads(-1);
+		withThreads(1);
 	}
 
 	/**
@@ -220,24 +220,31 @@ public class RepositoryMining {
 	}
 
 	/**
-	 * Configure parallelism. Use with {@link RepositoryMining#threadsConflictOnRepo}.
+	 * RepoDriller will choose a good number of threads for you.
+	 * Use after {@link RepositoryMining#threadsConflictOnRepo}.
+	 * @return this
+	 */
+	public RepositoryMining withThreads() {
+		if (visitorsAreThreadSafe)
+			/* 4x cores, presuming some I/O-bound work. */
+			nRepoThreads = THREADS_PER_CORE*Runtime.getRuntime().availableProcessors();
+		else
+			nRepoThreads = 1;
+		return this;
+	}
+
+	/**
+	 * Configure parallelism. Use after {@link RepositoryMining#threadsConflictOnRepo}.
 	 * If you use >1 thread, {@link RepositoryMining#through} will not define a FIFO order of commit processing.
 	 *
-	 * @param nThreads	Number of threads that can visit each repo concurrently (default 1). Give -1 for a good default value after calling {@link RepositoryMining#visitorsAreThreadSafe}.
+	 * @param nThreads	Number of threads that can visit each repo concurrently (default 1).
 	 * @return this
 	 */
 	public RepositoryMining withThreads(int nThreads) {
-		if (nThreads == -1) {
-			if (visitorsAreThreadSafe)
-				/* 4x cores, presuming some I/O-bound work. */
-				nThreads = THREADS_PER_CORE*Runtime.getRuntime().availableProcessors();
-			else
-				nThreads = 1;
-		}
-		else if (nThreads < -1)
-			throw new RepoDrillerException("Negative number of threads");
+		if (nThreads < 1)
+			throw new RepoDrillerException("Invalid number of threads: " + nThreads);
 
-		this.nRepoThreads = nThreads;
+		nRepoThreads = nThreads;
 		return this;
 	}
 

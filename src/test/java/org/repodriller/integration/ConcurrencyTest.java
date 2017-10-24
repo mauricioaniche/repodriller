@@ -1,6 +1,5 @@
 package org.repodriller.integration;
 
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -122,7 +121,7 @@ public class ConcurrencyTest {
 		.process(visitor)
 		.visitorsAreThreadSafe(true)
 		.visitorsChangeRepoState(true)
-		.withThreads(-1) // Default # threads
+		.withThreads() // Choose threads for me
 		.mine();
 
 		addVisitorToResults("changingRepoState_defaultThreads", visitor);
