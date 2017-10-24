@@ -5,21 +5,20 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jgit.lib.PersonIdent;
 import org.repodriller.RepoDrillerException;
 import org.repodriller.domain.ChangeSet;
 import org.repodriller.domain.Commit;
-import org.repodriller.domain.CommitPerson;
-import org.repodriller.domain.Developer;
+import org.repodriller.domain.CommitContributor;
 import org.repodriller.domain.Modification;
 import org.repodriller.domain.ModificationType;
 import org.repodriller.util.RDFileUtils;
@@ -168,23 +167,21 @@ public class SubversionRepository implements SCM {
 	private ChangeSet extractChangeSet(SVNLogEntry entry) {
 		String id = String.valueOf(entry.getRevision());
 		String msg = entry.getMessage();
+		GregorianCalendar commitTime = new GregorianCalendar();
+		commitTime.setTime(entry.getDate());
+		CommitContributor author = new CommitContributor(entry.getAuthor(), null, commitTime, commitTime.getTimeZone());
 
-		GregorianCalendar cal = new GregorianCalendar();
-		cal.setTime(entry.getDate());
-		CommitPerson author = new CommitPerson(entry.getAuthor(), "", cal);
-
-		return new ChangeSet(id, msg, author);
+		return new ChangeSet(id, msg, author, null, new TreeSet<String>(), new TreeSet<String>(), false);
 	}
 
 	private ChangeSet extractChangeSet(SVNDirEntry entry) {
 		String id = String.valueOf(entry.getRevision());
 		String msg = entry.getCommitMessage();
+		GregorianCalendar commitTime = new GregorianCalendar();
+		commitTime.setTime(entry.getDate());
+		CommitContributor author = new CommitContributor(entry.getAuthor(), null, commitTime, commitTime.getTimeZone());
 
-		GregorianCalendar cal = new GregorianCalendar();
-		cal.setTime(entry.getDate());
-		CommitPerson author = new CommitPerson(entry.getAuthor(), "", cal);
-
-		return new ChangeSet(id, msg, author);
+		return new ChangeSet(id, msg, author, null, new TreeSet<String>(), new TreeSet<String>(), false);
 	}
 
 	private GregorianCalendar extractCalendar(PersonIdent pi) {
@@ -196,7 +193,6 @@ public class SubversionRepository implements SCM {
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	/* TODO Refactor as in GitRepository.getCommit. */
 	public Commit getCommit(String id) {
 		SVNRepository repository = null;
 
@@ -210,40 +206,33 @@ public class SubversionRepository implements SCM {
 			long startRevision = revision;
 			long endRevision = revision;
 
-			Collection repositoryLog = repository.log(new String[] { "" }, null, startRevision, endRevision, true, true);
+			@SuppressWarnings("unchecked")
+			Iterable<SVNLogEntry> repositoryLog = repository.log(new String[] { "" }, null, startRevision, endRevision, true, true);
+			Iterator<SVNLogEntry> itr = repositoryLog.iterator();
+			if (!itr.hasNext())
+				return null;
+			SVNLogEntry logEntry = itr.next();
 
-			for (Iterator iterator = repositoryLog.iterator(); iterator.hasNext();) {
-				SVNLogEntry logEntry = (SVNLogEntry) iterator.next();
+			Commit commit = createCommit(logEntry);
+			List<Modification> modifications = getModifications(repository, url, revision, logEntry);
 
-				Commit commit = createCommit(logEntry);
-
-				List<Modification> modifications = getModifications(repository, url, revision, logEntry);
-
-				if (modifications.size() > this.maxNumberFilesInACommit) {
-					log.error("commit " + id + " has more than files than the limit");
-					throw new RuntimeException("commit " + id + " too big, sorry");
-				}
-
-				commit.addModifications(modifications);
-
-				return commit;
+			if (modifications.size() > this.maxNumberFilesInACommit) {
+				log.error("commit " + id + " has more than files than the limit");
+				throw new RuntimeException("commit " + id + " too big, sorry");
 			}
+			commit.addModifications(modifications);
 
+			return commit;
 		} catch (Exception e) {
 			throw new RuntimeException("error in getCommit() for " + path, e);
 		} finally {
 			if (repository != null)
 				repository.closeSession();
 		}
-		return null;
 	}
 
 	private Commit createCommit(SVNLogEntry logEntry) {
-		Developer committer = new Developer(logEntry.getAuthor(), null);
-		Calendar date = convertToCalendar(logEntry.getDate());
-		Commit commit = new Commit(String.valueOf(logEntry.getRevision()), null, committer, date, date, logEntry.getMessage(),
-				"");
-		return commit;
+		return new Commit(extractChangeSet(logEntry));
 	}
 
 	private List<Modification> getModifications(SVNRepository repository, SVNURL url, long revision, SVNLogEntry logEntry) throws SVNException,

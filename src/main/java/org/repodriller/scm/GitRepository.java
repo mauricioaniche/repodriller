@@ -20,11 +20,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
@@ -52,8 +52,7 @@ import org.eclipse.jgit.util.io.DisabledOutputStream;
 import org.repodriller.RepoDrillerException;
 import org.repodriller.domain.ChangeSet;
 import org.repodriller.domain.Commit;
-import org.repodriller.domain.CommitPerson;
-import org.repodriller.domain.Developer;
+import org.repodriller.domain.CommitContributor;
 import org.repodriller.domain.Modification;
 import org.repodriller.domain.ModificationType;
 import org.repodriller.util.RDFileUtils;
@@ -162,7 +161,7 @@ public class GitRepository implements SCM {
 
 			revWalk = new RevWalk(git.getRepository());
 			RevCommit r = revWalk.parseCommit(head);
-			return extractChangeSet(r);
+			return extractChangeSet(git, r);
 		} catch (Exception e) {
 			throw new RuntimeException("error in getHead() for " + path, e);
 		} finally {
@@ -193,9 +192,9 @@ public class GitRepository implements SCM {
 			revWalk.sort(RevSort.TOPO);
 			Ref headRef = git.getRepository().getRef(Constants.HEAD);  /* TODO Deprecated. */
 			RevCommit headCommit = revWalk.parseCommit(headRef.getObjectId());
-			revWalk.markStart( headCommit );
+			revWalk.markStart(headCommit);
 			for(RevCommit revCommit : revWalk) {
-				allCs.add(extractChangeSet(revCommit));
+				allCs.add(extractChangeSet(git, revCommit));
 			}
 
 			return allCs;
@@ -211,7 +210,7 @@ public class GitRepository implements SCM {
 		List<ChangeSet> allCs = new ArrayList<>();
 
 		for (RevCommit r : git.log().all().call()) {
-			allCs.add(extractChangeSet(r));
+			allCs.add(extractChangeSet(git, r));
 		}
 		return allCs;
 	}
@@ -223,17 +222,23 @@ public class GitRepository implements SCM {
 		return cal;
 	}
 
-	private CommitPerson extractCommitPerson(PersonIdent pi) {
-		return new CommitPerson(pi.getName(), pi.getEmailAddress(), extractCalendar(pi));
+	private CommitContributor extractCommitContributor(PersonIdent pi) {
+		return new CommitContributor(pi.getName(), pi.getEmailAddress(), extractCalendar(pi), pi.getTimeZone());
 	}
 
-	private ChangeSet extractChangeSet(RevCommit r) {
+	private ChangeSet extractChangeSet(Git git, RevCommit r) throws GitAPIException {
 		String id = r.getName();
-		String msg = r.getFullMessage();
-		CommitPerson author = extractCommitPerson(r.getAuthorIdent());
-		CommitPerson committer = extractCommitPerson(r.getCommitterIdent());
+		String msg = r.getFullMessage().trim();
+		CommitContributor author = extractCommitContributor(r.getAuthorIdent());
+		CommitContributor committer = extractCommitContributor(r.getCommitterIdent());
+		List<RevCommit> parents = Arrays.asList(r.getParents());
+		Set<String> parentIds = parents.stream()
+				.map(p -> p.getName().toString())
+				.collect(Collectors.toSet());
+		Set<String> branches = getBranches(git, id);
+		boolean inMainBranch = branches.contains(this.mainBranchName);
 
-		return new ChangeSet(id, msg, author, committer);
+		return new ChangeSet(id, msg, author, committer, parentIds, branches, inMainBranch);
 	}
 
 	/**
@@ -257,31 +262,8 @@ public class GitRepository implements SCM {
 				return null;
 			RevCommit jgitCommit = itr.next();
 
-			/* Extract metadata. */
-			Developer author = new Developer(jgitCommit.getAuthorIdent().getName(), jgitCommit.getAuthorIdent().getEmailAddress());
-			Developer committer = new Developer(jgitCommit.getCommitterIdent().getName(), jgitCommit.getCommitterIdent().getEmailAddress());
-			TimeZone authorTimeZone = jgitCommit.getAuthorIdent().getTimeZone();
-			TimeZone committerTimeZone = jgitCommit.getCommitterIdent().getTimeZone();
-
-			String msg = jgitCommit.getFullMessage().trim();
-			String hash = jgitCommit.getName().toString();
-			String parent = (jgitCommit.getParentCount() > 0) ? jgitCommit.getParent(0).getName().toString() : "";
-
-			GregorianCalendar authorDate = new GregorianCalendar();
-			authorDate.setTime(jgitCommit.getAuthorIdent().getWhen());
-			authorDate.setTimeZone(jgitCommit.getAuthorIdent().getTimeZone());
-
-			GregorianCalendar committerDate = new GregorianCalendar();
-			committerDate.setTime(jgitCommit.getCommitterIdent().getWhen());
-			committerDate.setTimeZone(jgitCommit.getCommitterIdent().getTimeZone());
-
-			boolean isMerge = (jgitCommit.getParentCount() > 1);
-
-			Set<String> branches = getBranches(git, hash);
-			boolean isCommitInMainBranch = branches.contains(this.mainBranchName);
-
-			/* Create one of our Commit's based on the jgitCommit metadata. */
-			Commit commit = new Commit(hash, author, committer, authorDate, authorTimeZone, committerDate, committerTimeZone, msg, parent, isMerge, branches, isCommitInMainBranch);
+			/* Start a commit with no modifications yet. */
+			Commit commit = new Commit(extractChangeSet(git, jgitCommit));
 
 			/* Convert each of the associated DiffEntry's to a Modification. */
 			List<DiffEntry> diffsForTheCommit = diffsForTheCommit(repo, jgitCommit);
@@ -290,7 +272,6 @@ public class GitRepository implements SCM {
 				log.error(errMsg);
 				throw new RepoDrillerException(errMsg);
 			}
-
 			for (DiffEntry diff : diffsForTheCommit) {
 				Modification m = this.diffToModification(repo, diff);
 				commit.addModification(m);

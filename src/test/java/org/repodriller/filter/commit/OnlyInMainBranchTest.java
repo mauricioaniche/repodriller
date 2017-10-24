@@ -4,13 +4,12 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.TimeZone;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.repodriller.domain.ChangeSet;
 import org.repodriller.domain.Commit;
-import org.repodriller.domain.Developer;
-import org.repodriller.filter.commit.OnlyInBranches;
+import org.repodriller.domain.CommitContributor;
 
 public class OnlyInMainBranchTest {
 
@@ -20,7 +19,9 @@ public class OnlyInMainBranchTest {
 		branches.add("master");
 		branches.add("b1");
 		Calendar d = Calendar.getInstance();
-		Commit commit = new Commit("123", new Developer("Mau", "mau@mau.com"), new Developer("Mau", "mau@mau.com"), d, TimeZone.getDefault(), d, TimeZone.getDefault(), "x", null, false, branches, false);
+		CommitContributor mau = new CommitContributor("Mau", "mau@mau.com", d);
+		ChangeSet cs = new ChangeSet("123", "foo", mau, null, null, branches, true);
+		Commit commit = new Commit(cs);
 
 		Assert.assertTrue(new OnlyInBranches(Arrays.asList("master")).accept(commit));
 		Assert.assertTrue(new OnlyInBranches(Arrays.asList("b1")).accept(commit));

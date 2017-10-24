@@ -4,30 +4,42 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * A POJO to track details about a person involved with a commit.
  */
-public class CommitPerson {
+public class CommitContributor {
 	public String name;
 	public String email;
 	public Calendar time;
+	public TimeZone tz;
 
-	public CommitPerson(String author, String email, Calendar time) {
-		this.name = author;
-		this.email = email;
-		this.time = time;
+	public CommitContributor(String name, String email, Calendar time) {
+		this(name, email, time, null);
 	}
 
-	public CommitPerson(CommitPerson c) {
+	public CommitContributor(String name, String email, Calendar time, TimeZone tz) {
+		this.name = name;
+		this.email = email;
+		this.time = time;
+		this.tz = tz;
+	}
+
+	public CommitContributor(CommitContributor c) {
 		this.name = c.name;
 		this.email = c.email;
 		this.time = c.time;
+		this.tz = c.tz;
 	}
 
 	@Override
 	public String toString() {
 		return String.format("%s <%s> at %s",  name, email, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(time));
+	}
+
+	public Developer asDeveloper() {
+		return new Developer(name, email);
 	}
 
 	@Override
@@ -42,6 +54,7 @@ public class CommitPerson {
 		members.add(name);
 		members.add(email);
 		members.add(time);
+		members.add(tz);
 
 		for (Object member : members) {
 			hash = prime2*hash + ((member == null) ? 0 : member.hashCode());
@@ -61,32 +74,28 @@ public class CommitPerson {
 			return false;
 
 		/* Compare two distinct instances. */
-		CommitPerson other = (CommitPerson) obj;
+		CommitContributor other = (CommitContributor) obj;
 
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		}
-		else {
-			if (!name.equals(other.name))
-				return false;
-		}
+		/* I'm sure there's a more efficient way to do this... */
+		List<Object> myMembers = new ArrayList<Object>();
+		myMembers.add(name);
+		myMembers.add(email);
+		myMembers.add(time);
+		myMembers.add(tz);
 
-		if (email == null) {
-			if (other.email != null)
-				return false;
-		}
-		else {
-			if (!email.equals(other.name))
-				return false;
-		}
+		List<Object> theirMembers = new ArrayList<Object>();
+		theirMembers.add(other.name);
+		theirMembers.add(other.email);
+		theirMembers.add(other.time);
+		theirMembers.add(other.tz);
 
-		if (time == null) {
-			if (other.time != null)
+		for (int i = 0; i < myMembers.size(); i++) {
+			Object mine = myMembers.get(i);
+			Object theirs = theirMembers.get(i);
+
+			if (mine == null ^ theirs == null) // XOR: Both must be null or both must be not null.
 				return false;
-		}
-		else {
-			if (!time.equals(other.name))
+			if (mine != null && !mine.equals(theirs)) // Not null, so check equality.
 				return false;
 		}
 

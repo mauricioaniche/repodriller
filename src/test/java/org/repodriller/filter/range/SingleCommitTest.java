@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.repodriller.domain.ChangeSet;
-import org.repodriller.domain.CommitPerson;
+import org.repodriller.domain.CommitContributor;
 import org.repodriller.scm.SCM;
 
 public class SingleCommitTest {
@@ -27,9 +27,9 @@ public class SingleCommitTest {
 	public void should_get_specific_commits() {
 		range = new SingleCommit("2");
 
-		ChangeSet c1 = new ChangeSet("1", "", new CommitPerson("", "", new GregorianCalendar(2015, Calendar.JANUARY, 23)));
-		ChangeSet c2 = new ChangeSet("2", "", new CommitPerson("", "", new GregorianCalendar(2015, Calendar.MARCH, 24)));
-		ChangeSet c3 = new ChangeSet("3", "", new CommitPerson("", "", new GregorianCalendar(2015, Calendar.APRIL, 25)));
+		ChangeSet c1 = new ChangeSet("1", "", new CommitContributor("", "", new GregorianCalendar(2015, Calendar.JANUARY, 23)));
+		ChangeSet c2 = new ChangeSet("2", "", new CommitContributor("", "", new GregorianCalendar(2015, Calendar.MARCH, 24)));
+		ChangeSet c3 = new ChangeSet("3", "", new CommitContributor("", "", new GregorianCalendar(2015, Calendar.APRIL, 25)));
 
 		Mockito.when(scm.getChangeSets()).thenReturn(Arrays.asList(c1, c2, c3));
 

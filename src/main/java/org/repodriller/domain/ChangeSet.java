@@ -16,12 +16,12 @@
 
 package org.repodriller.domain;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
- * A ChangeSet is metadata about a Commit from an SCM.
+ * A ChangeSet is a POJO for the metadata about a Commit from an SCM.
  * It's "everything but the diff".
  */
 public class ChangeSet {
@@ -30,26 +30,52 @@ public class ChangeSet {
 	    AUTHOR, COMMITTER
 	};
 
-	private String id; /* Unique within an SCM. */
+	private String id; /* Unique within an SCM. Example: the commit hash. */
 	private String message;
 
-	private CommitPerson author; /* Person who committed it. */
-	private CommitPerson committer; /* Person who merged it. This is probably the field you want. */
+	private CommitContributor author; /* Person who committed it. */
+	private CommitContributor committer; /* Person who merged it. This is probably the field you want. */
 
-	public ChangeSet(String id, String message, CommitPerson author) {
+	private Set<String> parentIds; /* Parent(s) of this commit. Only "merge commits" have more than one parent. Does the root commit have 0? */
+
+	private Set<String> branches; /* Set of branches that contain this commit, i.e. the branches for which this commit is an ancestor of the most recent commit in that branch. */
+	private boolean inMainBranch; /* True if the main branch is in the set of branches. */
+
+	/**
+	 * Minimalist ChangeSet. Many null members. Useful for testing.
+	 *
+	 * @param id
+	 * @param message
+	 * @param author
+	 */
+	public ChangeSet(String id, String message, CommitContributor author) {
 		this.id = id;
 		this.message = message;
-
 		this.author = author;
 		this.committer = this.author;
 	}
 
-	public ChangeSet(String id, String message, CommitPerson author, CommitPerson committer) {
+	/**
+	 * Create a ChangeSet. Makes shallow copies of all of the input.
+	 *
+	 * @param id
+	 * @param message
+	 * @param author
+	 * @param committer
+	 * @param parentIds
+	 * @param branches
+	 * @param inMainBranch
+	 */
+	public ChangeSet(String id, String message, CommitContributor author, CommitContributor committer,
+			Set<String> parentIds, Set<String> branches, boolean inMainBranch) {
+		super();
 		this.id = id;
 		this.message = message;
-
 		this.author = author;
-		this.committer = committer;
+		this.committer = (committer == null) ? author : committer;
+		this.parentIds = parentIds;
+		this.branches = branches;
+		this.inMainBranch = inMainBranch;
 	}
 
 	/**
@@ -79,7 +105,7 @@ public class ChangeSet {
 	 *
 	 * @return Person who authored the commit. See {@link ChangeSet#getCommitter}.
 	 */
-	public CommitPerson getAuthor() {
+	public CommitContributor getAuthor() {
 		return author;
 	}
 
@@ -88,7 +114,7 @@ public class ChangeSet {
 	 *
 	 * @return Person who merged the commit.
 	 */
-	public CommitPerson getCommitter() {
+	public CommitContributor getCommitter() {
 		return committer;
 	}
 
@@ -98,7 +124,7 @@ public class ChangeSet {
 	 * @param contributor
 	 * @return
 	 */
-	public CommitPerson getContributor(ChangeSet.Contributor contributor) {
+	public CommitContributor getContributor(ChangeSet.Contributor contributor) {
 		switch (contributor) {
 			case AUTHOR:
 				return getAuthor();
@@ -109,25 +135,29 @@ public class ChangeSet {
 		}
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime1 = 17;
-		final int prime2 = 31;
+	/**
+	 * @return Parent(s) of this commit. More than one if it's a "merge commit".
+	 */
+	public Set<String> getParentIds() {
+		return new TreeSet<String>(parentIds);
+	}
 
-		int hash = prime1;
+	/**
+	 * @return True if this commit is a "merge commit".
+	 */
+	public boolean isMerge() {
+		return 1 < parentIds.size();
+	}
 
-		/* I'm sure there's a more efficient way to do this... */
-		List<Object> members = new ArrayList<Object>();
-		members.add(id);
-		members.add(message);
-		members.add(author);
-		members.add(committer);
+	/**
+	 * @return Branches of whose tips this commit is an ancestor.
+	 */
+	public Set<String> getBranches() {
+		return new TreeSet<String>(branches);
+	}
 
-		for (Object member : members) {
-			hash = prime2*hash + ((member == null) ? 0 : member.hashCode());
-		}
-
-		return hash;
+	public boolean inMainBranch() {
+		return inMainBranch;
 	}
 
 	@Override
