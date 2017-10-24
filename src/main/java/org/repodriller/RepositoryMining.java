@@ -257,12 +257,12 @@ public class RepositoryMining {
 	 * @param cs	changeset being visited
 	 */
 	private void processChangeSet(SCMRepository repo, ChangeSet cs) {
-		Commit commit = repo.getScm().getCommit(cs.getId());
+		Commit commit = repo.getScm().getCommit(cs);
 		log.info(
-				"Commit #" + commit.getHash() +
+				"Commit #" + cs.getId() +
 				" @ " + repo.getLastDir() +
-				" in " + DateFormatUtils.format(commit.getDate().getTime(), DATE_FORMAT) +
-				" from " + commit.getAuthor().getName() +
+				" in " + DateFormatUtils.format(cs.getAuthor().time, DATE_FORMAT) +
+				" from " + cs.getAuthor().name +
 				" with " + commit.getModifications().size() + " modifications");
 
 		if(!filtersAccept(commit)) {

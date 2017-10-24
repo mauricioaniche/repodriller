@@ -66,20 +66,30 @@ public interface SCM {
 	 * @param id	The commit to retrieve
 	 * @return	The Commit with this id, or null.
 	 */
+	@Deprecated
 	Commit getCommit(String id);
+
+	/**
+	 * Retrieve the Commit with this id.
+	 *
+	 * @param cs The commit to retrieve
+	 * @return	The Commit with this id, or null.
+	 */
+	Commit getCommit(ChangeSet cs);
+
 	/* TODO A method named getCommitXYZ should return a Commit. */
 	String getCommitFromTag(String tag);
-	
+
 	/**
 	 * Get the diff between the specified commits.
-	 * 
+	 *
 	 * @param priorCommit	The first (old) commit
 	 * @param laterCommit	The second (new) commit
 	 * @return A list of Modification objects representing the changes between
 	 * 			priorCommit and laterCommit.
 	 */
 	List<Modification> getDiffBetweenCommits(String priorCommit, String laterCommit);
-	
+
 	@Deprecated
 	String blame(String file, String currentCommit, Integer line);
 	List<BlamedLine> blame(String file, String commitToBeBlamed, boolean priorCommit);

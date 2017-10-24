@@ -214,13 +214,7 @@ public class SubversionRepository implements SCM {
 			SVNLogEntry logEntry = itr.next();
 
 			Commit commit = createCommit(logEntry);
-			List<Modification> modifications = getModifications(repository, url, revision, logEntry);
-
-			if (modifications.size() > this.maxNumberFilesInACommit) {
-				log.error("commit " + id + " has more than files than the limit");
-				throw new RuntimeException("commit " + id + " too big, sorry");
-			}
-			commit.addModifications(modifications);
+			addModificationsToCommit(repository,  url,  revision,  logEntry,  commit);
 
 			return commit;
 		} catch (Exception e) {
@@ -229,6 +223,58 @@ public class SubversionRepository implements SCM {
 			if (repository != null)
 				repository.closeSession();
 		}
+	}
+
+	public Commit getCommit(ChangeSet cs) {
+		SVNRepository repository = null;
+
+		try {
+			SVNURL url = SVNURL.parseURIEncoded(path);
+			repository = SVNRepositoryFactory.create(url);
+
+			authenticateIfNecessary(repository);
+
+			long revision = Long.parseLong(cs.getId());
+			long startRevision = revision;
+			long endRevision = revision;
+
+			@SuppressWarnings("unchecked")
+			Iterable<SVNLogEntry> repositoryLog = repository.log(new String[] { "" }, null, startRevision, endRevision, true, true);
+			Iterator<SVNLogEntry> itr = repositoryLog.iterator();
+			if (!itr.hasNext())
+				return null;
+			SVNLogEntry logEntry = itr.next();
+
+			Commit commit = new Commit(cs);
+			addModificationsToCommit(repository,  url,  revision,  logEntry,  commit);
+
+			return commit;
+		} catch (Exception e) {
+			throw new RuntimeException("error in getCommit() for " + path, e);
+		} finally {
+			if (repository != null)
+				repository.closeSession();
+		}
+	}
+
+	/**
+	 * Add each of the Modifications associated with {@code revCommit} to {@code commit}.
+	 *
+	 * @param repo
+	 * @param revCommit
+	 * @param commit
+	 * @throws SVNException
+	 * @throws UnsupportedEncodingException
+	 * @throws IOException
+	 */
+	private void addModificationsToCommit(SVNRepository repository, SVNURL url, long revision, SVNLogEntry logEntry, Commit commit) throws UnsupportedEncodingException, SVNException {
+		List<Modification> modifications = getModifications(repository, url, revision, logEntry);
+
+		if (modifications.size() > this.maxNumberFilesInACommit) {
+			log.error("commit " + commit.getId() + " has more than files than the limit");
+			throw new RuntimeException("commit " + commit.getId() + " too big, sorry");
+		}
+		commit.addModifications(modifications);
 	}
 
 	private Commit createCommit(SVNLogEntry logEntry) {

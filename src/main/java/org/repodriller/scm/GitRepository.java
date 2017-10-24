@@ -262,24 +262,57 @@ public class GitRepository implements SCM {
 				return null;
 			RevCommit jgitCommit = itr.next();
 
-			/* Start a commit with no modifications yet. */
+			/* Extract the commit. */
 			Commit commit = new Commit(extractChangeSet(git, jgitCommit));
-
-			/* Convert each of the associated DiffEntry's to a Modification. */
-			List<DiffEntry> diffsForTheCommit = diffsForTheCommit(repo, jgitCommit);
-			if (diffsForTheCommit.size() > maxNumberFilesInACommit) {
-				String errMsg = "Commit " + id + " touches more than " + maxNumberFilesInACommit + " files";
-				log.error(errMsg);
-				throw new RepoDrillerException(errMsg);
-			}
-			for (DiffEntry diff : diffsForTheCommit) {
-				Modification m = this.diffToModification(repo, diff);
-				commit.addModification(m);
-			}
+			addModificationsToCommit(repo, jgitCommit, commit);
 
 			return commit;
 		} catch (Exception e) {
 			throw new RuntimeException("error detailing " + id + " in " + path, e);
+		}
+	}
+
+	@Override
+	public Commit getCommit(ChangeSet cs) {
+		try (Git git = openRepository()) {
+			/* Using JGit, this commit will be the first entry in the log beginning at id. */
+			Repository repo = git.getRepository();
+			Iterable<RevCommit> jgitCommits = git.log().add(repo.resolve(cs.getId())).call();
+			Iterator<RevCommit> itr = jgitCommits.iterator();
+
+			if (!itr.hasNext())
+				return null;
+			RevCommit jgitCommit = itr.next();
+
+			/* Extract the commit. */
+			Commit commit = new Commit(cs);
+			addModificationsToCommit(repo, jgitCommit, commit);
+
+			return commit;
+		} catch (Exception e) {
+			throw new RuntimeException("error detailing " + cs.getId() + " in " + path, e);
+		}
+	}
+
+	/**
+	 * Add each of the Modifications associated with {@code revCommit} to {@code commit}.
+	 *
+	 * @param repo
+	 * @param revCommit
+	 * @param commit
+	 * @throws IOException
+	 */
+	private void addModificationsToCommit(Repository repo, RevCommit revCommit, Commit commit) throws IOException {
+		/* Convert each of the associated DiffEntry's to a Modification. */
+		List<DiffEntry> diffsForTheCommit = diffsForTheCommit(repo, revCommit);
+		if (diffsForTheCommit.size() > maxNumberFilesInACommit) {
+			String errMsg = "Commit " + commit.getId() + " touches more than " + maxNumberFilesInACommit + " files";
+			log.error(errMsg);
+			throw new RepoDrillerException(errMsg);
+		}
+		for (DiffEntry diff : diffsForTheCommit) {
+			Modification m = this.diffToModification(repo, diff);
+			commit.addModification(m);
 		}
 	}
 
