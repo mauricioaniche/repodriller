@@ -31,6 +31,8 @@ import org.repodriller.persistence.PersistenceMechanism;
  *   1. If {@link org.repodriller.RepositoryMining#withThreads} is being used, then process() must be thread-safe.
  *   2. Multiple CommitVisitors may be operating concurrently on this SCMRepository.
  *   3. A CommitVisitor will only visit commits from one SCMRepository at a time.
+ *   4. The SCMRepository passed to initialize() and finalize() will be the same.
+ *      However, process() may receive different equivalent SCMRepository's.
  *
  * @author Mauricio Aniche
  */
@@ -46,7 +48,9 @@ public interface CommitVisitor {
 
 	/**
 	 * Visit this <{@code repo}, {@code commit}> combination.
-	 * Should be thread-safe.
+	 * May need to be thread-safe, see class notes.
+	 * {@code repo} may not be the repo object that is passed to initialize and finalize,
+	 * but it is always that object or an equivalent clone thereof.
 	 *
 	 * @param repo The SCM repo
 	 * @param commit The visited commit

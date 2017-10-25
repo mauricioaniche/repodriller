@@ -16,6 +16,7 @@
 
 package org.repodriller.scm;
 
+import java.nio.file.Path;
 import java.util.List;
 
 import org.repodriller.domain.ChangeSet;
@@ -69,17 +70,17 @@ public interface SCM {
 	Commit getCommit(String id);
 	/* TODO A method named getCommitXYZ should return a Commit. */
 	String getCommitFromTag(String tag);
-	
+
 	/**
 	 * Get the diff between the specified commits.
-	 * 
+	 *
 	 * @param priorCommit	The first (old) commit
 	 * @param laterCommit	The second (new) commit
 	 * @return A list of Modification objects representing the changes between
 	 * 			priorCommit and laterCommit.
 	 */
 	List<Modification> getDiffBetweenCommits(String priorCommit, String laterCommit);
-	
+
 	@Deprecated
 	String blame(String file, String currentCommit, Integer line);
 	List<BlamedLine> blame(String file, String commitToBeBlamed, boolean priorCommit);
@@ -104,4 +105,18 @@ public interface SCM {
 	 * Implementors: May not be thread safe, consider synchronized.
 	 */
 	List<RepositoryFile> files();
+
+	/**
+	 * Duplicate this SCM.
+	 *
+	 * @param dest On-disk records will be rooted here (e.g. "/tmp/clone-here")
+	 * @returns An SCM corresponding to the copy
+	 */
+	SCM clone(Path dest);
+
+	/**
+	 * Delete any local storage devoted to this SCM.
+	 * Should be safe to call repeatedly without ill effect.
+	 */
+	void delete();
 }

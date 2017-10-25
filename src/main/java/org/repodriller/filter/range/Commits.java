@@ -42,11 +42,19 @@ public class Commits {
 	}
 
 	/**
-	 * @param months	Number of months to skip between commits
+	 * @param months		Number of months to skip between commits
 	 * @return			A CommitRange that returns the first commit every {@code months} apart
 	 */
 	public static CommitRange monthly(int months) {
 		return new MonthlyCommits(months);
+	}
+
+	/**
+	 * @param days		Number of days to skip between commits
+	 * @return			A CommitRange that returns the first commit every {@code months} apart
+	 */
+	public static CommitRange daily(int days) {
+		return new DailyCommits(days);
 	}
 
 	/**

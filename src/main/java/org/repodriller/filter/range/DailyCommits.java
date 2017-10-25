@@ -7,15 +7,14 @@ import org.apache.log4j.Logger;
 import org.repodriller.domain.ChangeSet;
 import org.repodriller.scm.SCM;
 
-public class MonthlyCommits implements CommitRange {
+public class DailyCommits implements CommitRange {
 
-	private final long monthsInMillis;
+	private final long daysInMillis;
 
-	private static final Logger log = Logger.getLogger(MonthlyCommits.class);
+	private static final Logger log = Logger.getLogger(DailyCommits.class);
 
-
-	public MonthlyCommits(int months) {
-		monthsInMillis = 1000L * 60L * 60L * 24L * 30L * months;
+	public DailyCommits(int days) {
+		daysInMillis = 1000L * 60L * 60L * 24L * days;
 	}
 
 	@Override
@@ -41,8 +40,7 @@ public class MonthlyCommits implements CommitRange {
 		long lastInMillis = lastOne.getTime().getTimeInMillis();
 		long currentInMillis = cs.getTime().getTimeInMillis();
 
-		return (lastInMillis - currentInMillis >= monthsInMillis);
+		return (lastInMillis - currentInMillis >= daysInMillis);
 	}
-
 
 }

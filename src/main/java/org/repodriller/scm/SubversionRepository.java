@@ -4,6 +4,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -13,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.repodriller.RepoDrillerException;
 import org.repodriller.domain.ChangeSet;
@@ -463,4 +466,23 @@ public class SubversionRepository implements SCM {
 		throw new RuntimeException("implement me!");
 	}
 
+	@Override
+	public SCM clone(Path dest) {
+		log.info("Cloning to " + dest);
+		RDFileUtils.copyDirTree(Paths.get(path), dest);
+		return new GitRepository(dest.toString());
+	}
+
+	@Override
+	public void delete() {
+		// allow to be destroyed more than once
+		if (RDFileUtils.exists(Paths.get(path))) {
+			log.info("Deleting: " + path);
+			try {
+				FileUtils.deleteDirectory(new File(path.toString()));
+			} catch (IOException e) {
+				log.info("Delete failed: " + e);
+			}
+		}
+	}
 }

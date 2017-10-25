@@ -19,6 +19,8 @@ package org.repodriller.scm;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
@@ -27,6 +29,7 @@ import java.util.Set;
 import java.util.TimeZone;
 import java.util.stream.Collectors;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ResetCommand.ResetType;
@@ -95,6 +98,7 @@ public class GitRepository implements SCM {
 
 
 	public GitRepository(String path, boolean firstParentOnly) {
+		log.debug("Creating a GitRepository from path " + path);
 		setPath(path);
 		setFirstParentOnly(firstParentOnly);
 
@@ -137,7 +141,7 @@ public class GitRepository implements SCM {
 
 			return new SCMRepository(this, origin, path, headId.getName(), lastCommit.getName());
 		} catch (Exception e) {
-			throw new RuntimeException("error when info " + path, e);
+			throw new RuntimeException("Couldn't create JGit instance with path " + path);
 		}
 	}
 
@@ -585,5 +589,25 @@ public class GitRepository implements SCM {
 
 	public void setFirstParentOnly(boolean firstParentOnly) {
 		this.firstParentOnly = firstParentOnly;
+	}
+
+	@Override
+	public SCM clone(Path dest) {
+		log.info("Cloning to " + dest);
+		RDFileUtils.copyDirTree(Paths.get(path), dest);
+		return new GitRepository(dest.toString());
+	}
+
+	@Override
+	public void delete() {
+		// allow to be destroyed more than once
+		if (RDFileUtils.exists(Paths.get(path))) {
+			log.info("Deleting: " + path);
+			try {
+				FileUtils.deleteDirectory(new File(path.toString()));
+			} catch (IOException e) {
+				log.info("Delete failed: " + e);
+			}
+		}
 	}
 }
