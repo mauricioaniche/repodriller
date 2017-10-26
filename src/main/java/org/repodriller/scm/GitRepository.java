@@ -19,7 +19,6 @@ package org.repodriller.scm;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
@@ -57,8 +56,6 @@ import org.repodriller.domain.Developer;
 import org.repodriller.domain.Modification;
 import org.repodriller.domain.ModificationType;
 import org.repodriller.util.RDFileUtils;
-
-import com.google.common.base.Ticker;
 
 /**
 <<<<<<< HEAD
@@ -319,7 +316,6 @@ public class GitRepository implements SCM {
 				String path = diff.getNewPath();
 				Tika tika = new Tika();
 				String type = tika.detect(path);
-				System.out.println(path + ", " + type);
 				if (!type.equals("application/octet-stream")) {
 					Modification m = this.diffToModification(repo, diff);
 					commit.addModification(m);
