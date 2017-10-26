@@ -27,9 +27,9 @@ import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.InvalidRemoteException;
 import org.eclipse.jgit.api.errors.TransportException;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
-import org.junit.AfterClass;
 import org.junit.Test;
 import org.repodriller.scm.GitRemoteRepository;
 import org.repodriller.scm.SCMRepository;
@@ -90,7 +90,7 @@ public class GitRemoteRepositoryTest {
 
 		for (GitRemoteRepository repo : repos) {
 			String repoPath = repo.info().getPath();
-			repo.close();
+			repo.delete();
 			/* close() should delete its path. */
 			File dir = new File(repoPath);
 			Assert.assertFalse("Remote repo's directory should be deleted: " + repoPath,

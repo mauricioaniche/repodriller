@@ -3,6 +3,7 @@ package org.repodriller.filter.range;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.repodriller.domain.ChangeSet;
 import org.repodriller.scm.SCM;
 
@@ -13,6 +14,7 @@ public class MonthlyCommits implements CommitRange {
 
 	private final long monthsInMillis;
 	private ChangeSet.Contributor whichContributorTime;
+	private static final Logger log = Logger.getLogger(MonthlyCommits.class);
 
 	/**
 	 * ChangeSets every {@code months} months.
@@ -46,6 +48,7 @@ public class MonthlyCommits implements CommitRange {
 		LinkedList<ChangeSet> filtered = new LinkedList<ChangeSet>();
 		filtered.add(all.get(0));
 
+		/* all should be ordered with the most recently made ChangeSet first. */
 		for(ChangeSet cs : all) {
 			if(isFarFromTheLastOne(cs, filtered)) {
 				filtered.addLast(cs);
@@ -55,6 +58,9 @@ public class MonthlyCommits implements CommitRange {
 		return filtered;
 	}
 
+	/**
+	* True if {@code cs} was at least X months before the most recently accepted ChangeSet.
+	*/
 	private boolean isFarFromTheLastOne(ChangeSet cs, LinkedList<ChangeSet> filtered) {
 		ChangeSet lastOne = filtered.getLast();
 
@@ -63,6 +69,5 @@ public class MonthlyCommits implements CommitRange {
 
 		return (lastInMillis - currentInMillis >= monthsInMillis);
 	}
-
 
 }

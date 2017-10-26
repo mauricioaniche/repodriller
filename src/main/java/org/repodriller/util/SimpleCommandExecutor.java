@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
+import org.apache.log4j.Logger;
+
 /**
  * If your analysis needs to work with external tools, a SimpleCommandExecutor gives you a clean way to interact with them.
  * Usage:
@@ -19,6 +21,8 @@ public class SimpleCommandExecutor {
 
 	private List<EnvironmentVar> envVars = null;
 	private boolean inheritEnv = false;
+
+	private static Logger log = Logger.getLogger(SimpleCommandExecutor.class);
 
 	public SimpleCommandExecutor() {
 		envVars = new ArrayList<EnvironmentVar>();
@@ -70,7 +74,9 @@ public class SimpleCommandExecutor {
 		StringBuffer total = new StringBuffer();
 		Process proc;
 		try {
-			proc = Runtime.getRuntime().exec(command, getEnvTokens(), new File(workDir));
+			log.debug("Executing command <" + command + "> in workDir " + workDir);
+			File wd = workDir == null ? null : new File(workDir);
+			proc = Runtime.getRuntime().exec(command, getEnvTokens(), wd);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

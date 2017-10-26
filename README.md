@@ -12,7 +12,7 @@ Take a look at our documentation and [our many examples](https://github.com/maur
 
 You simply have to start a Java Project in Eclipse. RepoDriller is on Maven, so you can download all its dependencies by only adding this to your pom.xml. Or, if you want, you can see [an example](github.com/mauricioaniche/change-metrics):
 
-```
+```xml
 <dependency>
 	<groupId>org.repodriller</groupId>
 	<artifactId>repodriller</artifactId>
@@ -109,7 +109,7 @@ The first thing you configure in RepoDriller is the project you want to analyze.
 You can also initialize git repositories with their remote HTTP URLs. In this case, RepoDriller will clone the remote repository in order to manipulate the repository history. The _GitRemoteRepository_ class contains the same factory methods of _GitRepository_, but you can also configure it, like this:
 
 
-```
+```java
 	GitRemoteRepository
 		.hostedOn(gitUrl)							// URL like: https://github.com/mauricioaniche/repodriller.git
 		.inTempDir(tempDir)							// <Optional>
@@ -160,7 +160,7 @@ Put this file in `{project-root}/src/main/resources/` and you should see logs wh
 
 ## Selecting the Commit Range
 
-RepoDriller allows you to select the range of commits to be processed. The class _Commits_ contains different methods to that:
+RepoDriller allows you to specify the set of commits to be processed. The class _Commits_ contains different methods to this end:
 
 *   _all()_: All commits. From the first to the last.
 *   _onlyInHead()_: It only analyzes the most recent commit.
@@ -259,15 +259,14 @@ SCM repo = new GitRepository(path/to/repo);
 List<Modification> modifications = repo.getDiffBetweenCommits(commit1.getHash(), commit2.getHash());
 ```
 
-**Note: This has been implemented for Git repositories. Pull requests are welcome for this feature in
-Subversion repositories!**
+**Note: This has been implemented for Git repositories. Pull requests are welcome for this feature in Subversion repositories!**
 
 To facilitate the parsing, RepoDriller offers `DiffParser` class. This utility class parses
 the diff and returns two separate lists: lines (number and content) from the previous version and lines
 from the new version. As one diff may contain different blocks of diffs (happens when the file
 was modified in two parts that are far from each other), the parser returns 1 or more diff blocks.
 
-```
+```java
 // parse the diff
 DiffParser parsedDiff = new DiffParser(diff);
 
@@ -286,9 +285,7 @@ The _SCM_ class contains a blame() method, which allows you to blame a file in a
 
 `List<BlamedLine> blame(String file, String commitToBeBlamed, boolean priorCommit)`
 
-You should pass the file name (relative path), the commit which the file should be blamed, and a boolean
-informing whether you want the file to be blamed _before_ (priorCommit=true) or _after_ (priorCommit=false)
-the changes of that particular commit.
+You should pass the file name (relative path), the commit which the file should be blamed, and a boolean informing whether you want the file to be blamed _before_ (priorCommit=true) or _after_ (priorCommit=false) the changes of that particular commit.
 
 ## Managing State in the Visitor
 
@@ -395,19 +392,33 @@ public class JavaParserVisitor implements CommitVisitor {
 }
 ```
 
-## Dealing with Threads
+## Debugging
+RepoDriller may mask exceptions thrown by client code. Good logging is a must.
 
-If your machine has multiple cores, RepoDriller can execute the commit visitor over many threads. This is just another configuration you set in _RepositoryMining_. The _withThreads()_ lets you configure the number of threads the framework will use to process everything.
+Don't worry if your CommitVisitors modify repository state. RepoDriller always visits a *clone* of the repository, never the "master" repository itself. So even if everything goes wrong, the original version of the repository you're analyzing is unharmed.
 
-We suggest you use threads unless your workflow must _checkout_ revisions. We only keep one copy of the repository on disk, so two threads would conflict if they both ran _checkout_.
+## Accelerating your analysis
+
+### Threads
+RepoDriller can divide the work of analyzing a repository among multiple threads. If your machine has several cores, this can significantly improve performance. However, your CommitVisitors must be thread-safe, and your analysis must tolerate visiting commits in a relatively arbitrary order.
+
+Here are the RepositoryMining APIs you should consider:
+- _visitorsAreThreadSafe(safe)_: Are all of your CommitVisitors thread-safe?
+- _visitorsChangeRepoState(change)_: Do any of your CommitVisitors have external effects, e.g. changing the on-disk repo state with _checkout()_?
+- _withThreads()_: Visit the current repo concurrently from multiple threads. Optionally specify a number of threads yourself.
+
+### Fast storage
+RepoDriller CommitVisitors always visit a *copy* of the repository being analyzed. By default RepoDriller stores this copy in the system-wide temporary directory. If your machine has faster storage available, e.g. RAM-based (like tmpfs or ramfs on Linux) or a partition on an SSD, try specifying this path with _setRepoTmpDir(path)_. This will be particularly helpful if your CommitVisitors must _checkout()_.
 
 ```java
 @Override
 public void execute() {
 	new RepositoryMining()
 		.in(GitRepository.singleProject("/Users/mauricioaniche/workspace/repodriller"))
-		.through(Commits.all())
-		.withThreads(3)
+		.through(Commits.all()) // Process all commits, not necessarily in this order.
+		.visitorsAreThreadSafe(true) // Threads are possible.
+		.visitorsChangeRepoState(true) // Each thread needs its own copy of the repo.
+		.withThreads() // Now pick a good number of threads for my machine.
 		.process(new JavaParserVisitor(), new CSVFile("/Users/mauricioaniche/Desktop/devs.csv"))
 		.mine();
 }
@@ -440,14 +451,11 @@ are ignored. Default is 200.
 Repodriller does not come with JDT or any other code parser (as it used to be in old versions).
 However, it naturally fits with such tools.
 
-The [repodriller JDT plugin](https://github.com/mauricioaniche/repodriller-plugin-jdt) adds all
-JDT libraries to your study.
+The [repodriller JDT plugin](https://github.com/mauricioaniche/repodriller-plugin-jdt) adds all JDT libraries to your study.
 If you want to learn more about JDT, check the documentation for [ASTVisitor class](http://help.eclipse.org/juno/index.jsp?topic=%2Forg.eclipse.jdt.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fjdt%2Fcore%2Fdom%2FASTVisitor.html).
-In addition, if you are looking for traditional code metrics
-in Java, you may use our [CK project](https://github.com/mauricioaniche/ck).
+In addition, if you are looking for traditional code metrics in Java, you may use our [CK project](https://github.com/mauricioaniche/ck).
 
-We currently do not have any out-of-the-box plugin for other languages. However, we do not expect
-any integration problems with them.
+We currently do not have any out-of-the-box plugin for other languages. However, we do not expect any integration problems with them.
 
 # Advice to researchers
 
