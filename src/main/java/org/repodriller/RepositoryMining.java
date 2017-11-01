@@ -338,12 +338,14 @@ public class RepositoryMining {
 	private void processRepo(SCMRepository repo) {
 		log.info("Git repository in " + repo.getPath());
 
-		List<ChangeSet> rawCs = range.get(repo.getScm());
+		List<ChangeSet> rawCs = range.get(repo.getScm()); // TODO We could stream these instead to reduce memory footprint.
 		if (!reverseOrder) Collections.reverse(rawCs); // TODO This is counter-intuitive. Why do we reverse if we are not reversing?
-		log.info(rawCs.size() + " ChangeSets to process");
+		int nChangeSets = rawCs.size();
+		log.info(nChangeSets + " ChangeSets to process");
 
 		/* Shared queue of ChangeSets. */
 		Queue<ChangeSet> csQueue = new ConcurrentLinkedQueue<ChangeSet>(rawCs);
+		rawCs.clear(); /* Now only csQueue has pointers to the ChangeSets. When we remove a ChangeSet it can be GC'd. */
 
 		List<Future<Integer>> threadDone = new ArrayList<Future<Integer>>();
 		/* Divide csQueue among the worker threads.
@@ -356,7 +358,7 @@ public class RepositoryMining {
 				while (true) {
 					ChangeSet cs = null;
 					try {
-						cs = csQueue.remove();
+						cs = csQueue.remove(); // Now this ChangeSet can be GC'd.
 						processChangeSet(repo, cs);
 						nConsumed++;
 					} catch (NoSuchElementException e) {
@@ -389,8 +391,8 @@ public class RepositoryMining {
 		}
 
 		/* Make sure we didn't lose any ChangeSets. */
-		if (totalConsumed != rawCs.size()) {
-			log.fatal("Error, consumed " + totalConsumed + " ChangeSets but had " + rawCs.size() + " ChangeSets to work on");
+		if (totalConsumed != nChangeSets) {
+			log.fatal("Error, consumed " + totalConsumed + " ChangeSets but had " + nChangeSets + " ChangeSets to work on");
 			System.exit(1);
 		}
 	}
