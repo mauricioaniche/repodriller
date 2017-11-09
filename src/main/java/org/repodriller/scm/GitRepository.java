@@ -314,9 +314,7 @@ public class GitRepository implements SCM {
 
 			for (DiffEntry diff : diffsForTheCommit) {
 				String path = diff.getNewPath();
-				Tika tika = new Tika();
-				String type = tika.detect(path);
-				if (!type.equals("application/octet-stream")) {
+				if (path.endsWith(".java")) {
 					Modification m = this.diffToModification(repo, diff);
 					commit.addModification(m);
 				}
