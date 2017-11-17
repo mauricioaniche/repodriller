@@ -28,24 +28,18 @@ public class MemoryConsumptionTest {
         if(!runningInTravis())
             return;
 
-        List<Long> max = new ArrayList<>();
-        List<Long> min = new ArrayList<>();
-
-        for(int i = 0; i < 10; i++) {
             MemoryVisitor visitor = new MemoryVisitor();
+
 
             new RepositoryMining()
                     .in(GitRepository.singleProject(railsPath))
-                    .through(Commits.all())
+                    .through(Commits.range("977b4be208c2c54eeaaf7b46953174ef402f49d4",
+                            "ede505592cfab0212e53ca8ad1c38026a7b5d042")) /* 1000 commits */
                     .process(visitor)
                     .mine();
 
-            max.add(visitor.maxMemory);
-            min.add(visitor.minMemory);
-        }
-
-        System.out.println("Max memory (median): " + max.stream().collect(Collectors.averagingLong(d -> d)));
-        System.out.println("Min memory (median): " + min.stream().collect(Collectors.averagingLong(d -> d)));
+        System.out.println("Max memory (median): " + visitor.maxMemory);
+        System.out.println("Min memory (median): " + visitor.minMemory);
     }
 
     private boolean runningInTravis () {
