@@ -1,7 +1,9 @@
 language: java
 before_install:
- - cd test-repos && unzip \*.zip && cd ..
- - cd test-repos && git clone https://github.com/rails/rails.git
+ - cd test-repos
+ - unzip \*.zip
+ - git clone https://github.com/rails/rails.git
+ - cd ..
 jdk:
   - oraclejdk8
 
