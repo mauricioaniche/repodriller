@@ -49,7 +49,7 @@ public class MemoryConsumptionTest {
     }
 
     private boolean runningInTravis () {
-        return System.getenv("TRAVIS") != null && System.getenv("TRAVIS").equals("TRUE");
+        return System.getenv("TRAVIS") != null && Boolean.parseBoolean(System.getenv("TRAVIS")) == true;
     }
 
     class MemoryVisitor implements CommitVisitor {
