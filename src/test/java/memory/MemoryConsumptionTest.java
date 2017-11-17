@@ -40,6 +40,8 @@ public class MemoryConsumptionTest {
 
         System.out.println("Max memory (median): " + visitor.maxMemory);
         System.out.println("Min memory (median): " + visitor.minMemory);
+        System.out.println("All: " + visitor.all.stream().map(i -> i.toString())
+                .collect(Collectors.joining(", ")));
     }
 
     private boolean runningInTravis () {
@@ -52,6 +54,7 @@ public class MemoryConsumptionTest {
 
         long maxMemory = Long.MIN_VALUE;
         long minMemory = Long.MAX_VALUE;
+        List<Long> all = new ArrayList<>();
 
         @Override
         public void process (SCMRepository repo, Commit commit, PersistenceMechanism writer) {
@@ -59,6 +62,8 @@ public class MemoryConsumptionTest {
 
             if(memory > maxMemory) maxMemory = memory;
             if(memory < minMemory) minMemory = memory;
+
+            all.add(memory);
         }
     }
 }
