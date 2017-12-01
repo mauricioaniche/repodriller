@@ -21,14 +21,19 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.GregorianCalendar;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ResetCommand.ResetType;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -58,12 +63,8 @@ import org.repodriller.domain.ModificationType;
 import org.repodriller.util.RDFileUtils;
 
 /**
-<<<<<<< HEAD
  * Everything you need to work with a Git-based source code repository.
  *
-=======
- * Everything you need to work with a Git-based source code repository. Wraps
->>>>>>> Naively filter out application/octet-stream files.
  *
  * @author Mauricio Aniche
  */
@@ -297,12 +298,7 @@ public class GitRepository implements SCM {
 			boolean isCommitInMainBranch = branches.contains(this.mainBranchName);
 
 			/* Create one of our Commit's based on the jgitCommit metadata. */
-<<<<<<< HEAD
 			Commit commit = new Commit(hash, author, committer, authorDate, authorTimeZone, committerDate, committerTimeZone, msg, parents, isMerge, branches, isCommitInMainBranch);
-=======
-			Commit commit = new Commit(hash, author, committer, authorDate, authorTimeZone, committerDate,
-					committerTimeZone, msg, parent, isMerge, branches, isCommitInMainBranch);
->>>>>>> Naively filter out application/octet-stream files.
 
 			/* Convert each of the associated DiffEntry's to a Modification. */
 			List<DiffEntry> diffsForTheCommit = diffsForTheCommit(repo, jgitCommit);
@@ -313,12 +309,7 @@ public class GitRepository implements SCM {
 			}
 
 			for (DiffEntry diff : diffsForTheCommit) {
-<<<<<<< HEAD
-				String path = diff.getNewPath();
-				if (path.endsWith(".java")) {
-=======
 				if (diff.getNewPath().endsWith(".java")) {
->>>>>>> Stop using Tika dependency.
 					Modification m = this.diffToModification(repo, diff);
 					commit.addModification(m);
 				}
@@ -445,7 +436,6 @@ public class GitRepository implements SCM {
 	}
 
 	private String getDiffText(Repository repo, DiffEntry diff) throws IOException {
-<<<<<<< HEAD
 
 		if(!collectConfig.isCollectingDiffs())
 			return "";
@@ -454,12 +444,6 @@ public class GitRepository implements SCM {
         try (DiffFormatter df2 = new DiffFormatter(out)) {
             String diffText;
             df2.setRepository(repo);
-=======
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		try (DiffFormatter df2 = new DiffFormatter(out)) {
-			String diffText;
-			df2.setRepository(repo);
->>>>>>> Naively filter out application/octet-stream files.
 			df2.format(diff);
 			diffText = out.toString("UTF-8");
 			return diffText;
