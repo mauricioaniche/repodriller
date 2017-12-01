@@ -313,8 +313,12 @@ public class GitRepository implements SCM {
 			}
 
 			for (DiffEntry diff : diffsForTheCommit) {
+<<<<<<< HEAD
 				String path = diff.getNewPath();
 				if (path.endsWith(".java")) {
+=======
+				if (diff.getNewPath().endsWith(".java")) {
+>>>>>>> Stop using Tika dependency.
 					Modification m = this.diffToModification(repo, diff);
 					commit.addModification(m);
 				}
