@@ -129,7 +129,7 @@ GitRepository.single("/your/project", true);
 ## Logging
 
 RepoDriller uses log4j to print useful information about its execution.
-**Note that this includes Exceptions and their stack traces, which will not appear in standard output.** We recommend you have a log4.xml:
+**Note that this includes Exceptions and their stack traces, which will not appear in standard output.** We recommend you have a log4j.xml:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
