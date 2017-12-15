@@ -22,7 +22,10 @@ import java.nio.file.Paths;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.log4j.Logger;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import org.repodriller.RepoDrillerException;
 import org.repodriller.persistence.PersistenceMechanism;
 
@@ -40,7 +43,7 @@ public class CSVFile implements PersistenceMechanism {
 
 	private boolean isOpen = false;
 
-	private static final Logger log = Logger.getLogger(CSVFile.class);
+	private static final Logger log = LogManager.getLogger(CSVFile.class);
 
 	/* Various constructors. */
 

@@ -34,7 +34,10 @@ import java.util.concurrent.Future;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.log4j.Logger;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import org.repodriller.domain.ChangeSet;
 import org.repodriller.domain.Commit;
 import org.repodriller.filter.commit.CommitFilter;
@@ -63,7 +66,7 @@ import org.repodriller.util.RDFileUtils;
 public class RepositoryMining {
 
 	private static final String DATE_FORMAT = "dd/MM/yyyy HH:mm:ss";
-	private static final Logger log = Logger.getLogger(RepositoryMining.class);
+	private static final Logger log = LogManager.getLogger(RepositoryMining.class);
 	private static final int THREADS_PER_CORE = 2;
 
 	private List<SCMRepository> repos;

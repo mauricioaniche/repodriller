@@ -7,7 +7,9 @@ import java.util.LinkedList;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import org.repodriller.domain.Commit;
 import org.repodriller.persistence.PersistenceMechanism;
 import org.repodriller.persistence.csv.CSVFileFormatException;
@@ -59,7 +61,7 @@ public class RepoVisitor {
 	/* Fixed-size resource pool, of SCMRepository clones. */
 	private BlockingQueue<SCMRepositoryClone> clonePool;
 
-	private static final Logger log = Logger.getLogger(RepoVisitor.class);
+	private static final Logger log = LogManager.getLogger(RepoVisitor.class);
 
 	public RepoVisitor() {
 		visitors = new LinkedList<CVPM>();

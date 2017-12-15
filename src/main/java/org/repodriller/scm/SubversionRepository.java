@@ -16,7 +16,10 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import org.repodriller.RepoDrillerException;
 import org.repodriller.domain.ChangeSet;
 import org.repodriller.domain.Commit;
@@ -50,7 +53,7 @@ public class SubversionRepository implements SCM {
 	private static final int MAX_SIZE_OF_A_DIFF = 100000;
 	private static final int DEFAULT_MAX_NUMBER_OF_FILES_IN_A_COMMIT = 50;
 
-	private static Logger log = Logger.getLogger(SubversionRepository.class);
+	private static Logger log = LogManager.getLogger(SubversionRepository.class);
 	private String path;
 	private String username;
 	private String password;
