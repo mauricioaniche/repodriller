@@ -63,7 +63,10 @@ public class MemoryConsumptionTest {
     private void postGithub(MemoryVisitor visitor) {
         try {
             HttpClient httpclient = HttpClients.createDefault();
-            HttpPost httppost = new HttpPost("https://api.github.com/repos/" + System.getenv("TRAVIS_REPO_SLUG") + "/issues/" + System.getenv("TRAVIS_PULL_REQUEST") + "/comments");
+            String githubUrl = "https://api.github.com/repos/" + System.getenv("TRAVIS_REPO_SLUG") + "/issues/" + System.getenv("TRAVIS_PULL_REQUEST") + "/comments";
+            log.info("Github URL: " + githubUrl);
+
+            HttpPost httppost = new HttpPost(githubUrl);
             httppost.setHeader("Authorization", "token " + System.getenv("GITHUB_TOKEN"));
 
             String allMeasuments = visitor.all.stream().map(i -> i.toString())
@@ -75,7 +78,21 @@ public class MemoryConsumptionTest {
                     "Max memory: " + visitor.maxMemory + "\\n" +
                     "All measurements: " + allMeasuments +
                     "\"}"));
-            httpclient.execute(httppost);
+            HttpResponse response = httpclient.execute(httppost);
+
+            HttpEntity entity = response.getEntity();
+            if(entity == null) {
+                log.warn("no return from github");
+                return;
+            }
+
+            InputStream instream = entity.getContent();
+            java.util.Scanner s = new java.util.Scanner(instream).useDelimiter("\\A");
+            String content = s.hasNext() ? s.next() : "";
+            log.info("Response from github:  " + content);
+            if(instream != null) instream.close();
+
+
         } catch(Exception e) {
             log.warn("Could not post on Github", e);
         }
