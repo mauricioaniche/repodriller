@@ -22,6 +22,8 @@ import org.repodriller.scm.SCMRepository;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,8 +49,9 @@ public class MemoryConsumptionTest {
 
             new RepositoryMining()
                     .in(GitRepository.singleProject(railsPath))
-                    .through(Commits.range("977b4be208c2c54eeaaf7b46953174ef402f49d4",
-                            "ede505592cfab0212e53ca8ad1c38026a7b5d042")) /* 1000 commits */
+//                    .through(Commits.range("977b4be208c2c54eeaaf7b46953174ef402f49d4",
+//                            "ede505592cfab0212e53ca8ad1c38026a7b5d042")) /* 1000 commits */
+                    .through(Commits.betweenDates(new GregorianCalendar(2016, Calendar.JANUARY, 1),new GregorianCalendar(2016, Calendar.JANUARY, 5)))
                     .process(visitor)
                     .mine();
 
