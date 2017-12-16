@@ -144,6 +144,9 @@ RepoDriller uses log4j2 to print useful information about its execution.
         <Logger name="org.repodriller" level="INFO" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>
+        <Root level="error">
+            <AppenderRef ref="Console"/>
+        </Root>
     </Loggers>
 </Configuration>
 ```
