@@ -129,32 +129,23 @@ GitRepository.single("/your/project", true);
 
 ## Logging
 
-RepoDriller uses log4j to print useful information about its execution.
-**Note that this includes Exceptions and their stack traces, which will not appear in standard output.** We recommend you have a log4j.xml:
+RepoDriller uses log4j2 to print useful information about its execution.
+**Note that this includes Exceptions and their stack traces, which will not appear in standard output.** We recommend you have a log4j2.xml:
 
 ```xml
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
-
-<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
-
-    <appender name="main" class="org.apache.log4j.ConsoleAppender">
-        <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%d{HH:mm:ss} %5p %m%n"/>
-        </layout>
-    </appender>
-
-    <category name="org.repodriller">
-        <priority value="INFO"/>
-        <appender-ref ref="main"/>
-    </category>
-
-    <category name="/">
-        <priority value="INFO"/>
-        <appender-ref ref="main"/>
-    </category>
-
-</log4j:configuration>
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Logger name="org.repodriller" level="INFO" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+    </Loggers>
+</Configuration>
 ```
 
 Put this file in `{project-root}/src/main/resources/` and you should see logs when RepoDriller runs.
