@@ -72,6 +72,7 @@ public void execute() {
 }
 ```
 
+_Right now, you should pass the full path of the project. Shortcuts such as ~/ do not work._
 
 In practice, RepoDriller will open the Git repository and will extract all information that is inside. Then, the framework will pass each commit to all processors. Let's write our first _DevelopersProcessor_. It is fairly simple. All we will do is to implement _CommitVisitor_. And, inside of _process()_, we print the commit hash and the name of the developer. RepoDriller gives us nice objects to play with all the data:
 
