@@ -7,7 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * If your analysis needs to work with external tools, a SimpleCommandExecutor gives you a clean way to interact with them.
@@ -18,11 +19,10 @@ import org.apache.log4j.Logger;
  * @author Mauricio Aniche
  */
 public class SimpleCommandExecutor {
-
 	private List<EnvironmentVar> envVars = null;
 	private boolean inheritEnv = false;
 
-	private static Logger log = Logger.getLogger(SimpleCommandExecutor.class);
+	private static Logger log = LogManager.getLogger(SimpleCommandExecutor.class);
 
 	public SimpleCommandExecutor() {
 		envVars = new ArrayList<EnvironmentVar>();

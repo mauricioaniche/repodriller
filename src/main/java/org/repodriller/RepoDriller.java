@@ -19,7 +19,8 @@ package org.repodriller;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This is the entry point for the RepoDriller framework.
@@ -29,7 +30,7 @@ import org.apache.log4j.Logger;
  */
 public class RepoDriller {
 
-	private static Logger log = Logger.getLogger(RepoDriller.class);
+	private static Logger log = LogManager.getLogger(RepoDriller.class);
 
 	public static void main(String[] args) {
 		System.out.println("You should not run me! :/");
