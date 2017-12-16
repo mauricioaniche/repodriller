@@ -6,9 +6,10 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
-import java.util.stream.IntStream;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import org.repodriller.domain.Commit;
 import org.repodriller.persistence.PersistenceMechanism;
 import org.repodriller.persistence.csv.CSVFileFormatException;
@@ -45,13 +46,22 @@ public class RepoVisitor {
 		}
 	}
 
+	class SCMRepositoryClone {
+		public SCMRepository repo;
+		public int id;
+		public SCMRepositoryClone(SCMRepository repo, int id) {
+			this.repo = repo;
+			this.id = id;
+		}
+	}
+
 	private Collection<CVPM> visitors;
 	private SCMRepository currentRepo; // One at a time.
 
 	/* Fixed-size resource pool, of SCMRepository clones. */
-	private BlockingQueue<SCMRepository> clonePool;
+	private BlockingQueue<SCMRepositoryClone> clonePool;
 
-	private static final Logger log = Logger.getLogger(RepoVisitor.class);
+	private static final Logger log = LogManager.getLogger(RepoVisitor.class);
 
 	public RepoVisitor() {
 		visitors = new LinkedList<CVPM>();
@@ -127,7 +137,7 @@ public class RepoVisitor {
 
 		/* Initialize clonePool. */
 		boolean fair = true; // Keep visits evenly distributed among threads
-		clonePool = new ArrayBlockingQueue<SCMRepository>(nThreads, fair);
+		clonePool = new ArrayBlockingQueue<SCMRepositoryClone>(nThreads, fair);
 
 		/* Populate clonePool with clones of the repo for concurrent access.
 		 * Create a distinct firstClone, because:
@@ -135,19 +145,20 @@ public class RepoVisitor {
 		 *  2. If currentRepo is a remote repo, we don't want to pay the network cost on each clone.
 		 *     Deriving subsequent clones from firstClone should be cheap. */
 		Path clonePath = Paths.get(repo.getPath()).getFileName(); // libuv
-		Path cloneDir = Paths.get(workPath.resolve(clonePath) + "-clone1"); // libuv-clone1
+		Path cloneDir = Paths.get(workPath.resolve(clonePath) + "-clone0"); // libuv-clone0
 		SCMRepository firstClone = currentRepo.getScm().clone(cloneDir).info();
-		putSCMRepositoryClone(firstClone);
-		IntStream.range(2, nThreads).forEach(i -> {
+		putSCMRepositoryClone(new SCMRepositoryClone(firstClone, 0));
+		for (int i = 1; i < nThreads; i++) {
 			if (visitorsChangeRepoState) {
 				Path dir = Paths.get(workPath.resolve(clonePath) + "-clone" + i); // libuv-clonei
 				SCMRepository clone = firstClone.getScm().clone(dir).info();
-				putSCMRepositoryClone(clone);
+				putSCMRepositoryClone(new SCMRepositoryClone(clone, i));
 			}
 			else {
-				putSCMRepositoryClone(firstClone);
+				putSCMRepositoryClone(new SCMRepositoryClone(firstClone, i));
 			}
-		});
+		}
+		assert(clonePool.remainingCapacity() == 0); // clonePool should now be full.
 	}
 
 	/**
@@ -159,24 +170,30 @@ public class RepoVisitor {
 	void visitCommit(Commit commit) {
 		log.debug("Visiting commit " + commit.getHash());
 		/* Get a clone from the pool. */
-		SCMRepository scmRepoClone = getSCMRepositoryClone();
+		SCMRepositoryClone scmRepoClone = getSCMRepositoryClone();
+		String cloneInfo = "clone " + scmRepoClone.id + " in " + scmRepoClone.repo.getPath();
+		log.debug("Got " + cloneInfo);
 
-		/* Have each visitor process this commit. */
-		for (CVPM cvpm : visitors) {
-			try {
-				log.debug("Thread " + Thread.currentThread().getId() + ": processing " + commit.getHash() + " with " + cvpm.cv.name() + " in clone " + scmRepoClone.getPath());
-				cvpm.cv.process(scmRepoClone, commit, cvpm.pm);
-			} catch (CSVFileFormatException e) {
-				log.fatal(e);
-				System.exit(-1);
-			} catch (Exception e) {
-				log.error("Error processing #" + commit.getHash() + " in clone " + scmRepoClone.getPath() +
-						", processor=" + cvpm.cv.name() + ", error=" + e.getMessage(), e);
+		try {
+			/* Have each visitor process this commit. */
+			for (CVPM cvpm : visitors) {
+				try {
+					log.debug("Thread " + Thread.currentThread().getId() + ": processing " + commit.getHash() + " with " + cvpm.cv.name() + " in " + cloneInfo);
+					cvpm.cv.process(scmRepoClone.repo, commit, cvpm.pm);
+				} catch (CSVFileFormatException e) {
+					log.fatal(e);
+					System.exit(-1);
+				} catch (Exception e) {
+					log.error("Error processing #" + commit.getHash() + " in " + cloneInfo +
+							", commitVisitor=" + cvpm.cv.name() + ", error=" + e.getMessage(), e);
+				}
 			}
+		} finally {
+			/* Return clone. */
+			log.debug("Returning clone " + cloneInfo);
+			putSCMRepositoryClone(scmRepoClone);
+			log.debug("Done visiting commit " + commit.getHash());
 		}
-
-		/* Return clone. */
-		putSCMRepositoryClone(scmRepoClone);
 	}
 
 	/**
@@ -196,8 +213,9 @@ public class RepoVisitor {
 		}
 
 		/* Clean the clonePool. */
+		assert(clonePool.remainingCapacity() == 0); // No leaked clones.
 		clonePool.forEach(clone -> {
-			clone.getScm().delete(); // Safe to call more than once on the same SCM, if !visitorsChangeRepoState.
+			clone.repo.getScm().delete(); // Safe to call more than once on the same SCM, if !visitorsChangeRepoState.
 		});
 		clonePool.clear();
 
@@ -221,7 +239,7 @@ public class RepoVisitor {
 	 *
 	 * @param clone	Clone to put
 	 */
-	private void putSCMRepositoryClone(SCMRepository clone) {
+	private void putSCMRepositoryClone(SCMRepositoryClone clone) {
 		while (true) {
 			try {
 				clonePool.put(clone);
@@ -236,7 +254,7 @@ public class RepoVisitor {
 	 * Get a clone from the pool
 	 * @return A clone
 	 */
-	private SCMRepository getSCMRepositoryClone() {
+	private SCMRepositoryClone getSCMRepositoryClone() {
 		while (true) {
 			try {
 				return clonePool.take();

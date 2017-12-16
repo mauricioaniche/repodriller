@@ -167,9 +167,9 @@ public class RDFileUtils {
 	 */
 	public static void copyDirTree(Path src, Path dest) {
 		if (!src.toFile().exists())
-			throw new RepoDrillerException("Error, src does not exist");
+			throw new RepoDrillerException("Error, src " + src + " does not exist");
 		if (dest.toFile().exists())
-			throw new RepoDrillerException("Error, dest exists already");
+			throw new RepoDrillerException("Error, dest " + dest + " exists already");
 
         try {
 			Files.walkFileTree(src, new SimpleFileVisitor<Path>() {

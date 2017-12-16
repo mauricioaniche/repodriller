@@ -1,5 +1,6 @@
 test-repos/svn-1
 test-repos/git-*/
+test-repos/rails
 bin/
 target/
 *.class
