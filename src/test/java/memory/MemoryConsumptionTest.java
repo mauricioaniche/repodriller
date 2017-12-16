@@ -57,16 +57,24 @@ public class MemoryConsumptionTest {
         System.out.println("All: " + visitor.all.stream().map(i -> i.toString())
                 .collect(Collectors.joining(", ")));
 
-        postGithub(visitor.maxMemory);
+        postGithub(visitor);
     }
 
-    private void postGithub(long maxMemory) {
+    private void postGithub(MemoryVisitor visitor) {
         try {
             HttpClient httpclient = HttpClients.createDefault();
             HttpPost httppost = new HttpPost("https://api.github.com/repos/" + System.getenv("TRAVIS_REPO_SLUG") + "/issues/" + System.getenv("TRAVIS_PULL_REQUEST") + "/comments");
             httppost.setHeader("Authorization", "token " + System.getenv("GITHUB_TOKEN"));
 
-            httppost.setEntity(new StringEntity("{body: \"Max memory: " + maxMemory + "\"}"));
+            String allMeasuments = visitor.all.stream().map(i -> i.toString())
+                    .collect(Collectors.joining(", "));
+
+            httppost.setEntity(new StringEntity(
+                    "{\n" + "body: \"" +
+                    "Min memory: " + visitor.minMemory + "\\n" +
+                    "Max memory: " + visitor.maxMemory + "\\n" +
+                    "All measurements: " + allMeasuments +
+                    "\"}"));
             httpclient.execute(httppost);
         } catch(Exception e) {
             log.warn("Could not post on Github", e);
