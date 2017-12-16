@@ -1,5 +1,16 @@
 package memory;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 import org.repodriller.RepositoryMining;
 import org.repodriller.domain.Commit;
@@ -9,6 +20,7 @@ import org.repodriller.scm.CommitVisitor;
 import org.repodriller.scm.GitRepository;
 import org.repodriller.scm.SCMRepository;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,6 +31,8 @@ import java.util.stream.Collectors;
  * @author Mauricio Aniche
  */
 public class MemoryConsumptionTest {
+
+    private static Logger log = LogManager.getLogger(MemoryConsumptionTest.class);
 
     private final String railsPath = this.getClass().getResource("/").getPath() + "../../test-repos/rails";
 
@@ -42,10 +56,26 @@ public class MemoryConsumptionTest {
         System.out.println("Min memory (median): " + visitor.minMemory);
         System.out.println("All: " + visitor.all.stream().map(i -> i.toString())
                 .collect(Collectors.joining(", ")));
+
+        postGithub(visitor.maxMemory);
+    }
+
+    private void postGithub(long maxMemory) {
+        try {
+            HttpClient httpclient = HttpClients.createDefault();
+            HttpPost httppost = new HttpPost("https://api.github.com/repos/" + System.getenv("TRAVIS_REPO_SLUG") + "/issues/" + System.getenv("TRAVIS_PULL_REQUEST") + "/comments");
+            httppost.setHeader("Authorization", "token " + System.getenv("GITHUB_TOKEN"));
+
+            httppost.setEntity(new StringEntity("{body: \"Max memory: " + maxMemory + "\"}"));
+            httpclient.execute(httppost);
+        } catch(Exception e) {
+            log.warn("Could not post on Github", e);
+        }
     }
 
     private boolean runningInTravis () {
-        return System.getenv("TRAVIS") != null && Boolean.parseBoolean(System.getenv("TRAVIS")) == true;
+        return System.getenv("TRAVIS") != null && Boolean.parseBoolean(System.getenv("TRAVIS")) == true &&
+                System.getenv("TRAVIS_PULL_REQUEST") != null;
     }
 
     class MemoryVisitor implements CommitVisitor {
