@@ -53,6 +53,8 @@ public class MemoryConsumptionTest {
                 .mine();
         long end1 = System.currentTimeMillis();
 
+        System.gc();
+
         // collecting nothing
         MemoryVisitor collectNothingVisitor = new MemoryVisitor();
         long start2 = System.currentTimeMillis();
