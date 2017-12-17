@@ -72,7 +72,7 @@ public class MemoryConsumptionTest {
                     "Min memory used    : %.2f MB\\n" +
                     "Max memory used    : %.2f MB\\n" +
                     "Median free memory : %.2f MB\\n" +
-                    "Commits per second : %d" +
+                    "Commits per second : %.2f" +
                     "\"\n}",
                     (visitor.minMemory/1024.0/1024.0),
                     (visitor.maxMemory/1024.0/1024.0),
