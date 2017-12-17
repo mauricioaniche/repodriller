@@ -68,9 +68,9 @@ public class MemoryConsumptionTest {
             httppost.setHeader("Authorization", "token " + System.getenv("GITHUB_TOKEN"));
 
             String body = "{\n" + "\"body\": \"" +
-                    "Memory consumption of your PR:\\n\\n" +
+                    "Performance stats of your PR:\\n\\n" +
                     "Min memory: " + (visitor.minMemory/1024.0/1024.0) + " MB\\n" +
-                    "Max memory: " + (visitor.maxMemory/1024.0/1024.0) + " MB\\n\\n" +
+                    "Max memory: " + (visitor.maxMemory/1024.0/1024.0) + " MB\\n" +
                     "Commits per second: " + commitsPerSec +
                     "\"\n}";
 
