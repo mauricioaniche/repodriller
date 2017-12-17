@@ -48,7 +48,7 @@ public class MemoryConsumptionTest {
                     .in(GitRepository.singleProject(railsPath))
 //                    .through(Commits.range("977b4be208c2c54eeaaf7b46953174ef402f49d4",
 //                            "ede505592cfab0212e53ca8ad1c38026a7b5d042")) /* 1000 commits */
-                    .through(Commits.betweenDates(new GregorianCalendar(2016, Calendar.JANUARY, 1),new GregorianCalendar(2016, Calendar.JANUARY, 5)))
+                    .through(Commits.betweenDates(new GregorianCalendar(2016, Calendar.JANUARY, 1),new GregorianCalendar(2016, Calendar.JANUARY, 3)))
                     .process(visitor)
                     .mine();
 
@@ -100,7 +100,7 @@ public class MemoryConsumptionTest {
 
     private boolean runningInTravis () {
         return System.getenv("TRAVIS") != null && Boolean.parseBoolean(System.getenv("TRAVIS")) == true &&
-                System.getenv("TRAVIS_PULL_REQUEST") != null;
+                System.getenv("TRAVIS_PULL_REQUEST") != null && !System.getenv("TRAVIS_PULL_REQUEST").equals("false");
     }
 
     class MemoryVisitor implements CommitVisitor {
