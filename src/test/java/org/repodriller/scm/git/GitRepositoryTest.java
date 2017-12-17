@@ -37,19 +37,24 @@ public class GitRepositoryTest {
 	private GitRepository git1;
 	private GitRepository git2;
 	private GitRepository git3;
+	private GitRepository git5;
 	private GitRepository git6;
 	private GitRepository git8;
+
 	private static String path1;
 	private static String path2;
 	private static String path3;
+	private static String path5;
 	private static String path6;
 	private static String path8;
+
 
 	@BeforeClass
 	public static void readPath() throws FileNotFoundException {
 		path1 = GitRepositoryTest.class.getResource("/").getPath() + "../../test-repos/git-1";
 		path2 = GitRepositoryTest.class.getResource("/").getPath() + "../../test-repos/git-2";
 		path3 = GitRepositoryTest.class.getResource("/").getPath() + "../../test-repos/git-3";
+		path5 = GitRepositoryTest.class.getResource("/").getPath() + "../../test-repos/git-5";
 		path6 = GitRepositoryTest.class.getResource("/").getPath() + "../../test-repos/git-6";
 		path8 = GitRepositoryTest.class.getResource("/").getPath() + "../../test-repos/git-8";
 	}
@@ -59,6 +64,7 @@ public class GitRepositoryTest {
 		git1 = new GitRepository(path1);
 		git2 = new GitRepository(path2);
 		git3 = new GitRepository(path3);
+		git5 = new GitRepository(path5);
 		git6 = new GitRepository(path6, true);
 		git8 = new GitRepository(path8);
 	}
@@ -308,6 +314,19 @@ public class GitRepositoryTest {
 		Modification third = modifications.get(2);
 		Assert.assertEquals(ModificationType.ADD, third.getType());
 		Assert.assertEquals(52, third.getAdded());
+	}
+
+	@Test
+	public void parentCommits() {
+		Commit mergeCommit = git5.getCommit("5d9d79607d7e82b6f236aa29be4ba89a28fb4f15");
+		Assert.assertEquals(2, mergeCommit.getParents().size());
+		Assert.assertTrue(mergeCommit.getParents().contains("fa8217c324e7fb46c80e1ddf907f4e141449637e"));
+		Assert.assertTrue(mergeCommit.getParents().contains("ff663cf1931a67d5e47b75fc77dcea432c728052"));
+
+		Commit normalCommit = git5.getCommit("ff663cf1931a67d5e47b75fc77dcea432c728052");
+		Assert.assertEquals(1, normalCommit.getParents().size());
+		Assert.assertTrue(normalCommit.getParents().contains("4a17f31c0d1285477a3a467d0bc3cb38e775097d"));
+
 	}
 	
 	@Test

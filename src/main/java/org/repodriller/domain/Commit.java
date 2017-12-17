@@ -32,7 +32,7 @@ public class Commit {
 	private Developer committer;
 	private String msg;
 	private List<Modification> modifications;
-	private String parent;
+	private List<String> parents;
 	private Calendar date;
 	private Set<String> branches;
 	private boolean merge;
@@ -41,18 +41,20 @@ public class Commit {
 	private TimeZone committerTimeZone;
 	private Calendar committerDate;
 
-	public Commit(String hash, Developer author, Developer committer, Calendar authorDate, Calendar committerDate, String msg, String parent) {
-		this(hash, author, committer, authorDate, TimeZone.getDefault(), committerDate, TimeZone.getDefault(), msg, parent, false, new HashSet<>(), false);
+	public Commit(String hash, Developer author, Developer committer, Calendar authorDate, Calendar committerDate, String msg, List<String> parents) {
+		this(hash, author, committer, authorDate, TimeZone.getDefault(), committerDate, TimeZone.getDefault(), msg, parents, false, new HashSet<>(), false);
 	}
 
-	public Commit(String hash, Developer author, Developer committer, Calendar authorDate, TimeZone authorTimeZone, Calendar committerDate, TimeZone committerTimeZone, String msg, String parent, boolean merge, Set<String> branches, boolean isCommitInMainBranch) {
+	public Commit(String hash, Developer author, Developer committer, Calendar authorDate, TimeZone authorTimeZone, Calendar committerDate, TimeZone committerTimeZone, String msg, List<String> parents, boolean merge, Set<String> branches, boolean isCommitInMainBranch) {
 		this.hash = hash;
 		this.author = author;
 		this.committer = committer;
 		this.date = authorDate;
 		this.committerDate = committerDate;
 		this.msg = msg;
-		this.parent = parent;
+		this.parents = parents;
+		if(this.parents == null)
+			parents = new ArrayList<>();
 		this.merge = merge;
 		this.authorTimeZone = authorTimeZone;
 		this.committerTimeZone = committerTimeZone;
@@ -81,8 +83,16 @@ public class Commit {
 		return committer;
 	}
 
+	/**
+	 * Here to keep compatibility with previous versions
+	 * @return the hash of the commit's first parent
+	 */
 	public String getParent() {
-		return parent;
+		return parents.isEmpty() ? "" : parents.get(0);
+	}
+
+	public List<String> getParents () {
+		return Collections.unmodifiableList(parents);
 	}
 
 	public void addModification(Modification m) {
@@ -103,7 +113,7 @@ public class Commit {
 
 	@Override
 	public String toString() {
-		return "Commit [hash=" + hash + ", parent=" + parent + ", author=" + author + ", msg=" + msg + ", modifications="
+		return "Commit [hash=" + hash + ", parents=" + parents + ", author=" + author + ", msg=" + msg + ", modifications="
 				+ modifications + "]";
 	}
 

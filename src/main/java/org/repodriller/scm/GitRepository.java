@@ -21,12 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
@@ -266,7 +261,8 @@ public class GitRepository implements SCM {
 
 			String msg = jgitCommit.getFullMessage().trim();
 			String hash = jgitCommit.getName().toString();
-			String parent = (jgitCommit.getParentCount() > 0) ? jgitCommit.getParent(0).getName().toString() : "";
+			List<String> parents = Arrays.stream(jgitCommit.getParents())
+					.map(rc -> rc.getName().toString()).collect(Collectors.toList());
 
 			GregorianCalendar authorDate = new GregorianCalendar();
 			authorDate.setTime(jgitCommit.getAuthorIdent().getWhen());
@@ -282,7 +278,7 @@ public class GitRepository implements SCM {
 			boolean isCommitInMainBranch = branches.contains(this.mainBranchName);
 
 			/* Create one of our Commit's based on the jgitCommit metadata. */
-			Commit commit = new Commit(hash, author, committer, authorDate, authorTimeZone, committerDate, committerTimeZone, msg, parent, isMerge, branches, isCommitInMainBranch);
+			Commit commit = new Commit(hash, author, committer, authorDate, authorTimeZone, committerDate, committerTimeZone, msg, parents, isMerge, branches, isCommitInMainBranch);
 
 			/* Convert each of the associated DiffEntry's to a Modification. */
 			List<DiffEntry> diffsForTheCommit = diffsForTheCommit(repo, jgitCommit);
