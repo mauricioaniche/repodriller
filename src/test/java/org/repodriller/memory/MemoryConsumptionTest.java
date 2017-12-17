@@ -52,8 +52,8 @@ public class MemoryConsumptionTest {
                     .mine();
             long end = System.currentTimeMillis();
 
-        System.out.println("Max memory (median): " + visitor.maxMemory);
-        System.out.println("Min memory (median): " + visitor.minMemory);
+        System.out.println("Max memory: " + visitor.maxMemory);
+        System.out.println("Min memory: " + visitor.minMemory);
         System.out.println("All: " + visitor.all.stream().map(i -> i.toString())
                 .collect(Collectors.joining(", ")));
 
@@ -67,12 +67,17 @@ public class MemoryConsumptionTest {
             HttpPost httppost = new HttpPost(githubUrl);
             httppost.setHeader("Authorization", "token " + System.getenv("GITHUB_TOKEN"));
 
-            String body = "{\n" + "\"body\": \"" +
+            String body = String.format("{\n" + "\"body\": \"" +
                     "Performance stats of your PR:\\n\\n" +
-                    "Min memory: " + (visitor.minMemory/1024.0/1024.0) + " MB\\n" +
-                    "Max memory: " + (visitor.maxMemory/1024.0/1024.0) + " MB\\n" +
-                    "Commits per second: " + commitsPerSec +
-                    "\"\n}";
+                    "Min memory used    : %.2f MB\\n" +
+                    "Max memory used    : %.2f MB\\n" +
+                    "Median free memory : %.2f MB\\n" +
+                    "Commits per second : %d" +
+                    "\"\n}",
+                    (visitor.minMemory/1024.0/1024.0),
+                    (visitor.maxMemory/1024.0/1024.0),
+                    ((visitor.all.stream().collect(Collectors.averagingLong(x -> x)))/1024.0/1024.0),
+                    commitsPerSec);
 
             log.info("body " + body);
 
