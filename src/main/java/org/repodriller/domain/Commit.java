@@ -87,6 +87,7 @@ public class Commit {
 	 * Here to keep compatibility with previous versions
 	 * @return the hash of the commit's first parent
 	 */
+	@Deprecated
 	public String getParent() {
 		return parents.isEmpty() ? "" : parents.get(0);
 	}
