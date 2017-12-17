@@ -72,12 +72,14 @@ public class MemoryConsumptionTest {
             String allMeasuments = visitor.all.stream().map(i -> i.toString())
                     .collect(Collectors.joining(", "));
 
-            httppost.setEntity(new StringEntity(
-                    "{\n" + "body: \"" +
+            String body = "{\n" + "\"body\": \"" +
                     "Min memory: " + visitor.minMemory + "\\n" +
                     "Max memory: " + visitor.maxMemory + "\\n" +
                     "All measurements: " + allMeasuments +
-                    "\"}"));
+                    "\"\n}";
+
+            log.info("body: " + body);
+            httppost.setEntity(new StringEntity(body));
             HttpResponse response = httpclient.execute(httppost);
 
             HttpEntity entity = response.getEntity();
