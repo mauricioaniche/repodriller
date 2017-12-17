@@ -46,9 +46,8 @@ public class MemoryConsumptionTest {
             long start = System.currentTimeMillis();
             new RepositoryMining()
                     .in(GitRepository.singleProject(railsPath))
-                    .through(Commits.betweenDates(new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 3)))
-//                    .through(Commits.range("977b4be208c2c54eeaaf7b46953174ef402f49d4",
-//                            "ede505592cfab0212e53ca8ad1c38026a7b5d042")) /* 1000 commits */
+                    .through(Commits.range("977b4be208c2c54eeaaf7b46953174ef402f49d4",
+                            "ede505592cfab0212e53ca8ad1c38026a7b5d042")) /* 1000 commits */
                     .process(visitor)
                     .mine();
             long end = System.currentTimeMillis();
