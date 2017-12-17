@@ -69,13 +69,10 @@ public class MemoryConsumptionTest {
             HttpPost httppost = new HttpPost(githubUrl);
             httppost.setHeader("Authorization", "token " + System.getenv("GITHUB_TOKEN"));
 
-            String allMeasuments = visitor.all.stream().map(i -> i.toString())
-                    .collect(Collectors.joining(", "));
-
             String body = "{\n" + "\"body\": \"" +
-                    "Min memory: " + visitor.minMemory + "\\n" +
-                    "Max memory: " + visitor.maxMemory + "\\n" +
-                    "All measurements: " + allMeasuments +
+                    "Memory consumption of your PR:\n\n" +
+                    "Min memory: " + (visitor.minMemory/1024.0/1024.0) + " MB\\n" +
+                    "Max memory: " + (visitor.maxMemory/1024.0/1024.0) + " MB\\n" +
                     "\"\n}";
 
             log.info("body: " + body);
