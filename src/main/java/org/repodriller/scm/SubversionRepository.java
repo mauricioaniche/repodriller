@@ -488,4 +488,9 @@ public class SubversionRepository implements SCM {
 			}
 		}
 	}
+
+	@Override
+	public void setDataToCollect (SCMCollectConfiguration config) {
+		throw new RuntimeException("SVN does not accept a different collect configuration. What about you sending us a PR? ;)");
+	}
 }

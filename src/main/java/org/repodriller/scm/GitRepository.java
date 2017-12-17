@@ -21,12 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
@@ -64,7 +59,7 @@ import org.repodriller.util.RDFileUtils;
 
 /**
  * Everything you need to work with a Git-based source code repository.
- * Wraps
+ *
  *
  * @author Mauricio Aniche
  */
@@ -80,6 +75,8 @@ public class GitRepository implements SCM {
 	private String mainBranchName = null;
 	private int maxNumberFilesInACommit = -1; /* TODO Expose an API to control this value? Also in SubversionRepository. */
 	private int maxSizeOfDiff = -1; /* TODO Expose an API to control this value? Also in SubversionRepository. */
+
+	private SCMCollectConfiguration collectConfig;
 
 	private static Logger log = LogManager.getLogger(GitRepository.class);
 
@@ -107,6 +104,8 @@ public class GitRepository implements SCM {
 
 		maxNumberFilesInACommit = checkMaxNumberOfFiles();
 		maxSizeOfDiff = checkMaxSizeOfDiff();
+
+		this.collectConfig = new SCMCollectConfiguration();
 	}
 
 	public static SCMRepository singleProject(String path) {
@@ -264,7 +263,7 @@ public class GitRepository implements SCM {
 			TimeZone authorTimeZone = jgitCommit.getAuthorIdent().getTimeZone();
 			TimeZone committerTimeZone = jgitCommit.getCommitterIdent().getTimeZone();
 
-			String msg = jgitCommit.getFullMessage().trim();
+			String msg = collectConfig.collectCommitMessages() ? jgitCommit.getFullMessage().trim() : "";
 			String hash = jgitCommit.getName().toString();
 			String parent = (jgitCommit.getParentCount() > 0) ? jgitCommit.getParent(0).getName().toString() : "";
 
@@ -304,6 +303,10 @@ public class GitRepository implements SCM {
 	}
 
 	private Set<String> getBranches(Git git, String hash) throws GitAPIException {
+
+		if(!collectConfig.collectBranches())
+			return new HashSet<>();
+
 		List<Ref> gitBranches = git.branchList().setContains(hash).call();
 		Set<String> mappedBranches = gitBranches.stream()
 				.map(
@@ -392,7 +395,7 @@ public class GitRepository implements SCM {
 
 	private void setContext(DiffFormatter df) {
 		try {
-			int context = getSystemProperty("git.diffcontext");
+			int context = getSystemProperty("git.diffcontext"); /* TODO: make it into a configuration */
 			df.setContext(context);
 		} catch (Exception e) {
 			return;
@@ -400,6 +403,9 @@ public class GitRepository implements SCM {
 	}
 
 	private String getSourceCode(Repository repo, DiffEntry diff) throws IOException {
+
+		if(!collectConfig.collectSourceCode()) return "";
+
 		try {
 			ObjectReader reader = repo.newObjectReader();
 			byte[] bytes = reader.open(diff.getNewId().toObjectId()).getBytes();
@@ -410,6 +416,10 @@ public class GitRepository implements SCM {
 	}
 
 	private String getDiffText(Repository repo, DiffEntry diff) throws IOException {
+
+		if(!collectConfig.collectDiffs())
+			return "";
+
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try (DiffFormatter df2 = new DiffFormatter(out)) {
             String diffText;
@@ -612,5 +622,10 @@ public class GitRepository implements SCM {
 				log.info("Delete failed: " + e);
 			}
 		}
+	}
+
+	@Override
+	public void setDataToCollect (SCMCollectConfiguration config) {
+		this.collectConfig = config;
 	}
 }
