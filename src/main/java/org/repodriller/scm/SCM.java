@@ -50,7 +50,7 @@ public interface SCM {
 	ChangeSet getHead();
 
 	/**
-	 * @return All ChangeSets in this SCM.
+	 * @return All ChangeSets in this SCM. Probably with the newest ChangeSet at the front of the list.
 	 */
 	List<ChangeSet> getChangeSets();
 
@@ -67,7 +67,17 @@ public interface SCM {
 	 * @param id	The commit to retrieve
 	 * @return	The Commit with this id, or null.
 	 */
+	@Deprecated
 	Commit getCommit(String id);
+
+	/**
+	 * Retrieve the Commit with this id.
+	 *
+	 * @param cs The commit to retrieve
+	 * @return	The Commit with this id, or null.
+	 */
+	Commit getCommit(ChangeSet cs);
+
 	/* TODO A method named getCommitXYZ should return a Commit. */
 	String getCommitFromTag(String tag);
 

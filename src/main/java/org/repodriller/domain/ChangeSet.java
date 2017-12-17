@@ -16,45 +16,148 @@
 
 package org.repodriller.domain;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
- * A ChangeSet is metadata that uniquely identifies a Commit from an SCM.
- *
- * @author Mauricio Aniche
+ * A ChangeSet is a POJO for the metadata about a Commit from an SCM.
+ * It's "everything but the diff".
  */
 public class ChangeSet {
 
-	private final Calendar date;
-	private final String id;
+	public enum Contributor {
+	    AUTHOR, COMMITTER
+	};
 
-	public ChangeSet(String id, Calendar date) {
-		this.id = id;
-		this.date = date;
-	}
+	private String id; /* Unique within an SCM. Example: the commit hash. */
+	private String message;
+
+	private CommitContributor author; /* Person who committed it. */
+	private CommitContributor committer; /* Person who merged it. This is probably the field you want. */
+
+	private Set<String> parentIds; /* Parent(s) of this commit. Only "merge commits" have more than one parent. Does the root commit have 0? */
+
+	private Set<String> branches; /* Set of branches that contain this commit, i.e. the branches for which this commit is an ancestor of the most recent commit in that branch. */
+	private boolean inMainBranch; /* True if the main branch is in the set of branches. */
 
 	/**
-	 * @return The time at which this ChangeSet was created by a developer
+	 * Minimalist ChangeSet. Many null members. Useful for testing.
+	 *
+	 * @param id
+	 * @param message
+	 * @param author
 	 */
-	public Calendar getTime() {
-		return date;
+	public ChangeSet(String id, String message, CommitContributor author) {
+		this.id = id;
+		this.message = message;
+		this.author = author;
+		this.committer = this.author;
 	}
 
 	/**
-	 * @return The id of this ChangeSet in its SCM
+	 * Create a ChangeSet. Makes shallow copies of all of the input.
+	 *
+	 * @param id
+	 * @param message
+	 * @param author
+	 * @param committer
+	 * @param parentIds
+	 * @param branches
+	 * @param inMainBranch
+	 */
+	public ChangeSet(String id, String message, CommitContributor author, CommitContributor committer,
+			Set<String> parentIds, Set<String> branches, boolean inMainBranch) {
+		super();
+		this.id = id;
+		this.message = message;
+		this.author = author;
+		this.committer = (committer == null) ? author : committer;
+		this.parentIds = parentIds;
+		this.branches = branches;
+		this.inMainBranch = inMainBranch;
+	}
+
+	/**
+	 * @return The time at which this ChangeSet was created by a developer. In Git, this is "author time", not "committer time".
+	 */
+	@Deprecated
+	public Calendar getTime() {
+		return author.time;
+	}
+
+	/**
+	 * @return Unique ID within SCM
 	 */
 	public String getId() {
 		return id;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((date == null) ? 0 : date.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
+	/**
+	 * @return Commit message
+	 */
+	public String getMessage() {
+		return message;
+	}
+
+	/**
+	 * How the ChangeSet was created.
+	 *
+	 * @return Person who authored the commit. See {@link ChangeSet#getCommitter}.
+	 */
+	public CommitContributor getAuthor() {
+		return author;
+	}
+
+	/**
+	 * How the ChangeSet entered the codebase, e.g. when a PR is accepted.
+	 *
+	 * @return Person who merged the commit.
+	 */
+	public CommitContributor getCommitter() {
+		return committer;
+	}
+
+	/**
+	 * Return the requested contributor.
+	 *
+	 * @param contributor
+	 * @return
+	 */
+	public CommitContributor getContributor(ChangeSet.Contributor contributor) {
+		switch (contributor) {
+			case AUTHOR:
+				return getAuthor();
+			case COMMITTER:
+				return getCommitter();
+			default:
+				return null;
+		}
+	}
+
+	/**
+	 * @return Parent(s) of this commit. More than one if it's a "merge commit".
+	 */
+	public Set<String> getParentIds() {
+		return new TreeSet<String>(parentIds);
+	}
+
+	/**
+	 * @return True if this commit is a "merge commit".
+	 */
+	public boolean isMerge() {
+		return 1 < parentIds.size();
+	}
+
+	/**
+	 * @return Branches of whose tips this commit is an ancestor.
+	 */
+	public Set<String> getBranches() {
+		return new TreeSet<String>(branches);
+	}
+
+	public boolean inMainBranch() {
+		return inMainBranch;
 	}
 
 	@Override
@@ -69,24 +172,27 @@ public class ChangeSet {
 
 		/* Compare two distinct instances. */
 		ChangeSet other = (ChangeSet) obj;
-		if (date == null) {
-			if (other.date != null)
-				return false;
-		} else if (!date.equals(other.date))
-			return false;
 
 		if (id == null) {
 			if (other.id != null)
 				return false;
-		} else if (!id.equals(other.id))
-			return false;
+		}
+		else {
+			if (!id.equals(other.id))
+				return false;
+		}
 
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "[" + id + ", " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date.getTime()) + "]";
+		if (author.equals(committer)) {
+			return String.format("%s: author %s", id, author);
+		}
+		else {
+			return String.format("%s: author %s, committer %s", id, author, committer);
+		}
 	}
 
 }

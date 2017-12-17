@@ -6,7 +6,7 @@ import org.repodriller.domain.ChangeSet;
 import org.repodriller.scm.SCM;
 
 /**
- * Return a set of commits from an SCM.
+ * A CommitRange is a subset of all commits from the SCM, returned in the order in which they should be processed.
  *
  * @author Mauricio Aniche
  */

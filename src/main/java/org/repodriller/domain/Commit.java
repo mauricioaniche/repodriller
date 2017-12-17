@@ -19,70 +19,30 @@ package org.repodriller.domain;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
 
 
 public class Commit {
-
-	private String hash;
-	private Developer author;
-	private Developer committer;
-	private String msg;
+	private ChangeSet metadata;
 	private List<Modification> modifications;
-	private String parent;
-	private Calendar date;
-	private Set<String> branches;
-	private boolean merge;
-	private boolean inMainBranch;
-	private TimeZone authorTimeZone;
-	private TimeZone committerTimeZone;
-	private Calendar committerDate;
 
-	public Commit(String hash, Developer author, Developer committer, Calendar authorDate, Calendar committerDate, String msg, String parent) {
-		this(hash, author, committer, authorDate, TimeZone.getDefault(), committerDate, TimeZone.getDefault(), msg, parent, false, new HashSet<>(), false);
+	public Commit(ChangeSet cs) {
+		this(cs, null);
 	}
 
-	public Commit(String hash, Developer author, Developer committer, Calendar authorDate, TimeZone authorTimeZone, Calendar committerDate, TimeZone committerTimeZone, String msg, String parent, boolean merge, Set<String> branches, boolean isCommitInMainBranch) {
-		this.hash = hash;
-		this.author = author;
-		this.committer = committer;
-		this.date = authorDate;
-		this.committerDate = committerDate;
-		this.msg = msg;
-		this.parent = parent;
-		this.merge = merge;
-		this.authorTimeZone = authorTimeZone;
-		this.committerTimeZone = committerTimeZone;
+
+	public Commit(ChangeSet cs, List<Modification> modifications) {
+		this.metadata = cs;
 		this.modifications = new ArrayList<Modification>();
-		this.branches = branches;
-		this.inMainBranch = isCommitInMainBranch;
+
+		if (modifications != null)
+			modifications.forEach(m -> addModification(m));
 	}
 
-	public boolean isMerge() {
-		return merge;
-	}
-
-	public String getHash() {
-		return hash;
-	}
-
-	public Developer getAuthor() {
-		return author;
-	}
-
-	public String getMsg() {
-		return msg;
-	}
-
-	public Developer getCommitter() {
-		return committer;
-	}
-
-	public String getParent() {
-		return parent;
+	public ChangeSet getChangeSet() {
+		return metadata;
 	}
 
 	public void addModification(Modification m) {
@@ -97,22 +57,10 @@ public class Commit {
 		return Collections.unmodifiableList(modifications);
 	}
 
-	public Calendar getCommitterDate() {
-		return committerDate;
-	}
-
 	@Override
 	public String toString() {
-		return "Commit [hash=" + hash + ", parent=" + parent + ", author=" + author + ", msg=" + msg + ", modifications="
+		return "Commit [id=" + metadata.getId() + ", parents=" + metadata.getParentIds() + ", author=" + metadata.getAuthor() + ", msg=" + metadata.getMessage() + ", modifications="
 				+ modifications + "]";
-	}
-
-	public TimeZone getAuthorTimeZone() {
-		return authorTimeZone;
-	}
-
-	public TimeZone getCommitterTimeZone() {
-		return committerTimeZone;
 	}
 
 	@Override
@@ -127,16 +75,76 @@ public class Commit {
 		}
 	}
 
-	public Calendar getDate() {
-		return date;
+	/* Deprecated getters.
+	 * Caller should use getChangeSet().X instead. */
+
+	@Deprecated
+	public boolean isMerge() {
+		return metadata.isMerge();
 	}
 
-	public Set<String> getBranches() {
-		return Collections.unmodifiableSet(branches);
+	@Deprecated
+	public String getHash() {
+		return getId();
 	}
 
+	@Deprecated
+	public String getId() {
+		return metadata.getId();
+	}
+
+	@Deprecated
+	public String getMsg() {
+		return metadata.getMessage();
+	}
+
+	@Deprecated
+	public Developer getAuthor() {
+		return metadata.getAuthor().asDeveloper();
+	}
+
+	@Deprecated
+	public Developer getCommitter() {
+		return metadata.getCommitter().asDeveloper();
+	}
+
+	@Deprecated
+	public String getParent() {
+		return metadata.getParentIds().iterator().next();
+	}
+
+	@Deprecated
+	public Set<String> getParents() {
+		return metadata.getParentIds();
+	}
+
+	@Deprecated
 	public boolean isInMainBranch() {
-		return inMainBranch;
+		return metadata.inMainBranch();
 	}
 
+	@Deprecated
+	public Set<String> getBranches() {
+		return metadata.getBranches();
+	}
+
+	@Deprecated
+	public Calendar getDate() {
+		return metadata.getAuthor().time;
+	}
+
+	@Deprecated
+	public TimeZone getAuthorTimeZone() {
+		return metadata.getAuthor().tz;
+	}
+
+	@Deprecated
+	public Calendar getCommitterDate() {
+		return metadata.getCommitter().time;
+	}
+
+	@Deprecated
+	public TimeZone getCommitterTimeZone() {
+		return metadata.getCommitter().tz;
+	}
 }
