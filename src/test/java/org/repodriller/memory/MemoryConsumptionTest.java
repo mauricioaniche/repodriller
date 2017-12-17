@@ -43,7 +43,7 @@ public class MemoryConsumptionTest {
 
             MemoryVisitor visitor = new MemoryVisitor();
 
-
+            long start = System.currentTimeMillis();
             new RepositoryMining()
                     .in(GitRepository.singleProject(railsPath))
                     .through(Commits.betweenDates(new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 3)))
@@ -51,16 +51,17 @@ public class MemoryConsumptionTest {
 //                            "ede505592cfab0212e53ca8ad1c38026a7b5d042")) /* 1000 commits */
                     .process(visitor)
                     .mine();
+            long end = System.currentTimeMillis();
 
         System.out.println("Max memory (median): " + visitor.maxMemory);
         System.out.println("Min memory (median): " + visitor.minMemory);
         System.out.println("All: " + visitor.all.stream().map(i -> i.toString())
                 .collect(Collectors.joining(", ")));
 
-        postGithub(visitor);
+        postGithub(visitor, visitor.numberOfCommits/((end - start)/1000.0));
     }
 
-    private void postGithub(MemoryVisitor visitor) {
+    private void postGithub(MemoryVisitor visitor, double commitsPerSec) {
         try {
             HttpClient httpclient = HttpClients.createDefault();
             String githubUrl = "https://api.github.com/repos/" + System.getenv("TRAVIS_REPO_SLUG") + "/issues/" + System.getenv("TRAVIS_PULL_REQUEST") + "/comments";
@@ -70,7 +71,8 @@ public class MemoryConsumptionTest {
             String body = "{\n" + "\"body\": \"" +
                     "Memory consumption of your PR:\\n\\n" +
                     "Min memory: " + (visitor.minMemory/1024.0/1024.0) + " MB\\n" +
-                    "Max memory: " + (visitor.maxMemory/1024.0/1024.0) + " MB\\n" +
+                    "Max memory: " + (visitor.maxMemory/1024.0/1024.0) + " MB\\n\\n" +
+                    "Commits per second: " + commitsPerSec +
                     "\"\n}";
 
             log.info("body " + body);
@@ -107,6 +109,7 @@ public class MemoryConsumptionTest {
 
         long maxMemory = Long.MIN_VALUE;
         long minMemory = Long.MAX_VALUE;
+        long numberOfCommits = 0;
         List<Long> all = new ArrayList<>();
 
         @Override
@@ -117,6 +120,8 @@ public class MemoryConsumptionTest {
             if(memory < minMemory) minMemory = memory;
 
             all.add(memory);
+
+            numberOfCommits++;
         }
     }
 }
