@@ -198,7 +198,7 @@ the `shouldAccept()` method. This method should only return **true** if the comm
 
 You can get the list of modified files, as well as their diffs and current source code. To that, all you have to do is to get the list of _Modification_s that exists inside _Commit_.
 
-A _Commit_ contains a hash, a committer (name and email), an author (name, and email) a message, the date, a list of its parent hashes (if it' a merge commit, the commit has two parents), and the list of modification.
+A _Commit_ contains a hash, a committer (name and email), an author (name, and email) a message, the date, a list of its parent hashes (if it's a merge commit, the commit has two parents), and the list of modification.
 
 _(Due to backwards compatibility, the `getParent()` method returns the first parent hash only. Use `getParents()` to get both parents.)_
 
