@@ -105,7 +105,7 @@ public class GitRepository implements SCM {
 		maxNumberFilesInACommit = checkMaxNumberOfFiles();
 		maxSizeOfDiff = checkMaxSizeOfDiff();
 
-		this.collectConfig = new CollectConfiguration();
+		this.collectConfig = new CollectConfiguration().everything();
 	}
 
 	public static SCMRepository singleProject(String path) {
@@ -329,7 +329,7 @@ public class GitRepository implements SCM {
 		}
 
 		if (diffText.length() > maxSizeOfDiff) {
-			log.error("diffs for " + newPath + " too big");
+			log.error("diff for " + newPath + " too big");
 			diffText = "-- TOO BIG --";
 		}
 
@@ -574,7 +574,7 @@ public class GitRepository implements SCM {
 	 * Default is hard-coded to "something large".
 	 * Override with environment variable "git.maxdiff".
 	 *
-	 * @return Max diffs size
+	 * @return Max diff size
 	 */
 	private int checkMaxSizeOfDiff() {
 		try {

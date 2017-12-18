@@ -185,9 +185,9 @@ public class GitRepositoryTest {
 		
 		Assert.assertEquals("Matricula adicionada", commit.getMsg());
 		Assert.assertEquals(1, commit.getModifications().size());
-		
+
 		Assert.assertEquals("Matricula.java", commit.getModifications().get(0).getNewPath());
-		Assert.assertTrue(commit.getModifications().get(0).getDiff().startsWith("diffs --git a/Matricula.java b/Matricula.java"));
+		Assert.assertTrue(commit.getModifications().get(0).getDiff().startsWith("diff --git a/Matricula.java b/Matricula.java"));
 		Assert.assertTrue(commit.getModifications().get(0).getSourceCode().startsWith("package model;"));
 		
 	}

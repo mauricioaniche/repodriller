@@ -53,4 +53,13 @@ public class CollectConfiguration {
     public boolean isCollectingDiffs () {
         return diff;
     }
+
+    public CollectConfiguration everything () {
+        sourceCode = true;
+        diff = true;
+        branches = true;
+        commitMessages = true;
+
+        return this;
+    }
 }
