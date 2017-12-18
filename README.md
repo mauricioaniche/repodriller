@@ -439,7 +439,7 @@ Extract precisely only what you need in your study can highly speed up the perfo
 In a simple experiment, we observed that the difference can be up to 20x.
 You can define which data to extract while configuring your `RepositoryMining` study. See
 the `collect()` method in the following example. You can define whether you want RepoDriller
-to extract diffs, source code of modifications, commit messages, and list of branches.
+to extract diffs, source code of modifications, commit messages, and list of branches. See all possibilities in `CollectConfiguration`
 
 
 ```
@@ -456,9 +456,7 @@ new RepositoryMining()
     .mine();
 ```
 
-Clearly, the less you extract, the less information you have. If you do not extract the list
-of branches, RepoDriller cannot know if your commit belongs to the _master_ branch. In this case,
-RepoDriller will return `false` to `isMainBranch()`.
+_To use the `isMainBranch()` method in the `Commit` class, branches should be collected, i.e., `new CollectConfiguration().branches()`_.
 
 The default configuration (used when you do not configure the `collect()` method)
 is to extract all the data.
