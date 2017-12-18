@@ -217,7 +217,7 @@ public class SubversionRepository implements SCM {
 		Developer committer = new Developer(logEntry.getAuthor(), null);
 		Calendar date = convertToCalendar(logEntry.getDate());
 		Commit commit = new Commit(String.valueOf(logEntry.getRevision()), null, committer, date, date, logEntry.getMessage(),
-				"");
+				null);
 		return commit;
 	}
 
