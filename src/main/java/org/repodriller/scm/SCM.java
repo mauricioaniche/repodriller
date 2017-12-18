@@ -72,7 +72,7 @@ public interface SCM {
 	String getCommitFromTag(String tag);
 
 	/**
-	 * Get the diffs between the specified commits.
+	 * Get the diff between the specified commits.
 	 *
 	 * @param priorCommit	The first (old) commit
 	 * @param laterCommit	The second (new) commit
@@ -124,7 +124,7 @@ public interface SCM {
 	 * Configure which data should be extracted from the repository.
 	 * (usually for performance reasons)
 	 *
-	 * Default should be to collect *all*
+	 * Default should be to collect *everything*
 	 */
 	void setDataToCollect(CollectConfiguration config);
 }

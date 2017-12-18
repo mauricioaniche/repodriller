@@ -262,7 +262,7 @@ from the new version. As one diff may contain different blocks of diffs (happens
 was modified in two parts that are far from each other), the parser returns 1 or more diff blocks.
 
 ```java
-diffs
+// parse the diff
 DiffParser parsedDiff = new DiffParser(diff);
 
 // return all the lines in the old file

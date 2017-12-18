@@ -570,7 +570,7 @@ public class GitRepository implements SCM {
 	}
 
 	/**
-	 * Return the max size of a diffs in bytes.
+	 * Return the max size of a diff in bytes.
 	 * Default is hard-coded to "something large".
 	 * Override with environment variable "git.maxdiff".
 	 *
