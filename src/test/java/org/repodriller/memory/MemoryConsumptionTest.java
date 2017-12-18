@@ -15,13 +15,11 @@ import org.repodriller.filter.range.Commits;
 import org.repodriller.persistence.PersistenceMechanism;
 import org.repodriller.scm.CommitVisitor;
 import org.repodriller.scm.GitRepository;
-import org.repodriller.scm.SCMCollectConfiguration;
+import org.repodriller.scm.CollectConfiguration;
 import org.repodriller.scm.SCMRepository;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -62,7 +60,7 @@ public class MemoryConsumptionTest {
                 .in(GitRepository.singleProject(railsPath))
                 .through(Commits.range("977b4be208c2c54eeaaf7b46953174ef402f49d4",
                         "ede505592cfab0212e53ca8ad1c38026a7b5d042")) /* 1000 commits */
-                .collect(new SCMCollectConfiguration().diff(false).sourceCode(false).commitMessages(false).branches(false))
+                .collect(new CollectConfiguration().basicOnly())
                 .process(collectNothingVisitor)
                 .mine();
         long end2 = System.currentTimeMillis();

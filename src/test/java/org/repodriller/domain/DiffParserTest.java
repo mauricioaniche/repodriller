@@ -11,7 +11,7 @@ public class DiffParserTest {
 	public void extractLineNumbersAndContentInOldAndNewFile() {
 		
 		String diff =
-			"diff --git a/A b/A\r\n"+
+			"diffs --git a/A b/A\r\n"+
 			"index ca17226..ae43afd 100644\r\n"+
 			"--- a/A\r\n"+
 			"+++ b/A\r\n"+
@@ -61,7 +61,7 @@ public class DiffParserTest {
 	public void onlyAdditions() {
 		
 		String diff =
-				"diff --git a/A b/A\r\n"+
+				"diffs --git a/A b/A\r\n"+
 				"index 5ae30ef..04b86b0 100644\r\n"+
 				"--- a/A\r\n"+
 				"+++ b/A\r\n"+
@@ -98,7 +98,7 @@ public class DiffParserTest {
 	public void onlyDeletions() {
 		
 		String diff =
-				"diff --git a/A b/A\r\n"+
+				"diffs --git a/A b/A\r\n"+
 						"index 5ae30ef..04b86b0 100644\r\n"+
 						"--- a/A\r\n"+
 						"+++ b/A\r\n"+
@@ -135,7 +135,7 @@ public class DiffParserTest {
 	public void additionsAndDeletions() {
 		
 		String diff =
-				"diff --git a/A b/A\r\n"+
+				"diffs --git a/A b/A\r\n"+
 				"index 4624afb..870742d 100644\r\n"+
 				"--- a/A\r\n"+
 				"+++ b/A\r\n"+
@@ -183,7 +183,7 @@ public class DiffParserTest {
 	@Test
 	public void tabsEnters() {
 		String diff =
-			"diff --git a/A b/A\r\n"+
+			"diffs --git a/A b/A\r\n"+
 			"index 708caeb..bdc3fea 100644\r\n"+
 			"--- a/A\r\n"+
 			"+++ b/A\r\n"+
@@ -238,7 +238,7 @@ public class DiffParserTest {
 	@Test
 	public void realExampleLargeFileWithMultipleDiffBlocks() {
 		String diff = 
-				"diff --git a/GitRepository.java b/GitRepository.java\r\n"+
+				"diffs --git a/GitRepository.java b/GitRepository.java\r\n"+
 				"index f38a97d..2b96b0e 100644\r\n"+
 				"--- a/GitRepository.java\r\n"+
 				"+++ b/GitRepository.java\r\n"+

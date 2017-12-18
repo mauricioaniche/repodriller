@@ -36,7 +36,7 @@ public class DiffBlock {
 			d3 = Integer.parseInt(matcher.group(3));
 			d4 = Integer.parseInt(matcher.group(4));
 		} else {
-			throw new RepoDrillerException("Impossible to get line positions in this diff: " + diffBlock);
+			throw new RepoDrillerException("Impossible to get line positions in this diffs: " + diffBlock);
 		}
 	}
 
@@ -53,7 +53,7 @@ public class DiffBlock {
 				counter++;
 			}
 		}
-		if(counter!=start+qtyLines) throw new RepoDrillerException("malformed diff");
+		if(counter!=start+qtyLines) throw new RepoDrillerException("malformed diffs");
 		
 		return oldLines;
 		
@@ -63,7 +63,7 @@ public class DiffBlock {
 		if(line.startsWith(" ")) return DiffLineType.KEPT;
 		if(line.startsWith("+")) return DiffLineType.ADDED;
 		if(line.startsWith("-")) return DiffLineType.REMOVED;
-		throw new RepoDrillerException("type of diff line not recognized: " + line);
+		throw new RepoDrillerException("type of diffs line not recognized: " + line);
 	}
 
 	public List<DiffLine> getLinesInOldFile() {

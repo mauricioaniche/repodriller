@@ -7,11 +7,9 @@ import org.junit.Test;
 import org.repodriller.domain.Commit;
 import org.repodriller.domain.Modification;
 import org.repodriller.scm.GitRepository;
-import org.repodriller.scm.RepositoryFile;
-import org.repodriller.scm.SCMCollectConfiguration;
+import org.repodriller.scm.CollectConfiguration;
 
 import java.io.FileNotFoundException;
-import java.util.List;
 
 /**
  * Created by mauricioaniche on 17/12/2017.
@@ -34,11 +32,8 @@ public class GitRepoWithCollectConfigurationTest {
     @Test
     public void shouldBringNothingIfConfigured() {
 
-        git1.setDataToCollect(new SCMCollectConfiguration()
-                .branches(false)
-                .commitMessages(false)
-                .sourceCode(false)
-                .diff(false));
+        git1.setDataToCollect(new CollectConfiguration()
+                .basicOnly());
 
         Commit commit = git1.getCommit("a7053a4dcd627f5f4f213dc9aa002eb1caf926f8");
 
@@ -54,11 +49,7 @@ public class GitRepoWithCollectConfigurationTest {
     @Test
     public void shouldBringCommitMessage() {
 
-        git1.setDataToCollect(new SCMCollectConfiguration()
-                .branches(false)
-                .commitMessages(true)
-                .sourceCode(false)
-                .diff(false));
+        git1.setDataToCollect(new CollectConfiguration().commitMessages());
 
         Commit commit = git1.getCommit("a7053a4dcd627f5f4f213dc9aa002eb1caf926f8");
 
@@ -74,11 +65,7 @@ public class GitRepoWithCollectConfigurationTest {
     @Test
     public void shouldBringDiff() {
 
-        git1.setDataToCollect(new SCMCollectConfiguration()
-                .branches(false)
-                .commitMessages(false)
-                .sourceCode(false)
-                .diff(true));
+        git1.setDataToCollect(new CollectConfiguration().diffs());
 
         Commit commit = git1.getCommit("a7053a4dcd627f5f4f213dc9aa002eb1caf926f8");
 
@@ -94,11 +81,7 @@ public class GitRepoWithCollectConfigurationTest {
     @Test
     public void shouldBringSourceCode() {
 
-        git1.setDataToCollect(new SCMCollectConfiguration()
-                .branches(false)
-                .commitMessages(false)
-                .sourceCode(true)
-                .diff(false));
+        git1.setDataToCollect(new CollectConfiguration().sourceCode());
 
         Commit commit = git1.getCommit("a7053a4dcd627f5f4f213dc9aa002eb1caf926f8");
 

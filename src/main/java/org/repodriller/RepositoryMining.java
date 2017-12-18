@@ -46,7 +46,7 @@ import org.repodriller.filter.range.CommitRange;
 import org.repodriller.persistence.NoPersistence;
 import org.repodriller.persistence.PersistenceMechanism;
 import org.repodriller.scm.CommitVisitor;
-import org.repodriller.scm.SCMCollectConfiguration;
+import org.repodriller.scm.CollectConfiguration;
 import org.repodriller.scm.SCMRepository;
 import org.repodriller.util.RDFileUtils;
 
@@ -138,7 +138,7 @@ public class RepositoryMining {
 	 * Configures the repos about what data to extract.
 	 * @return this
 	 */
-	public RepositoryMining collect(SCMCollectConfiguration config) {
+	public RepositoryMining collect(CollectConfiguration config) {
 		for(SCMRepository repo : repos) {
 			repo.getScm().setDataToCollect(config);
 		}

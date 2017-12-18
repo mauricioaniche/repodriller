@@ -262,7 +262,7 @@ from the new version. As one diff may contain different blocks of diffs (happens
 was modified in two parts that are far from each other), the parser returns 1 or more diff blocks.
 
 ```java
-// parse the diff
+diffs
 DiffParser parsedDiff = new DiffParser(diff);
 
 // return all the lines in the old file
@@ -446,15 +446,12 @@ to extract diffs, source code of modifications, commit messages, and list of bra
 new RepositoryMining()
     .in(GitRepository.singleProject(railsPath))
     .through(Commits.all())
-    // HERE!!
-    .collect(
-        new SCMCollectConfiguration()
-        .diff(false)
-        .sourceCode(false)
-        .commitMessages(false)
-        .branches(false)
-    )
-    // UNTIL HERE!
+    
+    // The following line collects only the basic
+    .collect(new CollectConfiguration().basicOnly())
+    // Another example: the following collects source code and diff
+    .collect(new CollectConfiguration().sourceCode().diffs())
+
     .process(collectNothingVisitor)
     .mine();
 ```

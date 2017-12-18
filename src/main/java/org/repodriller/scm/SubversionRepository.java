@@ -264,7 +264,7 @@ public class SubversionRepository implements SCM {
 
 			String diffText = out.toString("UTF-8");
 			if (diffText.length() > MAX_SIZE_OF_A_DIFF) {
-				log.error("diff for " + entry.getPath() + " too big");
+				log.error("diffs for " + entry.getPath() + " too big");
 				diffText = "-- TOO BIG --";
 			}
 			return diffText;
@@ -490,7 +490,7 @@ public class SubversionRepository implements SCM {
 	}
 
 	@Override
-	public void setDataToCollect (SCMCollectConfiguration config) {
+	public void setDataToCollect (CollectConfiguration config) {
 		throw new RuntimeException("SVN does not accept a different collect configuration. What about you sending us a PR? ;)");
 	}
 }

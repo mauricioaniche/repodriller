@@ -76,7 +76,7 @@ public class GitRepository implements SCM {
 	private int maxNumberFilesInACommit = -1; /* TODO Expose an API to control this value? Also in SubversionRepository. */
 	private int maxSizeOfDiff = -1; /* TODO Expose an API to control this value? Also in SubversionRepository. */
 
-	private SCMCollectConfiguration collectConfig;
+	private CollectConfiguration collectConfig;
 
 	private static Logger log = LogManager.getLogger(GitRepository.class);
 
@@ -105,7 +105,7 @@ public class GitRepository implements SCM {
 		maxNumberFilesInACommit = checkMaxNumberOfFiles();
 		maxSizeOfDiff = checkMaxSizeOfDiff();
 
-		this.collectConfig = new SCMCollectConfiguration();
+		this.collectConfig = new CollectConfiguration();
 	}
 
 	public static SCMRepository singleProject(String path) {
@@ -263,7 +263,7 @@ public class GitRepository implements SCM {
 			TimeZone authorTimeZone = jgitCommit.getAuthorIdent().getTimeZone();
 			TimeZone committerTimeZone = jgitCommit.getCommitterIdent().getTimeZone();
 
-			String msg = collectConfig.collectCommitMessages() ? jgitCommit.getFullMessage().trim() : "";
+			String msg = collectConfig.isCollectingCommitMessages() ? jgitCommit.getFullMessage().trim() : "";
 			String hash = jgitCommit.getName().toString();
 			String parent = (jgitCommit.getParentCount() > 0) ? jgitCommit.getParent(0).getName().toString() : "";
 
@@ -304,7 +304,7 @@ public class GitRepository implements SCM {
 
 	private Set<String> getBranches(Git git, String hash) throws GitAPIException {
 
-		if(!collectConfig.collectBranches())
+		if(!collectConfig.isCollectingBranches())
 			return new HashSet<>();
 
 		List<Ref> gitBranches = git.branchList().setContains(hash).call();
@@ -329,7 +329,7 @@ public class GitRepository implements SCM {
 		}
 
 		if (diffText.length() > maxSizeOfDiff) {
-			log.error("diff for " + newPath + " too big");
+			log.error("diffs for " + newPath + " too big");
 			diffText = "-- TOO BIG --";
 		}
 
@@ -404,7 +404,7 @@ public class GitRepository implements SCM {
 
 	private String getSourceCode(Repository repo, DiffEntry diff) throws IOException {
 
-		if(!collectConfig.collectSourceCode()) return "";
+		if(!collectConfig.isCollectingSourceCode()) return "";
 
 		try {
 			ObjectReader reader = repo.newObjectReader();
@@ -417,7 +417,7 @@ public class GitRepository implements SCM {
 
 	private String getDiffText(Repository repo, DiffEntry diff) throws IOException {
 
-		if(!collectConfig.collectDiffs())
+		if(!collectConfig.isCollectingDiffs())
 			return "";
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -570,11 +570,11 @@ public class GitRepository implements SCM {
 	}
 
 	/**
-	 * Return the max size of a diff in bytes.
+	 * Return the max size of a diffs in bytes.
 	 * Default is hard-coded to "something large".
 	 * Override with environment variable "git.maxdiff".
 	 *
-	 * @return Max diff size
+	 * @return Max diffs size
 	 */
 	private int checkMaxSizeOfDiff() {
 		try {
@@ -625,7 +625,7 @@ public class GitRepository implements SCM {
 	}
 
 	@Override
-	public void setDataToCollect (SCMCollectConfiguration config) {
+	public void setDataToCollect (CollectConfiguration config) {
 		this.collectConfig = config;
 	}
 }

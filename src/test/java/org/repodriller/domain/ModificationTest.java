@@ -10,7 +10,7 @@ public class ModificationTest {
 
 	@Test
 	public void shouldGetAddsAndRemoves() {
-		String diff = "+++ diff info\n"
+		String diff = "+++ diffs info\n"
 				+ "+ new line\n"
 				+ "- removed line\n"
 				+ "+ new line\n"
