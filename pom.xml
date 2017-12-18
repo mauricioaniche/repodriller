@@ -8,6 +8,10 @@
 	<url>http://github.com/mauricioaniche/repodriller</url>
 	<description>Framework for researchers in MSR</description>
 
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
 	<licenses>
 		<license>
 			<name>Apache License, Version 2.0</name>
@@ -96,12 +100,6 @@
 			<artifactId>org.eclipse.jgit</artifactId>
 			<version>4.8.0.201706111038-r</version>
 		</dependency>
-		
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>3.3.1</version>
-		</dependency>
 
 		<dependency>
 			<groupId>com.thoughtworks.xstream</groupId>
@@ -178,6 +176,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.0.0</version>
 				<configuration>
 					<additionalparam>-Xdoclint:none</additionalparam>
 				</configuration>
