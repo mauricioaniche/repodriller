@@ -24,6 +24,7 @@ two commits (@ayaankazerouni)
 
 - Several refactorings and documentation improvements (@davisjam, @ayaankazerouni)
 
+- Manuals for different versions in different files (@mauricioaniche)
 
 ## 1.3.1
 
