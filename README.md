@@ -437,6 +437,34 @@ are ignored. Default is 200.
 
 - *git.diffcontext*: The size of the content that is used by the diff algorithm. Default is git default.
 
+## Define which data to extract
+
+Extract precisely only what you need in your study can highly speed up the performance of your tool.
+In a simple experiment, we observed that the difference can be up to 20x.
+You can define which data to extract while configuring your `RepositoryMining` study. See
+the `collect()` method in the following example. You can define whether you want RepoDriller
+to extract diffs, source code of modifications, commit messages, and list of branches. See all possibilities in `CollectConfiguration`
+
+
+```
+new RepositoryMining()
+    .in(GitRepository.singleProject(railsPath))
+    .through(Commits.all())
+    
+    // The following line collects only the basic
+    .collect(new CollectConfiguration().basicOnly())
+    // Another example: the following collects source code and diff
+    .collect(new CollectConfiguration().sourceCode().diffs())
+
+    .process(collectNothingVisitor)
+    .mine();
+```
+
+_To use the `isMainBranch()` method in the `Commit` class, branches should be collected, i.e., `new CollectConfiguration().branches()`_.
+
+The default configuration (used when you do not configure the `collect()` method)
+is to extract all the data.
+
 ## Creating your own CommitRange
 
 (not written yet)

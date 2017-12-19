@@ -46,6 +46,7 @@ import org.repodriller.filter.range.CommitRange;
 import org.repodriller.persistence.NoPersistence;
 import org.repodriller.persistence.PersistenceMechanism;
 import org.repodriller.scm.CommitVisitor;
+import org.repodriller.scm.CollectConfiguration;
 import org.repodriller.scm.SCMRepository;
 import org.repodriller.util.RDFileUtils;
 
@@ -130,6 +131,18 @@ public class RepositoryMining {
 	 */
 	public RepositoryMining in(SCMRepository... repo) {
 		this.repos.addAll(Arrays.asList(repo));
+		return this;
+	}
+
+	/**
+	 * Configures the repos about what data to extract.
+	 * @return this
+	 */
+	public RepositoryMining collect(CollectConfiguration config) {
+		for(SCMRepository repo : repos) {
+			repo.getScm().setDataToCollect(config);
+		}
+
 		return this;
 	}
 
@@ -224,7 +237,6 @@ public class RepositoryMining {
 
 	/**
 	 * RepoDriller will choose a good number of threads for you.
-	 * Use after {@link RepositoryMining#threadsConflictOnRepo}.
 	 * @return this
 	 */
 	public RepositoryMining withThreads() {
@@ -237,7 +249,7 @@ public class RepositoryMining {
 	}
 
 	/**
-	 * Configure parallelism. Use after {@link RepositoryMining#threadsConflictOnRepo}.
+	 * Configure parallelism.
 	 * If you use >1 thread, {@link RepositoryMining#through} will not define a FIFO order of commit processing.
 	 *
 	 * @param nThreads	Number of threads that can visit each repo concurrently (default 1).

@@ -119,4 +119,12 @@ public interface SCM {
 	 * Should be safe to call repeatedly without ill effect.
 	 */
 	void delete();
+
+	/**
+	 * Configure which data should be extracted from the repository.
+	 * (usually for performance reasons)
+	 *
+	 * Default should be to collect *everything*
+	 */
+	void setDataToCollect(CollectConfiguration config);
 }

@@ -59,7 +59,7 @@ import org.repodriller.util.RDFileUtils;
 
 /**
  * Everything you need to work with a Git-based source code repository.
- * Wraps
+ *
  *
  * @author Mauricio Aniche
  */
@@ -75,6 +75,8 @@ public class GitRepository implements SCM {
 	private String mainBranchName = null;
 	private int maxNumberFilesInACommit = -1; /* TODO Expose an API to control this value? Also in SubversionRepository. */
 	private int maxSizeOfDiff = -1; /* TODO Expose an API to control this value? Also in SubversionRepository. */
+
+	private CollectConfiguration collectConfig;
 
 	private static Logger log = LogManager.getLogger(GitRepository.class);
 
@@ -102,6 +104,8 @@ public class GitRepository implements SCM {
 
 		maxNumberFilesInACommit = checkMaxNumberOfFiles();
 		maxSizeOfDiff = checkMaxSizeOfDiff();
+
+		this.collectConfig = new CollectConfiguration().everything();
 	}
 
 	public static SCMRepository singleProject(String path) {
@@ -259,7 +263,7 @@ public class GitRepository implements SCM {
 			TimeZone authorTimeZone = jgitCommit.getAuthorIdent().getTimeZone();
 			TimeZone committerTimeZone = jgitCommit.getCommitterIdent().getTimeZone();
 
-			String msg = jgitCommit.getFullMessage().trim();
+			String msg = collectConfig.isCollectingCommitMessages() ? jgitCommit.getFullMessage().trim() : "";
 			String hash = jgitCommit.getName().toString();
 			List<String> parents = Arrays.stream(jgitCommit.getParents())
 					.map(rc -> rc.getName().toString()).collect(Collectors.toList());
@@ -300,6 +304,10 @@ public class GitRepository implements SCM {
 	}
 
 	private Set<String> getBranches(Git git, String hash) throws GitAPIException {
+
+		if(!collectConfig.isCollectingBranches())
+			return new HashSet<>();
+
 		List<Ref> gitBranches = git.branchList().setContains(hash).call();
 		Set<String> mappedBranches = gitBranches.stream()
 				.map(
@@ -388,7 +396,7 @@ public class GitRepository implements SCM {
 
 	private void setContext(DiffFormatter df) {
 		try {
-			int context = getSystemProperty("git.diffcontext");
+			int context = getSystemProperty("git.diffcontext"); /* TODO: make it into a configuration */
 			df.setContext(context);
 		} catch (Exception e) {
 			return;
@@ -396,6 +404,9 @@ public class GitRepository implements SCM {
 	}
 
 	private String getSourceCode(Repository repo, DiffEntry diff) throws IOException {
+
+		if(!collectConfig.isCollectingSourceCode()) return "";
+
 		try {
 			ObjectReader reader = repo.newObjectReader();
 			byte[] bytes = reader.open(diff.getNewId().toObjectId()).getBytes();
@@ -406,6 +417,10 @@ public class GitRepository implements SCM {
 	}
 
 	private String getDiffText(Repository repo, DiffEntry diff) throws IOException {
+
+		if(!collectConfig.isCollectingDiffs())
+			return "";
+
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try (DiffFormatter df2 = new DiffFormatter(out)) {
             String diffText;
@@ -608,5 +623,10 @@ public class GitRepository implements SCM {
 				log.info("Delete failed: " + e);
 			}
 		}
+	}
+
+	@Override
+	public void setDataToCollect (CollectConfiguration config) {
+		this.collectConfig = config;
 	}
 }
