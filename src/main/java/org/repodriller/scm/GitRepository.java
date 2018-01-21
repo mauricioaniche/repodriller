@@ -60,6 +60,8 @@ import org.repodriller.domain.Commit;
 import org.repodriller.domain.Developer;
 import org.repodriller.domain.Modification;
 import org.repodriller.domain.ModificationType;
+import org.repodriller.filter.diff.DiffFilter;
+import org.repodriller.filter.diff.NoDiffFilter;
 import org.repodriller.util.RDFileUtils;
 
 /**
@@ -247,6 +249,11 @@ public class GitRepository implements SCM {
 
 		return date;
 	}
+	
+	@Override
+	public Commit getCommit(String id) {
+		return this.getCommit(id, Arrays.asList(new NoDiffFilter()));
+	}
 
 	/**
 	 * Get the commit with this commit id. Caveats: - If commit modifies more than
@@ -258,7 +265,7 @@ public class GitRepository implements SCM {
 	 * @returns Commit The corresponding Commit, or null.
 	 */
 	@Override
-	public Commit getCommit(String id) {
+	public Commit getCommit(String id, List<DiffFilter> diffFilters) {
 		try (Git git = openRepository()) {
 			/*
 			 * Using JGit, this commit will be the first entry in the log beginning at id.
@@ -307,9 +314,9 @@ public class GitRepository implements SCM {
 				log.error(errMsg);
 				throw new RepoDrillerException(errMsg);
 			}
-
+			
 			for (DiffEntry diff : diffsForTheCommit) {
-				if (diff.getNewPath().endsWith(".java")) {
+				if (this.filtersAccept(diff, diffFilters)) {
 					Modification m = this.diffToModification(repo, diff);
 					commit.addModification(m);
 				}
@@ -646,5 +653,21 @@ public class GitRepository implements SCM {
 	@Override
 	public void setDataToCollect (CollectConfiguration config) {
 		this.collectConfig = config;
+	}
+	
+	/**
+	 * True if all filters accept, else false.
+	 *
+	 * @param diff	DiffEntry to evaluate
+	 * @return allAccepted
+	 */
+	private boolean filtersAccept(DiffEntry diff, List<DiffFilter> diffFilters) {
+		for (DiffFilter diffFilter : diffFilters) {
+			if (!diffFilter.accept(diff.getNewPath())) {
+				return false;
+			}
+		}
+		
+		return true;
 	}
 }

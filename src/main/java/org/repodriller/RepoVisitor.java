@@ -9,7 +9,6 @@ import java.util.concurrent.BlockingQueue;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import org.repodriller.domain.Commit;
 import org.repodriller.persistence.PersistenceMechanism;
 import org.repodriller.persistence.csv.CSVFileFormatException;
@@ -165,7 +164,8 @@ public class RepoVisitor {
 	 * Visit this commit in the current repo.
 	 * Calls {@link CommitVisitor#process} on each CommitVisitor in my collection.
 	 *
-	 * @param commit The commit that will be visited
+	 * @param commit 		The commit that will be visited
+	 * @param diffFilters 	List of filters for diffs to ignore or accept
 	 */
 	void visitCommit(Commit commit) {
 		log.debug("Visiting commit " + commit.getHash());

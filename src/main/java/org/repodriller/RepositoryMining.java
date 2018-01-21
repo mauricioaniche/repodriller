@@ -34,19 +34,19 @@ import java.util.concurrent.Future;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import org.repodriller.domain.ChangeSet;
 import org.repodriller.domain.Commit;
 import org.repodriller.filter.commit.CommitFilter;
 import org.repodriller.filter.commit.NoFilter;
+import org.repodriller.filter.diff.DiffFilter;
+import org.repodriller.filter.diff.NoDiffFilter;
 import org.repodriller.filter.range.CommitRange;
 import org.repodriller.persistence.NoPersistence;
 import org.repodriller.persistence.PersistenceMechanism;
-import org.repodriller.scm.CommitVisitor;
 import org.repodriller.scm.CollectConfiguration;
+import org.repodriller.scm.CommitVisitor;
 import org.repodriller.scm.SCMRepository;
 import org.repodriller.util.RDFileUtils;
 
@@ -76,6 +76,7 @@ public class RepositoryMining {
 
 	private boolean reverseOrder;
 	private List<CommitFilter> filters;
+	private List<DiffFilter> diffFilters;
 
 	/* Storage members. */
 	/* We clone() the active repository to this location.
@@ -104,6 +105,7 @@ public class RepositoryMining {
 		repos = new ArrayList<SCMRepository>();
 		repoVisitor = new RepoVisitor();
 		filters = Arrays.asList((CommitFilter) new NoFilter());
+		diffFilters = Arrays.asList((DiffFilter) new NoDiffFilter());
 
 		/* Initialize concurrency settings conservatively. */
 		visitorsAreThreadSafe(false);
@@ -176,6 +178,16 @@ public class RepositoryMining {
 	 */
 	public RepositoryMining filters(CommitFilter... filters) {
 		this.filters = Arrays.asList(filters);
+		return this;
+	}
+	
+	/**
+	 * Define filters to ignore or accept certain diffs from accepted Commits before they are turned into Modifications.
+	 * 
+	 * @param filters	An array of diff filters
+	 */
+	public RepositoryMining diffFilters(DiffFilter... diffFilters) {
+		this.diffFilters = Arrays.asList(diffFilters);
 		return this;
 	}
 
@@ -432,7 +444,7 @@ public class RepositoryMining {
 	 * @param cs	changeset being visited
 	 */
 	private void processChangeSet(SCMRepository repo, ChangeSet cs) {
-		Commit commit = repo.getScm().getCommit(cs.getId());
+		Commit commit = repo.getScm().getCommit(cs.getId(), this.diffFilters);
 		log.info(
 				"Commit #" + commit.getHash() +
 				" @ " + repo.getLastDir() +

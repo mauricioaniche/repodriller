@@ -7,6 +7,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -26,6 +27,8 @@ import org.repodriller.domain.Commit;
 import org.repodriller.domain.Developer;
 import org.repodriller.domain.Modification;
 import org.repodriller.domain.ModificationType;
+import org.repodriller.filter.diff.DiffFilter;
+import org.repodriller.filter.diff.NoDiffFilter;
 import org.repodriller.util.RDFileUtils;
 import org.tmatesoft.svn.core.SVNDepth;
 import org.tmatesoft.svn.core.SVNDirEntry;
@@ -169,10 +172,14 @@ public class SubversionRepository implements SCM {
 		}
 	}
 
+	public Commit getCommit(String id) {
+		return this.getCommit(id, Arrays.asList(new NoDiffFilter()));
+	}
+	
 	@SuppressWarnings("rawtypes")
 	@Override
 	/* TODO Refactor as in GitRepository.getCommit. */
-	public Commit getCommit(String id) {
+	public Commit getCommit(String id, List<DiffFilter> diffFilters) {
 		SVNRepository repository = null;
 
 		try {
