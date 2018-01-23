@@ -197,6 +197,23 @@ public class GitRepositoryTest {
 		Assert.assertTrue(commit.getModifications().get(0).getSourceCode().startsWith("package model;"));
 		
 	}
+	
+	@Test 
+	public void shouldDetailACommitWithDiffFilters() {
+		
+		Commit commit = git1.getCommit("866e997a9e44cb4ddd9e00efe49361420aff2559");
+		
+		Assert.assertEquals("Maurício Aniche", commit.getAuthor().getName());
+		Assert.assertEquals("mauricioaniche@gmail.com", commit.getAuthor().getEmail());
+		
+		Assert.assertEquals("Matricula adicionada", commit.getMsg());
+		Assert.assertEquals(1, commit.getModifications().size());
+
+		Assert.assertEquals("Matricula.java", commit.getModifications().get(0).getNewPath());
+		Assert.assertTrue(commit.getModifications().get(0).getDiff().startsWith("diff --git a/Matricula.java b/Matricula.java"));
+		Assert.assertTrue(commit.getModifications().get(0).getSourceCode().startsWith("package model;"));
+		
+	}
 
 	
 	@Test 
