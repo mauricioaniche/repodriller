@@ -165,7 +165,6 @@ public class RepoVisitor {
 	 * Calls {@link CommitVisitor#process} on each CommitVisitor in my collection.
 	 *
 	 * @param commit 		The commit that will be visited
-	 * @param diffFilters 	List of filters for diffs to ignore or accept
 	 */
 	void visitCommit(Commit commit) {
 		log.debug("Visiting commit " + commit.getHash());

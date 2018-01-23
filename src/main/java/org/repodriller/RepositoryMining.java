@@ -75,7 +75,7 @@ public class RepositoryMining {
 	private CommitRange range;
 
 	private boolean reverseOrder;
-	private List<CommitFilter> filters;
+	private List<CommitFilter> commitFilters;
 	private List<DiffFilter> diffFilters;
 
 	/* Storage members. */
@@ -104,7 +104,7 @@ public class RepositoryMining {
 	public RepositoryMining() {
 		repos = new ArrayList<SCMRepository>();
 		repoVisitor = new RepoVisitor();
-		filters = Arrays.asList((CommitFilter) new NoFilter());
+		commitFilters = Arrays.asList((CommitFilter) new NoFilter());
 		diffFilters = Arrays.asList((DiffFilter) new NoDiffFilter());
 
 		/* Initialize concurrency settings conservatively. */
@@ -177,14 +177,14 @@ public class RepositoryMining {
 	 * @return this
 	 */
 	public RepositoryMining filters(CommitFilter... filters) {
-		this.filters = Arrays.asList(filters);
+		this.commitFilters = Arrays.asList(filters);
 		return this;
 	}
 	
 	/**
 	 * Define filters to ignore or accept certain diffs from accepted Commits before they are turned into Modifications.
 	 * 
-	 * @param filters	An array of diff filters
+	 * @param commitFilters	An array of diff filters
 	 */
 	public RepositoryMining diffFilters(DiffFilter... diffFilters) {
 		this.diffFilters = Arrays.asList(diffFilters);
@@ -467,7 +467,7 @@ public class RepositoryMining {
 	 * @return allAccepted
 	 */
 	private boolean filtersAccept(Commit commit) {
-		for (CommitFilter filter : filters) {
+		for (CommitFilter filter : commitFilters) {
 			if (!filter.accept(commit))
 				return false;
 		}

@@ -65,8 +65,8 @@ public interface SCM {
 	/**
 	 * Retrieve the Commit with this id.
 	 *
-	 * @param id	The commit to retrieve
-	 * @return	The Commit with this id, or null.
+	 * @param id		The commit to retrieve
+	 * @return The Commit with this id, or null.
 	 */
 	Commit getCommit(String id);
 	
@@ -75,7 +75,7 @@ public interface SCM {
 	 *
 	 * @param id	 			The commit to retrieve
 	 * @param diffFilters	Filters to accept or ignore certain diffs
-	 * @return	The Commit with this id, or null.
+	 * @return The Commit with this id, or null.
 	 */
 	Commit getCommit(String id, List<DiffFilter> diffFilters);
 	/* TODO A method named getCommitXYZ should return a Commit. */

@@ -8,10 +8,10 @@ package org.repodriller.filter.diff;
 public interface DiffFilter {
 
 	/**
-	 * Determine whether to accept this Diff for further processing.
+	 * Determine whether to accept a diff on this file for further processing.
 	 * 
-	 * @param diff Diff in question
-	 * @return True if the Diff should pass the filter, false if it should be filtered out.
+	 * @param diffEntryPath The path to the file being diffed
+	 * @return True if the file should pass the filter, false if it should be filtered out.
 	 */
 	boolean accept(String diffEntryPath);
 }

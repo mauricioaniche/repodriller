@@ -2,6 +2,8 @@ package org.repodriller.filter.diff;
 
 import java.util.List;
 
+import org.repodriller.util.RDFileUtils;
+
 /**
  * Only process diffs on files without certain file extensions.
  * 
@@ -18,6 +20,6 @@ public class OnlyDiffsWithoutFileTypes implements DiffFilter {
 
 	@Override
 	public boolean accept(String diffEntryPath) {
-		return this.fileExtensions.stream().noneMatch(fe -> fe.endsWith(diffEntryPath));
+		return !RDFileUtils.fileNameHasIsOfType(diffEntryPath, this.fileExtensions);
 	}
 }

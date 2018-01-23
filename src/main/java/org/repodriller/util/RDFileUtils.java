@@ -196,4 +196,27 @@ public class RDFileUtils {
 			throw new RepoDrillerException("copyDir failed: " + e);
 		}
 	}
+	
+	/**
+	 * Check if the specified fileName ends with any of the specified file extensions.
+	 * If an extension is supplied without the dot, a dot will be prepended to it.
+	 * 
+	 * @param fileName	 The file name or path to check
+	 * @param extensions	 The list of extensions to check
+	 * @return true iff fileName ends with at least one of the specified extensions
+	 */
+	public static boolean fileNameHasIsOfType(String fileName, List<String> extensions) {
+		for (String current : extensions) {
+			String extToCheck = current;
+			if (!extToCheck.startsWith(".")) {
+				extToCheck = "." + extToCheck;
+			}
+			
+			if (fileName.endsWith(extToCheck)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
 }
