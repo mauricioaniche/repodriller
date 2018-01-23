@@ -180,6 +180,11 @@ public class SubversionRepository implements SCM {
 	@Override
 	/* TODO Refactor as in GitRepository.getCommit. */
 	public Commit getCommit(String id, List<DiffFilter> diffFilters) {
+		if (!diffFilters.isEmpty()) {
+			// TODO: Implement for Subversion
+			throw new RepoDrillerException(new RuntimeException("This feature is not yet implemented for Subversion repositories."));
+		}
+		
 		SVNRepository repository = null;
 
 		try {

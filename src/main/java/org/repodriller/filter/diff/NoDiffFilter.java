@@ -1,10 +1,9 @@
 package org.repodriller.filter.diff;
 
 /**
- * Default filter that accepts diifs on all files.
+ * Default filter that accepts diffs on all files.
  * 
  * @author ayaankazerouni
- * @version January 22, 2018
  */
 public class NoDiffFilter implements DiffFilter {
 

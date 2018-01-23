@@ -184,7 +184,7 @@ public class RepositoryMining {
 	/**
 	 * Define filters to ignore or accept certain diffs from accepted Commits before they are turned into Modifications.
 	 * 
-	 * @param commitFilters	An array of diff filters
+	 * @param diffFilters	An array of diff filters
 	 */
 	public RepositoryMining diffFilters(DiffFilter... diffFilters) {
 		this.diffFilters = Arrays.asList(diffFilters);

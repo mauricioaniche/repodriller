@@ -316,7 +316,7 @@ public class GitRepository implements SCM {
 			}
 			
 			for (DiffEntry diff : diffsForTheCommit) {
-				if (this.filtersAccept(diff, diffFilters)) {
+				if (this.diffFiltersAccept(diff, diffFilters)) {
 					Modification m = this.diffToModification(repo, diff);
 					commit.addModification(m);
 				}
@@ -661,7 +661,7 @@ public class GitRepository implements SCM {
 	 * @param diff	DiffEntry to evaluate
 	 * @return allAccepted
 	 */
-	private boolean filtersAccept(DiffEntry diff, List<DiffFilter> diffFilters) {
+	private boolean diffFiltersAccept(DiffEntry diff, List<DiffFilter> diffFilters) {
 		for (DiffFilter diffFilter : diffFilters) {
 			if (!diffFilter.accept(diff.getNewPath())) {
 				return false;
