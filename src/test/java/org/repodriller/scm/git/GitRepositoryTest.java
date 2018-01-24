@@ -17,6 +17,7 @@
 package org.repodriller.scm.git;
 
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Assert;
@@ -27,6 +28,9 @@ import org.repodriller.domain.ChangeSet;
 import org.repodriller.domain.Commit;
 import org.repodriller.domain.Modification;
 import org.repodriller.domain.ModificationType;
+import org.repodriller.filter.diff.DiffFilter;
+import org.repodriller.filter.diff.OnlyDiffsWithFileTypes;
+import org.repodriller.filter.diff.OnlyDiffsWithoutFileTypes;
 import org.repodriller.scm.BlamedLine;
 import org.repodriller.scm.GitRepository;
 import org.repodriller.scm.RepositoryFile;
@@ -40,6 +44,7 @@ public class GitRepositoryTest {
 	private GitRepository git5;
 	private GitRepository git6;
 	private GitRepository git8;
+	private GitRepository git9;
 
 	private static String path1;
 	private static String path2;
@@ -47,6 +52,7 @@ public class GitRepositoryTest {
 	private static String path5;
 	private static String path6;
 	private static String path8;
+	private static String path9;
 
 
 	@BeforeClass
@@ -57,6 +63,7 @@ public class GitRepositoryTest {
 		path5 = GitRepositoryTest.class.getResource("/").getPath() + "../../test-repos/git-5";
 		path6 = GitRepositoryTest.class.getResource("/").getPath() + "../../test-repos/git-6";
 		path8 = GitRepositoryTest.class.getResource("/").getPath() + "../../test-repos/git-8";
+		path9 = GitRepositoryTest.class.getResource("/").getPath() + "../../test-repos/git-9";
 	}
 	
 	@Before
@@ -67,6 +74,7 @@ public class GitRepositoryTest {
 		git5 = new GitRepository(path5);
 		git6 = new GitRepository(path6, true);
 		git8 = new GitRepository(path8);
+		git9 = new GitRepository(path9);
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -199,20 +207,23 @@ public class GitRepositoryTest {
 	}
 	
 	@Test 
-	public void shouldDetailACommitWithDiffFilters() {
+	public void shouldOnlyLoadFilteredDiffsIntoModifications() {
+		DiffFilter onlyJava = new OnlyDiffsWithFileTypes(Arrays.asList("java"));
+		DiffFilter notJava = new OnlyDiffsWithoutFileTypes(Arrays.asList(".java"));
+		DiffFilter onlyJavaxAndMd = new OnlyDiffsWithFileTypes(Arrays.asList("javax", ".md"));
 		
-		Commit commit = git1.getCommit("866e997a9e44cb4ddd9e00efe49361420aff2559");
+		Commit doNotGetJava = git9.getCommit("90ca37d86bd60af1a936d2f9a7bbe899ff4b1286", Arrays.asList(notJava));
+		Assert.assertEquals(1, doNotGetJava.getModifications().size());
+		Assert.assertEquals("Matricula.javax", doNotGetJava.getModifications().get(0).getNewPath());
 		
-		Assert.assertEquals("Maurício Aniche", commit.getAuthor().getName());
-		Assert.assertEquals("mauricioaniche@gmail.com", commit.getAuthor().getEmail());
+		Commit getJavaxAndMd = git9.getCommit("0706a1a6504331e1b7910da27ac7fab7c6a74df6", Arrays.asList(onlyJavaxAndMd));
+		Assert.assertEquals(2, getJavaxAndMd.getModifications().size());
+		Assert.assertEquals("Secao.javax", getJavaxAndMd.getModifications().get(0).getNewPath());
+		Assert.assertEquals("Test.md", getJavaxAndMd.getModifications().get(1).getNewPath());	
 		
-		Assert.assertEquals("Matricula adicionada", commit.getMsg());
-		Assert.assertEquals(1, commit.getModifications().size());
-
-		Assert.assertEquals("Matricula.java", commit.getModifications().get(0).getNewPath());
-		Assert.assertTrue(commit.getModifications().get(0).getDiff().startsWith("diff --git a/Matricula.java b/Matricula.java"));
-		Assert.assertTrue(commit.getModifications().get(0).getSourceCode().startsWith("package model;"));
-		
+		Commit getOnlyJava = git9.getCommit("0706a1a6504331e1b7910da27ac7fab7c6a74df6", Arrays.asList(onlyJava));
+		Assert.assertEquals(1, getOnlyJava.getModifications().size());
+		Assert.assertEquals("pasta/Capitulo.java", getOnlyJava.getModifications().get(0).getNewPath());
 	}
 
 	
