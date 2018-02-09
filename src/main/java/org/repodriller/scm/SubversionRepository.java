@@ -170,18 +170,10 @@ public class SubversionRepository implements SCM {
 		}
 	}
 
-	public Commit getCommit(String id) {
-		return this.getCommit(id, new ArrayList<DiffFilter>()); // DiffFilters are not implemented for Subversion
-	}
-
 	@SuppressWarnings("rawtypes")
 	@Override
 	/* TODO Refactor as in GitRepository.getCommit. */
-	public Commit getCommit(String id, List<DiffFilter> diffFilters) {
-		if (!diffFilters.isEmpty()) {
-			// TODO: Implement for Subversion
-			throw new RepoDrillerException(new RuntimeException("This feature is not yet implemented for Subversion repositories."));
-		}
+	public Commit getCommit(String id) {
 
 		SVNRepository repository = null;
 

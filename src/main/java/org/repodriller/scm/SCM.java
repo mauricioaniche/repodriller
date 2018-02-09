@@ -22,7 +22,6 @@ import java.util.List;
 import org.repodriller.domain.ChangeSet;
 import org.repodriller.domain.Commit;
 import org.repodriller.domain.Modification;
-import org.repodriller.filter.diff.DiffFilter;
 
 /**
  * This interface defines interactions with a source code repository that uses a Source Code Management system (i.e. version control system).
@@ -70,14 +69,6 @@ public interface SCM {
 	 */
 	Commit getCommit(String id);
 	
-	/**
-	 * Retrieve the Commit with this id.
-	 *
-	 * @param id	 			The commit to retrieve
-	 * @param diffFilters	Filters to accept or ignore certain diffs
-	 * @return The Commit with this id, or null.
-	 */
-	Commit getCommit(String id, List<DiffFilter> diffFilters);
 	/* TODO A method named getCommitXYZ should return a Commit. */
 	String getCommitFromTag(String tag);
 

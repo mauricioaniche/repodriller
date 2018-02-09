@@ -32,6 +32,7 @@ import org.repodriller.filter.diff.DiffFilter;
 import org.repodriller.filter.diff.OnlyDiffsWithFileTypes;
 import org.repodriller.filter.diff.OnlyDiffsWithoutFileTypes;
 import org.repodriller.scm.BlamedLine;
+import org.repodriller.scm.CollectConfiguration;
 import org.repodriller.scm.GitRepository;
 import org.repodriller.scm.RepositoryFile;
 import org.repodriller.scm.SCMRepository;
@@ -212,16 +213,19 @@ public class GitRepositoryTest {
 		DiffFilter notJava = new OnlyDiffsWithoutFileTypes(Arrays.asList(".java"));
 		DiffFilter onlyJavaxAndMd = new OnlyDiffsWithFileTypes(Arrays.asList("javax", ".md"));
 		
-		Commit doNotGetJava = git9.getCommit("90ca37d86bd60af1a936d2f9a7bbe899ff4b1286", Arrays.asList(notJava));
+		git9.setDataToCollect(new CollectConfiguration().diffs(notJava));
+		Commit doNotGetJava = git9.getCommit("90ca37d86bd60af1a936d2f9a7bbe899ff4b1286");
 		Assert.assertEquals(1, doNotGetJava.getModifications().size());
 		Assert.assertEquals("Matricula.javax", doNotGetJava.getModifications().get(0).getNewPath());
 		
-		Commit getJavaxAndMd = git9.getCommit("0706a1a6504331e1b7910da27ac7fab7c6a74df6", Arrays.asList(onlyJavaxAndMd));
+		git9.setDataToCollect(new CollectConfiguration().diffs(onlyJavaxAndMd));
+		Commit getJavaxAndMd = git9.getCommit("0706a1a6504331e1b7910da27ac7fab7c6a74df6");
 		Assert.assertEquals(2, getJavaxAndMd.getModifications().size());
 		Assert.assertEquals("Secao.javax", getJavaxAndMd.getModifications().get(0).getNewPath());
 		Assert.assertEquals("Test.md", getJavaxAndMd.getModifications().get(1).getNewPath());	
 		
-		Commit getOnlyJava = git9.getCommit("0706a1a6504331e1b7910da27ac7fab7c6a74df6", Arrays.asList(onlyJava));
+		git9.setDataToCollect(new CollectConfiguration().diffs(onlyJava));
+		Commit getOnlyJava = git9.getCommit("0706a1a6504331e1b7910da27ac7fab7c6a74df6");
 		Assert.assertEquals(1, getOnlyJava.getModifications().size());
 		Assert.assertEquals("pasta/Capitulo.java", getOnlyJava.getModifications().get(0).getNewPath());
 	}

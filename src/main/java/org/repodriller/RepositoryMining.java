@@ -34,19 +34,19 @@ import java.util.concurrent.Future;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import org.repodriller.domain.ChangeSet;
 import org.repodriller.domain.Commit;
 import org.repodriller.filter.commit.CommitFilter;
 import org.repodriller.filter.commit.NoFilter;
-import org.repodriller.filter.diff.DiffFilter;
-import org.repodriller.filter.diff.NoDiffFilter;
 import org.repodriller.filter.range.CommitRange;
 import org.repodriller.persistence.NoPersistence;
 import org.repodriller.persistence.PersistenceMechanism;
-import org.repodriller.scm.CollectConfiguration;
 import org.repodriller.scm.CommitVisitor;
+import org.repodriller.scm.CollectConfiguration;
 import org.repodriller.scm.SCMRepository;
 import org.repodriller.util.RDFileUtils;
 
@@ -75,8 +75,7 @@ public class RepositoryMining {
 	private CommitRange range;
 
 	private boolean reverseOrder;
-	private List<CommitFilter> commitFilters;
-	private List<DiffFilter> diffFilters;
+	private List<CommitFilter> filters;
 
 	/* Storage members. */
 	/* We clone() the active repository to this location.
@@ -104,8 +103,7 @@ public class RepositoryMining {
 	public RepositoryMining() {
 		repos = new ArrayList<SCMRepository>();
 		repoVisitor = new RepoVisitor();
-		commitFilters = Arrays.asList((CommitFilter) new NoFilter());
-		diffFilters = Arrays.asList((DiffFilter) new NoDiffFilter());
+		filters = Arrays.asList((CommitFilter) new NoFilter());
 
 		/* Initialize concurrency settings conservatively. */
 		visitorsAreThreadSafe(false);
@@ -177,17 +175,7 @@ public class RepositoryMining {
 	 * @return this
 	 */
 	public RepositoryMining filters(CommitFilter... filters) {
-		this.commitFilters = Arrays.asList(filters);
-		return this;
-	}
-	
-	/**
-	 * Define filters to ignore or accept certain diffs from accepted Commits before they are turned into Modifications.
-	 * 
-	 * @param diffFilters	An array of diff filters
-	 */
-	public RepositoryMining diffFilters(DiffFilter... diffFilters) {
-		this.diffFilters = Arrays.asList(diffFilters);
+		this.filters = Arrays.asList(filters);
 		return this;
 	}
 
@@ -444,7 +432,7 @@ public class RepositoryMining {
 	 * @param cs	changeset being visited
 	 */
 	private void processChangeSet(SCMRepository repo, ChangeSet cs) {
-		Commit commit = repo.getScm().getCommit(cs.getId(), this.diffFilters);
+		Commit commit = repo.getScm().getCommit(cs.getId());
 		log.info(
 				"Commit #" + commit.getHash() +
 				" @ " + repo.getLastDir() +
@@ -467,7 +455,7 @@ public class RepositoryMining {
 	 * @return allAccepted
 	 */
 	private boolean filtersAccept(Commit commit) {
-		for (CommitFilter filter : commitFilters) {
+		for (CommitFilter filter : filters) {
 			if (!filter.accept(commit))
 				return false;
 		}

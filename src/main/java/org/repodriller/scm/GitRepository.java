@@ -32,8 +32,10 @@ import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ResetCommand.ResetType;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -61,7 +63,6 @@ import org.repodriller.domain.Developer;
 import org.repodriller.domain.Modification;
 import org.repodriller.domain.ModificationType;
 import org.repodriller.filter.diff.DiffFilter;
-import org.repodriller.filter.diff.NoDiffFilter;
 import org.repodriller.util.RDFileUtils;
 
 /**
@@ -70,10 +71,7 @@ import org.repodriller.util.RDFileUtils;
  *
  * @author Mauricio Aniche
  */
-/*
- * TODO Name: Sounds like it inherits SCMRepository, but it actually implements
- * SCM.
- */
+/* TODO Name: Sounds like it inherits SCMRepository, but it actually implements SCM. */
 public class GitRepository implements SCM {
 
 	/* Constants. */
@@ -83,10 +81,7 @@ public class GitRepository implements SCM {
 
 	/* Auto-determined. */
 	private String mainBranchName = null;
-	private int maxNumberFilesInACommit = -1; /*
-												 * TODO Expose an API to control this value? Also in
-												 * SubversionRepository.
-												 */
+	private int maxNumberFilesInACommit = -1; /* TODO Expose an API to control this value? Also in SubversionRepository. */
 	private int maxSizeOfDiff = -1; /* TODO Expose an API to control this value? Also in SubversionRepository. */
 
 	private CollectConfiguration collectConfig;
@@ -98,8 +93,8 @@ public class GitRepository implements SCM {
 	private boolean firstParentOnly = false;
 
 	/**
-	 * Intended for sub-classes. Make sure you initialize appropriately with the
-	 * Setters.
+	 * Intended for sub-classes.
+	 * Make sure you initialize appropriately with the Setters.
 	 */
 	protected GitRepository() {
 		this(null);
@@ -249,27 +244,20 @@ public class GitRepository implements SCM {
 
 		return date;
 	}
-	
-	@Override
-	public Commit getCommit(String id) {
-		return this.getCommit(id, Arrays.asList(new NoDiffFilter()));
-	}
 
 	/**
-	 * Get the commit with this commit id. Caveats: - If commit modifies more than
-	 * maxNumberFilesInACommit, throws an exception - If one of the file diffs
-	 * exceeds maxSizeOfDiff, the diffText is discarded
+	 * Get the commit with this commit id.
+	 * Caveats:
+	 *   - If commit modifies more than maxNumberFilesInACommit, throws an exception
+	 *   - If one of the file diffs exceeds maxSizeOfDiff, the diffText is discarded
 	 *
-	 * @param id
-	 *            The SHA1 hash that identifies a git commit.
-	 * @returns Commit The corresponding Commit, or null.
+	 * @param id    The SHA1 hash that identifies a git commit.
+	 * @returns Commit 	The corresponding Commit, or null.
 	 */
 	@Override
-	public Commit getCommit(String id, List<DiffFilter> diffFilters) {
+	public Commit getCommit(String id) {
 		try (Git git = openRepository()) {
-			/*
-			 * Using JGit, this commit will be the first entry in the log beginning at id.
-			 */
+			/* Using JGit, this commit will be the first entry in the log beginning at id. */
 			Repository repo = git.getRepository();
 			Iterable<RevCommit> jgitCommits = git.log().add(repo.resolve(id)).call();
 			Iterator<RevCommit> itr = jgitCommits.iterator();
@@ -279,10 +267,8 @@ public class GitRepository implements SCM {
 			RevCommit jgitCommit = itr.next();
 
 			/* Extract metadata. */
-			Developer author = new Developer(jgitCommit.getAuthorIdent().getName(),
-					jgitCommit.getAuthorIdent().getEmailAddress());
-			Developer committer = new Developer(jgitCommit.getCommitterIdent().getName(),
-					jgitCommit.getCommitterIdent().getEmailAddress());
+			Developer author = new Developer(jgitCommit.getAuthorIdent().getName(), jgitCommit.getAuthorIdent().getEmailAddress());
+			Developer committer = new Developer(jgitCommit.getCommitterIdent().getName(), jgitCommit.getCommitterIdent().getEmailAddress());
 			TimeZone authorTimeZone = jgitCommit.getAuthorIdent().getTimeZone();
 			TimeZone committerTimeZone = jgitCommit.getCommitterIdent().getTimeZone();
 
@@ -314,7 +300,9 @@ public class GitRepository implements SCM {
 				log.error(errMsg);
 				throw new RepoDrillerException(errMsg);
 			}
-			
+
+			List<DiffFilter> diffFilters = this.collectConfig.getDiffFilters();
+
 			for (DiffEntry diff : diffsForTheCommit) {
 				if (this.diffFiltersAccept(diff, diffFilters)) {
 					Modification m = this.diffToModification(repo, diff);
@@ -336,7 +324,9 @@ public class GitRepository implements SCM {
 
 		List<Ref> gitBranches = git.branchList().setContains(hash).call();
 		Set<String> mappedBranches = gitBranches.stream()
-				.map((ref) -> ref.getName().substring(ref.getName().lastIndexOf("/") + 1)).collect(Collectors.toSet());
+				.map(
+						(ref) -> ref.getName().substring(ref.getName().lastIndexOf("/") + 1))
+				.collect(Collectors.toSet());
 		return mappedBranches;
 	}
 
@@ -377,14 +367,15 @@ public class GitRepository implements SCM {
 			AnyObjectId laterCommit = repo.resolve(laterCommitHash);
 
 			List<DiffEntry> diffs = this.getDiffBetweenCommits(repo, priorCommit, laterCommit);
-			List<Modification> modifications = diffs.stream().map(diff -> {
-				try {
-					return this.diffToModification(repo, diff);
-				} catch (IOException e) {
-					throw new RuntimeException(
-							"error diffing " + priorCommitHash + " and " + laterCommitHash + " in " + path, e);
-				}
-			}).collect(Collectors.toList());
+			List<Modification> modifications = diffs.stream()
+					.map(diff -> {
+							try {
+								return this.diffToModification(repo, diff);
+							} catch (IOException e) {
+								throw new RuntimeException("error diffing " + priorCommitHash + " and " + laterCommitHash + " in " + path, e);
+							}
+					})
+					.collect(Collectors.toList());
 			return modifications;
 		} catch (Exception e) {
 			throw new RuntimeException("error diffing " + priorCommitHash + " and " + laterCommitHash + " in " + path,
