@@ -21,14 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
@@ -186,10 +179,8 @@ public class GitRepository implements SCM {
 	public List<ChangeSet> getChangeSets() {
 		try (Git git = openRepository()) {
 			List<ChangeSet> allCs;
-			if (!firstParentOnly)
-				allCs = getAllCommits(git);
-			else
-				allCs = firstParentsOnly(git);
+			if (!firstParentOnly) allCs = getAllCommits(git);
+			else allCs = firstParentsOnly(git);
 
 			return allCs;
 		} catch (Exception e) {
@@ -205,7 +196,7 @@ public class GitRepository implements SCM {
 			revWalk = new RevWalk(git.getRepository());
 			revWalk.setRevFilter(new FirstParentFilter());
 			revWalk.sort(RevSort.TOPO);
-			Ref headRef = git.getRepository().getRef(Constants.HEAD); /* TODO Deprecated. */
+			Ref headRef = git.getRepository().getRef(Constants.HEAD);  /* TODO Deprecated. */
 			RevCommit headCommit = revWalk.parseCommit(headRef.getObjectId());
 			revWalk.markStart(headCommit);
 			for (RevCommit revCommit : revWalk) {
@@ -301,10 +292,8 @@ public class GitRepository implements SCM {
 				throw new RepoDrillerException(errMsg);
 			}
 
-			List<DiffFilter> diffFilters = this.collectConfig.getDiffFilters();
-
 			for (DiffEntry diff : diffsForTheCommit) {
-				if (this.diffFiltersAccept(diff, diffFilters)) {
+				if (this.diffFiltersAccept(diff)) {
 					Modification m = this.diffToModification(repo, diff);
 					commit.addModification(m);
 				}
@@ -325,7 +314,7 @@ public class GitRepository implements SCM {
 		List<Ref> gitBranches = git.branchList().setContains(hash).call();
 		Set<String> mappedBranches = gitBranches.stream()
 				.map(
-						(ref) -> ref.getName().substring(ref.getName().lastIndexOf("/") + 1))
+					  (ref) -> ref.getName().substring(ref.getName().lastIndexOf("/") + 1))
 				.collect(Collectors.toSet());
 		return mappedBranches;
 	}
@@ -368,14 +357,14 @@ public class GitRepository implements SCM {
 
 			List<DiffEntry> diffs = this.getDiffBetweenCommits(repo, priorCommit, laterCommit);
 			List<Modification> modifications = diffs.stream()
-					.map(diff -> {
-							try {
-								return this.diffToModification(repo, diff);
-							} catch (IOException e) {
-								throw new RuntimeException("error diffing " + priorCommitHash + " and " + laterCommitHash + " in " + path, e);
-							}
-					})
-					.collect(Collectors.toList());
+				.map(diff -> {
+						try {
+							return this.diffToModification(repo, diff);
+						} catch (IOException e) {
+							throw new RuntimeException("error diffing " + priorCommitHash + " and " + laterCommitHash + " in " + path, e);
+						}
+				})
+				.collect(Collectors.toList());
 			return modifications;
 		} catch (Exception e) {
 			throw new RuntimeException("error diffing " + priorCommitHash + " and " + laterCommitHash + " in " + path,
@@ -455,8 +444,7 @@ public class GitRepository implements SCM {
 			git.reset().setMode(ResetType.HARD).call();
 			git.checkout().setName(mainBranchName).call();
 			deleteMMBranch(git);
-			git.checkout().setCreateBranch(true).setName(BRANCH_MM).setStartPoint(hash).setForce(true).setOrphan(true)
-					.call();
+			git.checkout().setCreateBranch(true).setName(BRANCH_MM).setStartPoint(hash).setForce(true).setOrphan(true).call();
 
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -520,14 +508,15 @@ public class GitRepository implements SCM {
 				gitCommitToBeBlamed = git.getRepository().resolve(commitToBeBlamed);
 			}
 
-			BlameResult blameResult = git.blame().setFilePath(file).setStartCommit(gitCommitToBeBlamed)
-					.setFollowFileRenames(true).call();
+			BlameResult blameResult = git.blame().setFilePath(file).setStartCommit(gitCommitToBeBlamed).setFollowFileRenames(true).call();
 			if (blameResult != null) {
 				int rows = blameResult.getResultContents().size();
 				List<BlamedLine> result = new ArrayList<>();
 				for (int i = 0; i < rows; i++) {
-					result.add(new BlamedLine(i, blameResult.getResultContents().getString(i),
-							blameResult.getSourceAuthor(i).getName(), blameResult.getSourceCommitter(i).getName(),
+					result.add(new BlamedLine(i,
+							blameResult.getResultContents().getString(i),
+							blameResult.getSourceAuthor(i).getName(),
+							blameResult.getSourceCommitter(i).getName(),
 							blameResult.getSourceCommit(i).getId().getName()));
 				}
 
@@ -573,8 +562,9 @@ public class GitRepository implements SCM {
 	}
 
 	/**
-	 * Return the max number of files in a commit. Default is hard-coded to
-	 * "something large". Override with environment variable "git.maxfiles".
+	 * Return the max number of files in a commit.
+	 * Default is hard-coded to "something large".
+	 * Override with environment variable "git.maxfiles".
 	 *
 	 * @return Max number of files in a commit
 	 */
@@ -587,8 +577,9 @@ public class GitRepository implements SCM {
 	}
 
 	/**
-	 * Return the max size of a diff in bytes. Default is hard-coded to "something
-	 * large". Override with environment variable "git.maxdiff".
+	 * Return the max size of a diff in bytes.
+	 * Default is hard-coded to "something large".
+	 * Override with environment variable "git.maxdiff".
 	 *
 	 * @return Max diff size
 	 */
@@ -603,9 +594,8 @@ public class GitRepository implements SCM {
 	/**
 	 * Get this system property (environment variable)'s value as an integer.
 	 *
-	 * @param name
-	 *            Environment variable to retrieve
-	 * @return {@code name} successfully parsed as an int
+	 * @param name	Environment variable to retrieve
+	 * @return	{@code name} successfully parsed as an int
 	 * @throws NumberFormatException
 	 */
 	private int getSystemProperty(String name) throws NumberFormatException {
@@ -652,7 +642,8 @@ public class GitRepository implements SCM {
 	 * @param diff	DiffEntry to evaluate
 	 * @return allAccepted
 	 */
-	private boolean diffFiltersAccept(DiffEntry diff, List<DiffFilter> diffFilters) {
+	private boolean diffFiltersAccept(DiffEntry diff) {
+		List<DiffFilter> diffFilters = this.collectConfig.getDiffFilters();
 		for (DiffFilter diffFilter : diffFilters) {
 			if (!diffFilter.accept(diff.getNewPath())) {
 				return false;

@@ -65,7 +65,7 @@ public interface SCM {
 	 * Retrieve the Commit with this id.
 	 *
 	 * @param id		The commit to retrieve
-	 * @return The Commit with this id, or null.
+	 * @return  		The Commit with this id, or null.
 	 */
 	Commit getCommit(String id);
 	
