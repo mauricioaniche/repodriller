@@ -453,6 +453,15 @@ new RepositoryMining()
     .mine();
 ```
 
+You can also use `CollectConfiguration` to filter out certain `diffs` from processing. Therefore, you can avoid processing large diffs on files you don't care about, like binary files that may have been checked into the repository you're mining:
+
+```
+// The following collects diffs from Java files only
+.collect(new CollectConfiguration().diffs(new OnlyDiffsWithFileTypes(Arrays.asList("java"))));
+// The following ignores diffs from Markdown and HTML files
+.collect(new CollectConfiguration().diffs(new OnlyDiffsWithoutFileTypes(Arrays.asList("md", "html"))));
+```
+
 _To use the `isMainBranch()` method in the `Commit` class, branches should be collected, i.e., `new CollectConfiguration().branches()`_.
 
 The default configuration (used when you do not configure the `collect()` method)
