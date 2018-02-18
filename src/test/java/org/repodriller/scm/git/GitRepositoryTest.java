@@ -147,8 +147,8 @@ public class GitRepositoryTest {
 	public void shouldGetAllCommits() {
 		List<ChangeSet> cs = git1.getChangeSets();
 		
-		Assert.assertEquals(14, cs.size());
-		Assert.assertEquals("a997e9d400f742003dea601bb05a9315d14d1124", cs.get(0).getId());
+		Assert.assertEquals(13, cs.size());
+		Assert.assertEquals("e7d13b0511f8a176284ce4f92ed8c6e8d09c77f2", cs.get(0).getId());
 		Assert.assertEquals("866e997a9e44cb4ddd9e00efe49361420aff2559", cs.get(13).getId());
 	}
 	
