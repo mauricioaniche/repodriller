@@ -215,7 +215,7 @@ public class GitRepository implements SCM {
 	private List<ChangeSet> getAllCommits(Git git) throws GitAPIException, IOException {
 		List<ChangeSet> allCs = new ArrayList<>();
 
-		for (RevCommit r : git.log().all().call()) {
+		for (RevCommit r : git.log().call()) {
 			allCs.add(extractChangeSet(r));
 		}
 		return allCs;
