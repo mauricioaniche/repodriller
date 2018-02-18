@@ -55,6 +55,7 @@ import org.repodriller.domain.Commit;
 import org.repodriller.domain.Developer;
 import org.repodriller.domain.Modification;
 import org.repodriller.domain.ModificationType;
+import org.repodriller.util.PathUtils;
 import org.repodriller.util.RDFileUtils;
 
 /**
@@ -598,7 +599,7 @@ public class GitRepository implements SCM {
 	}
 
 	public void setPath(String path) {
-		this.path = path;
+		this.path = PathUtils.fullPath(path);
 	}
 
 	public void setFirstParentOnly(boolean firstParentOnly) {

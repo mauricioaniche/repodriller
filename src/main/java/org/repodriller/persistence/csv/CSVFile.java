@@ -28,6 +28,7 @@ import org.apache.logging.log4j.Logger;
 
 import org.repodriller.RepoDrillerException;
 import org.repodriller.persistence.PersistenceMechanism;
+import org.repodriller.util.PathUtils;
 
 /**
  * A CSVFile lets you write Comma-Separated Value format data to a file
@@ -169,6 +170,7 @@ public class CSVFile implements PersistenceMechanism {
 	 */
 	private void open(String fileName, boolean append) {
 		try {
+			fileName = PathUtils.fullPath(fileName);
 			ps = new PrintStream(new FileOutputStream(fileName, append));
 			isOpen = true;
 		} catch (Exception e) {
