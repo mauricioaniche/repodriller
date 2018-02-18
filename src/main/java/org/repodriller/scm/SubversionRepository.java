@@ -26,6 +26,7 @@ import org.repodriller.domain.Commit;
 import org.repodriller.domain.Developer;
 import org.repodriller.domain.Modification;
 import org.repodriller.domain.ModificationType;
+import org.repodriller.filter.diff.DiffFilter;
 import org.repodriller.util.RDFileUtils;
 import org.tmatesoft.svn.core.SVNDepth;
 import org.tmatesoft.svn.core.SVNDirEntry;
@@ -173,6 +174,7 @@ public class SubversionRepository implements SCM {
 	@Override
 	/* TODO Refactor as in GitRepository.getCommit. */
 	public Commit getCommit(String id) {
+
 		SVNRepository repository = null;
 
 		try {

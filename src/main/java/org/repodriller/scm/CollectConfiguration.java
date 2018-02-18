@@ -1,5 +1,11 @@
 package org.repodriller.scm;
 
+import java.util.Arrays;
+import java.util.List;
+
+import org.repodriller.filter.diff.DiffFilter;
+import org.repodriller.filter.diff.NoDiffFilter;
+
 /**
  * Created by mauricioaniche on 17/12/2017.
  */
@@ -8,6 +14,7 @@ public class CollectConfiguration {
     private boolean diff = false;
     private boolean branches = false;
     private boolean commitMessages = false;
+    private List<DiffFilter> diffFilters = Arrays.asList(new NoDiffFilter());
 
     /**
      * Configures repodriller to retrieve the current source code of each modified file.
@@ -25,6 +32,15 @@ public class CollectConfiguration {
     public CollectConfiguration diffs () {
         this.diff = true;
         return this;
+    }
+    
+    /**
+     * Configures repodriller to retrieve diffs from a commit based on the specified filters
+     * @return the current collect configuration
+     */
+    public CollectConfiguration diffs(DiffFilter... diffFilters) {
+    		this.diffFilters = Arrays.asList(diffFilters);
+    		return this;
     }
 
     /**
@@ -89,5 +105,8 @@ public class CollectConfiguration {
     public boolean isCollectingDiffs () {
         return diff;
     }
-
+    
+    public List<DiffFilter> getDiffFilters() {
+    		return this.diffFilters;
+    }
 }

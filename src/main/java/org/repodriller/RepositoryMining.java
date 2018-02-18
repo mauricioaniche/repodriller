@@ -372,11 +372,15 @@ public class RepositoryMining {
 					ChangeSet cs = null;
 					try {
 						cs = csQueue.remove();
-						processChangeSet(repo, cs);
-						nConsumed++;
-					} catch (NoSuchElementException e) {
+					}
+					catch (NoSuchElementException e) {
 						log.debug("No ChangeSets left to process, must be done with this repo");
 						break;
+					}
+					nConsumed++;
+
+					try {
+						processChangeSet(repo, cs);
 					} catch (OutOfMemoryError e) {
 						String msg = "ChangeSet " + cs.getId() + " in " + repo.getLastDir() + " caused OOME:" + e + "\n\nGoodbye :/";
 						System.err.println(msg);
@@ -388,7 +392,7 @@ public class RepositoryMining {
 						continue;
 					}
 				}
-				log.debug("Thread done");
+				log.debug("Thread done: consumed " + nConsumed);
 				return nConsumed;
 			}));
 		}

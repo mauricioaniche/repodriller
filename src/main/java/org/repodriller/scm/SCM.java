@@ -64,10 +64,11 @@ public interface SCM {
 	/**
 	 * Retrieve the Commit with this id.
 	 *
-	 * @param id	The commit to retrieve
-	 * @return	The Commit with this id, or null.
+	 * @param id		The commit to retrieve
+	 * @return  		The Commit with this id, or null.
 	 */
 	Commit getCommit(String id);
+	
 	/* TODO A method named getCommitXYZ should return a Commit. */
 	String getCommitFromTag(String tag);
 
