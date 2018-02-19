@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.5.0 (HEAD)
+
+- Bug fix: Our scheduler was not dividing commits
+properly when using threads, causing the study to throw an exception (@davisjam, #119).
+
+- New feature: whitelist/blacklist of which diffs to actually
+load. You can use it through `CollectConfiguration` API (@ayaankazerouni, #121)
+
+- Users can now refer to the home directory, e.g., `~/Desktop/file.csv` (@mauricioaniche, #125).
+
+- _IMPORTANT BUG FIX AND BREAKING BEHAVIOR_: RepoDriller always returned a "more complete"
+list of commits than `git log`. This can be misleading. From now on, RepoDriller returns the same
+list as `git log` would. This might affect previous studies (@mauricioaniche, #124). 
+
 ## 1.4.0
 
 - The `collect()` option so that users can configure what exactly to 
