@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.5.0 (HEAD)
+## 2.0.0 (HEAD)
 
 - Bug fix: Our scheduler was not dividing commits
 properly when using threads, causing the study to throw an exception (@davisjam, #119).
@@ -13,6 +13,10 @@ load. You can use it through `CollectConfiguration` API (@ayaankazerouni, #121)
 - _IMPORTANT BUG FIX AND BREAKING BEHAVIOR_: RepoDriller always returned a "more complete"
 list of commits than `git log`. This can be misleading. From now on, RepoDriller returns the same
 list as `git log` would. This might affect previous studies (@mauricioaniche, #124). 
+
+## 1.5.0
+
+(You should not use this version. 1.4.0 introduced a breaking change, and we wrongly generated this 1.5.0. Go to the 2.0.0 version directly)
 
 ## 1.4.0
 
