@@ -1,6 +1,11 @@
 # Changelog
 
-## 2.0.0 (HEAD)
+## 2.0.1 (HEAD)
+
+- Bug fix: when the diff filter was activated, diff was not being collected.
+See #126 (by @ayaankazerouni) 
+
+## 2.0.0
 
 - Bug fix: Our scheduler was not dividing commits
 properly when using threads, causing the study to throw an exception (@davisjam, #119).
