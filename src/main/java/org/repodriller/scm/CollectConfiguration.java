@@ -39,6 +39,7 @@ public class CollectConfiguration {
      * @return the current collect configuration
      */
     public CollectConfiguration diffs(DiffFilter... diffFilters) {
+    		this.diff = true;
     		this.diffFilters = Arrays.asList(diffFilters);
     		return this;
     }
