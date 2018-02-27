@@ -16,19 +16,9 @@
 
 package org.repodriller.scm;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.*;
-import java.util.stream.Collectors;
-
 import org.apache.commons.io.FileUtils;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ResetCommand.ResetType;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -37,12 +27,7 @@ import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffEntry.ChangeType;
 import org.eclipse.jgit.diff.DiffFormatter;
 import org.eclipse.jgit.diff.RawTextComparator;
-import org.eclipse.jgit.lib.AnyObjectId;
-import org.eclipse.jgit.lib.Constants;
-import org.eclipse.jgit.lib.ObjectId;
-import org.eclipse.jgit.lib.ObjectReader;
-import org.eclipse.jgit.lib.Ref;
-import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.lib.*;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevSort;
 import org.eclipse.jgit.revwalk.RevWalk;
@@ -50,13 +35,18 @@ import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.eclipse.jgit.treewalk.EmptyTreeIterator;
 import org.eclipse.jgit.util.io.DisabledOutputStream;
 import org.repodriller.RepoDrillerException;
-import org.repodriller.domain.ChangeSet;
-import org.repodriller.domain.Commit;
-import org.repodriller.domain.Developer;
-import org.repodriller.domain.Modification;
-import org.repodriller.domain.ModificationType;
+import org.repodriller.domain.*;
 import org.repodriller.filter.diff.DiffFilter;
+import org.repodriller.util.PathUtils;
 import org.repodriller.util.RDFileUtils;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Everything you need to work with a Git-based source code repository.
@@ -215,7 +205,7 @@ public class GitRepository implements SCM {
 	private List<ChangeSet> getAllCommits(Git git) throws GitAPIException, IOException {
 		List<ChangeSet> allCs = new ArrayList<>();
 
-		for (RevCommit r : git.log().all().call()) {
+		for (RevCommit r : git.log().call()) {
 			allCs.add(extractChangeSet(r));
 		}
 		return allCs;
@@ -604,7 +594,7 @@ public class GitRepository implements SCM {
 	}
 
 	public void setPath(String path) {
-		this.path = path;
+		this.path = PathUtils.fullPath(path);
 	}
 
 	public void setFirstParentOnly(boolean firstParentOnly) {
