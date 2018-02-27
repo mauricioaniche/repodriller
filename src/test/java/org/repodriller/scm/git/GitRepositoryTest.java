@@ -216,16 +216,23 @@ public class GitRepositoryTest {
 		git9.setDataToCollect(new CollectConfiguration().diffs(notJava));
 		Commit doNotGetJava = git9.getCommit("90ca37d86bd60af1a936d2f9a7bbe899ff4b1286");
 		Assert.assertEquals(1, doNotGetJava.getModifications().size());
+		Assert.assertTrue(doNotGetJava.getModifications().get(0).getDiff().length() > 0);
 		Assert.assertEquals("Matricula.javax", doNotGetJava.getModifications().get(0).getNewPath());
 		
 		git9.setDataToCollect(new CollectConfiguration().diffs(onlyJavaxAndMd));
 		Commit getJavaxAndMd = git9.getCommit("0706a1a6504331e1b7910da27ac7fab7c6a74df6");
 		Assert.assertEquals(2, getJavaxAndMd.getModifications().size());
-		Assert.assertEquals("Secao.javax", getJavaxAndMd.getModifications().get(0).getNewPath());
-		Assert.assertEquals("Test.md", getJavaxAndMd.getModifications().get(1).getNewPath());	
+		
+		Modification first = getJavaxAndMd.getModifications().get(0);
+		Assert.assertTrue(first.getDiff().length() > 0);
+		Assert.assertEquals("Secao.javax", first.getNewPath());
+		Modification second = getJavaxAndMd.getModifications().get(1);
+		Assert.assertTrue(second.getDiff().length() > 0);
+		Assert.assertEquals("Test.md", second.getNewPath());	
 		
 		git9.setDataToCollect(new CollectConfiguration().diffs(onlyJava));
 		Commit getOnlyJava = git9.getCommit("0706a1a6504331e1b7910da27ac7fab7c6a74df6");
+		Assert.assertTrue(getOnlyJava.getModifications().get(0).getDiff().length() > 0);
 		Assert.assertEquals(1, getOnlyJava.getModifications().size());
 		Assert.assertEquals("pasta/Capitulo.java", getOnlyJava.getModifications().get(0).getNewPath());
 	}
