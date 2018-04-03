@@ -156,7 +156,7 @@ public class GitRepository implements SCM {
 
 			revWalk = new RevWalk(git.getRepository());
 			RevCommit r = revWalk.parseCommit(head);
-			return new ChangeSet(r.getName(), convertToDate(r));
+			return extractChangeSet(r);
 
 		} catch (Exception e) {
 			throw new RuntimeException("error in getHead() for " + path, e);
