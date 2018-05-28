@@ -4,6 +4,10 @@ before_install:
  - unzip \*.zip
  - git clone https://github.com/rails/rails.git
  - cd ..
+script: "mvn cobertura:cobertura"
 jdk:
   - oraclejdk8
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
 
