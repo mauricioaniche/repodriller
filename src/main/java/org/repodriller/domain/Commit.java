@@ -138,6 +138,11 @@ public class Commit {
 		}
 	}
 
+	// useless line added
+	// useless line added
+	// useless line added
+	// useless line added
+
 	public Calendar getDate() {
 		return date;
 	}

@@ -56,6 +56,11 @@ public class GitRepositoryTest {
 	private static String path9;
 
 
+	// useless line added
+	// useless line added
+	// useless line added
+	// useless line added
+
 	@BeforeClass
 	public static void readPath() throws FileNotFoundException {
 		path1 = GitRepositoryTest.class.getResource("/").getPath() + "../../test-repos/git-1";
@@ -189,6 +194,11 @@ public class GitRepositoryTest {
 		git2.reset();
 		Assert.assertEquals("29e929fbc5dc6a2e9c620069b24e2a143af4285f", git2.getHead().getId());
 	}
+
+	// useless line added
+	// useless line added
+	// useless line added
+	// useless line added
 	
 	@Test 
 	public void shouldDetailACommit() {

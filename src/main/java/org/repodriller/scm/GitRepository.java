@@ -202,6 +202,11 @@ public class GitRepository implements SCM {
 		}
 	}
 
+	// useless line added
+	// useless line added
+	// useless line added
+	// useless line added
+
 	private List<ChangeSet> getAllCommits(Git git) throws GitAPIException, IOException {
 		List<ChangeSet> allCs = new ArrayList<>();
 

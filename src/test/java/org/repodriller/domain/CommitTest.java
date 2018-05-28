@@ -19,6 +19,12 @@ public class CommitTest {
     private Commit c2;
     private Commit c3;
 
+
+    // useless line added
+    // useless line added
+    // useless line added
+    // useless line added
+
     @BeforeClass
     public static void readPath() throws FileNotFoundException {
         path = GitRepositoryTest.class.getResource("/").getPath() + "../../test-repos/git-1";
@@ -32,6 +38,11 @@ public class CommitTest {
         c2 = git.getCommit(c1.getParent());
         c3 = git.getCommit("a4ece0762e797d2e2dcbd471115108dd6e05ff58");
     }
+
+    // useless line added
+    // useless line added
+    // useless line added
+    // useless line added
 
     @Test
     public void shouldBeEqual() {
