@@ -1,3 +1,5 @@
+_(Before looking into RepoDriller, I suggest you to check [Pydriller](https://github.com/ishepard/pydriller), a Python version of RepoDriller, which is now faster and easier to use! I am keeping this repo here for historical purposes, but I don't plan to update it anymore!)
+
 # RepoDriller
 
 [![Build Status](https://travis-ci.org/mauricioaniche/repodriller.svg?branch=master)](https://travis-ci.org/mauricioaniche/repodriller)
