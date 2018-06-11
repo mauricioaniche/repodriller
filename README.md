@@ -1,4 +1,4 @@
-_(Before looking into RepoDriller, I suggest you to check [Pydriller](https://github.com/ishepard/pydriller), a Python version of RepoDriller, which is now faster and easier to use! I am keeping this repo here for historical purposes, but I don't plan to update it anymore!)
+_(Before looking into RepoDriller, I suggest you to check [Pydriller](https://github.com/ishepard/pydriller), a Python version of RepoDriller, which is now faster and easier to use! I am keeping this repo here for historical purposes, but I don't plan to update it anymore!)_
 
 # RepoDriller
 
