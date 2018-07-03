@@ -88,4 +88,8 @@ public class Commits {
 	public static CommitRange betweenTags(String from, String to){
 		return new BetweenTags(from, to);
 	}
+
+	public static CommitRange numOfCommits(int numOfCommits){
+		return new NumOfCommits(numOfCommits);
+	}
 }
