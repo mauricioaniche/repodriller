@@ -14,6 +14,8 @@ public class NumOfCommits implements CommitRange {
     @Override
     public List<ChangeSet> get(SCM scm) {
         List<ChangeSet> all = scm.getChangeSets();
+        if (all.size() < this.numberOfCommits)
+            return all;
         return all.subList(0, this.numberOfCommits);
     }
 }
