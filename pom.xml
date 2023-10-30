@@ -182,6 +182,29 @@
 				</configuration>
 			</plugin>
 
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.3.1</version>
+				<configuration>
+						<show>private</show> <!-- Adicionando plugin  -->
+				</configuration>
+		</plugin>
+			
+			<!-- Adcione nos plugins do pom.xml do projeto -->
+<plugin>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-pmd-plugin</artifactId>
+	<version>3.7</version>
+	<configuration>
+		<rulesets>
+			<ruleset>/rulesets/java/basic.xml</ruleset>
+			<ruleset>/home/maykon/Área de Trabalho/springboot-blog-rest-api/ruleset.xml</ruleset>
+		</rulesets>
+	</configuration>
+</plugin>
+
+
 		</plugins>
 	</build>
 
