@@ -34,7 +34,7 @@ public class BetweenDates implements CommitRange {
 	}
 
 	private boolean isInTheRange(ChangeSet cs) {
-		return from.before(cs.getTime()) && to.after(cs.getTime());
+		return from.before(cs.getDate()) && to.after(cs.getDate());
 	}
 
 

@@ -22,12 +22,12 @@ public class LastMonths implements CommitRange {
 		LinkedList<ChangeSet> filtered = new LinkedList<ChangeSet>();
 		List<ChangeSet> all = scm.getChangeSets();
 		
-		sixMonthsAgo = all.get(0).getTime();
+		sixMonthsAgo = all.get(0).getDate();
 		sixMonthsAgo.add(Calendar.MONTH, -months);
 		filtered.add(all.get(0));
 		
 		for(ChangeSet cs : all) {
-			if(cs.getTime().after(sixMonthsAgo)) {
+			if(cs.getDate().after(sixMonthsAgo)) {
 				filtered.addLast(cs);
 			}
 		}

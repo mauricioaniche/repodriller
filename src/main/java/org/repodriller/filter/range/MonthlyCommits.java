@@ -40,8 +40,8 @@ public class MonthlyCommits implements CommitRange {
 	private boolean isFarFromTheLastOne(ChangeSet cs, LinkedList<ChangeSet> filtered) {
 		ChangeSet lastOne = filtered.getLast();
 
-		long lastInMillis = lastOne.getTime().getTimeInMillis();
-		long currentInMillis = cs.getTime().getTimeInMillis();
+		long lastInMillis = lastOne.getDate().getTimeInMillis();
+		long currentInMillis = cs.getDate().getTimeInMillis();
 
 		return (lastInMillis - currentInMillis >= monthsInMillis);
 	}

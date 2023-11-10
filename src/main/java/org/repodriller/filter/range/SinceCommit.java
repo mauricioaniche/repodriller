@@ -32,7 +32,7 @@ public class SinceCommit implements CommitRange {
 	}
 
 	private boolean isInTheRange(ChangeSet cs) {
-		return since.before(cs.getTime());
+		return since.before(cs.getDate());
 	}
 
 
