@@ -36,6 +36,8 @@ import org.repodriller.util.RDFileUtils;
  */
 public class RepoVisitor {
 
+	//todo: Data
+
 	class CVPM {
 		public CommitVisitor cv;
 		public PersistenceMechanism pm;
@@ -67,6 +69,38 @@ public class RepoVisitor {
 		currentRepo = null;
 	}
 
+
+	/**
+	 * Put this clone into the pool
+	 *
+	 * @param clone	Clone to put
+	 */
+	private void putSCMRepositoryClone(SCMRepositoryClone clone) {
+		while (true) {
+			try {
+				clonePool.put(clone);
+				break;
+			} catch (InterruptedException e) {
+				;
+			}
+		}
+	}
+
+	/**
+	 * Get a clone from the pool
+	 * @return A clone
+	 */
+	private SCMRepositoryClone getSCMRepositoryClone() {
+		while (true) {
+			try {
+				return clonePool.take();
+			} catch (InterruptedException e) {
+				;
+			}
+		}
+	}
+
+	//todo: Visitors
 	/***
 	 * Methods for managing CommitVisitors.
 	 ***/
@@ -233,33 +267,4 @@ public class RepoVisitor {
 		}
 	}
 
-	/**
-	 * Put this clone into the pool
-	 *
-	 * @param clone	Clone to put
-	 */
-	private void putSCMRepositoryClone(SCMRepositoryClone clone) {
-		while (true) {
-			try {
-				clonePool.put(clone);
-				break;
-			} catch (InterruptedException e) {
-				;
-			}
-		}
-	}
-
-	/**
-	 * Get a clone from the pool
-	 * @return A clone
-	 */
-	private SCMRepositoryClone getSCMRepositoryClone() {
-		while (true) {
-			try {
-				return clonePool.take();
-			} catch (InterruptedException e) {
-				;
-			}
-		}
-	}
 }

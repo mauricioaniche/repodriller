@@ -16,7 +16,6 @@
 
 package org.repodriller.domain;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import lombok.Data;
