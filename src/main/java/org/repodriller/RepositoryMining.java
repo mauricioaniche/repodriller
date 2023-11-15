@@ -99,7 +99,7 @@ public class RepositoryMining {
 	 * No repos, no visitors, no filters.
 	 * You must initialize with {@link RepositoryMining#in} and {@link RepositoryMining#process} before you call {@link RepositoryMining#mine}.
 	 */
-	// Imports omitidos para brevidade
+
 
 public class RepositoryMining {
 
@@ -162,7 +162,7 @@ public class RepositoryMining {
 	}
 
 	public RepositoryMining setRepoTmpDir(Path repoTmpDir) {
-			// Implementação omitida para brevidade
+		
 			return this;
 	}
 
@@ -242,7 +242,7 @@ public class RepositoryMining {
 			Queue<ChangeSet> csQueue = new ConcurrentLinkedQueue<>(rawCs);
 			List<Future<Integer>> threadDone = new ArrayList<>();
 			
-			// Restante da implementação omitido para brevidade
+			
 	}
 
 	private void finalizeMining() {
