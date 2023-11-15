@@ -309,7 +309,6 @@ public class RepositoryMining {
 
 	/**
 	 * Add a CommitVisitor and its PersistenceMechanism to process commits.
-	 *
 	 * @param visitor	The visitor
 	 * @param writer	The writer passed to {@code visitor}'s {@link CommitVisitor#process} method. Will be closed automatically by {@link RepositoryMining#mine}.
 	 * @return this
