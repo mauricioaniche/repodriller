@@ -262,95 +262,67 @@ public class DiffParser {
 		Assert.assertTrue(newLines.contains(new DiffLine(17, "", DiffLineType.KEPT)));
 	}
 	
-	@Test
-	public void realExampleLargeFileWithMultipleDiffBlocks() {
-		String diff = 
-				"diff --git a/GitRepository.java b/GitRepository.java\r\n"+
-				"index f38a97d..2b96b0e 100644\r\n"+
-				"--- a/GitRepository.java\r\n"+
-				"+++ b/GitRepository.java\r\n"+
-				"@@ -72,7 +72,7 @@ public class GitRepository implements SCM {\r\n"+
-				" \r\n"+
-				"        private static Logger log = Logger.getLogger(GitRepository.class);\r\n"+
-				" \r\n"+
-				"-       public GitRepository(String path) {\r\n"+
-				"+       public GitRepository2(String path) {\r\n"+
-				"                this.path = path;\r\n"+
-				"                this.maxNumberFilesInACommit = checkMaxNumberOfFiles();\r\n"+
-				"                this.maxSizeOfDiff = checkMaxSizeOfDiff();\r\n"+
-				"@@ -155,7 +155,7 @@ public class GitRepository implements SCM {\r\n"+
-				"                return git.getRepository().getBranch();\r\n"+
-				"        }\r\n"+
-				" \r\n"+
-				"-       public ChangeSet getHead() {\r\n"+
-				"+       public ChangeSet getHead2() {\r\n"+
-				"                Git git = null;\r\n"+
-				"                try {\r\n"+
-				"                        git = openRepository();\r\n"+
-				"@@ -320,6 +320,7 @@ public class GitRepository implements SCM {\r\n"+
-				" \r\n"+
-				"                return diffs;\r\n"+
-				"        }\r\n"+
-				"+       newline\r\n"+
-				" \r\n"+
-				"        private void setContext(DiffFormatter df) {\r\n"+
-				"                String context = System.getProperty(\"git.diffcontext\");";
+	String diff = getSampleDiff();
 
-		DiffParser parsedDiff = new DiffParser(diff);
-		
-		List<DiffLine> oldLinesBlock1 = parsedDiff.getBlocks().get(0).getLinesInOldFile();
-		Assert.assertTrue(oldLinesBlock1.contains(new DiffLine(72, "", DiffLineType.KEPT)));
-		Assert.assertTrue(oldLinesBlock1.contains(new DiffLine(73, "       private static Logger log = Logger.getLogger(GitRepository.class);", DiffLineType.KEPT)));
-		Assert.assertTrue(oldLinesBlock1.contains(new DiffLine(74, "", DiffLineType.KEPT)));
-		Assert.assertTrue(oldLinesBlock1.contains(new DiffLine(75, "       public GitRepository(String path) {", DiffLineType.REMOVED)));
-		Assert.assertTrue(oldLinesBlock1.contains(new DiffLine(76, "               this.path = path;", DiffLineType.KEPT)));
-		Assert.assertTrue(oldLinesBlock1.contains(new DiffLine(77, "               this.maxNumberFilesInACommit = checkMaxNumberOfFiles();", DiffLineType.KEPT)));
-		Assert.assertTrue(oldLinesBlock1.contains(new DiffLine(78, "               this.maxSizeOfDiff = checkMaxSizeOfDiff();", DiffLineType.KEPT)));
+        DiffParser parsedDiff = new DiffParser(diff);
 
-		List<DiffLine> newLinesBlock1 = parsedDiff.getBlocks().get(0).getLinesInNewFile();
-		Assert.assertTrue(newLinesBlock1.contains(new DiffLine(72, "", DiffLineType.KEPT)));
-		Assert.assertTrue(newLinesBlock1.contains(new DiffLine(73, "       private static Logger log = Logger.getLogger(GitRepository.class);", DiffLineType.KEPT)));
-		Assert.assertTrue(newLinesBlock1.contains(new DiffLine(74, "", DiffLineType.KEPT)));
-		Assert.assertTrue(newLinesBlock1.contains(new DiffLine(75, "       public GitRepository2(String path) {", DiffLineType.ADDED)));
-		Assert.assertTrue(newLinesBlock1.contains(new DiffLine(76, "               this.path = path;", DiffLineType.KEPT)));
-		Assert.assertTrue(newLinesBlock1.contains(new DiffLine(77, "               this.maxNumberFilesInACommit = checkMaxNumberOfFiles();", DiffLineType.KEPT)));
-		Assert.assertTrue(newLinesBlock1.contains(new DiffLine(78, "               this.maxSizeOfDiff = checkMaxSizeOfDiff();", DiffLineType.KEPT)));
+        assertDiffBlock(parsedDiff, 0, 72, 78, "GitRepository.java", "GitRepository2.java");
+        assertDiffBlock(parsedDiff, 1, 155, 161, "getHead()", "getHead2()");
+        assertDiffBlock(parsedDiff, 2, 320, 325, "", "newline");
+    }
 
-		List<DiffLine> oldLinesBlock2 = parsedDiff.getBlocks().get(1).getLinesInOldFile();
-		Assert.assertTrue(oldLinesBlock2.contains(new DiffLine(155, "               return git.getRepository().getBranch();", DiffLineType.KEPT)));
-		Assert.assertTrue(oldLinesBlock2.contains(new DiffLine(156, "       }", DiffLineType.KEPT)));
-		Assert.assertTrue(oldLinesBlock2.contains(new DiffLine(157, "", DiffLineType.KEPT)));
-		Assert.assertTrue(oldLinesBlock2.contains(new DiffLine(158, "       public ChangeSet getHead() {", DiffLineType.REMOVED)));
-		Assert.assertTrue(oldLinesBlock2.contains(new DiffLine(159, "               Git git = null;", DiffLineType.KEPT)));
-		Assert.assertTrue(oldLinesBlock2.contains(new DiffLine(160, "               try {", DiffLineType.KEPT)));
-		Assert.assertTrue(oldLinesBlock2.contains(new DiffLine(161, "                       git = openRepository();", DiffLineType.KEPT)));
+    private String getSampleDiff() {
+        return "diff --git a/GitRepository.java b/GitRepository.java\r\n" +
+                "index f38a97d..2b96b0e 100644\r\n" +
+                "--- a/GitRepository.java\r\n" +
+                "+++ b/GitRepository.java\r\n" +
+                "@@ -72,7 +72,7 @@ public class GitRepository implements SCM {\r\n" +
+                " \r\n" +
+                "        private static Logger log = Logger.getLogger(GitRepository.class);\r\n" +
+                " \r\n" +
+                "-       public GitRepository(String path) {\r\n" +
+                "+       public GitRepository2(String path) {\r\n" +
+                "                this.path = path;\r\n" +
+                "                this.maxNumberFilesInACommit = checkMaxNumberOfFiles();\r\n" +
+                "                this.maxSizeOfDiff = checkMaxSizeOfDiff();\r\n" +
+                "@@ -155,7 +155,7 @@ public class GitRepository implements SCM {\r\n" +
+                "                return git.getRepository().getBranch();\r\n" +
+                "        }\r\n" +
+                " \r\n" +
+                "-       public ChangeSet getHead() {\r\n" +
+                "+       public ChangeSet getHead2() {\r\n" +
+                "                Git git = null;\r\n" +
+                "                try {\r\n" +
+                "                        git = openRepository();\r\n" +
+                "@@ -320,6 +320,7 @@ public class GitRepository implements SCM {\r\n" +
+                " \r\n" +
+                "                return diffs;\r\n" +
+                "        }\r\n" +
+                "+       newline\r\n" +
+                " \r\n" +
+                "        private void setContext(DiffFormatter df) {\r\n" +
+                "                String context = System.getProperty(\"git.diffcontext\");";
+    }
 
-		List<DiffLine> newLinesBlock2 = parsedDiff.getBlocks().get(1).getLinesInNewFile();
-		Assert.assertTrue(newLinesBlock2.contains(new DiffLine(155, "               return git.getRepository().getBranch();", DiffLineType.KEPT)));
-		Assert.assertTrue(newLinesBlock2.contains(new DiffLine(156, "       }", DiffLineType.KEPT)));
-		Assert.assertTrue(newLinesBlock2.contains(new DiffLine(157, "", DiffLineType.KEPT)));
-		Assert.assertTrue(newLinesBlock2.contains(new DiffLine(158, "       public ChangeSet getHead2() {", DiffLineType.ADDED)));
-		Assert.assertTrue(newLinesBlock2.contains(new DiffLine(159, "               Git git = null;", DiffLineType.KEPT)));
-		Assert.assertTrue(newLinesBlock2.contains(new DiffLine(160, "               try {", DiffLineType.KEPT)));
-		Assert.assertTrue(newLinesBlock2.contains(new DiffLine(161, "                       git = openRepository();", DiffLineType.KEPT)));
-		
-		List<DiffLine> oldLinesBlock3 = parsedDiff.getBlocks().get(2).getLinesInOldFile();
-		Assert.assertTrue(oldLinesBlock3.contains(new DiffLine(320, "", DiffLineType.KEPT)));
-		Assert.assertTrue(oldLinesBlock3.contains(new DiffLine(321, "               return diffs;", DiffLineType.KEPT)));
-		Assert.assertTrue(oldLinesBlock3.contains(new DiffLine(322, "       }", DiffLineType.KEPT)));
-		Assert.assertTrue(oldLinesBlock3.contains(new DiffLine(323, "", DiffLineType.KEPT)));
-		Assert.assertTrue(oldLinesBlock3.contains(new DiffLine(324, "       private void setContext(DiffFormatter df) {", DiffLineType.KEPT)));
-		Assert.assertTrue(oldLinesBlock3.contains(new DiffLine(325, "               String context = System.getProperty(\"git.diffcontext\");", DiffLineType.KEPT)));
+    private void assertDiffBlock(DiffParser parsedDiff, int blockIndex, int startLine, int endLine, String oldMethodName, String newMethodName) {
+        List<DiffLine> oldLinesBlock = parsedDiff.getBlocks().get(blockIndex).getLinesInOldFile();
+        List<DiffLine> newLinesBlock = parsedDiff.getBlocks().get(blockIndex).getLinesInNewFile();
 
-		
-		List<DiffLine> newLinesBlock3 = parsedDiff.getBlocks().get(2).getLinesInNewFile();
-		Assert.assertTrue(newLinesBlock3.contains(new DiffLine(320, "", DiffLineType.KEPT)));
-		Assert.assertTrue(newLinesBlock3.contains(new DiffLine(321, "               return diffs;", DiffLineType.KEPT)));
-		Assert.assertTrue(newLinesBlock3.contains(new DiffLine(322, "       }", DiffLineType.KEPT)));
-		Assert.assertTrue(newLinesBlock3.contains(new DiffLine(323, "       newline", DiffLineType.ADDED)));
-		Assert.assertTrue(newLinesBlock3.contains(new DiffLine(324, "", DiffLineType.KEPT)));
-		Assert.assertTrue(newLinesBlock3.contains(new DiffLine(325, "       private void setContext(DiffFormatter df) {", DiffLineType.KEPT)));
-		Assert.assertTrue(newLinesBlock3.contains(new DiffLine(326, "               String context = System.getProperty(\"git.diffcontext\");", DiffLineType.KEPT)));
-		
-	}
+        for (int i = startLine; i <= endLine; i++) {
+            assertOldAndNewLines(oldLinesBlock, newLinesBlock, i, oldMethodName, newMethodName);
+        }
+    }
+
+    private void assertOldAndNewLines(List<DiffLine> oldLines, List<DiffLine> newLines, int lineNumber, String oldMethodName, String newMethodName) {
+        Assert.assertTrue(oldLines.contains(new DiffLine(lineNumber, getOldLineContent(lineNumber, oldMethodName), DiffLineType.KEPT)));
+        Assert.assertTrue(newLines.contains(new DiffLine(lineNumber, getNewLineContent(lineNumber, newMethodName), DiffLineType.ADDED)));
+    }
+
+    private String getOldLineContent(int lineNumber, String methodName) {
+        return lineNumber == 75 ? methodName + "(String path) {" : "";
+    }
+
+    private String getNewLineContent(int lineNumber, String methodName) {
+        return lineNumber == 75 ? methodName + "(String path) {" : "";
+    }
 }
