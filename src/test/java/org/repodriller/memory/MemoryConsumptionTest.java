@@ -73,7 +73,7 @@ public class MemoryConsumptionTest {
         System.out.println("All: " + memoryVisitor.all.stream().map(Object::toString).collect(Collectors.joining(", ")));
     }
 
-    private void postGithub(MemoryVisitor collectEverythingVisitor, double commitsPerSecInEverything, MemoryVisitor collectNothingVisitor, double commitsPerSecInNothing) {
+    private void postGithub(MemoryVisitor collectEverythingVisitor, double commitsPerSecInEverything) {
         try {
             HttpClient httpclient = HttpClients.createDefault();
             String githubUrl = "https://api.github.com/repos/" + System.getenv("TRAVIS_REPO_SLUG") + "/issues/" + System.getenv("TRAVIS_PULL_REQUEST") + "/comments";
@@ -97,10 +97,10 @@ public class MemoryConsumptionTest {
                     (collectEverythingVisitor.maxMemory/1024.0/1024.0),
                     ((collectEverythingVisitor.all.stream().collect(Collectors.averagingLong(x -> x)))/1024.0/1024.0),
                     commitsPerSecInEverything,
-                    (collectNothingVisitor.minMemory/1024.0/1024.0),
-                    (collectNothingVisitor.maxMemory/1024.0/1024.0),
-                    ((collectNothingVisitor.all.stream().collect(Collectors.averagingLong(x -> x)))/1024.0/1024.0),
-                    commitsPerSecInNothing
+                    (collectEverythingVisitor.minMemory/1024.0/1024.0),
+                    (collectEverythingVisitor.maxMemory/1024.0/1024.0),
+                    ((collectEverythingVisitor.all.stream().collect(Collectors.averagingLong(x -> x)))/1024.0/1024.0),
+                    commitsPerSecInEverything
                     );
 
             log.info("body " + body);
