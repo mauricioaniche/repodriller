@@ -20,11 +20,11 @@ public class SinceCommit implements CommitRange {
 		
 		List<ChangeSet> all = scm.getChangeSets();
 		
-		LinkedList<ChangeSet> filtered = new LinkedList<ChangeSet>();
+		List<ChangeSet> filtered = new LinkedList<ChangeSet>();
 		
 		for(ChangeSet cs : all) {
 			if(isInTheRange(cs)) {
-				filtered.addLast(cs);
+				filtered.add(cs);
 			}
 		}
 		

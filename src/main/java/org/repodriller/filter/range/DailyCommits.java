@@ -3,8 +3,6 @@ package org.repodriller.filter.range;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import org.repodriller.domain.ChangeSet;
 import org.repodriller.scm.SCM;
@@ -13,7 +11,6 @@ public class DailyCommits implements CommitRange {
 
 	private final long daysInMillis;
 
-	private static final Logger log = LogManager.getLogger(DailyCommits.class);
 
 	public DailyCommits(int days) {
 		daysInMillis = 1000L * 60L * 60L * 24L * days;
@@ -42,7 +39,7 @@ public class DailyCommits implements CommitRange {
 		long lastInMillis = lastOne.getDate().getTimeInMillis();
 		long currentInMillis = cs.getDate().getTimeInMillis();
 
-		return (lastInMillis - currentInMillis >= daysInMillis);
+		return lastInMillis - currentInMillis >= daysInMillis;
 	}
 
 }
