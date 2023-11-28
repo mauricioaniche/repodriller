@@ -5,7 +5,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class DiffParserTest {
+public class DiffParserTest{
 
 	@Test
 	public void extractLineNumbersAndContentInOldAndNewFile() {
