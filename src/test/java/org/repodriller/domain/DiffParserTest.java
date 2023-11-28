@@ -5,57 +5,81 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class DiffParserTest {
+public class DiffParserTest{
 
-	@Test
-	public void extractLineNumbersAndContentInOldAndNewFile() {
-		
-		String diff =
-			"diff --git a/A b/A\r\n"+
-			"index ca17226..ae43afd 100644\r\n"+
-			"--- a/A\r\n"+
-			"+++ b/A\r\n"+
-			"@@ -1,8 +1,8 @@\r\n"+
-			"-a\r\n"+
-			"-b\r\n"+
-			"-c\r\n"+
-			"-log.info(\"a\")\r\n"+
-			"-d\r\n"+
-			"-e\r\n"+
-			"-f\r\n"+
-			"+aa\r\n"+
-			"+bb\r\n"+
-			"+cc\r\n"+
-			"+log.info(\"aa\")\r\n"+
-			"+dd\r\n"+
-			"+ee\r\n"+
-			"+ff\r\n"+
-			" ";
-		
-		DiffParser parsedDiff = new DiffParser(diff);
-		
-		List<DiffLine> oldLines = parsedDiff.getBlocks().get(0).getLinesInOldFile();
+        DiffParser parsedDiff = new DiffParser(diff);
 
-		Assert.assertTrue(oldLines.contains(new DiffLine(1, "a", DiffLineType.REMOVED)));
-		Assert.assertTrue(oldLines.contains(new DiffLine(2, "b", DiffLineType.REMOVED)));
-		Assert.assertTrue(oldLines.contains(new DiffLine(3, "c", DiffLineType.REMOVED)));
-		Assert.assertTrue(oldLines.contains(new DiffLine(4, "log.info(\"a\")", DiffLineType.REMOVED)));
-		Assert.assertTrue(oldLines.contains(new DiffLine(5, "d", DiffLineType.REMOVED)));
-		Assert.assertTrue(oldLines.contains(new DiffLine(6, "e", DiffLineType.REMOVED)));
-		Assert.assertTrue(oldLines.contains(new DiffLine(7, "f", DiffLineType.REMOVED)));
-		Assert.assertTrue(oldLines.contains(new DiffLine(8, "", DiffLineType.KEPT)));
+        void assertOldLines(parsedDiff);
+        assertNewLines(parsedDiff);
+    }
 
-		List<DiffLine> newLines = parsedDiff.getBlocks().get(0).getLinesInNewFile();
-		
-		Assert.assertTrue(newLines.contains(new DiffLine(1, "aa", DiffLineType.ADDED)));
-		Assert.assertTrue(newLines.contains(new DiffLine(2, "bb", DiffLineType.ADDED)));
-		Assert.assertTrue(newLines.contains(new DiffLine(3, "cc", DiffLineType.ADDED)));
-		Assert.assertTrue(newLines.contains(new DiffLine(4, "log.info(\"aa\")", DiffLineType.ADDED)));
-		Assert.assertTrue(newLines.contains(new DiffLine(5, "dd", DiffLineType.ADDED)));
-		Assert.assertTrue(newLines.contains(new DiffLine(6, "ee", DiffLineType.ADDED)));
-		Assert.assertTrue(newLines.contains(new DiffLine(7, "ff", DiffLineType.ADDED)));
-		Assert.assertTrue(newLines.contains(new DiffLine(8, "", DiffLineType.KEPT)));
-	}
+    private String getSampleDiff() {
+        return "diff --git a/A b/A\r\n" +
+                "index 708caeb..bdc3fea 100644\r\n" +
+                "--- a/A\r\n" +
+                "+++ b/A\r\n" +
+                "@@ -1,4 +1,17 @@\r\n" +
+                " a\r\n" +
+                " b\r\n" +
+                "-c\r\n" +
+                "+\td\r\n" +
+                "+cc\r\n" +
+                "+\r\n" +
+                "+\r\n" +
+                "+\r\n" +
+                "+\r\n" +
+                "+\r\n" +
+                "+\r\n" +
+                "+\r\n" +
+                "+\r\n" +
+                "+\r\n" +
+                "+\r\n" +
+                "+\tg\r\n" +
+                "+\r\n" +
+                "+j\r\n" +
+                " ";
+    }
+
+    private void assertOldLines(DiffParser parsedDiff) {
+        List<DiffLine> oldLines = parsedDiff.getBlocks().get(0).getLinesInOldFile();
+
+        assertOldLine(oldLines, 1, "a");
+        assertOldLine(oldLines, 2, "b");
+        assertOldLine(oldLines, 3, "c");
+        assertOldLine(oldLines, 4, "");
+    }
+
+    private void assertNewLines(DiffParser parsedDiff) {
+        List<DiffLine> newLines = parsedDiff.getBlocks().get(0).getLinesInNewFile();
+
+        assertNewLine(newLines, 1, "a");
+        assertNewLine(newLines, 2, "b");
+        assertNewLine(newLines, 3, "\td");
+        assertNewLine(newLines, 4, "cc");
+        assertNewLine(newLines, 5, "");
+        assertNewLine(newLines, 6, "");
+        assertNewLine(newLines, 7, "");
+        assertNewLine(newLines, 8, "");
+        assertNewLine(newLines, 9, "");
+        assertNewLine(newLines, 10, "");
+        assertNewLine(newLines, 11, "");
+        assertNewLine(newLines, 12, "");
+        assertNewLine(newLines, 13, "");
+        assertNewLine(newLines, 14, "\tg");
+        assertNewLine(newLines, 15, "");
+        assertNewLine(newLines, 16, "j");
+        assertNewLine(newLines, 17, "");
+    }
+
+    private void assertOldLine(List<DiffLine> lines, int lineNumber, String content) {
+        Assert.assertTrue(lines.contains(new DiffLine(lineNumber, content, DiffLineType.KEPT)));
+    }
+
+    private void assertNewLine(List<DiffLine> lines, int lineNumber, String content) {
+        Assert.assertTrue(lines.contains(new DiffLine(lineNumber, content, DiffLineType.ADDED)));
+    }
+
+
 
 	@Test
 	public void onlyAdditions() {
