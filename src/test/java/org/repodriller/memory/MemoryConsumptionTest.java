@@ -36,50 +36,41 @@ public class MemoryConsumptionTest {
 
     @Test
     public void measureMemoryConsumption() {
-
-        if(!runningInTravis())
+        if (!runningInTravis()) {
             return;
+        }
 
-        // collecting everything
-        MemoryVisitor collectEverythingVisitor = new MemoryVisitor();
-        long start1 = System.currentTimeMillis();
-        new RepositoryMining()
+        String[] commitRange = {"977b4be208c2c54eeaaf7b46953174ef402f49d4", "ede505592cfab0212e53ca8ad1c38026a7b5d042"};
+        measureMemoryForCollection("When collecting everything:", commitRange, true);
+        measureMemoryForCollection("When collecting nothing:", commitRange, false);
+    }
+
+    private void measureMemoryForCollection(String message, String[] commitRange, boolean collectEverything) {
+        MemoryVisitor memoryVisitor = new MemoryVisitor();
+        RepositoryMining mining = new RepositoryMining()
                 .in(GitRepository.singleProject(railsPath))
-                .through(Commits.range("977b4be208c2c54eeaaf7b46953174ef402f49d4",
-                        "ede505592cfab0212e53ca8ad1c38026a7b5d042")) /* 1000 commits */
-                .process(collectEverythingVisitor)
-                .mine();
-        long end1 = System.currentTimeMillis();
+                .through(Commits.range(commitRange[0], commitRange[1]));
 
-        System.gc();
+        if (collectEverything) {
+            mining.process(memoryVisitor);
+        } else {
+            mining.collect(new CollectConfiguration().basicOnly()).process(memoryVisitor);
+        }
 
-        // collecting nothing
-        MemoryVisitor collectNothingVisitor = new MemoryVisitor();
-        long start2 = System.currentTimeMillis();
-        new RepositoryMining()
-                .in(GitRepository.singleProject(railsPath))
-                .through(Commits.range("977b4be208c2c54eeaaf7b46953174ef402f49d4",
-                        "ede505592cfab0212e53ca8ad1c38026a7b5d042")) /* 1000 commits */
-                .collect(new CollectConfiguration().basicOnly())
-                .process(collectNothingVisitor)
-                .mine();
-        long end2 = System.currentTimeMillis();
+        long startTime = System.currentTimeMillis();
+        mining.mine();
+        long endTime = System.currentTimeMillis();
 
-        // printing info
-        System.out.println("When collecting everything:");
-        System.out.println("Max memory: " + collectEverythingVisitor.maxMemory);
-        System.out.println("Min memory: " + collectEverythingVisitor.minMemory);
-        System.out.println("All: " + collectEverythingVisitor.all.stream().map(i -> i.toString())
-                .collect(Collectors.joining(", ")));
+        printMemoryInfo(message, memoryVisitor);
 
-        System.out.println("When collecting nothing:");
-        System.out.println("Max memory: " + collectNothingVisitor.maxMemory);
-        System.out.println("Min memory: " + collectNothingVisitor.minMemory);
-        System.out.println("All: " + collectNothingVisitor.all.stream().map(i -> i.toString())
-                .collect(Collectors.joining(", ")));
+        postGithub(memoryVisitor, memoryVisitor.numberOfCommits / ((endTime - startTime) / 1000.0));
+    }
 
-        postGithub(collectEverythingVisitor, collectEverythingVisitor.numberOfCommits/((end1 - start1)/1000.0),
-                collectNothingVisitor, collectNothingVisitor.numberOfCommits/((end2 - start2)/1000.0));
+    private void printMemoryInfo(String message, MemoryVisitor memoryVisitor) {
+        System.out.println(message);
+        System.out.println("Max memory: " + memoryVisitor.maxMemory);
+        System.out.println("Min memory: " + memoryVisitor.minMemory);
+        System.out.println("All: " + memoryVisitor.all.stream().map(Object::toString).collect(Collectors.joining(", ")));
     }
 
     private void postGithub(MemoryVisitor collectEverythingVisitor, double commitsPerSecInEverything, MemoryVisitor collectNothingVisitor, double commitsPerSecInNothing) {
